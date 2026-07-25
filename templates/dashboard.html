@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinGuard AI Dashboard</title>
+
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/6d2ea823d0.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>🤖 FinGuard AI</h2>
+
+    <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+    <a href="#"><i class="fa-solid fa-wallet"></i> Transactions</a>
+    <a href="#"><i class="fa-solid fa-bullseye"></i> Budget</a>
+    <a href="#"><i class="fa-solid fa-chart-pie"></i> Reports</a>
+    <a href="#"><i class="fa-solid fa-robot"></i> AI Advisor</a>
+    <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Welcome Back 👋</h1>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Balance</h3>
+            <h2>₹58,240</h2>
+        </div>
+
+        <div class="card">
+            <h3>Income</h3>
+            <h2>₹75,000</h2>
+        </div>
+
+        <div class="card">
+            <h3>Expenses</h3>
+            <h2>₹16,760</h2>
+        </div>
+
+        <div class="card">
+            <h3>AI Score</h3>
+            <h2>92%</h2>
+        </div>
+
+    </div>
+
+    <div class="chart-card">
+        <canvas id="expenseChart"></canvas>
+    </div>
+
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+
+<div class="card">
+
+<h2>Total Users</h2>
+<p>{{ users }}</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Fraud Alerts</h2>
+<p>{{ alerts }}</p>
+
+</div>
+
+
+</body>
+</html>
