@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}Reports | FinGuard AI{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Reports & Analytics</h1>
+
+        <p>AI Generated Financial Intelligence Reports</p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <button class="btn-primary">
+
+            <i class="bi bi-file-earmark-pdf"></i>
+
+            Export PDF
+
+        </button>
+
+        <button class="btn-primary">
+
+            <i class="bi bi-file-earmark-excel"></i>
+
+            Export Excel
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- KPI Cards -->
+
+<div class="kpi-grid">
+
+    <div class="card">
+
+        <h4>Total Revenue</h4>
+
+        <h2>₹8.4 Cr</h2>
+
+        <p style="color:#10b981;">+12.5%</p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Fraud Prevented</h4>
+
+        <h2>339</h2>
+
+        <p style="color:#2563eb;">AI Protected</p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Risk Score</h4>
+
+        <h2>92%</h2>
+
+        <p style="color:#f59e0b;">Excellent</p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Accuracy</h4>
+
+        <h2>98.7%</h2>
+
+        <p style="color:#10b981;">Machine Learning</p>
+
+    </div>
+
+</div>
+
+<!-- Charts -->
+
+<div class="chart-grid">
+
+    <div class="card">
+
+        <h3>Monthly Transaction Report</h3>
+
+        <canvas id="transactionChart"></canvas>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Fraud Analysis</h3>
+
+        <canvas id="fraudChart"></canvas>
+
+    </div>
+
+</div>
+
+<!-- AI Summary -->
+
+<div class="card">
+
+    <h2>
+
+        🤖 AI Executive Summary
+
+    </h2>
+
+    <br>
+
+    <div class="badge badge-success">
+
+        System Healthy
+
+    </div>
+
+    <br><br>
+
+    <p>
+
+        FinGuard AI analyzed the recent financial activities and found
+        that <strong>98.7%</strong> of all transactions were genuine.
+
+    </p>
+
+    <br>
+
+    <p>
+
+        The AI engine successfully blocked
+        <strong>339 fraudulent transactions</strong>,
+        reducing financial risk significantly.
+
+    </p>
+
+    <br>
+
+    <ul>
+
+        <li>✔ Fraud Detection Accuracy : 98.7%</li>
+
+        <li>✔ Low Operational Risk</li>
+
+        <li>✔ AI Recommendation : Continue Monitoring</li>
+
+        <li>✔ No Critical Security Issues Found</li>
+
+    </ul>
+
+</div>
+
+<!-- Download Reports -->
+
+<div class="card">
+
+    <h3>Available Reports</h3>
+
+    <br>
+
+    <table class="transaction-table">
+
+        <thead>
+
+        <tr>
+
+            <th>Report Name</th>
+
+            <th>Date</th>
+
+            <th>Format</th>
+
+            <th>Status</th>
+
+            <th>Download</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr>
+
+            <td>Monthly Financial Report</td>
+
+            <td>25 Jul 2026</td>
+
+            <td>PDF</td>
+
+            <td>
+
+                <span class="badge badge-success">
+
+                    Ready
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button class="action-btn">
+
+                    <i class="bi bi-download"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Fraud Detection Report</td>
+
+            <td>25 Jul 2026</td>
+
+            <td>Excel</td>
+
+            <td>
+
+                <span class="badge badge-success">
+
+                    Ready
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button class="action-btn">
+
+                    <i class="bi bi-download"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Risk Analysis Report</td>
+
+            <td>24 Jul 2026</td>
+
+            <td>PDF</td>
+
+            <td>
+
+                <span class="badge badge-warning">
+
+                    Processing
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button class="action-btn">
+
+                    <i class="bi bi-clock"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

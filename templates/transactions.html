@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Transactions | FinGuard AI{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Transaction Management</h1>
+
+        <p>Monitor, search and manage all financial transactions</p>
+
+    </div>
+
+    <div class="header-actions">
+
+        <button class="btn-primary">
+
+            <i class="bi bi-download"></i>
+
+            Export Report
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Statistics -->
+
+<div class="kpi-grid">
+
+    <div class="card">
+
+        <h4>Total Transactions</h4>
+
+        <h2>12,540</h2>
+
+        <p>Today's Records</p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Successful</h4>
+
+        <h2>12,201</h2>
+
+        <p style="color:#10b981;">98.7%</p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Pending</h4>
+
+        <h2>152</h2>
+
+        <p style="color:#f59e0b;">Under Review</p>
+
+    </div>
+
+    <div class="card">
+
+        <h4>Fraud</h4>
+
+        <h2>187</h2>
+
+        <p style="color:#ef4444;">Blocked</p>
+
+    </div>
+
+</div>
+
+<!-- Search -->
+
+<div class="card">
+
+    <div class="table-toolbar">
+
+        <input
+            class="search"
+            id="transactionSearch"
+            type="text"
+            placeholder="Search by ID, Name or Amount...">
+
+        <select class="filter-select">
+
+            <option>All Status</option>
+
+            <option>Safe</option>
+
+            <option>Pending</option>
+
+            <option>Fraud</option>
+
+        </select>
+
+    </div>
+
+</div>
+
+<!-- Transaction Table -->
+
+<div class="card">
+
+    <table class="transaction-table">
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Customer</th>
+
+            <th>Amount</th>
+
+            <th>Location</th>
+
+            <th>Date</th>
+
+            <th>Status</th>
+
+            <th>Risk</th>
+
+            <th>Action</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr>
+
+            <td>#TX1001</td>
+
+            <td>Rahul Sharma</td>
+
+            <td>₹18,500</td>
+
+            <td>Mumbai</td>
+
+            <td>25 Jul 2026</td>
+
+            <td><span class="badge badge-success">Safe</span></td>
+
+            <td>Low</td>
+
+            <td>
+
+                <button class="action-btn">
+
+                    <i class="bi bi-eye"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>#TX1002</td>
+
+            <td>Aisha Khan</td>
+
+            <td>₹72,000</td>
+
+            <td>Pune</td>
+
+            <td>25 Jul 2026</td>
+
+            <td><span class="badge badge-warning">Pending</span></td>
+
+            <td>Medium</td>
+
+            <td>
+
+                <button class="action-btn">
+
+                    <i class="bi bi-pencil"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>#TX1003</td>
+
+            <td>Karan Patel</td>
+
+            <td>₹1,45,000</td>
+
+            <td>Delhi</td>
+
+            <td>25 Jul 2026</td>
+
+            <td><span class="badge badge-danger">Fraud</span></td>
+
+            <td>High</td>
+
+            <td>
+
+                <button class="action-btn danger">
+
+                    <i class="bi bi-shield-exclamation"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>#TX1004</td>
+
+            <td>Neha Singh</td>
+
+            <td>₹9,400</td>
+
+            <td>Bengaluru</td>
+
+            <td>24 Jul 2026</td>
+
+            <td><span class="badge badge-success">Safe</span></td>
+
+            <td>Low</td>
+
+            <td>
+
+                <button class="action-btn">
+
+                    <i class="bi bi-eye"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>#TX1005</td>
+
+            <td>Arjun Mehta</td>
+
+            <td>₹3,25,000</td>
+
+            <td>Hyderabad</td>
+
+            <td>24 Jul 2026</td>
+
+            <td><span class="badge badge-danger">Fraud</span></td>
+
+            <td>Critical</td>
+
+            <td>
+
+                <button class="action-btn danger">
+
+                    <i class="bi bi-lock-fill"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Pagination -->
+
+<div class="pagination">
+
+    <button class="page-btn">Previous</button>
+
+    <button class="page-btn active">1</button>
+
+    <button class="page-btn">2</button>
+
+    <button class="page-btn">3</button>
+
+    <button class="page-btn">Next</button>
+
+</div>
+
+{% endblock %}
