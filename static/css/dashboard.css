@@ -1,0 +1,161 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    background:#0B1220;
+    color:white;
+}
+
+/* Sidebar */
+
+.sidebar{
+    width:260px;
+    height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
+    background:rgba(20,30,48,.95);
+    backdrop-filter:blur(20px);
+    padding:30px 20px;
+    border-right:1px solid rgba(255,255,255,.1);
+}
+
+.sidebar h2{
+    margin-bottom:40px;
+    color:#4F8CFF;
+}
+
+.sidebar a{
+    display:block;
+    color:#d1d5db;
+    text-decoration:none;
+    padding:15px;
+    margin-bottom:10px;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.sidebar a i{
+    margin-right:10px;
+}
+
+.sidebar a:hover{
+    background:linear-gradient(90deg,#4F8CFF,#7C5CFF);
+    color:white;
+}
+
+/* Main */
+
+.main{
+    margin-left:260px;
+    width:calc(100% - 260px);
+    padding:40px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(20px);
+    border-radius:20px;
+    padding:25px;
+    transition:.3s;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 35px rgba(79,140,255,.25);
+}
+
+.card h3{
+    color:#94A3B8;
+    margin-bottom:12px;
+}
+
+.card h2{
+    font-size:32px;
+    color:#4F8CFF;
+}
+
+/* Chart */
+
+.chart-card{
+    margin-top:35px;
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:25px;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+canvas{
+    width:100%!important;
+    height:420px!important;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+.sidebar{
+    width:80px;
+}
+
+.sidebar h2{
+    display:none;
+}
+
+.sidebar a{
+    text-align:center;
+}
+
+.sidebar a i{
+    margin-right:0;
+}
+
+.sidebar a{
+    font-size:0;
+}
+
+.sidebar a i{
+    font-size:20px;
+}
+
+.main{
+    margin-left:80px;
+    width:calc(100% - 80px);
+    padding:20px;
+}
+
+}
+
+@media(max-width:600px){
+
+.card{
+    background:white;
+    padding:20px;
+    margin:20px;
+    border-radius:10px;
+}
+
+canvas{
+    height:280px!important;
+}
+
+}
