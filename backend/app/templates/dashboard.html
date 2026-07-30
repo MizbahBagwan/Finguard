@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | FinGuard AI{% endblock %}
+
+{% block content %}
+<head>
+    <title>
+FinGuard Dashboard
+</title>
+
+
+<link 
+rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+
+<script 
+src="https://unpkg.com/leaflet/dist/leaflet.js">
+</script>
+<head></head>
+
+<div class="dashboard-header">
+
+    <div>
+
+        <h2>Fraud Detection Dashboard</h2>
+
+        <p>
+            Monitor transactions, fraud alerts and AI predictions in real time.
+        </p>
+
+    </div>
+
+    <button class="btn-primary">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        New Analysis
+
+    </button>
+
+</div>
+
+<!-- KPI CARDS -->
+
+<div class="glass-card">
+
+    <div class="card">
+
+        <div class="card-icon blue">
+            <i class="fa-solid fa-credit-card"></i>
+        </div>
+
+        <div class="card-info">
+
+            <span>Total Transactions</span>
+
+            <h2>12,540</h2>
+
+            <small>+18.6% this month</small>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-icon purple">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div class="card-info">
+
+            <span>Fraud Cases</span>
+
+            <h2>339</h2>
+
+            <small>8.7% decrease</small>
+
+        </div>
+
+    </div>
+<div class="glass-card">
+
+<h2>
+🚨 Live Fraud Alerts
+</h2>
+
+
+<div id="fraudAlerts">
+
+Loading alerts...
+
+</div>
+
+
+</div>
+
+    <div class="card">
+
+        <div class="card-icon orange">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+        <div class="card-info">
+
+            <span>Risk Alerts</span>
+
+            <h2>41</h2>
+
+            <small>5.2% increase</small>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-icon green">
+            <i class="fa-solid fa-bullseye"></i>
+        </div>
+
+        <div class="card-info">
+
+            <span>Accuracy</span>
+
+            <h2>98.7%</h2>
+
+            <small>AI Model</small>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="glass-card">
+
+<h2>
+🚨 Live Fraud Alerts
+</h2>
+
+
+<div id="fraudAlerts">
+
+Loading alerts...
+
+</div>
+
+
+</div>
+
+<!-- Charts -->
+
+<div class="chart-grid">
+
+    <div class="chart-card">
+
+        <div class="card-title">
+
+            <h3>Transaction Overview</h3>
+
+        </div>
+
+        <canvas id="transactionChart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+        <div class="card-title">
+
+            <h3>Fraud Distribution</h3>
+
+        </div>
+
+        <canvas id="fraudChart"></canvas>
+
+    </div>
+
+</div>
+
+<!-- Transactions -->
+
+<div class="table-card">
+
+    <div class="card-title">
+
+        <h3>Recent High Risk Transactions</h3>
+
+        <button class="btn-secondary">
+            View All
+        </button>
+
+    </div>
+
+    <table>
+
+        <thead>
+            
+
+        <tr>
+
+            <th>ID</th>
+            <th>Merchant</th>
+            <th>Amount</th>
+            <th>Risk</th>
+            <th>Status</th>
+
+        </tr>
+
+        </thead>
+        <button 
+class="ai-button"
+onclick="openAssistant()">
+
+🤖
+
+</button>
+
+        <tbody>
+
+        <tr>
+
+            <td>TXN-78654321</td>
+
+            <td>Amazon</td>
+
+            <td>$1259</td>
+
+            <td><span class="badge danger">92</span></td>
+
+            <td><span class="status red">High Risk</span></td>
+
+        </tr>
+
+        <tr>
+
+            <td>TXN-78654322</td>
+
+            <td>eBay</td>
+
+            <td>$899</td>
+
+            <td><span class="badge warning">81</span></td>
+
+            <td><span class="status orange">Medium</span></td>
+
+        </tr>
+
+        <tr>
+
+            <td>TXN-78654323</td>
+
+            <td>Netflix</td>
+
+            <td>$16</td>
+
+            <td><span class="badge success">22</span></td>
+
+            <td><span class="status green">Safe</span></td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- AI Insights -->
+
+<div class="insight-card">
+
+    <h3>
+
+        <i class="fa-solid fa-robot"></i>
+
+        AI Insights
+
+    </h3>
+
+    <ul>
+
+        <li>✔ 15% increase in high-risk transactions today.</li>
+
+        <li>✔ Most fraud cases originated from new devices.</li>
+
+        <li>✔ International payments show higher risk scores.</li>
+
+        <li>✔ AI recommends stronger verification for suspicious activity.</li>
+
+    </ul>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="/static/js/dashboard.js"></script>
+
+{% endblock %}
+<div class="hero">
+
+<h1>
+🛡️ FinGuard AI
+</h1>
+
+<p>
+Advanced AI-powered fraud detection platform
+</p>
+
+
+<div class="status-area">
+
+<span id="aiStatus">
+Checking AI...
+</span>
+
+
+<h1>
+🛡️ FinGuard AI Dashboard
+</h1>
+
+
+<h3 id="liveClock">
+Loading...
+</h3>
+
+
+<div id="aiStatus">
+Checking AI...
+</div>
+
+
+</div>
+
+</div>
+<div class="hero">
+
+<h1>
+🛡️ FinGuard AI
+</h1>
+
+<p>
+Advanced AI-powered fraud detection platform
+</p>
+
+
+<div class="status-area">
+
+<span id="aiStatus">
+Checking AI...
+</span>
+
+
+<span id="liveClock">
+--:--
+</span>
+
+
+</div>
+
+</div>
