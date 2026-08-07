@@ -1,335 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FinGuard Login</title>
+    <title>FinGuard AI | Secure Login</title>
 
-    <style>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-        * {
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 
-
-        body {
-
-            margin: 0;
-            height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            background: #f4f7fb;
-
-        }
-
-
-        .login-box {
-
-            width: 380px;
-
-            background: white;
-
-            padding: 35px;
-
-            border-radius: 12px;
-
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-
-        }
-
-
-        h2 {
-
-            text-align: center;
-
-            color: #1e3a8a;
-
-            margin-bottom: 25px;
-
-        }
-
-
-        input {
-
-            width: 100%;
-
-            padding: 12px;
-
-            margin-bottom: 15px;
-
-            border: 1px solid #ccc;
-
-            border-radius: 6px;
-
-            font-size: 15px;
-
-        }
-
-
-        button {
-
-            width: 100%;
-
-            padding: 12px;
-
-            background: #2563eb;
-
-            color: white;
-
-            border: none;
-
-            border-radius: 6px;
-
-            cursor: pointer;
-
-            font-size: 16px;
-
-        }
-
-
-        button:hover {
-
-            background: #1d4ed8;
-
-        }
-
-
-        .message {
-
-            text-align: center;
-
-            margin-top: 15px;
-
-            color: red;
-
-        }
-
-
-        .register {
-
-            text-align: center;
-
-            margin-top: 20px;
-
-        }
-
-
-        .register a {
-
-            color: #2563eb;
-
-            text-decoration: none;
-
-        }
-
-
-    </style>
+    <!-- Login CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/login.css') }}">
 
 </head>
 
-
 <body>
 
+<div class="background">
 
-<div class="login-box">
-
-
-    <h2>
-        FinGuard Login
-    </h2>
-
-
-    <form id="loginForm">
-
-
-        <input
-
-            type="email"
-
-            id="email"
-
-            placeholder="Enter email"
-
-            required
-
-        >
-
-
-
-        <input
-
-            type="password"
-
-            id="password"
-
-            placeholder="Enter password"
-
-            required
-
-        >
-
-
-
-        <button type="submit">
-
-            Login
-
-        </button>
-
-
-    </form>
-
-
-
-    <div id="message" class="message"></div>
-
-
-
-    <div class="register">
-
-        Don't have an account?
-
-        <a href="/register">
-
-            Register
-
-        </a>
-
-    </div>
-
+    <div class="gradient one"></div>
+    <div class="gradient two"></div>
+    <div class="gradient three"></div>
 
 </div>
 
 
+<div class="page-container">
 
+    <!-- Left Side -->
 
-<script>
+    <div class="left-panel">
 
+        <div class="brand">
 
-document
-.getElementById("loginForm")
-.addEventListener(
-    "submit",
-    async function(event){
+            <div class="logo">
 
+                <i class="fas fa-shield-halved"></i>
 
-        event.preventDefault();
+            </div>
 
+            <h1>
+                Fin<span>Guard</span> AI
+            </h1>
 
+        </div>
 
-        const email =
-            document.getElementById("email").value;
+        <h2>
+            AI Powered Financial Fraud Detection
+        </h2>
 
+        <p>
 
+            Detect suspicious transactions, analyze financial risks,
+            and secure digital payments using Artificial Intelligence.
 
-        const password =
-            document.getElementById("password").value;
+        </p>
 
+        <div class="feature-list">
 
+            <div class="feature">
 
+                <i class="fas fa-check-circle"></i>
 
-        try {
+                <span>Real-Time Fraud Detection</span>
 
+            </div>
 
-            const response = await fetch(
-                "/api/login",
-                {
+            <div class="feature">
 
-                    method: "POST",
+                <i class="fas fa-check-circle"></i>
 
-                    headers: {
+                <span>AI Risk Scoring</span>
 
-                        "Content-Type": "application/json"
+            </div>
 
-                    },
+            <div class="feature">
 
+                <i class="fas fa-check-circle"></i>
 
-                    body: JSON.stringify({
+                <span>Smart Investigation Reports</span>
 
-                        email: email,
+            </div>
 
-                        password: password
+            <div class="feature">
 
-                    })
+                <i class="fas fa-check-circle"></i>
 
-                }
-            );
+                <span>Secure Dashboard Access</span>
 
+            </div>
 
+        </div>
 
-            const data = await response.json();
+    </div>
 
 
+    <!-- Right Side -->
 
+    <div class="login-panel">
 
-            if(data.success){
+        <div class="login-card">
 
+            <div class="card-top">
 
-                document.getElementById("message").style.color =
-                    "green";
+                <h2>Welcome Back</h2>
 
+                <p>
 
-                document.getElementById("message").innerHTML =
-                    "Login successful...";
+                    Sign in to continue using FinGuard AI
 
+                </p>
 
+            </div>
 
-                setTimeout(function(){
 
+            <form action="/api/login" method="POST">
 
-                    window.location.href =
-                        "/dashboard";
+                <div class="input-group">
 
+                    <label>Email Address</label>
 
-                },500);
+                    <div class="input-box">
 
+                        <i class="fas fa-envelope"></i>
 
+                        <input
+                                type="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required>
 
-            }
+                    </div>
 
-            else {
+                </div>
 
 
-                document.getElementById("message").innerHTML =
-                    data.message;
+                <div class="input-group">
 
+                    <label>Password</label>
 
-            }
+                    <div class="input-box">
 
+                        <i class="fas fa-lock"></i>
 
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter password"
+                                required>
 
-        }
+                        <span id="togglePassword">
 
+                            <i class="fas fa-eye"></i>
 
-        catch(error){
+                        </span>
 
+                    </div>
 
-            document.getElementById("message").innerHTML =
-                "Server error";
+                </div>
 
 
-            console.log(error);
+                <div class="options">
 
+                    <label>
 
-        }
+                        <input type="checkbox">
 
+                        Remember Me
 
+                    </label>
 
-    }
-);
+                    <a href="#">
 
+                        Forgot Password?
 
-</script>
+                    </a>
 
+                </div>
 
+
+                <button
+                        class="login-btn"
+                        type="submit">
+
+                    <i class="fas fa-right-to-bracket"></i>
+
+                    Secure Login
+
+                </button>
+
+            </form>
+
+
+            <div class="divider">
+
+                <span>OR</span>
+
+            </div>
+
+
+            <button class="google-btn">
+
+                <i class="fab fa-google"></i>
+
+                Continue with Google
+
+            </button>
+
+
+            <div class="register-link">
+
+                Don't have an account?
+
+                <a href="/register">
+
+                    Create Account
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', path='js/login.js') }}"></script>
 
 </body>
-
 </html>

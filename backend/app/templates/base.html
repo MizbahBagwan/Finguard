@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,163 +9,313 @@
 
 <title>{% block title %}FinGuard AI{% endblock %}</title>
 
+<!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
 
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+<!-- Main CSS -->
+<link rel="stylesheet"
+href="{{ url_for('static',path='css/dashboard.css') }}">
 
 <link rel="stylesheet"
-href="/static/css/dashboard-pro.css">
+      href="{{ url_for('static', path='css/transaction_detail.css') }}">
 
-{% block extra_css %}{% endblock %}
+{% block extra_css %}
+{% endblock %}
 
 </head>
 
 <body>
 
-<div class="layout">
+<!-- Animated Background -->
 
-    <!-- Sidebar -->
+<div class="background">
 
-    <aside class="sidebar">
+<div class="gradient gradient1"></div>
 
-        <div class="logo">
+<div class="gradient gradient2"></div>
 
-            <div class="logo-icon">
-                🛡️
-            </div>
+<div class="grid-overlay"></div>
 
-            <div>
+</div>
 
-                <h2>FinGuard</h2>
+<!-- Main Layout -->
 
-                <span>AI Intelligence</span>
+<div class="app-layout">
+    <!-- ================= SIDEBAR ================= -->
 
-            </div>
+<aside class="sidebar">
 
-        </div>
+<div class="sidebar-header">
 
-        <nav>
+<div class="logo">
 
-            <a href="/dashboard" class="active">
-                <i class="fa-solid fa-chart-line"></i>
-                Dashboard
-            </a>
+<div class="logo-icon">
 
-            <a href="/transactions">
-                <i class="fa-solid fa-credit-card"></i>
-                Transactions
-            </a>
+<i class="fa-solid fa-shield-halved"></i>
 
-            <a href="/reports">
-                <i class="fa-solid fa-file-lines"></i>
-                Reports
-            </a>
+</div>
 
-            <a href="/settings">
-                <i class="fa-solid fa-gear"></i>
-                Settings
-            </a>
+<div>
 
-        </nav>
+<h2>FinGuard AI</h2>
 
-        <div class="sidebar-footer">
+<span>Fraud Intelligence</span>
 
-            <div class="support-card">
+</div>
 
-                <i class="fa-solid fa-shield-halved"></i>
+</div>
 
-                <h4>AI Protection</h4>
+</div>
 
-                <p>
-                    Real-time fraud monitoring enabled.
-                </p>
+<nav class="sidebar-menu">
 
-            </div>
+<a href="/dashboard"
+class="{% if active_page=='dashboard' %}active{% endif %}">
 
-        </div>
+<i class="fa-solid fa-chart-line"></i>
 
-    </aside>
+<span>Dashboard</span>
 
-    <!-- Main -->
+</a>
 
-    <div class="content">
+<a href="/transactions"
+class="{% if active_page=='transactions' %}active{% endif %}">
 
-        <!-- Topbar -->
+<i class="fa-solid fa-list"></i>
 
-        <header class="topbar">
+<span>Transactions</span>
+
+</a>
+
+<a href="/reports"
+class="{% if active_page=='reports' %}active{% endif %}">
+
+<i class="fa-solid fa-file-lines"></i>
+
+<span>Reports</span>
+
+</a>
+
+<a href="/ocr"
+class="{% if active_page=='ocr' %}active{% endif %}">
+
+<i class="fa-solid fa-camera"></i>
+
+<span>OCR Scanner</span>
+
+</a>
+
+<a href="/knowledge-graph"
+class="{% if active_page=='knowledge-graph' %}active{% endif %}">
+
+<i class="fa-solid fa-project-diagram"></i>
+
+<span>Knowledge Graph</span>
+
+</a>
+
+<a href="/settings"
+class="{% if active_page=='settings' %}active{% endif %}">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</a>
+
+</nav>
+<div class="sidebar-footer">
+
+<div class="ai-card">
+
+<div class="ai-top">
+
+<span class="online-dot"></span>
+
+AI Protection
+
+</div>
+
+<h3>System Online</h3>
+
+<p>
+
+Real-time fraud monitoring is active.
+
+</p>
+
+<div class="ai-progress">
+
+<div class="progress-fill"></div>
+
+</div>
+
+<small>99.8% Detection Accuracy</small>
+
+</div>
+
+</div>
+
+</aside>
+<!-- ==========================
+MAIN AREA
+========================== -->
+
+<div class="main-wrapper">
+
+    <!-- ==========================
+    TOPBAR
+    ========================== -->
+
+    <header class="topbar">
+
+        <!-- LEFT -->
+
+        <div class="topbar-left">
+
+            <button class="menu-btn">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
 
             <div>
 
                 <h1>
-                    Welcome Back 👋
+
+                    {% block page_title %}
+
+                    Dashboard
+
+                    {% endblock %}
+
                 </h1>
 
                 <p>
-                    AI Powered Financial Intelligence System
+
+                    {% block page_subtitle %}
+
+                    AI Powered Financial Fraud Detection Platform
+
+                    {% endblock %}
+
                 </p>
 
             </div>
 
-            <div class="top-actions">
+        </div>
 
-                <div class="search-box">
+        <!-- CENTER SEARCH -->
 
-                    <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="topbar-search">
 
-                    <input
-                    type="text"
-                    placeholder="Search...">
+            <i class="fa-solid fa-magnifying-glass"></i>
 
-                </div>
+            <input
+                type="text"
+                placeholder="Search transactions, reports, merchants..."
+            >
 
-                <div class="notification">
+        </div>
 
-                    <i class="fa-solid fa-bell"></i>
+        <!-- RIGHT -->
 
-                    <span>3</span>
+        <div class="topbar-right">
 
-                </div>
+            <!-- AI STATUS -->
 
-                <div class="profile">
+            <div class="live-status">
 
-                    <div class="avatar">
-                        A
-                    </div>
+                <span class="pulse-dot"></span>
 
-                    <div>
-
-                        <strong>Administrator</strong>
-
-                        <small>Risk Analyst</small>
-
-                    </div>
-
-                </div>
+                AI Online
 
             </div>
 
-        </header>
+            <!-- Notification -->
 
-        <!-- Page -->
+            <button class="icon-btn">
 
-        <main class="page">
+                <i class="fa-regular fa-bell"></i>
 
-            {% block content %}
+                <span class="notify-count">
 
-            {% endblock %}
+                    3
 
-        </main>
+                </span>
 
-    </div>
+            </button>
+
+            <!-- Theme -->
+
+            <button class="icon-btn">
+
+                <i class="fa-regular fa-moon"></i>
+
+            </button>
+
+            <!-- Profile -->
+
+            <div class="profile">
+
+                <div class="avatar">
+
+                    H
+
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>
+
+                        Harshal
+
+                    </strong>
+
+                    <span>
+
+                        Administrator
+
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- ==========================
+    PAGE CONTENT
+    ========================== -->
+
+    <main class="page-content">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
 
 </div>
+{% block extra_js %}
+{% endblock %}
 
-{% block extra_js %}{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 </body>
+
 </html>

@@ -1,0 +1,883 @@
+/* ==========================================
+   FinGuard AI Register
+   Part 2A
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Inter",sans-serif;
+}
+
+body{
+
+    background:#081221;
+    color:#fff;
+    overflow-x:hidden;
+    min-height:100vh;
+
+}
+
+.background{
+
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:-1;
+
+}
+
+.gradient{
+
+    position:absolute;
+    border-radius:50%;
+    filter:blur(120px);
+
+}
+
+.gradient.one{
+
+    width:420px;
+    height:420px;
+
+    background:#2563eb;
+
+    top:-120px;
+    left:-100px;
+
+    opacity:.35;
+
+}
+
+.gradient.two{
+
+    width:380px;
+    height:380px;
+
+    background:#06b6d4;
+
+    bottom:-120px;
+    right:-80px;
+
+    opacity:.30;
+
+}
+
+.gradient.three{
+
+    width:300px;
+    height:300px;
+
+    background:#7c3aed;
+
+    top:45%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    opacity:.18;
+
+}
+
+.page-container{
+
+    display:grid;
+    grid-template-columns:1fr 520px;
+
+    gap:70px;
+
+    align-items:center;
+
+    min-height:100vh;
+
+    max-width:1450px;
+
+    margin:auto;
+
+    padding:60px;
+
+}
+
+.left-panel{
+
+    max-width:620px;
+
+}
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:35px;
+
+}
+
+.logo{
+
+    width:72px;
+    height:72px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+
+    font-size:30px;
+
+}
+
+.brand h1{
+
+    font-size:40px;
+    font-weight:800;
+
+}
+
+.brand span{
+
+    color:#60a5fa;
+
+}
+
+.left-panel h2{
+
+    font-size:46px;
+
+    line-height:1.2;
+
+    margin-bottom:20px;
+
+}
+
+.left-panel p{
+
+    color:#cbd5e1;
+
+    font-size:17px;
+
+    line-height:1.8;
+
+    margin-bottom:40px;
+
+}
+
+.feature-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.feature{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    font-size:16px;
+
+}
+
+.feature i{
+
+    width:48px;
+    height:48px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#16253d;
+
+    color:#3b82f6;
+
+}
+
+.login-panel{
+
+    width:100%;
+
+}
+
+.login-card{
+
+    background:rgba(15,23,42,.85);
+
+    backdrop-filter:blur(25px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:45px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+
+}
+
+.card-top{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.card-top h2{
+
+    font-size:34px;
+
+    margin-bottom:10px;
+
+}
+
+.card-top p{
+
+    color:#94a3b8;
+
+}
+/* ==========================================
+   Register Form
+   Part 2B
+========================================== */
+
+.input-group{
+    margin-bottom:22px;
+}
+
+.input-group label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:#cbd5e1;
+    margin-bottom:8px;
+}
+
+.input-box{
+    position:relative;
+}
+
+.input-box i:first-child{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#60a5fa;
+    font-size:18px;
+}
+
+.input-box input{
+    width:100%;
+    height:58px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.10);
+    background:#101c2f;
+    color:#fff;
+    padding:0 55px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.input-box input::placeholder{
+    color:#94a3b8;
+}
+
+.input-box input:focus{
+    border-color:#3b82f6;
+    box-shadow:0 0 0 4px rgba(59,130,246,.15);
+    outline:none;
+}
+
+#togglePassword{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#94a3b8;
+}
+
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:20px 0;
+    font-size:14px;
+    color:#cbd5e1;
+}
+
+.options input{
+    margin-right:8px;
+}
+
+.login-btn{
+    width:100%;
+    height:58px;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 30px rgba(37,99,235,.35);
+}
+
+.divider{
+    text-align:center;
+    margin:28px 0;
+    color:#94a3b8;
+    position:relative;
+}
+
+.divider::before,
+.divider::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    width:42%;
+    height:1px;
+    background:rgba(255,255,255,.10);
+}
+
+.divider::before{
+    left:0;
+}
+
+.divider::after{
+    right:0;
+}
+
+.google-btn{
+    width:100%;
+    height:56px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background:#16253d;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.google-btn:hover{
+    background:#1e3250;
+}
+
+.google-btn i{
+    color:#ea4335;
+    margin-right:10px;
+}
+
+.register-link{
+    margin-top:25px;
+    text-align:center;
+    color:#cbd5e1;
+}
+
+.register-link a{
+    color:#60a5fa;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.register-link a:hover{
+    text-decoration:underline;
+}
+/* ==========================================
+   FinGuard AI Register
+   Part 2C
+========================================== */
+
+/* Hover Animation */
+
+.login-card{
+    position:relative;
+    overflow:hidden;
+    transition:.4s;
+}
+
+.login-card:hover{
+    transform:translateY(-6px);
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.45),
+        0 0 30px rgba(37,99,235,.18);
+}
+
+/* Premium Border */
+
+.login-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-2px;
+
+    border-radius:30px;
+
+    padding:2px;
+
+    background:linear-gradient(
+        135deg,
+        rgba(37,99,235,.45),
+        rgba(6,182,212,.25),
+        rgba(124,58,237,.35)
+    );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+            mask-composite:exclude;
+
+    pointer-events:none;
+
+}
+
+/* Floating Logo */
+
+.logo{
+    animation:floatLogo 4s ease-in-out infinite;
+}
+
+@keyframes floatLogo{
+
+    0%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+
+    100%{
+        transform:translateY(0);
+    }
+
+}
+
+/* Gradient Animation */
+
+.gradient{
+    animation:moveGradient 12s ease-in-out infinite alternate;
+}
+
+@keyframes moveGradient{
+
+    from{
+        transform:translate(0,0);
+    }
+
+    to{
+        transform:translate(40px,-30px);
+    }
+
+}
+
+/* Responsive */
+
+@media(max-width:992px){
+
+    .page-container{
+
+        grid-template-columns:1fr;
+        padding:40px 20px;
+
+    }
+
+    .left-panel{
+
+        text-align:center;
+        max-width:100%;
+
+    }
+
+    .brand{
+
+        justify-content:center;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .left-panel{
+
+        display:none;
+
+    }
+
+    .page-container{
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
+    }
+
+    .login-card{
+
+        width:100%;
+        padding:30px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .login-card{
+
+        padding:24px;
+
+    }
+
+    .card-top h2{
+
+        font-size:26px;
+
+    }
+
+    .input-box input{
+
+        height:54px;
+
+    }
+
+    .login-btn,
+    .google-btn{
+
+        height:54px;
+
+    }
+
+}
+
+.auth-page{
+
+    min-height:100vh;
+
+    display:flex;
+
+    background:#07182f;
+
+    color:white;
+
+}
+
+
+.auth-left{
+
+    width:55%;
+
+    padding:70px;
+
+}
+
+
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+.logo-box{
+
+    width:80px;
+    height:80px;
+
+    background:#139eea;
+
+    border-radius:22px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:38px;
+
+}
+
+
+
+.brand h1{
+
+    font-size:48px;
+
+}
+
+
+.brand span{
+
+    color:#12c8d5;
+
+}
+
+
+
+.auth-left h2{
+
+    font-size:42px;
+
+    margin-top:60px;
+
+}
+
+
+
+.auth-left p{
+
+    color:#9badc5;
+
+    font-size:20px;
+
+    line-height:1.8;
+
+}
+
+
+
+.feature-box{
+
+    margin-top:20px;
+
+    padding:20px;
+
+    background:#142740;
+
+    border:1px solid #243956;
+
+    border-radius:18px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+
+
+.feature-box i{
+
+    color:#10c98c;
+
+    margin-right:15px;
+
+}
+
+
+
+.auth-right{
+
+    width:45%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+
+.auth-card{
+
+    width:450px;
+
+    padding:45px;
+
+    background:#101f35;
+
+    border-radius:25px;
+
+    border:1px solid #263950;
+
+}
+
+
+
+.auth-card h1{
+
+    font-size:34px;
+
+    text-align:center;
+
+}
+
+
+.auth-card p{
+
+    text-align:center;
+
+    color:#94a6c0;
+
+}
+
+
+
+label{
+
+    display:block;
+
+    margin-top:20px;
+
+}
+
+
+
+.input-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:10px;
+
+    background:#182b43;
+
+    padding:15px;
+
+    border-radius:12px;
+
+}
+
+
+
+.input-box i{
+
+    color:#9aacbf;
+
+}
+
+
+
+.input-box input{
+
+    width:100%;
+
+    background:none;
+
+    border:none;
+
+    outline:none;
+
+    color:white;
+
+}
+
+
+
+.login-btn{
+
+    margin-top:30px;
+
+    width:100%;
+
+    padding:17px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#2563eb,#06b6d4);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+
+.divider{
+
+    text-align:center;
+
+    margin:25px;
+
+    color:#8797ad;
+
+}
+
+
+
+.google-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:#19283e;
+
+    color:white;
+
+    border:1px solid #33465e;
+
+    font-size:16px;
+
+}
+
+
+
+.bottom-text{
+
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#9aaac0;
+
+}
+
+
+
+.bottom-text a{
+
+    color:#06b6d4;
+
+    text-decoration:none;
+
+}

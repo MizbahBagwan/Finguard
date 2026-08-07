@@ -1,0 +1,478 @@
+{% extends "base.html" %}
+
+{% block title %}AI Copilot | FinGuard AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/copilot.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="copilot-page">
+
+    <!-- Header -->
+
+    <div class="copilot-header">
+
+        <div class="header-left">
+
+            <span class="page-badge">
+                <i class="fa-solid fa-robot"></i>
+                AI Assistant
+            </span>
+
+            <h1>FinGuard AI Copilot</h1>
+
+            <p>
+                Intelligent fraud investigation assistant powered by AI.
+            </p>
+
+        </div>
+
+        <div class="header-right">
+
+            <div class="ai-status">
+
+                <span class="status-dot"></span>
+
+                AI Online
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Main Layout -->
+
+    <div class="copilot-layout">
+
+        <!-- Chat Section -->
+
+        <div class="chat-panel">
+
+            <div class="chat-header">
+
+                <i class="fa-solid fa-comments"></i>
+
+                <h2>AI Conversation</h2>
+
+            </div>
+
+            <div id="chatMessages" class="chat-messages">
+
+                <!-- Messages will come here -->
+
+            </div>
+                        <!-- Default AI Welcome Message -->
+
+            <div class="message ai-message">
+
+                <div class="message-avatar">
+
+                    <i class="fa-solid fa-robot"></i>
+
+                </div>
+
+
+                <div class="message-content">
+
+                    <h4>FinGuard AI</h4>
+
+                    <p>
+                        Hello Admin 👋
+                        <br>
+                        I am your AI Fraud Investigation Assistant.
+                        <br><br>
+                        I can help you analyze transactions,
+                        detect fraud patterns, explain risks,
+                        generate reports and investigate suspicious activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            
+        </div>
+
+
+            <!-- Typing Indicator -->
+
+            <div id="typingIndicator"
+                 class="typing-indicator">
+
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+
+                AI is thinking...
+
+            </div>
+
+
+        </div>
+                <!-- AI Intelligence Panel -->
+
+        <div class="ai-panel">
+
+
+            <div class="panel-header">
+
+                <i class="fa-solid fa-microchip"></i>
+
+                <h2>
+                    AI Intelligence
+                </h2>
+
+            </div>
+
+
+            <!-- AI Status -->
+
+            <div class="ai-card status-card">
+
+                <div class="card-icon green">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        AI Engine
+                    </h3>
+
+                    <p>
+                        Online & Ready
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Model -->
+
+            <div class="ai-card">
+
+                <div class="card-icon blue">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Active Model
+                    </h3>
+
+                    <p>
+                        FinGuard AI v2.5
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Accuracy -->
+
+            <div class="ai-card">
+
+                <div class="card-icon purple">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Accuracy
+                    </h3>
+
+                    <p>
+                        98.7%
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Response Time -->
+
+            <div class="ai-card">
+
+                <div class="card-icon orange">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Response Time
+                    </h3>
+
+                    <p>
+                        0.42 sec
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Today's Analysis -->
+
+            <div class="ai-card">
+
+                <div class="card-icon red">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Fraud Analysis
+                    </h3>
+
+                    <p>
+                        5284 Scans Today
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+    
+<!-- ================= QUICK AI ACTIONS ================= -->
+
+<div class="quick-ai-actions">
+
+
+    <div class="section-title">
+
+        <i class="fa-solid fa-bolt"></i>
+
+        <h2>
+            Quick Actions
+        </h2>
+
+    </div>
+
+
+
+    <div class="action-grid">
+
+
+        <!-- Analyze Transaction -->
+
+        <button class="ai-action-btn"
+                onclick="analyzeTransaction()">
+
+            <i class="fa-solid fa-credit-card"></i>
+
+            <span>
+                Analyze Transaction
+            </span>
+
+        </button>
+
+
+
+        <!-- Explain Fraud -->
+
+        <button class="ai-action-btn"
+                onclick="explainFraud()">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <span>
+                Explain Fraud
+            </span>
+
+        </button>
+
+
+
+        <!-- OCR -->
+
+        <button class="ai-action-btn"
+                onclick="openOCR()">
+
+            <i class="fa-solid fa-image"></i>
+
+            <span>
+                OCR Scanner
+            </span>
+
+        </button>
+
+
+
+        <!-- SHAP -->
+
+        <button class="ai-action-btn"
+                onclick="openSHAP()">
+
+            <i class="fa-solid fa-microscope"></i>
+
+            <span>
+                SHAP Explain
+            </span>
+
+        </button>
+
+
+
+        <!-- Knowledge Graph -->
+
+        <button class="ai-action-btn"
+                onclick="openGraph()">
+
+            <i class="fa-solid fa-diagram-project"></i>
+
+            <span>
+                Knowledge Graph
+            </span>
+
+        </button>
+
+
+
+        <!-- Report -->
+
+        <button class="ai-action-btn"
+                onclick="generateReport()">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            <span>
+                Generate Report
+            </span>
+
+        </button>
+
+
+
+    </div>
+
+
+</div>
+<!-- ================= CHAT INPUT ================= -->
+
+<div class="chat-input-section">
+
+
+    <button class="attach-btn">
+
+        <i class="fa-solid fa-paperclip"></i>
+
+    </button>
+
+
+
+    <input 
+        type="text"
+        id="userInput"
+        placeholder="Ask FinGuard AI anything..."
+    >
+
+
+
+    <button class="voice-btn">
+
+        <i class="fa-solid fa-microphone"></i>
+
+    </button>
+
+
+
+    <button 
+    id="sendBtn"
+    class="send-btn"
+    >
+    >
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+        Send
+
+    </button>
+
+
+</div>
+
+
+
+<!-- AI Suggestions -->
+
+<div class="suggestion-box">
+
+
+    <span>
+        Try asking:
+    </span>
+
+
+    <button>
+        "Analyze TX1001"
+    </button>
+
+
+    <button>
+        "Why is this fraud?"
+    </button>
+
+
+    <button>
+        "Generate investigation report"
+    </button>
+
+
+</div>
+
+
+
+</div>
+
+
+<!-- JS -->
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="/static/js/copilot.js"></script>
+
+{% endblock %}

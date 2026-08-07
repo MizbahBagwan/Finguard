@@ -14,3 +14,14 @@ transaction = {
 result = predict_transaction(transaction)
 
 print(result)
+
+
+from finguard_si1.backend.app.database.graph import get_graph
+
+driver = get_graph()
+
+with driver.session(database="finguard") as session:
+    result = session.run("RETURN 'Neo4j Connected Successfully' AS message")
+    print(result.single()["message"])
+
+driver.close()

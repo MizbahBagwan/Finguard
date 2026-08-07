@@ -1,494 +1,1221 @@
-// ==============================
-// FinGuard AI Dashboard
-// ==============================
+/* ==========================================
+   FinGuard AI Dashboard
+========================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-    // -------------------------
-    // Animated Counters
-    // -------------------------
+    initClock();
 
-    document.querySelectorAll(".card h2").forEach(counter => {
+    startAIStatus();
 
-        let text = counter.innerText;
+});
 
-        let value = parseFloat(text.replace(/[^\d.]/g, ""));
+/* ==========================================
+   LIVE CLOCK
+========================================== */
 
-        if (isNaN(value)) return;
+function initClock(){
 
-        let current = 0;
+    const el=document.getElementById("currentTime");
 
-        let step = value / 80;
+    if(!el) return;
 
-        function update() {
+    function update(){
 
-            current += step;
+        const now=new Date();
 
-            if (current >= value) {
+        el.innerHTML=now.toLocaleTimeString([],{
 
-                counter.innerText = text;
+            hour:"2-digit",
 
-                return;
+            minute:"2-digit",
 
-            }
+            second:"2-digit"
 
-            if (text.includes("%")) {
+        });
 
-                counter.innerText = current.toFixed(1) + "%";
+    }
 
-            }
+    update();
 
-            else {
+    setInterval(update,1000);
 
-                counter.innerText = Math.floor(current).toLocaleString();
+}
 
-            }
+/* ==========================================
+   ANIMATED COUNTERS
+========================================== */
 
-            requestAnimationFrame(update);
+function counter(id,target){
+
+    const el=document.getElementById(id);
+
+    if(!el) return;
+
+    let value=0;
+
+    const speed=Math.max(1,Math.floor(target/80));
+
+    const timer=setInterval(()=>{
+
+        value+=speed;
+
+        if(value>=target){
+
+            value=target;
+
+            clearInterval(timer);
 
         }
 
-        update();
+        el.innerHTML=value.toLocaleString();
 
-    });
-
-    // -------------------------
-    // Line Chart
-    // -------------------------
-
-    const txChart = document.getElementById("transactionChart");
-
-    if (txChart) {
-
-        new Chart(txChart, {
-
-            type: "line",
-
-            data: {
-
-                labels: [
-
-                    "Mon",
-                    "Tue",
-                    "Wed",
-                    "Thu",
-                    "Fri",
-                    "Sat",
-                    "Sun"
-
-                ],
-
-                datasets: [
-
-                    {
-
-                        label: "Transactions",
-
-                        data: [
-
-                            180,
-                            220,
-                            260,
-                            210,
-                            330,
-                            420,
-                            390
-
-                        ],
-
-                        borderColor: "#2563eb",
-
-                        backgroundColor: "rgba(37,99,235,.12)",
-
-                        fill: true,
-
-                        tension: .4,
-
-                        pointRadius: 4,
-
-                        pointBackgroundColor: "#2563eb"
-
-                    }
-
-                ]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-
-                        display: false
-
-                    }
-
-                },
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        grid: {
-
-                            color: "#e5e7eb"
-
-                        }
-
-                    },
-
-                    x: {
-
-                        grid: {
-
-                            display: false
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        });
-
-    }
-
-    // -------------------------
-    // Doughnut Chart
-    // -------------------------
-
-    const fraudChart = document.getElementById("fraudChart");
-
-    if (fraudChart) {
-
-        new Chart(fraudChart, {
-
-            type: "doughnut",
-
-            data: {
-
-                labels: [
-
-                    "Safe",
-                    "Medium",
-                    "Fraud"
-
-                ],
-
-                datasets: [
-
-                    {
-
-                        data: [
-
-                            72,
-                            18,
-                            10
-
-                        ],
-
-                        backgroundColor: [
-
-                            "#22c55e",
-                            "#f59e0b",
-                            "#ef4444"
-
-                        ],
-
-                        borderWidth: 0
-
-                    }
-
-                ]
-
-            },
-
-            options: {
-
-                cutout: "72%",
-
-                plugins: {
-
-                    legend: {
-
-                        position: "bottom"
-
-                    }
-
-                }
-
-            }
-
-        });
-
-    });
-
-});
-
-// ==============================
-// AI Analysis
-// ==============================
-
-async function runAnalysis() {
-
-    const transaction = {
-
-        amount: Number(document.getElementById("amount").value),
-
-        merchant: document.getElementById("merchant").value,
-
-        location: document.getElementById("location").value,
-
-        time: document.getElementById("time").value,
-
-        card_type: document.getElementById("card_type").value
-
-    };
-
-    try {
-
-        const response = await fetch("/analyze", {
-
-            method: "POST",
-
-            headers: {
-
-                "Content-Type": "application/json"
-
-            },
-
-            body: JSON.stringify(transaction)
-
-        });
-
-        const data = await response.json();
-
-        const box = document.getElementById("analysisResult");
-
-        box.style.display = "block";
-
-        box.innerHTML = `
-
-            <h2>🤖 AI Analysis Result</h2>
-
-            <p><strong>Risk Score:</strong> ${data.analysis.risk_score}</p>
-
-            <p><strong>Status:</strong> ${data.analysis.fraud_status}</p>
-
-            <p><strong>Reason:</strong> ${data.analysis.reason}</p>
-
-            <p><strong>Recommendation:</strong> ${data.analysis.recommendation}</p>
-
-        `;
-
-        box.scrollIntoView({
-
-            behavior: "smooth"
-
-        });
-
-    }
-
-    catch (err) {
-
-        alert("Unable to connect to AI Engine.");
-
-        console.log(err);
-
-    }
-
-}
-// Live Clock
-
-function updateClock(){
-
-    let clock = document.getElementById("liveClock");
-
-    if(clock){
-
-        clock.innerHTML =
-        new Date().toLocaleTimeString();
-
-    }
+    },20);
 
 }
 
+/*function animateCounters(){
 
-setInterval(updateClock,1000);
+    counter("totalTransactions",15482);
 
-updateClock();
-function openAssistant(){
+    counter("highRisk",126);
 
-alert(
-"Hello, I am FinGuard AI Assistant"
-);
+    counter("mediumRisk",412);
 
-}
-// ==============================
-// AI System Status
-// ==============================
+    counter("safeTransactions",14944);
 
-function updateAIStatus(){
+}*/
 
-    const status =
-    document.getElementById("aiStatus");
+/* ==========================================
+   AI STATUS
+========================================== */
 
+function startAIStatus(){
 
-    if(status){
+    const messages=[
 
-        status.innerHTML =
-        "🟢 AI Engine Online";
+        "Monitoring live transactions...",
 
-    }
+        "Scanning merchant behaviour...",
 
-}
+        "AI model updated successfully.",
 
+        "No critical fraud detected.",
 
-updateAIStatus();
-// ==============================
-// Live Fraud Alerts
-// ==============================
-
-
-function generateAlert(){
-
-    const alerts = [
-
-        "Suspicious transaction detected",
-
-        "High-risk payment blocked",
-
-        "Unusual spending pattern found",
-
-        "Multiple failed login attempts",
-
-        "AI prevented fraud attempt"
+        "Risk engine running normally."
 
     ];
 
+    const box=document.getElementById("aiInsights");
 
-    const alertBox =
-    document.getElementById("fraudAlerts");
+    if(!box) return;
 
+    setInterval(()=>{
 
-    if(alertBox){
-
-        let randomAlert =
-        alerts[
-        Math.floor(Math.random()*alerts.length)
+        const msg=messages[
+            Math.floor(Math.random()*messages.length)
         ];
 
+        const item=document.createElement("div");
 
-        alertBox.innerHTML =
-        "🔴 " + randomAlert;
+        item.className="insight info";
+
+        item.innerHTML=`
+        <i class="fa-solid fa-robot"></i>
+        ${msg}
+        `;
+
+        box.prepend(item);
+
+        if(box.children.length>4){
+
+            box.removeChild(box.lastChild);
+
+        }
+
+    },7000);
+
+}
+/* ==========================================
+   CHARTS
+========================================== */
+
+
+  
+async function initCharts(){
+
+    await initRiskChart();
+
+    await initTrendChart();
+
+}
+
+/* ==========================================
+   RISK DISTRIBUTION
+========================================== */
+
+async function initRiskChart(){
+
+    const canvas=document.getElementById("riskDistributionChart");
+
+    if(!canvas) return;
+
+
+    const response = await fetch("/dashboard/risk");
+
+    const data = await response.json();
+
+
+    let labels=[];
+    let values=[];
+
+
+    data.forEach(item=>{
+
+        labels.push(item.risk_level);
+
+        values.push(item.count);
+
+    });
+
+
+    new Chart(canvas,{
+
+        type:"doughnut",
+
+        data:{
+
+            labels:labels,
+
+            datasets:[{
+
+                data:values,
+
+                backgroundColor:[
+
+                    "#22C55E",
+
+                    "#F59E0B",
+
+                    "#EF4444"
+
+                ],
+
+                borderWidth:0,
+
+                hoverOffset:15
+
+            }]
+
+        },
+
+
+        options:{
+
+            responsive:true,
+
+            cutout:"72%",
+
+
+            plugins:{
+
+                legend:{
+
+                    position:"bottom",
+
+                    labels:{
+
+                        color:"#94A3B8",
+
+                        padding:20,
+
+                        usePointStyle:true
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+}
+
+/* ==========================================
+   FRAUD TREND
+========================================== */
+
+async function initTrendChart(){
+
+    const canvas = document.getElementById("fraudTrendChart");
+
+    if(!canvas) return;
+
+
+    const response = await fetch("/dashboard/trend");
+
+    const trendData = await response.json();
+
+
+    const labels = trendData.map(
+        item => item.date
+    );
+
+
+    const values = trendData.map(
+        item => item.transactions
+    );
+
+
+    new Chart(canvas,{
+
+        type:"line",
+
+        data:{
+
+            labels: labels,
+
+            datasets:[{
+
+                label:"Transactions",
+
+                data: values,
+
+                borderColor:"#4F8CFF",
+
+                backgroundColor:"rgba(79,140,255,.18)",
+
+                fill:true,
+
+                tension:.45
+
+            }]
+
+        }
+
+    });
+
+}
+/* ==========================================
+   RECENT TRANSACTIONS
+========================================== */
+
+/*function loadRecentTransactions(){
+
+    const tbody=document.getElementById("recentTransactionsBody");
+
+    if(!tbody) return;
+
+    const data=[
+
+        {
+            id:"TXN-1001",
+            merchant:"Amazon",
+            amount:"₹8,450",
+            risk:"High",
+            score:"96%",
+            status:"Pending"
+        },
+
+        {
+            id:"TXN-1002",
+            merchant:"Flipkart",
+            amount:"₹2,100",
+            risk:"Safe",
+            score:"08%",
+            status:"Approved"
+        },
+
+        {
+            id:"TXN-1003",
+            merchant:"Steam",
+            amount:"₹5,900",
+            risk:"Medium",
+            score:"58%",
+            status:"Review"
+        },
+
+        {
+            id:"TXN-1004",
+            merchant:"Netflix",
+            amount:"₹649",
+            risk:"Safe",
+            score:"03%",
+            status:"Approved"
+        },
+
+        {
+            id:"TXN-1005",
+            merchant:"Unknown Merchant",
+            amount:"₹24,500",
+            risk:"High",
+            score:"99%",
+            status:"Blocked"
+        }
+
+    ];
+
+    tbody.innerHTML="";
+
+    data.forEach(tx=>{
+
+        let badge="safe";
+
+        if(tx.risk==="High") badge="high";
+
+        if(tx.risk==="Medium") badge="medium";
+
+        tbody.innerHTML+=`
+
+        <tr>
+
+            <td>${tx.id}</td>
+
+            <td>${tx.merchant}</td>
+
+            <td>${tx.amount}</td>
+
+            <td>
+
+                <span class="badge ${badge}">
+
+                    ${tx.risk}
+
+                </span>
+
+            </td>
+
+            <td>${tx.status}</td>
+
+            <td>${tx.score}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+*/
+/* ==========================================
+   LIVE TOAST NOTIFICATION
+========================================== */
+
+function showToast(message,type="info"){
+
+    let toast=document.createElement("div");
+
+    toast.className=`toast ${type}`;
+
+    toast.innerHTML=`
+
+        <i class="fa-solid fa-bell"></i>
+
+        <span>${message}</span>
+
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(()=>{
+
+        toast.classList.add("show");
+
+    },100);
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+        setTimeout(()=>{
+
+            toast.remove();
+
+        },400);
+
+    },4000);
+
+}
+
+/* ==========================================
+   AI ALERTS
+========================================== */
+
+const alerts=[
+
+"⚠ High Risk Transaction Detected",
+
+"🟢 AI Model Updated Successfully",
+
+"🔍 Suspicious Merchant Found",
+
+"💳 New Transaction Received",
+
+"🧠 AI Fraud Scan Completed",
+
+"✅ System Running Normally"
+
+];
+
+setInterval(()=>{
+
+    const msg=alerts[
+        Math.floor(Math.random()*alerts.length)
+    ];
+
+    showToast(msg);
+
+},12000);
+/* ==========================================
+   SIDEBAR TOGGLE
+========================================== */
+
+const menuBtn = document.querySelector(".menu-btn");
+const sidebar = document.querySelector(".sidebar");
+
+if(menuBtn){
+
+    menuBtn.addEventListener("click",()=>{
+
+        sidebar.classList.toggle("collapsed");
+
+    });
+
+}
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+const themeBtn=document.querySelector(".fa-moon");
+
+if(themeBtn){
+
+themeBtn.parentElement.addEventListener("click",()=>{
+
+document.body.classList.toggle("light-mode");
+
+});
+
+}
+
+/* ==========================================
+   BUTTON RIPPLE EFFECT
+========================================== */
+
+document.querySelectorAll("button,.primary-btn,.action-btn").forEach(btn=>{
+
+btn.addEventListener("click",function(e){
+
+const ripple=document.createElement("span");
+
+const rect=this.getBoundingClientRect();
+
+const size=Math.max(rect.width,rect.height);
+
+ripple.style.width=size+"px";
+
+ripple.style.height=size+"px";
+
+ripple.style.left=(e.clientX-rect.left-size/2)+"px";
+
+ripple.style.top=(e.clientY-rect.top-size/2)+"px";
+
+ripple.className="ripple";
+
+this.appendChild(ripple);
+
+setTimeout(()=>{
+
+ripple.remove();
+
+},600);
+
+});
+
+});
+
+/* ==========================================
+   FADE IN ANIMATION
+========================================== */
+
+const observer=new IntersectionObserver((entries)=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+});
+
+document.querySelectorAll(
+
+".glass-card,.stat-card,.hero-left,.hero-right"
+
+).forEach(card=>{
+
+card.classList.add("hidden");
+
+observer.observe(card);
+
+});
+async function loadDashboard(){
+
+    try{
+
+        const response = await fetch("/dashboard/summary");
+
+        const data = await response.json();
+
+        console.log("Dashboard:",data);
+
+
+        document.getElementById("totalTransactions").innerText =
+            data.total_transactions;
+
+
+        document.getElementById("highRisk").innerText =
+            data.high_risk_transactions;
+
+
+        document.getElementById("mediumRisk").innerText =
+            data.fraud_transactions;
+
+
+        document.getElementById("safeTransactions").innerText =
+            data.total_transactions - data.fraud_transactions;
+
+
+    }
+    catch(error){
+
+        console.log("Dashboard Error:",error);
+
+    }
+
+}
+
+async function loadAIInsights(){
+
+    try{
+
+        const response = await fetch(
+            "/dashboard/ai-insight"
+        );
+
+
+        const data = await response.json();
+
+
+        const box = document.getElementById(
+            "aiInsights"
+        );
+
+
+        if(data.message){
+
+            box.innerHTML = `
+                <div class="insight info">
+
+                    <i class="fa-solid fa-robot"></i>
+
+                    <div>
+                        <strong>No AI Analysis</strong>
+                        <p>${data.message}</p>
+                    </div>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+
+        box.innerHTML = `
+
+        <div class="insight warning">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <div>
+
+                <strong>
+                    ${data.prediction}
+                    (${data.risk_level})
+                </strong>
+
+
+                <p>
+                    Risk Score:
+                    ${data.risk_score}%
+                </p>
+
+
+                <p>
+                    Fraud Probability:
+                    ${data.fraud_probability}%
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="insight info">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <div>
+
+                <strong>
+                    AI Reason
+                </strong>
+
+                <p>
+                    ${data.reason}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="insight success">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <div>
+
+                <strong>
+                    Recommendation
+                </strong>
+
+                <p>
+                    ${data.recommendation}
+                </p>
+
+            </div>
+
+        </div>
+
+        `;
+
+
+    }
+    catch(error){
+
+        console.log(
+            "AI INSIGHT ERROR:",
+            error
+        );
 
     }
 
 }
 
 
-setInterval(generateAlert,5000);
 
+loadAIInsights();
+/*async function loadSystem(){
 
-generateAlert();
-// ==============================
-// World Transaction Map
-// ==============================
+    const res = await fetch("/api/dashboard/system");
 
+    const system = await res.json();
 
-const mapContainer =
-document.getElementById("map");
-
-
-if(mapContainer){
-
-
-const map =
-L.map("map")
-.setView(
-[20,0],
-2
-);
+    console.log(system);
+*/
 
 
 
-L.tileLayer(
-
-"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-
-{
-
-attribution:
-"© OpenStreetMap"
-
-}
-
-).addTo(map);
 
 
 
-const transactions = [
-
-{
-city:"Mumbai",
-lat:19.076,
-lng:72.877
-},
-
-{
-city:"London",
-lat:51.507,
-lng:-0.127
-},
-
-{
-city:"New York",
-lat:40.712,
-lng:-74.006
-},
-
-{
-city:"Tokyo",
-lat:35.676,
-lng:139.650
-}
-
-];
+window.onload = () => {
 
 
+    loadDashboard();
 
-transactions.forEach(tx=>{
+
+    initCharts();
 
 
-L.marker(
-[
-tx.lat,
-tx.lng
-]
+    loadAI();
 
-)
 
-.addTo(map)
+};
 
-.bindPopup(
 
-"💳 Transaction detected<br>"
-+
-tx.city
+console.log("Dashboard JS Loaded");
 
-);
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    console.log("DOM Loaded");
+
+
+    const riskCanvas = document.getElementById(
+        "riskDistributionChart"
+    );
+
+    const trendCanvas = document.getElementById(
+        "fraudTrendChart"
+    );
+
+
+    console.log("Risk Canvas:", riskCanvas);
+
+    console.log("Trend Canvas:", trendCanvas);
 
 
 });
+async function loadDashboardLive(){
+
+
+    const response = await fetch(
+        "/api/dashboard-live"
+    );
+
+
+    const data = await response.json();
+
+
+
+    // AI PERFORMANCE
+
+    const performance =
+        data.performance;
+
+
+
+    document.querySelector(
+        ".performance-item:nth-child(1) h2"
+    ).innerText =
+        performance.detection_rate + "%";
+
+
+
+    document.querySelector(
+        ".performance-item:nth-child(3) h2"
+    ).innerText =
+        performance.total_transactions;
+
+
+
+    document.querySelector(
+        ".performance-item:nth-child(4) h2"
+    ).innerText =
+        performance.frauds_detected;
+
+
+
+    // LIVE THREATS
+
+
+    const feed =
+        document.querySelector(
+            ".activity-list"
+        );
+
+
+    feed.innerHTML="";
+
+
+
+    data.threats.forEach(t=>{
+
+
+        feed.innerHTML += `
+
+        <div class="activity danger">
+
+            <div class="dot red"></div>
+
+            <div>
+
+                <strong>
+                ${t.merchant}
+                </strong>
+
+
+                <p>
+                ₹${t.amount}
+                blocked by AI
+                </p>
+
+
+                <small>
+                ${t.time}
+                </small>
+
+
+            </div>
+
+        </div>
+
+        `;
+
+
+    });
 
 
 }
+
+
+
+loadDashboardLive();
+/* ==========================================
+   REAL DASHBOARD DATA
+========================================== */
+
+
+async function loadDashboardLive(){
+
+
+    try{
+
+
+        const response = await fetch(
+            "/api/dashboard-live"
+        );
+
+
+        const data = await response.json();
+
+
+
+        console.log(
+            "Live Dashboard:",
+            data
+        );
+
+
+
+        /* =============================
+           AI PERFORMANCE
+        ============================= */
+
+
+        const performanceItems =
+        document.querySelectorAll(
+            ".performance-item h2"
+        );
+
+
+        if(performanceItems.length >= 4){
+
+
+            performanceItems[0].innerText =
+            data.performance.detection_rate + "%";
+
+
+           const avgElement =
+document.getElementById("avgDetection");
+
+
+if(avgElement){
+
+    avgElement.innerText =
+    data.performance.average_risk_score;
+
+}
+
+
+            performanceItems[2].innerText =
+            data.performance.total_transactions;
+
+
+            performanceItems[3].innerText =
+            data.performance.frauds_detected;
+
+
+        }
+
+
+
+
+
+        /* =============================
+           LIVE THREAT FEED
+        ============================= */
+
+
+        const feed =
+        document.querySelector(
+            ".activity-list"
+        );
+
+
+        if(feed){
+
+
+            feed.innerHTML="";
+
+
+            if(data.threats.length===0){
+
+
+                feed.innerHTML=`
+
+                <div class="activity success">
+
+                    <div class="dot green"></div>
+
+                    <div>
+
+                    <strong>
+                    System Secure
+                    </strong>
+
+                    <p>
+                    No active threats detected
+                    </p>
+
+                    </div>
+
+                </div>
+
+                `;
+
+
+            }
+
+
+
+            data.threats.forEach(t=>{
+
+
+                feed.innerHTML += `
+
+
+                <div class="activity danger">
+
+
+                    <div class="dot red"></div>
+
+
+                    <div>
+
+
+                    <strong>
+                    ${t.merchant}
+                    </strong>
+
+
+                    <p>
+                    ₹${t.amount} 
+                    - ${t.risk} Risk
+                    </p>
+
+
+                    <small>
+                    ${t.time}
+                    </small>
+
+
+                    </div>
+
+
+                </div>
+
+
+                `;
+
+
+            });
+
+
+        }
+
+
+
+
+
+        /* =============================
+           RECENT TRANSACTIONS
+        ============================= */
+
+
+        loadRecentTransactions();
+
+
+
+    }
+
+
+    catch(error){
+
+
+        console.log(
+            "Live Dashboard Error:",
+            error
+        );
+
+
+    }
+
+
+}
+
+
+
+
+
+async function loadRecentTransactions(){
+
+
+    const tbody =
+    document.getElementById(
+        "recentTransactionsBody"
+    );
+
+
+    if(!tbody) return;
+
+
+
+    try{
+
+
+        const response =
+        await fetch(
+            "/api/recent-transactions"
+        );
+
+
+        const transactions =
+        await response.json();
+
+
+
+        tbody.innerHTML="";
+
+
+
+        transactions.forEach(tx=>{
+
+
+           let badge="safe";
+
+
+if(tx.risk_level==="High")
+    badge="high";
+
+
+else if(tx.risk_level==="Medium")
+    badge="medium";
+
+
+else if(tx.risk_level==="Low")
+    badge="low";
+
+
+
+            tbody.innerHTML += `
+
+
+            <tr>
+
+
+            <td>
+            ${tx.transaction_id}
+            </td>
+
+
+            <td>
+            ${tx.merchant}
+            </td>
+
+
+            <td>
+            ₹${tx.amount}
+            </td>
+
+
+            <td>
+
+            <span class="badge ${badge}">
+
+            ${tx.risk_level}
+
+            </span>
+
+            </td>
+
+
+            <td>
+            ${tx.prediction}
+            </td>
+
+
+            <td>
+            ${tx.fraud_probability}%
+            </td>
+
+
+            </tr>
+
+
+            `;
+
+
+
+        });
+
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Recent Transaction Error:",
+            error
+        );
+
+    }
+
+
+}
+
+const ai =
+data.ai_engine;
+
+
+const accuracy =
+document.getElementById(
+"aiAccuracy"
+);
+
+
+if(accuracy){
+
+    accuracy.innerText =
+    ai.accuracy + "%";
+
+}
+
+
+const scan =
+document.getElementById(
+"aiLastScan"
+);
+
+
+if(scan){
+
+    scan.innerText =
+    ai.last_scan;
+
+}
+
+
+
+loadDashboardLive();

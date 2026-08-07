@@ -1,0 +1,531 @@
+<div class="report-header">
+
+    <div>
+
+        <h1>
+
+            Investigation Report
+
+        </h1>
+
+        <p>
+
+            AI Generated Financial Fraud Investigation Report
+
+        </p>
+
+    </div>
+
+    <div class="status">
+
+        <span class="high-risk">
+
+            High Risk
+
+        </span>
+
+    </div>
+
+</div>
+<section class="summary-grid">
+
+<div class="info-card">
+
+<h3>Transaction ID</h3>
+
+<p>{{ report.transaction_id }}</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>Account ID</h3>
+
+<p>{{ report.account_id }}</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>Amount</h3>
+
+<p>₹ {{ report.amount }}</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>Merchant</h3>
+
+<p>{{ report.merchant }}</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>Prediction</h3>
+
+<p>{{ report.prediction }}</p>
+
+</div>
+
+<div class="info-card">
+
+<h3>Fraud Probability</h3>
+
+<p>{{ report.fraud_probability }}%</p>
+
+</div>
+
+</section>
+<div class="section">
+
+<h2>
+
+Transaction Details
+
+</h2>
+
+<table>
+
+<tr>
+
+<td>Location</td>
+
+<td>{{ report.location }}</td>
+
+</tr>
+
+<tr>
+
+<td>Time</td>
+
+<td>{{ report.time }}</td>
+
+</tr>
+
+<tr>
+
+<td>Card Type</td>
+
+<td>{{ report.card_type }}</td>
+
+</tr>
+
+<tr>
+
+<td>Transaction Type</td>
+
+<td>{{ report.transaction_type }}</td>
+
+</tr>
+
+<tr>
+
+<td>Merchant Category</td>
+
+<td>{{ report.merchant_category }}</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="section">
+
+<h2>
+
+Machine Learning Prediction
+
+</h2>
+
+<div class="prediction-box">
+
+<h1>
+
+{{ report.fraud_probability }}%
+
+</h1>
+
+<h3>
+
+{{ report.prediction }}
+
+</h3>
+
+<p>
+
+Risk Level :
+{{ report.risk_level }}
+
+</p>
+
+</div>
+
+</div>
+<div class="section">
+
+<h2>
+
+OCR Extracted Information
+
+</h2>
+
+<div class="ocr-box">
+
+{{ ocr_result }}
+
+</div>
+
+</div>
+<div class="section">
+
+<h2>
+
+Knowledge Graph Analysis
+
+</h2>
+
+<div class="graph-box">
+
+{{ graph_summary }}
+
+</div>
+
+</div>
+<div class="section">
+
+<h2>
+
+AI Recommendation
+
+</h2>
+
+<div class="recommendation">
+
+{{ report.summary }}
+
+</div>
+
+</div>
+<div class="final-box">
+
+<h2>
+
+Final Verdict
+
+</h2>
+
+<h1>
+
+{{ report.prediction }}
+
+</h1>
+
+<p>
+
+Overall Risk
+
+{{ report.fraud_probability }}%
+
+</p>
+
+</div>
+<div class="buttons">
+
+    <a href="/report/{{ report.id }}/pdf" class="btn download-btn">
+        <i class="fa-solid fa-file-pdf"></i>
+        Download PDF
+    </a>
+
+    <button class="btn print-btn" onclick="printReport()">
+        <i class="fa-solid fa-print"></i>
+        Print Report
+    </button>
+
+</div>
+<h2>Transaction Details</h2>
+
+<table class="details-table">
+
+<tr>
+
+<td>Transaction ID</td>
+
+<td>{{ transaction.transaction_id }}</td>
+
+</tr>
+
+<tr>
+
+<td>Account ID</td>
+
+<td>{{ transaction.account_id }}</td>
+
+</tr>
+
+<tr>
+
+<td>Amount</td>
+
+<td>₹ {{ transaction.amount }}</td>
+
+</tr>
+
+<tr>
+
+<td>Merchant</td>
+
+<td>{{ transaction.merchant }}</td>
+
+</tr>
+
+<tr>
+
+<td>Location</td>
+
+<td>{{ transaction.location }}</td>
+
+</tr>
+
+<tr>
+
+<td>Card Type</td>
+
+<td>{{ transaction.card_type }}</td>
+
+</tr>
+
+<tr>
+
+<td>Risk Level</td>
+
+<td>{{ transaction.risk_level }}</td>
+
+</tr>
+
+</table>
+<div class="prediction-card">
+
+<h2>
+
+ML Prediction
+
+</h2>
+
+<h1>
+
+{{ report.prediction }}
+
+</h1>
+
+<div class="score">
+
+{{ report.fraud_probability }}%
+
+</div>
+
+<p>
+
+Risk Level
+
+{{ report.risk_level }}
+
+</p>
+
+</div>
+<div class="graph-card">
+
+<h2>
+
+Knowledge Graph Analysis
+
+</h2>
+
+<p>
+
+{{ graph_summary }}
+
+</p>
+
+</div>
+<div class="ocr-card">
+
+<h2>
+
+OCR Extracted Information
+
+</h2>
+
+<p>
+
+{{ ocr_result }}
+
+</p>
+
+</div>
+<!-- ================================= -->
+<!-- FRAUD INDICATORS -->
+<!-- ================================= -->
+
+<section class="section">
+
+    <h2>Fraud Indicators</h2>
+
+    <div class="indicator-grid">
+
+        <div class="indicator-card danger">
+
+            <i class="fa-solid fa-money-bill-wave"></i>
+
+            <h4>High Transaction Amount</h4>
+
+            <p>
+
+                ₹ {{ transaction.amount }}
+
+            </p>
+
+        </div>
+
+        <div class="indicator-card warning">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <h4>Location Risk</h4>
+
+            <p>
+
+                {{ transaction.location_risk }} %
+
+            </p>
+
+        </div>
+
+        <div class="indicator-card info">
+
+            <i class="fa-solid fa-credit-card"></i>
+
+            <h4>Card Type</h4>
+
+            <p>
+
+                {{ transaction.card_type }}
+
+            </p>
+
+        </div>
+
+        <div class="indicator-card success">
+
+            <i class="fa-solid fa-globe"></i>
+
+            <h4>International</h4>
+
+            <p>
+
+                {% if transaction.is_international %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+<section class="section">
+
+<h2>
+
+Transaction Timeline
+
+</h2>
+
+<div class="timeline">
+
+<div class="timeline-item">
+
+<div class="dot"></div>
+
+<div>
+
+<h4>Transaction Created</h4>
+
+<p>
+
+{{ transaction.time }}
+
+</p>
+
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="dot"></div>
+
+<div>
+
+<h4>ML Analysis Completed</h4>
+
+<p>
+
+Fraud Score Generated
+
+</p>
+
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="dot"></div>
+
+<div>
+
+<h4>Investigation Generated</h4>
+
+<p>
+
+AI Investigation Completed
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<section class="section">
+
+<h2>
+
+Overall Risk Score
+
+</h2>
+
+<div class="risk-meter">
+
+<div
+class="risk-fill"
+style="width: {{ report.fraud_probability }}%;">
+
+</div>
+
+</div>
+
+<h3>
+
+{{ report.fraud_probability }} %
+
+</h3>
+
+</section>

@@ -1,0 +1,37 @@
+{
+    "project": "FinGuard AI",
+    "model_name": "RandomForestClassifier",
+    "version": "2.0.0",
+    "created_at": "2026-08-07 16:47:20",
+    "dataset": "D:\\finguard_clean\\finguard_si1\\finguard_si1\\backend\\uploads\\finguard_transactions_10000.csv",
+    "total_rows": 10000,
+    "training_rows": 8000,
+    "testing_rows": 2000,
+    "features": [
+        "amount",
+        "transaction_type",
+        "merchant_category",
+        "hour",
+        "location_risk",
+        "device_trusted",
+        "failed_attempts",
+        "is_international",
+        "large_transaction",
+        "risk_indicator",
+        "abs_amount",
+        "merchant_category_frequency"
+    ],
+    "target": "is_fraud",
+    "accuracy": 0.998,
+    "precision": 0.9966,
+    "recall": 0.9966,
+    "f1_score": 0.9966,
+    "roc_auc": 1.0,
+    "best_parameters": {
+        "classifier__max_depth": null,
+        "classifier__max_features": "sqrt",
+        "classifier__min_samples_leaf": 1,
+        "classifier__min_samples_split": 2,
+        "classifier__n_estimators": 200
+    }
+}

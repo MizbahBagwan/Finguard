@@ -2,68 +2,1471 @@
 
 {% block title %}Settings | FinGuard AI{% endblock %}
 
+{% block page_title %}
+Settings
+{% endblock %}
+
+{% block page_subtitle %}
+Manage your FinGuard AI account, security and application preferences
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/settings.css">
+{% endblock %}
+
 {% block content %}
 
-<div class="page-header">
+<div class="settings-page">
 
-    <div>
+    <!-- ==========================================
+    HERO SECTION
+    ========================================== -->
 
-        <h1>Settings</h1>
+    <section class="hero-section">
 
-        <p>Manage your profile, security and AI preferences</p>
+        <div class="hero-left">
+
+            <span class="hero-tag">
+
+                <i class="fa-solid fa-gear"></i>
+
+                System Configuration
+
+            </span>
+
+            <h2>
+
+                Settings
+
+                <span>⚙️</span>
+
+            </h2>
+
+            <p>
+
+                Configure security, AI protection, notifications,
+                privacy and application preferences from one place.
+
+            </p>
+
+            <div class="hero-buttons">
+
+             <button
+id="saveAllSettingsBtn"
+class="save-btn">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Save Changes
+
+                </button>
+
+                <button
+                    class="secondary-btn"
+                    id="resetSettingsBtn">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Reset
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="hero-right">
+
+            <div class="status-card">
+
+                <div class="status-top">
+
+                    <span class="online-dot"></span>
+
+                    Settings Status
+
+                </div>
+
+                <h2 id="settingsStatus">
+
+                    Saved
+
+                </h2>
+
+                <p>
+
+                    All preferences are synchronized.
+
+                </p>
+
+                <div class="status-footer">
+
+                    Last Saved
+
+                    <strong id="lastSavedTime">
+
+                        Just Now
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    PROFILE
+    ========================================== -->
+
+   <div class="profile-wrapper">
+
+    <div class="profile-left">
+
+        <div class="avatar-circle">
+            <i class="fa-solid fa-user-shield"></i>
+        </div>
+
+        <div class="profile-info">
+
+            <h2>{{ user.username }}</h2>
+
+            <p class="email">
+                <i class="fa-solid fa-envelope"></i>
+                {{ user.email }}
+            </p>
+
+            
+        </div>
+
+    </div>
+    
+
+    <div class="profile-right">
+
+        <button class="primary-btn" id="editProfileBtn">
+            <i class="fa-solid fa-pen"></i>
+            Edit Profile
+        </button>
+
+    </div>
+
+</div> class="profile-info-grid">
+
+            <div class="info-card">
+
+                <span>Department</span>
+
+                <strong id="profileDepartment">
+
+                    Cyber Security
+
+                </strong>
+
+            </div>
+
+            <div class="info-card">
+
+                <span>Role</span>
+
+                <strong>
+
+                    Administrator
+
+                </strong>
+
+            </div>
+
+            <div class="info-card">
+
+                <span>Last Login</span>
+
+                <strong id="lastLogin">
+
+                    Today, 09:30 AM
+
+                </strong>
+
+            </div>
+
+            <div class="info-card">
+
+                <span>Account Status</span>
+
+                <strong class="text-success">
+
+                    Active
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+    SECURITY SETTINGS
+    ========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h3>
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Security Settings
+
+            </h3>
+
+        </div>
+
+        <div class="settings-list">
+
+            <!-- Change Password -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Change Password
+
+                    </h4>
+
+                    <p>
+
+                        Update your administrator password to keep
+                        your account secure.
+
+                    </p>
+
+                </div>
+
+                <button
+class="primary-btn"
+id="changePasswordBtn">
+
+<i class="fa-solid fa-key"></i>
+
+Change Password
+
+</button>
+
+            </div>
+
+            <!-- Two Factor Authentication -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Two-Factor Authentication
+
+                    </h4>
+
+                    <p>
+
+                        Require an OTP during login for additional
+                        account protection.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+             <input
+    type="checkbox"
+    id="twoFactor"
+    class="security-toggle"
+    {% if user.two_factor_enabled %}checked{% endif %}>
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Login Alerts -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Login Alerts
+
+                    </h4>
+
+                    <p>
+
+                        Receive notifications whenever a new login
+                        is detected.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="loginAlerts"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Session Timeout -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Session Timeout
+
+                    </h4>
+
+                    <p>
+
+                        Automatically logout after inactivity.
+
+                    </p>
+
+                </div>
+
+                <select id="sessionTimeout">
+
+                    <option value="10">
+
+                        10 Minutes
+
+                    </option>
+
+                    <option value="15">
+
+                        15 Minutes
+
+                    </option>
+
+                    <option value="30" selected>
+
+                        30 Minutes
+
+                    </option>
+
+                    <option value="60">
+
+                        1 Hour
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- Active Devices -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Active Devices
+
+                    </h4>
+
+                    <p>
+
+                        Manage all currently logged in devices.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    id="manageDevicesBtn">
+
+                    <i class="fa-solid fa-laptop"></i>
+
+                    View Devices
+
+                </button>
+
+            </div>
+
+            <!-- Logout All Devices -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Logout All Devices
+
+                    </h4>
+
+                    <p>
+
+                        End every active session except this one.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    id="logoutAllBtn">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout All
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    AI SETTINGS
+    ========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h3>
+
+                <i class="fa-solid fa-brain"></i>
+
+                AI Protection Settings
+
+            </h3>
+
+        </div>
+
+        <div class="settings-list">
+
+            <!-- AI Protection Level -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        AI Protection Level
+
+                    </h4>
+
+                    <p>
+
+                        Choose the fraud detection sensitivity used by
+                        the AI engine.
+
+                    </p>
+
+                </div>
+
+                <select id="aiProtectionLevel">
+
+                    <option value="Maximum">
+
+                        Maximum Protection
+
+                    </option>
+
+                    <option value="High" selected>
+
+                        High Protection
+
+                    </option>
+
+                    <option value="Balanced">
+
+                        Balanced
+
+                    </option>
+
+                    <option value="Low">
+
+                        Low Protection
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- Auto Fraud Scan -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Automatic Fraud Scan
+
+                    </h4>
+
+                    <p>
+
+                        Scan every transaction automatically before approval.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="autoFraudScan"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Real Time Monitoring -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Real-Time Monitoring
+
+                    </h4>
+
+                    <p>
+
+                        Continuously monitor transactions and detect
+                        suspicious activity instantly.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="realTimeMonitoring"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- AI Learning -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        AI Learning
+
+                    </h4>
+
+                    <p>
+
+                        Allow the AI model to improve using verified
+                        transaction history.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="aiLearning"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Auto Model Update -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Automatic Model Update
+
+                    </h4>
+
+                    <p>
+
+                        Download and apply the latest AI detection model
+                        automatically.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="autoModelUpdate"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Risk Threshold -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Fraud Risk Threshold
+
+                    </h4>
+
+                    <p>
+
+                        Transactions above this score will be flagged
+                        as suspicious.
+
+                    </p>
+
+                </div>
+
+                <div class="range-box">
+
+                    <input
+                        type="range"
+                        id="riskThreshold"
+                        min="50"
+                        max="100"
+                        value="85">
+
+                    <span id="riskThresholdValue">
+
+                        85%
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Smart Detection -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Smart Detection Engine
+
+                    </h4>
+
+                    <p>
+
+                        Enable advanced behavioural fraud analysis
+                        powered by machine learning.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="smartDetection"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    NOTIFICATIONS & SYSTEM
+    ========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h3>
+
+                <i class="fa-solid fa-bell"></i>
+
+                Notifications & System Preferences
+
+            </h3>
+
+        </div>
+
+        <div class="settings-list">
+
+            <!-- Email Alerts -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>Email Notifications</h4>
+
+                    <p>
+                        Receive fraud alerts and security updates by email.
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="emailNotifications"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- SMS Alerts -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>SMS Alerts</h4>
+
+                    <p>
+                        Send important fraud alerts directly to your phone.
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="smsNotifications">
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Push Notifications -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>Push Notifications</h4>
+
+                    <p>
+                        Show instant notifications while using FinGuard AI.
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="pushNotifications"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- High Risk Alerts -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>High Risk Alerts</h4>
+
+                    <p>
+                        Always notify immediately when a high-risk transaction is detected.
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="highRiskAlerts"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Theme -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>Application Theme</h4>
+
+                    <p>
+                        Select your preferred appearance.
+                    </p>
+
+                </div>
+
+                <select id="appTheme">
+
+                    <option value="dark" selected>
+
+                        Dark
+
+                    </option>
+
+                    <option value="light">
+
+                        Light
+
+                    </option>
+
+                    <option value="system">
+
+                        System Default
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- Language -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>Language</h4>
+
+                    <p>
+                        Choose the application language.
+                    </p>
+
+                </div>
+
+                <select id="appLanguage">
+
+                    <option value="en" selected>
+
+                        English
+
+                    </option>
+
+                    <option value="hi">
+
+                        Hindi
+
+                    </option>
+
+                    <option value="mr">
+
+                        Marathi
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- Time Zone -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>Time Zone</h4>
+
+                    <p>
+                        Set the default time zone for reports and logs.
+                    </p>
+
+                </div>
+
+                <select id="timeZone">
+
+                    <option value="Asia/Kolkata" selected>
+
+                        Asia/Kolkata (IST)
+
+                    </option>
+
+                    <option value="UTC">
+
+                        UTC
+
+                    </option>
+
+                    <option value="America/New_York">
+
+                        America/New_York
+
+                    </option>
+
+                    <option value="Europe/London">
+
+                        Europe/London
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- Date Format -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>Date Format</h4>
+
+                    <p>
+                        Choose how dates are displayed throughout the application.
+                    </p>
+
+                </div>
+
+                <select id="dateFormat">
+
+                    <option value="dd-mm-yyyy" selected>
+
+                        DD-MM-YYYY
+
+                    </option>
+
+                    <option value="mm-dd-yyyy">
+
+                        MM-DD-YYYY
+
+                    </option>
+
+                    <option value="yyyy-mm-dd">
+
+                        YYYY-MM-DD
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    PRIVACY & DATA MANAGEMENT
+    ========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h3>
+
+                <i class="fa-solid fa-database"></i>
+
+                Privacy & Data Management
+
+            </h3>
+
+        </div>
+
+        <div class="settings-list">
+
+            <!-- Activity Logs -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Activity Logs
+
+                    </h4>
+
+                    <p>
+
+                        Store administrator activities for security auditing
+                        and fraud investigation.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="activityLogs"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Usage Analytics -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Usage Analytics
+
+                    </h4>
+
+                    <p>
+
+                        Help improve FinGuard AI by anonymously sharing
+                        application usage statistics.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="usageAnalytics">
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Data Sharing -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Secure Data Sharing
+
+                    </h4>
+
+                    <p>
+
+                        Share anonymized fraud intelligence with the AI
+                        detection network.
+
+                    </p>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="dataSharing"
+                        checked>
+
+                    <span></span>
+
+                </label>
+
+            </div>
+
+            <!-- Export Settings -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Export Settings
+
+                    </h4>
+
+                    <p>
+
+                        Download all current settings as a backup file.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    id="exportSettingsBtn">
+
+                    <i class="fa-solid fa-download"></i>
+
+                    Export
+
+                </button>
+
+            </div>
+
+            <!-- Backup -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Create Backup
+
+                    </h4>
+
+                    <p>
+
+                        Create a complete backup of your application
+                        configuration.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    id="backupSettingsBtn">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    Backup
+
+                </button>
+
+            </div>
+
+            <!-- Restore -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Restore Backup
+
+                    </h4>
+
+                    <p>
+
+                        Restore previously exported settings.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    id="restoreSettingsBtn">
+
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+
+                    Restore
+
+                </button>
+
+            </div>
+
+            <!-- Clear Cache -->
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Clear Cache
+
+                    </h4>
+
+                    <p>
+
+                        Remove temporary files to improve application
+                        performance.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    id="clearCacheBtn">
+
+                    <i class="fa-solid fa-broom"></i>
+
+                    Clear Cache
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    DANGER ZONE
+    ========================================== -->
+
+    <section class="glass-card danger-card">
+
+        <div class="card-header">
+
+            <h3>
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Danger Zone
+
+            </h3>
+
+        </div>
+
+        <div class="settings-list">
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Reset All Settings
+
+                    </h4>
+
+                    <p>
+
+                        Restore every setting to the default configuration.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="danger-btn"
+                    id="resetAllSettingsBtn">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Reset
+
+                </button>
+
+            </div>
+
+            <div class="setting-item">
+
+                <div class="setting-info">
+
+                    <h4>
+
+                        Delete Account
+
+                    </h4>
+
+                    <p>
+
+                        Permanently delete your FinGuard AI account and
+                        all associated data.
+
+                    </p>
+
+                </div>
+
+                <button
+                    class="danger-btn"
+                    id="deleteAccountBtn">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+    SAVE BAR
+    ========================================== -->
+
+    <div class="save-bar">
+
+        <button
+            class="primary-btn"
+            id="saveAllSettingsBtn">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            Save All Changes
+
+        </button>
 
     </div>
 
 </div>
 
-<!-- Profile -->
+<!-- ==========================================
+PROFILE MODAL
+========================================== -->
 
-<div class="card">
+<div
+    class="modal"
+    id="profileModal">
 
-    <h2>👤 Profile Information</h2>
+    <div class="modal-content">
 
-    <br>
+        <div class="modal-header">
 
-    <div class="settings-grid">
+            <h2>
 
-        <div class="input-group">
+                Edit Profile
 
-            <label>Full Name</label>
+            </h2>
 
-            <input
-                type="text"
-                value="Administrator">
+            <button
+                class="close-modal"
+                id="closeProfileModal">
 
-        </div>
+                &times;
 
-        <div class="input-group">
-
-            <label>Email</label>
-
-            <input
-                type="email"
-                value="admin@finguard.ai">
+            </button>
 
         </div>
+        {% if success %}
+<div class="success-message">
+    <i class="fa-solid fa-circle-check"></i>
+    {{ success }}
+</div>
+{% endif %}
 
-        <div class="input-group">
+        <div class="modal-body">
 
-            <label>Phone</label>
+            <div class="form-group">
 
-            <input
-                type="text"
-                value="+91 9876543210">
+                <label>
 
-        </div>
+                    Full Name
 
-        <div class="input-group">
+                </label>
 
-            <label>Role</label>
+                <input
+                    type="text"
+                    id="editName">
 
-            <input
-                type="text"
-                value="System Administrator"
-                readonly>
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Email
+
+                </label>
+
+                <input
+                    type="email"
+                    id="editEmail">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+
+                    Role
+
+                </label>
+
+                <input
+                    type="text"
+                    id="editRole">
+
+            </div>
+
+            <button
+                class="primary-btn"
+                id="updateProfileBtn">
+
+                <i class="fa-solid fa-check"></i>
+
+                Update Profile
+
+            </button>
 
         </div>
 
@@ -71,150 +1474,87 @@
 
 </div>
 
-<!-- Security -->
+<!-- ==========================================
+PASSWORD MODAL
+========================================== -->
 
-<div class="card">
+<div
+    class="modal"
+    id="passwordModal">
 
-    <h2>🔐 Security</h2>
+    <div class="modal-content">
 
-    <br>
+        <div class="modal-header">
 
-    <div class="settings-grid">
+            <h2>
 
-        <div class="input-group">
+                Change Password
 
-            <label>Current Password</label>
+            </h2>
 
-            <input
-                type="password"
-                placeholder="********">
+            <button
+                class="close-modal"
+                id="closePasswordModal">
 
-        </div>
+                &times;
 
-        <div class="input-group">
-
-            <label>New Password</label>
-
-            <input
-                type="password"
-                placeholder="********">
+            </button>
 
         </div>
 
-        <div class="input-group">
+        <div class="modal-body">
 
-            <label>Confirm Password</label>
+            <div class="form-group">
 
-            <input
-                type="password"
-                placeholder="********">
+                <label>
 
-        </div>
+                    Current Password
 
-    </div>
+                </label>
 
-</div>
+                <input
+                    type="password"
+                    id="currentPassword">
 
-<!-- Preferences -->
+            </div>
 
-<div class="card">
+            <div class="form-group">
 
-    <h2>⚙ Preferences</h2>
+                <label>
 
-    <br>
+                    New Password
 
-    <div class="setting-row">
+                </label>
 
-        <span>🌙 Dark Mode</span>
+                <input
+                    type="password"
+                    id="newPassword">
 
-        <label class="switch">
+            </div>
 
-            <input type="checkbox" checked>
+            <div class="form-group">
 
-            <span class="slider"></span>
+                <label>
 
-        </label>
+                    Confirm Password
 
-    </div>
+                </label>
 
-    <div class="setting-row">
+                <input
+                    type="password"
+                    id="confirmPassword">
 
-        <span>🔔 Email Notifications</span>
+            </div>
 
-        <label class="switch">
+          <button
+class="primary-btn"
+id="updatePasswordBtn">
 
-            <input type="checkbox" checked>
+<i class="fa-solid fa-lock"></i>
 
-            <span class="slider"></span>
+Update Password
 
-        </label>
-
-    </div>
-
-    <div class="setting-row">
-
-        <span>🤖 AI Fraud Alerts</span>
-
-        <label class="switch">
-
-            <input type="checkbox" checked>
-
-            <span class="slider"></span>
-
-        </label>
-
-    </div>
-
-    <div class="setting-row">
-
-        <span>📊 Weekly Reports</span>
-
-        <label class="switch">
-
-            <input type="checkbox">
-
-            <span class="slider"></span>
-
-        </label>
-
-    </div>
-
-</div>
-
-<!-- AI Engine -->
-
-<div class="card">
-
-    <h2>🤖 AI Engine Settings</h2>
-
-    <br>
-
-    <div class="settings-grid">
-
-        <div class="input-group">
-
-            <label>Detection Threshold</label>
-
-            <select>
-
-                <option>High</option>
-
-                <option selected>Medium</option>
-
-                <option>Low</option>
-
-            </select>
-
-        </div>
-
-        <div class="input-group">
-
-            <label>Model Version</label>
-
-            <input
-                type="text"
-                value="FinGuard AI v2.0"
-                readonly>
+</button>
 
         </div>
 
@@ -222,16 +1562,58 @@
 
 </div>
 
-<div style="text-align:right;margin-top:30px;">
+<!-- ==========================================
+ACTIVE DEVICES MODAL
+========================================== -->
 
-    <button class="btn-primary">
+<div
+    class="modal"
+    id="devicesModal">
 
-        <i class="bi bi-save"></i>
+    <div class="modal-content">
 
-        Save Settings
+        <div class="modal-header">
 
-    </button>
+            <h2>
+
+                Active Devices
+
+            </h2>
+
+            <button
+                class="close-modal"
+                id="closeDevicesModal">
+
+                &times;
+
+            </button>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="devicesList">
+
+            <!-- JS Will Load Devices -->
+
+        </div>
+
+    </div>
 
 </div>
+
+<!-- ==========================================
+TOAST
+========================================== -->
+
+<div id="toastContainer"></div>
 
 {% endblock %}
+
+{% block extra_js %}
+
+<script src="/static/js/settings.js"></script>
+
+
+{% endblock %}
+```

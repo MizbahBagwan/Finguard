@@ -1,0 +1,748 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction Investigation | FinGuard AI{% endblock %}
+
+{% block page_title %}
+Transaction Investigation
+{% endblock %}
+
+{% block page_subtitle %}
+AI Powered Fraud Detection & Investigation Center
+{% endblock %}
+
+{% block content %}
+
+<div class="transaction-detail-page">
+
+    <!-- ==========================================
+        HERO SECTION
+    =========================================== -->
+
+    <section class="detail-hero">
+
+        <div class="hero-left">
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-shield-halved"></i>
+                FinGuard AI Investigation
+            </span>
+
+            <h1>
+
+                Transaction
+
+                <span>#{{ transaction.transaction_id }}</span>
+
+            </h1>
+
+            <p>
+
+                Complete investigation report with AI fraud analysis,
+                transaction information and security insights.
+
+            </p>
+
+        </div>
+
+        <div class="hero-right">
+
+            {% if transaction.risk_level == "High" %}
+
+            <div class="risk-badge high">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                HIGH RISK
+
+            </div>
+
+            {% elif transaction.risk_level == "Medium" %}
+
+            <div class="risk-badge medium">
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                MEDIUM RISK
+
+            </div>
+
+            {% else %}
+
+            <div class="risk-badge low">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                LOW RISK
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+        QUICK STATS
+    =========================================== -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <span>Amount</span>
+
+                <h2>
+
+                    ₹ {{ transaction.amount }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon cyan">
+                <i class="fa-solid fa-store"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <span>Merchant</span>
+
+                <h2>
+
+                    {{ transaction.merchant }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                <i class="fa-solid fa-credit-card"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <span>Card Type</span>
+
+                <h2>
+
+                    {{ transaction.card_type }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+
+            <div class="stat-info">
+
+                <span>Location</span>
+
+                <h2>
+
+                    {{ transaction.location }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+        TRANSACTION INFORMATION
+    =========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h2>
+
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                Transaction Information
+
+            </h2>
+
+        </div>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+
+                <label>Transaction ID</label>
+
+                <strong>
+
+                    {{ transaction.transaction_id }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>Account ID</label>
+
+                <strong>
+
+                    {{ transaction.account_id }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>Transaction Time</label>
+
+                <strong>
+
+                    {{ transaction.time }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>Transaction Type</label>
+
+                <strong>
+
+                    {{ transaction.transaction_type }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>Merchant Category</label>
+
+                <strong>
+
+                    {{ transaction.merchant_category }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>Status</label>
+
+                <strong>
+
+                    {{ transaction.status }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+        <!-- ==========================================
+        AI FRAUD ANALYSIS
+    =========================================== -->
+
+    <section class="analysis-grid">
+
+        <!-- Risk Score -->
+
+        <div class="glass-card">
+
+            <div class="card-header">
+
+                <h2>
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
+                    AI Risk Score
+
+                </h2>
+
+            </div>
+
+            <div class="risk-circle">
+
+                <div class="circle-value">
+
+                    {{ transaction.risk_score }}%
+
+                </div>
+
+            </div>
+
+            <div class="progress-wrapper">
+
+                <div class="progress-title">
+
+                    Fraud Probability
+
+                    <span>
+
+                        {{ transaction.fraud_probability }}%
+
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+
+                        style="width:{{ transaction.fraud_probability }}%;"
+
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI Prediction -->
+
+        <div class="glass-card">
+
+            <div class="card-header">
+
+                <h2>
+
+                    <i class="fa-solid fa-robot"></i>
+
+                    AI Prediction
+
+                </h2>
+
+            </div>
+
+            <div class="prediction-box">
+
+                {% if transaction.prediction == "Fraud" %}
+
+                <div class="prediction fraud">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    FRAUD DETECTED
+
+                </div>
+
+                {% else %}
+
+                <div class="prediction safe">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    SAFE TRANSACTION
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            <div class="analysis-info">
+
+                <div>
+
+                    <label>
+
+                        Risk Level
+
+                    </label>
+
+                    <strong>
+
+                        {{ transaction.risk_level }}
+
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <label>
+
+                        Fraud Probability
+
+                    </label>
+
+                    <strong>
+
+                        {{ transaction.fraud_probability }}%
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+        SECURITY ANALYSIS
+    =========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h2>
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                Security Analysis
+
+            </h2>
+
+        </div>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+
+                <label>
+
+                    Device Trusted
+
+                </label>
+
+                <strong>
+
+                    {% if transaction.device_trusted %}
+
+                        ✅ Trusted
+
+                    {% else %}
+
+                        ❌ Untrusted
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>
+
+                    International
+
+                </label>
+
+                <strong>
+
+                    {% if transaction.is_international %}
+
+                        🌍 Yes
+
+                    {% else %}
+
+                        🇮🇳 No
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>
+
+                    Failed Attempts
+
+                </label>
+
+                <strong>
+
+                    {{ transaction.failed_attempts }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>
+
+                    Location Risk
+
+                </label>
+
+                <strong>
+
+                    {{ transaction.location_risk }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+        AI RECOMMENDATION
+    =========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h2>
+
+                <i class="fa-solid fa-lightbulb"></i>
+
+                AI Recommendation
+
+            </h2>
+
+        </div>
+
+        <div class="recommendation-box">
+
+            {{ transaction.recommendation or "No recommendation available." }}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+    GEMINI AI EXPLANATION
+=========================================== -->
+
+<!-- ==========================================
+    GEMINI AI EXPLANATION
+========================================== -->
+
+<section class="glass-card">
+
+    <div class="card-header">
+        <h2>
+            <i class="fa-solid fa-brain"></i>
+            Gemini AI Explanation
+        </h2>
+    </div>
+
+    <div class="recommendation-box">
+
+        {% if transaction.notes %}
+
+            {{ transaction.notes }}
+
+        {% elif transaction.reason %}
+
+            {{ transaction.reason }}
+
+        {% else %}
+
+            Gemini analysis not available.
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+</section>
+        <!-- ==========================================
+        INVESTIGATOR NOTES
+    =========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h2>
+
+                <i class="fa-solid fa-clipboard-list"></i>
+
+                Investigator Notes
+
+            </h2>
+
+        </div>
+
+       <div class="recommendation-box">
+
+{% if transaction.investigator_notes %}
+
+    {{ transaction.investigator_notes }}
+
+{% else %}
+
+    No investigation notes available.
+
+{% endif %}
+
+</div>
+
+    </section>
+
+    <!-- ==========================================
+        TIMELINE
+    =========================================== -->
+
+    <section class="glass-card">
+
+        <div class="card-header">
+
+            <h2>
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                Audit Information
+
+            </h2>
+
+        </div>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+
+                <label>
+
+                    Created At
+
+                </label>
+
+                <strong>
+
+                    {{ transaction.created_at }}
+
+                </strong>
+
+            </div>
+
+            <div class="detail-item">
+
+                <label>
+
+                    Last Updated
+
+                </label>
+
+                <strong>
+
+                    {{ transaction.updated_at }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================
+        ACTION BUTTONS
+    =========================================== -->
+
+    <section
+        style="
+            display:flex;
+            gap:18px;
+            flex-wrap:wrap;
+            justify-content:center;
+            margin-top:15px;
+            margin-bottom:40px;
+        "
+    >
+
+        <a
+            href="/transactions"
+            class="primary-btn"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Transactions
+
+        </a>
+
+        <form
+    action="/analyze/{{ transaction.id }}"
+    method="POST"
+    onsubmit="alert('FORM SUBMITTED');"
+>
+
+            <button
+                class="primary-btn"
+                type="submit"
+            >
+
+                <i class="fa-solid fa-robot"></i>
+
+                Run AI Analysis
+
+            </button>
+
+        </form>
+
+        <button
+            class="secondary-btn"
+            onclick="window.print()"
+        >
+
+            <i class="fa-solid fa-print"></i>
+
+            Print Report
+
+        </button>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    console.log("Transaction Detail Loaded");
+
+});
+
+</script>
+
+{% endblock %}

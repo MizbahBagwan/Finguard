@@ -1,69 +1,1477 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Investigation Reports</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FinGuard | AI Investigation Reports</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/reports.css') }}">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 
 <body>
 
-<h1>Fraud Investigation Reports</h1>
 
-<table border="1">
-
-<thead>
-<tr>
-    <th>ID</th>
-    <th>Transaction ID</th>
-    <th>Prediction</th>
-    <th>Fraud Probability</th>
-    <th>Risk Level</th>
-    <th>Summary</th>
-</tr>
-</thead>
-
-<tbody id="reportTable">
-
-</tbody>
-
-</table>
+<div class="dashboard">
 
 
-<script>
+<!-- ================= SIDEBAR ================= -->
 
-fetch("/api/investigations")
-.then(response => response.json())
-.then(data => {
+<aside class="sidebar">
 
-    let table = document.getElementById("reportTable");
 
-    data.forEach(report => {
+    <!-- Logo -->
 
-        table.innerHTML += `
+    <div class="logo">
 
-        <tr>
+        <div class="logo-icon">
+            <i class="ri-shield-check-fill"></i>
+        </div>
 
-            <td>${report.id}</td>
 
-            <td>${report.transaction_id}</td>
+        <div class="logo-text">
 
-            <td>${report.prediction}</td>
+            <h2>FinGuard</h2>
 
-            <td>${report.fraud_probability}%</td>
+            <span>
+                AI Fraud Detection
+            </span>
 
-            <td>${report.risk_level}</td>
+        </div>
 
-            <td>${report.summary}</td>
 
-        </tr>
+    </div>
 
-        `;
 
-    });
 
-});
+    <!-- Navigation -->
 
-</script>
+    <nav>
+
+        <ul class="menu">
+
+
+            <li>
+                <a href="/dashboard">
+
+                    <i class="ri-dashboard-line"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+            </li>
+
+
+
+            <li class="active">
+
+                <a href="/reports">
+
+                    <i class="ri-file-list-3-line"></i>
+
+                    <span>
+                        Reports
+                    </span>
+
+                </a>
+
+            </li>
+
+
+
+
+            <li>
+
+                <a href="/transactions">
+
+                    <i class="ri-bank-card-line"></i>
+
+                    <span>
+                        Transactions
+                    </span>
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="/graph">
+
+                    <i class="ri-git-branch-line"></i>
+
+                    <span>
+                        Knowledge Graph
+                    </span>
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="/alerts">
+
+                    <i class="ri-alarm-warning-line"></i>
+
+                    <span>
+                        Alerts
+                    </span>
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="/models">
+
+                    <i class="ri-cpu-line"></i>
+
+                    <span>
+                        AI Models
+                    </span>
+
+                </a>
+
+            </li>
+
+
+
+
+
+            <li>
+
+                <a href="/settings">
+
+                    <i class="ri-settings-3-line"></i>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </a>
+
+            </li>
+
+
+
+        </ul>
+
+
+    </nav>
+
+
+
+
+
+    <!-- Sidebar User -->
+
+
+    <div class="sidebar-footer">
+
+
+        <div class="profile">
+
+
+            <img 
+            src="https://i.pravatar.cc/100?img=12"
+            alt="Admin profile">
+
+
+            <div>
+
+                <h4>
+                    Admin
+                </h4>
+
+
+                <span>
+                    Fraud Analyst
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+</aside>
+
+
+
+
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+
+<main class="main-content">
+
+
+
+<!-- ================= TOP NAVBAR ================= -->
+
+
+<header class="top-navbar">
+
+
+    <div class="page-title">
+
+
+        <h1>
+            Investigation Reports
+        </h1>
+
+
+        <p>
+            AI powered fraud investigation dashboard
+        </p>
+
+
+    </div>
+
+
+
+
+
+    <div class="navbar-right">
+
+
+
+        <button 
+        class="nav-btn"
+        aria-label="Search">
+
+            <i class="ri-search-line"></i>
+
+        </button>
+
+
+
+
+
+        <button 
+        class="nav-btn"
+        aria-label="Notifications">
+
+            <i class="ri-notification-3-line"></i>
+
+        </button>
+
+
+
+
+
+        <button 
+        class="nav-btn"
+        aria-label="Dark mode">
+
+            <i class="ri-moon-line"></i>
+
+        </button>
+
+
+
+
+
+        <div class="user">
+
+
+            <img 
+            src="https://i.pravatar.cc/60?img=12"
+            alt="Administrator">
+
+
+            <span>
+                Administrator
+            </span>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</header>
+
+
+
+
+
+
+<!-- ================= PAGE CONTENT START ================= -->
+
+
+<div class="page-content">
+    <!-- ================= HERO SECTION ================= -->
+
+<section class="hero card">
+
+
+    <div class="hero-content">
+
+
+
+        <div class="hero-left">
+
+
+            <span class="hero-badge">
+
+                <i class="ri-ai-generate"></i>
+
+                AI Investigation Suite
+
+            </span>
+
+
+
+            <h1>
+
+                Investigation
+
+                <span>
+                    Reports
+                </span>
+
+            </h1>
+
+
+
+            <p>
+
+                Generate AI powered fraud investigation reports
+                with risk scoring, transaction intelligence,
+                entity analysis and predictive fraud detection.
+
+            </p>
+
+
+
+
+
+            <div class="hero-buttons">
+
+
+                <button 
+                id="generateReportBtn"
+                class="btn btn-primary">
+
+
+                    <i class="ri-magic-line"></i>
+
+                    Generate Report
+
+
+                </button>
+
+
+
+
+
+                <button 
+                id="exportReportBtn"
+                class="btn btn-outline">
+
+
+                    <i class="ri-download-line"></i>
+
+                    Export PDF
+
+
+                </button>
+
+
+            </div>
+
+
+
+
+
+
+            <div class="hero-features">
+
+
+                <div class="feature">
+
+                    <i class="ri-robot-line"></i>
+
+                    AI Powered
+
+                </div>
+
+
+
+
+                <div class="feature">
+
+                    <i class="ri-shield-check-line"></i>
+
+                    Secure
+
+                </div>
+
+
+
+
+
+                <div class="feature">
+
+                    <i class="ri-flashlight-line"></i>
+
+                    Real Time
+
+                </div>
+
+
+
+
+
+                <div class="feature">
+
+                    <i class="ri-git-branch-line"></i>
+
+                    Knowledge Graph
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="hero-right">
+
+
+            <div class="shield-container">
+
+
+                <div class="ring ring1"></div>
+
+                <div class="ring ring2"></div>
+
+                <div class="ring ring3"></div>
+
+
+
+                <div class="shield-icon">
+
+                    <i class="ri-shield-check-fill"></i>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ================= STATISTICS ================= -->
+
+
+<section class="stats-grid">
+
+
+
+    <div class="stat-card card">
+
+
+        <div>
+
+            <span>
+                Total Reports
+            </span>
+
+
+            <h2 id="totalReports">
+                {{ reports|length }}
+            </h2>
+
+
+        </div>
+
+
+        <i class="ri-file-list-3-line"></i>
+
+
+    </div>
+
+
+
+
+
+
+    <div class="stat-card card">
+
+
+        <div>
+
+            <span>
+                High Risk
+            </span>
+
+
+            <h2 id="highRisk">
+                0
+            </h2>
+
+
+        </div>
+
+
+        <i class="ri-alarm-warning-fill"></i>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="stat-card card">
+
+
+        <div>
+
+            <span>
+                Medium Risk
+            </span>
+
+
+            <h2 id="mediumRisk">
+                0
+            </h2>
+
+
+        </div>
+
+
+        <i class="ri-error-warning-fill"></i>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="stat-card card">
+
+
+        <div>
+
+            <span>
+                Low Risk
+            </span>
+
+
+            <h2 id="lowRisk">
+                0
+            </h2>
+
+
+        </div>
+
+
+        <i class="ri-shield-check-line"></i>
+
+
+    </div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= SEARCH FILTER ================= -->
+
+
+<section class="search-section card">
+
+
+    <div class="search-box">
+
+
+        <i class="ri-search-line"></i>
+
+
+        <input 
+        type="text"
+        id="searchInput"
+        placeholder="Search reports, investigators, IDs...">
+
+
+    </div>
+
+
+
+
+
+    <div class="filters">
+
+
+
+        <select id="riskFilter">
+
+            <option value="">
+                All Risk Levels
+            </option>
+
+
+            <option value="Critical">
+                Critical
+            </option>
+
+
+            <option value="High">
+                High
+            </option>
+
+
+            <option value="Medium">
+                Medium
+            </option>
+
+
+            <option value="Low">
+                Low
+            </option>
+
+
+        </select>
+
+
+
+
+
+        <select id="statusFilter">
+
+
+            <option value="">
+                All Status
+            </option>
+
+
+            <option value="Completed">
+                Completed
+            </option>
+
+
+            <option value="Processing">
+                Processing
+            </option>
+
+
+            <option value="Pending">
+                Pending
+            </option>
+
+
+
+        </select>
+
+
+
+
+
+
+        <button 
+        id="applyFilterBtn"
+        class="btn btn-primary">
+
+
+            <i class="ri-filter-3-line"></i>
+
+            Apply
+
+
+        </button>
+
+
+
+
+    </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- ================= AI ANALYTICS ================= -->
+
+
+<section class="analytics-section card">
+
+
+
+    <div class="section-title">
+
+
+        <h2>
+            AI Risk Analytics
+        </h2>
+
+
+        <p>
+            Real time fraud risk distribution
+        </p>
+
+
+    </div>
+
+
+
+
+
+    <div class="chart-container">
+
+
+        <canvas id="riskChart"></canvas>
+
+
+    </div>
+
+
+
+
+</section>
+<!-- ================= REPORT TABLE ================= -->
+
+
+<section class="table-section card">
+
+
+    <div class="table-header">
+
+
+        <div>
+
+            <h2>
+                Investigation Reports
+            </h2>
+
+
+            <p>
+                AI generated fraud investigation records
+            </p>
+
+
+        </div>
+
+
+
+
+
+        <div class="table-actions">
+
+
+            <button 
+            id="refreshBtn"
+            class="btn btn-outline">
+
+
+                <i class="ri-refresh-line"></i>
+
+                Refresh
+
+
+            </button>
+
+
+
+
+
+            <button 
+            id="newReportBtn"
+            class="btn btn-primary">
+
+
+                <i class="ri-add-line"></i>
+
+                New Report
+
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="table-responsive">
+
+
+        <table id="reportTable">
+
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Report</th>
+
+                    <th>Risk</th>
+
+                    <th>AI Score</th>
+
+                    <th>Date</th>
+
+                    <th>Status</th>
+
+                    <th>Actions</th>
+
+
+                </tr>
+
+            </thead>
+
+
+
+
+
+            <tbody id="reportBody">
+
+
+
+                {% for report in reports %}
+
+
+
+                <tr>
+
+
+                    <td>
+                        #{{ report.id }}
+                    </td>
+
+
+
+
+
+                    <td>
+
+
+                        <div class="report-info">
+
+
+                            <h4>
+                                {{ report.title }}
+                            </h4>
+
+
+                            <small>
+                                AI Investigation
+                            </small>
+
+
+                        </div>
+
+
+                    </td>
+
+
+
+
+
+
+                    <td>
+
+
+                        <span class="badge {{ report.risk|lower }}">
+
+                            {{ report.risk }}
+
+                        </span>
+
+
+                    </td>
+
+
+
+
+
+
+                    <td>
+
+
+                        <div class="score-box">
+
+
+                            <div class="score-bar">
+
+
+                                <span 
+                                style="width:{{ report.score }}%">
+                                </span>
+
+
+                            </div>
+
+
+
+                            <strong>
+                                {{ report.score }}%
+                            </strong>
+
+
+                        </div>
+
+
+                    </td>
+
+
+
+
+
+
+                    <td>
+
+                        {{ report.date }}
+
+                    </td>
+
+
+
+
+
+
+                    <td>
+
+
+                        <span class="status {{ report.status|lower }}">
+
+
+                            {{ report.status }}
+
+
+                        </span>
+
+
+                    </td>
+
+
+
+
+
+
+
+                    <td>
+
+
+                        <button 
+                        class="icon-btn view"
+                        title="View Report"
+                        aria-label="View Report">
+
+
+                            <i class="ri-eye-line"></i>
+
+
+                        </button>
+
+
+
+
+
+                        <button 
+                        class="icon-btn download"
+                        title="Download Report"
+                        aria-label="Download Report">
+
+
+                            <i class="ri-download-line"></i>
+
+
+                        </button>
+
+
+
+
+
+                        <button 
+                        class="icon-btn delete"
+                        title="Delete Report"
+                        aria-label="Delete Report">
+
+
+                            <i class="ri-delete-bin-line"></i>
+
+
+                        </button>
+
+
+
+                    </td>
+
+
+
+                </tr>
+
+
+
+                {% endfor %}
+
+
+
+
+
+            </tbody>
+
+
+        </table>
+
+
+
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= REPORT MODAL ================= -->
+
+
+<div 
+id="reportModal"
+class="modal"
+aria-hidden="true">
+
+
+    <div class="modal-content">
+
+
+        <button 
+        class="close-modal"
+        aria-label="Close Modal">
+
+
+            <i class="ri-close-line"></i>
+
+
+        </button>
+
+
+
+
+
+        <h2>
+            AI Investigation Report
+        </h2>
+
+
+
+
+
+        <div id="modalReportContent">
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ================= INSIGHTS ================= -->
+
+
+<section class="insights-grid">
+
+
+
+    <div class="insight-card card">
+
+
+        <div class="insight-header">
+
+
+            <i class="ri-bar-chart-box-line"></i>
+
+
+            <h3>
+                AI Accuracy
+            </h3>
+
+
+        </div>
+
+
+
+        <h2>
+            98.4%
+        </h2>
+
+
+
+        <p>
+            Fraud detection model accuracy
+        </p>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="insight-card card">
+
+
+        <div class="insight-header">
+
+
+            <i class="ri-time-line"></i>
+
+
+            <h3>
+                Processing Time
+            </h3>
+
+
+        </div>
+
+
+
+        <h2>
+            2.4 min
+        </h2>
+
+
+
+        <p>
+            Average AI investigation time
+        </p>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="insight-card card">
+
+
+        <div class="insight-header">
+
+
+            <i class="ri-shield-star-line"></i>
+
+
+            <h3>
+                Solved Cases
+            </h3>
+
+
+        </div>
+
+
+
+        <h2>
+            215
+        </h2>
+
+
+
+        <p>
+            Successful investigations
+        </p>
+
+
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= RECENT ACTIVITY ================= -->
+
+
+<section class="activity-section card">
+
+
+    <div class="section-title">
+
+
+        <h2>
+            Recent Activity
+        </h2>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="timeline">
+
+
+
+
+
+        <div class="timeline-item">
+
+
+            <div class="timeline-dot success"></div>
+
+
+
+            <div>
+
+                <h4>
+                    Fraud Report Generated
+                </h4>
+
+
+                <p>
+                    High risk transaction detected by AI.
+                </p>
+
+
+                <small>
+                    2 minutes ago
+                </small>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="timeline-item">
+
+
+            <div class="timeline-dot warning"></div>
+
+
+
+            <div>
+
+
+                <h4>
+                    Suspicious Activity Found
+                </h4>
+
+
+                <p>
+                    AI linked unusual transaction patterns.
+                </p>
+
+
+                <small>
+                    20 minutes ago
+                </small>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="timeline-item">
+
+
+            <div class="timeline-dot primary"></div>
+
+
+
+            <div>
+
+
+                <h4>
+                    Knowledge Graph Updated
+                </h4>
+
+
+                <p>
+                    New fraud entities connected.
+                </p>
+
+
+                <small>
+                    1 hour ago
+                </small>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+</section>
+</div>
+<!-- page-content end -->
+
+
+</main>
+<!-- main-content end -->
+
+
+</div>
+<!-- dashboard end -->
+
+
+
+
+
+<footer class="footer">
+
+    <p>
+        © 2026 FinGuard AI • Investigation Dashboard
+    </p>
+
+</footer>
+
+
+
+
+
+<script src="{{ url_for('static', path='js/reports.js') }}"></script>
 
 
 </body>
+
 </html>

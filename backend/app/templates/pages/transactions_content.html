@@ -1,0 +1,2283 @@
+{% extends "base.html" %}
+
+{% block title %}
+Transactions | FinGuard AI
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', path='css/transaction.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="transactions-page">
+
+
+<!-- =========================================
+HEADER
+========================================= -->
+
+
+<div class="page-header">
+
+
+<div class="header-left">
+
+
+<span class="page-badge">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+AI Protection Active
+
+</span>
+
+
+
+<h1>
+
+Transaction Dashboard
+
+</h1>
+
+
+
+<p>
+
+Monitor every financial transaction in real-time using
+FinGuard AI Fraud Detection Engine.
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="header-right">
+
+
+
+<div class="search-box">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search Merchant, Transaction ID..."
+>
+
+
+</div>
+
+
+
+
+<button
+class="icon-btn"
+id="refreshPage">
+
+<i class="fa-solid fa-rotate"></i>
+
+</button>
+
+
+
+
+<button
+class="icon-btn"
+id="exportPdf">
+
+<i class="fa-solid fa-download"></i>
+
+</button>
+
+
+
+
+
+<button
+class="icon-btn">
+
+
+<i class="fa-solid fa-bell"></i>
+
+
+<span class="notify-dot"></span>
+
+
+</button>
+
+
+
+
+
+<a
+<a href="/add-transaction"
+class="btn-primary">
+
+
+<i class="fa-solid fa-plus"></i>
+
+
+Add Transaction
+
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- =========================================
+SUMMARY
+========================================= -->
+
+
+<div class="summary-grid">
+
+
+
+<div class="summary-card blue">
+
+
+<div class="card-top">
+
+
+<div class="icon">
+
+<i class="fa-solid fa-wallet"></i>
+
+</div>
+
+
+<span class="trend positive">
+
++12%
+
+</span>
+
+
+</div>
+
+
+
+<h2 class="counter"
+data-target="{{ total_transactions|default(0) }}">
+
+0
+
+</h2>
+
+
+
+<h4>
+Total Transactions
+</h4>
+
+
+
+<div class="mini-progress">
+
+<div class="mini-fill blue"
+style="width:90%">
+
+</div>
+
+</div>
+
+
+
+<small>
+Recorded in Database
+</small>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="summary-card green">
+
+
+<div class="card-top">
+
+
+<div class="icon">
+
+<i class="fa-solid fa-circle-check"></i>
+
+</div>
+
+
+<span class="trend positive">
+
+Safe
+
+</span>
+
+
+</div>
+
+
+
+<h2 class="counter"
+data-target="{{ safe_transactions|default(0) }}">
+
+0
+
+</h2>
+
+
+
+<h4>
+Safe Transactions
+</h4>
+
+
+
+<div class="mini-progress">
+
+<div class="mini-fill green"
+style="width:95%">
+
+</div>
+
+</div>
+
+
+
+<small>
+Verified by AI
+</small>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="summary-card red">
+
+
+<div class="card-top">
+
+
+<div class="icon">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+</div>
+
+
+<span class="trend negative">
+
+Alert
+
+</span>
+
+
+</div>
+
+
+
+<h2 class="counter"
+data-target="{{ fraud_transactions|default(0) }}">
+
+0
+
+</h2>
+
+
+
+<h4>
+Fraud Detected
+</h4>
+
+
+
+<div class="mini-progress">
+
+<div class="mini-fill red"
+style="width:45%">
+
+</div>
+
+</div>
+
+
+
+<small>
+Needs Investigation
+</small>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="summary-card purple">
+
+
+<div class="card-top">
+
+
+<div class="icon">
+
+<i class="fa-solid fa-chart-pie"></i>
+
+</div>
+
+
+<span class="trend warning">
+
+AI
+
+</span>
+
+
+</div>
+
+
+
+
+<h2>
+
+{{ average_risk|default(0) }}%
+
+</h2>
+
+
+
+
+<h4>
+Average Risk
+</h4>
+
+
+
+
+<div class="mini-progress">
+
+
+<div class="mini-fill purple"
+style="width:{{ average_risk|default(0) }}%">
+
+</div>
+
+
+</div>
+
+
+
+<small>
+AI Prediction
+</small>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+FILTER BAR
+========================================= -->
+
+
+<div class="filter-bar">
+
+
+
+<div class="filter-group">
+
+
+
+<div class="filter-item">
+
+
+<i class="fa-solid fa-shield-halved"></i>
+
+
+
+<select id="riskFilter">
+
+
+<option value="">
+All Risk
+</option>
+
+
+
+<option value="Low">
+Low
+</option>
+
+
+
+<option value="Medium">
+Medium
+</option>
+
+
+
+<option value="High">
+High
+</option>
+
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="filter-item">
+
+
+<i class="fa-solid fa-calendar-days"></i>
+
+
+
+<input
+type="date"
+id="dateFilter">
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="filter-buttons">
+
+
+<button
+id="resetFilter"
+class="btn-outline">
+
+
+<i class="fa-solid fa-rotate-right"></i>
+
+
+Reset
+
+
+</button>
+
+
+
+
+
+<button
+id="applyFilter"
+class="btn-primary">
+
+
+<i class="fa-solid fa-filter"></i>
+
+
+Apply Filter
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+TRANSACTION TABLE
+========================================= -->
+
+
+<div class="table-card">
+
+
+
+<table class="transaction-table">
+
+
+<thead>
+
+
+<tr>
+
+
+<th>ID</th>
+
+<th>Merchant</th>
+
+<th>Amount</th>
+
+<th>Location</th>
+
+<th>Card</th>
+
+<th>Risk Score</th>
+
+<th>Status</th>
+
+<th>Prediction</th>
+
+<th>Action</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+
+{% for transaction in transactions|default([]) %}
+
+
+
+<tr class="transaction-row"
+data-risk="{{ transaction.risk_status|default('Low') }}">
+
+
+
+<td>
+
+
+<div class="txn-id">
+
+#{{ transaction.id }}
+
+</div>
+
+
+</td>
+
+
+
+
+
+<td>
+
+
+<div class="merchant-cell">
+
+
+<div class="merchant-avatar">
+
+{{ transaction.merchant[:1]|upper }}
+
+</div>
+
+
+
+<div>
+
+
+<h4>
+{{ transaction.merchant }}
+</h4>
+
+
+
+<p>
+{{ transaction.transaction_id }}
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+</td>
+
+
+
+
+
+<td>
+
+
+<div class="amount">
+
+₹ {{ "%.2f"|format(transaction.amount) }}
+
+</div>
+
+
+</td>
+
+
+
+
+
+<td>
+
+
+<div class="location">
+
+
+<i class="fa-solid fa-location-dot"></i>
+
+
+{{ transaction.location }}
+
+
+</div>
+
+
+</td>
+<td>
+
+<span class="card-chip">
+
+{{ transaction.card_type }}
+
+</span>
+
+</td>
+
+
+
+
+
+<td>
+
+
+<div class="risk-wrapper">
+
+
+<div class="risk-progress">
+
+
+<div class="risk-fill"
+
+style="width:{{ transaction.risk_score|default(0) }}%">
+
+</div>
+
+
+</div>
+
+
+
+<span>
+
+{{ transaction.risk_score|default(0) }}%
+
+</span>
+
+
+
+</div>
+
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+
+
+{% if transaction.risk_score|default(0)|int >= 75 %}
+
+
+<span class="status danger">
+
+High
+
+</span>
+
+
+{% elif transaction.risk_score|default(0)|int >= 40 %}
+
+
+<span class="status warning">
+
+Medium
+
+</span>
+
+
+{% else %}
+
+
+<span class="status success">
+
+Low
+
+</span>
+
+
+{% endif %}
+
+
+
+</td>
+
+
+
+
+
+
+
+
+
+<td>
+
+
+{% if transaction.fraud_status == "Fraud" %}
+
+
+<span class="prediction fraud">
+
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+
+Fraud
+
+
+</span>
+
+
+
+{% else %}
+
+
+
+<span class="prediction safe">
+
+
+<i class="fa-solid fa-circle-check"></i>
+
+
+Safe
+
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+
+
+<a href="/transaction/{{ transaction.id }}"
+
+class="view-btn">
+
+
+<i class="fa-solid fa-eye"></i>
+
+
+</a>
+
+
+
+</td>
+
+
+
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+
+
+<!-- FLOATING AI BUTTON -->
+
+
+<div class="floating-ai">
+
+
+<button class="ai-fab">
+
+
+<i class="fa-solid fa-robot"></i>
+
+
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- EMPTY STATE -->
+
+
+{% if not transactions %}
+
+
+<div class="empty-state">
+
+
+<i class="fa-solid fa-database"></i>
+
+
+<h2>
+No Transactions Found
+</h2>
+
+
+<p>
+
+There are no transaction records available.
+
+</p>
+
+
+
+
+<a
+href="/add_transaction"
+class="btn-primary">
+
+
+<i class="fa-solid fa-plus"></i>
+
+
+Add First Transaction
+
+
+</a>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+PAGINATION
+========================================= -->
+
+
+<div class="pagination-section">
+
+
+<div class="pagination-info">
+
+
+Showing
+
+<strong>
+
+{{ transactions|default([])|length }}
+
+</strong>
+
+
+Transactions
+
+
+</div>
+
+
+
+
+
+<div class="pagination">
+
+
+<button class="page-btn">
+
+
+<i class="fa-solid fa-angle-left"></i>
+
+
+</button>
+
+
+
+<button class="page-btn active">
+
+1
+
+</button>
+
+
+
+<button class="page-btn">
+
+2
+
+</button>
+
+
+
+<button class="page-btn">
+
+3
+
+</button>
+
+
+
+<button class="page-btn">
+
+
+<i class="fa-solid fa-angle-right"></i>
+
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+AI INSIGHTS
+========================================= -->
+
+
+<div class="ai-insights-grid">
+
+
+
+
+
+<div class="insight-card">
+
+
+<div class="insight-icon blue">
+
+
+<i class="fa-solid fa-brain"></i>
+
+
+</div>
+
+
+
+<h3>
+
+AI Confidence
+
+</h3>
+
+
+
+<h2>
+
+98.6%
+
+</h2>
+
+
+
+<p>
+
+Fraud detection model is performing normally.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="insight-card">
+
+
+<div class="insight-icon green">
+
+
+<i class="fa-solid fa-shield-halved"></i>
+
+
+</div>
+
+
+
+<h3>
+
+Threat Level
+
+</h3>
+
+
+
+<h2>
+
+LOW
+
+</h2>
+
+
+
+<p>
+
+No critical fraudulent activity detected.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="insight-card">
+
+
+<div class="insight-icon red">
+
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+
+</div>
+
+
+
+<h3>
+
+Highest Risk
+
+</h3>
+
+
+
+<h2>
+
+{{ average_risk|default(0) }}%
+
+</h2>
+
+
+
+<p>
+
+Highest fraud probability in recent transactions.
+
+</p>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+CHARTS
+========================================= -->
+
+
+<div class="charts-grid">
+
+
+
+<div class="chart-card">
+
+
+
+<div class="chart-header">
+
+
+<div>
+
+
+<h3>
+
+Weekly Transaction Trend
+
+</h3>
+
+
+<span>
+
+Last 7 Days
+
+</span>
+
+
+</div>
+
+
+
+<i class="fa-solid fa-chart-line"></i>
+
+
+
+</div>
+
+
+
+<canvas id="transactionChart"></canvas>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="chart-card">
+
+
+
+<div class="chart-header">
+
+
+<div>
+
+
+<h3>
+
+Risk Distribution
+
+</h3>
+
+
+<span>
+
+AI Prediction
+
+</span>
+
+
+</div>
+
+
+
+<i class="fa-solid fa-chart-pie"></i>
+
+
+
+</div>
+
+
+
+
+<canvas id="riskChart"></canvas>
+
+
+
+
+</div>
+
+
+
+</div>
+<!-- =========================================
+LIVE AI MONITORING
+========================================= -->
+
+
+<div class="monitor-grid">
+
+
+
+<div class="monitor-card">
+
+
+
+<div class="monitor-header">
+
+
+<h3>
+
+<i class="fa-solid fa-wave-square"></i>
+
+Live AI Activity
+
+</h3>
+
+
+
+<span class="live-badge">
+
+<span class="live-dot"></span>
+
+LIVE
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+<div class="activity-list">
+
+
+
+<div class="activity-item">
+
+<span class="time">
+10:20
+</span>
+
+
+<span>
+Amazon transaction scanned
+</span>
+
+
+</div>
+
+
+
+
+<div class="activity-item">
+
+<span class="time">
+10:22
+</span>
+
+
+<span>
+Fraud probability updated
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="activity-item">
+
+<span class="time">
+10:24
+</span>
+
+
+<span>
+Safe transaction approved
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="activity-item">
+
+<span class="time">
+10:26
+</span>
+
+
+<span>
+AI recommendation generated
+</span>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- SYSTEM HEALTH -->
+
+
+<div class="monitor-card">
+
+
+
+<div class="monitor-header">
+
+
+<h3>
+
+<i class="fa-solid fa-server"></i>
+
+System Health
+
+</h3>
+
+
+</div>
+
+
+
+
+
+<div class="health-item">
+
+
+<span>
+AI Engine
+</span>
+
+
+
+<div class="health-bar">
+
+
+<div class="health-fill"
+style="width:98%">
+
+</div>
+
+
+</div>
+
+
+
+<strong>
+98%
+</strong>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="health-item">
+
+
+<span>
+Database
+</span>
+
+
+
+<div class="health-bar">
+
+
+<div class="health-fill"
+style="width:100%">
+
+</div>
+
+
+</div>
+
+
+
+<strong>
+100%
+</strong>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="health-item">
+
+
+<span>
+API
+</span>
+
+
+
+<div class="health-bar">
+
+
+<div class="health-fill"
+style="width:96%">
+
+</div>
+
+
+</div>
+
+
+
+<strong>
+96%
+</strong>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+QUICK ACTION CENTER
+========================================= -->
+
+
+<div class="action-center">
+
+
+
+<div class="section-title">
+
+
+<h2>
+Quick Action Center
+</h2>
+
+
+<p>
+Frequently used AI and reporting tools
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="action-grid">
+
+
+
+<a href="/add_transaction"
+class="action-box">
+
+
+<i class="fa-solid fa-plus"></i>
+
+
+<h4>
+Add Transaction
+</h4>
+
+
+<p>
+Create a new transaction
+</p>
+
+
+</a>
+
+
+
+
+
+
+<button
+class="action-box"
+onclick="window.print()">
+
+
+
+<i class="fa-solid fa-file-pdf"></i>
+
+
+<h4>
+Export PDF
+</h4>
+
+
+<p>
+Download printable report
+</p>
+
+
+</button>
+
+
+
+
+
+
+
+<button
+class="action-box"
+onclick="location.reload()">
+
+
+
+<i class="fa-solid fa-rotate"></i>
+
+
+<h4>
+Refresh Data
+</h4>
+
+
+<p>
+Reload latest transactions
+</p>
+
+
+</button>
+
+
+
+
+
+
+<button
+class="action-box"
+id="runAI">
+
+
+
+<i class="fa-solid fa-brain"></i>
+
+
+<h4>
+Run AI Scan
+</h4>
+
+
+<p>
+Analyze latest transactions
+</p>
+
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+AI ANALYTICS
+========================================= -->
+
+
+<div class="analytics-grid">
+
+
+
+<div class="analytics-card">
+
+
+
+<div class="analytics-header">
+
+
+<i class="fa-solid fa-brain"></i>
+
+
+<h3>
+AI Risk Analysis
+</h3>
+
+
+</div>
+
+
+
+
+<div class="analytics-body">
+
+
+
+<div class="progress-large">
+
+
+<div class="progress-large-fill"
+
+style="width:{{ average_risk|default(0) }}%">
+
+</div>
+
+
+</div>
+
+
+
+
+<h2>
+
+{{ average_risk|default(0) }}%
+
+</h2>
+
+
+
+
+<p>
+
+Average fraud probability detected by FinGuard AI.
+
+</p>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="analytics-card">
+
+
+
+<div class="analytics-header">
+
+
+<i class="fa-solid fa-shield-halved"></i>
+
+
+<h3>
+Security Status
+</h3>
+
+
+</div>
+
+
+
+
+
+<div class="analytics-body">
+
+
+<div class="security-status safe">
+
+
+<i class="fa-solid fa-circle-check"></i>
+
+
+AI Monitoring Active
+
+
+</div>
+
+
+
+<p>
+
+Every incoming transaction is scanned in real-time
+using Machine Learning models.
+
+</p>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+QUICK LINKS
+========================================= -->
+
+
+<div class="quick-actions">
+
+
+
+<a href="/dashboard"
+class="action-card">
+
+
+<i class="fa-solid fa-chart-line"></i>
+
+
+<span>
+Dashboard
+</span>
+
+
+</a>
+
+
+
+
+
+<a href="/reports"
+class="action-card">
+
+
+<i class="fa-solid fa-file-lines"></i>
+
+
+<span>
+Reports
+</span>
+
+
+</a>
+
+
+
+
+
+<a href="/investigate"
+class="action-card">
+
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+
+<span>
+Investigate
+</span>
+
+
+</a>
+
+
+
+
+
+<a href="/settings"
+class="action-card">
+
+
+<i class="fa-solid fa-gear"></i>
+
+
+<span>
+Settings
+</span>
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =========================================
+FOOTER
+========================================= -->
+
+
+<div class="footer-banner">
+
+
+
+<div class="footer-left">
+
+
+<i class="fa-solid fa-shield-halved"></i>
+
+
+
+<div>
+
+
+<h3>
+
+FinGuard AI Protection Enabled
+
+</h3>
+
+
+<p>
+
+Your financial system is protected with AI-based fraud detection and anomaly monitoring.
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="footer-right">
+
+
+<button
+class="btn-primary"
+onclick="window.location.href='/dashboard'">
+
+
+<i class="fa-solid fa-chart-line"></i>
+
+
+Dashboard
+
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block extra_js %}
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script src="/static/js/transaction.js"></script>
+
+
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded",function(){
+
+
+
+// Refresh
+
+const refresh =
+document.getElementById("refreshPage");
+
+
+if(refresh){
+
+
+refresh.onclick=function(){
+
+location.reload();
+
+}
+
+
+}
+
+
+
+
+
+// Export
+
+const pdf =
+document.getElementById("exportPdf");
+
+
+if(pdf){
+
+
+pdf.onclick=function(){
+
+window.print();
+
+}
+
+
+}
+
+
+
+
+
+// Search
+
+const search =
+document.getElementById("searchInput");
+
+
+
+if(search){
+
+
+search.addEventListener(
+"keyup",
+function(){
+
+
+let value =
+this.value.toLowerCase();
+
+
+
+document
+.querySelectorAll(".transaction-row")
+.forEach(row=>{
+
+
+row.style.display =
+row.innerText
+.toLowerCase()
+.includes(value)
+?
+""
+:
+"none";
+
+
+
+});
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+// Reset Filter
+
+const reset =
+document.getElementById("resetFilter");
+
+
+
+if(reset){
+
+
+reset.onclick=function(){
+
+
+
+document.getElementById("riskFilter").value="";
+
+
+document.getElementById("dateFilter").value="";
+
+
+
+document
+.querySelectorAll(".transaction-row")
+.forEach(row=>{
+
+
+row.style.display="";
+
+
+});
+
+
+
+alert("Filters Reset");
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+// Apply Filter
+
+
+const apply =
+document.getElementById("applyFilter");
+
+
+
+if(apply){
+
+
+apply.onclick=function(){
+
+
+
+let risk =
+document.getElementById("riskFilter").value.toLowerCase();
+
+
+
+
+document
+.querySelectorAll(".transaction-row")
+.forEach(row=>{
+
+
+let rowRisk =
+row.dataset.risk.toLowerCase();
+
+
+
+if(
+risk=="" ||
+rowRisk.includes(risk)
+){
+
+row.style.display="";
+
+
+}
+else{
+
+row.style.display="none";
+
+}
+
+
+});
+
+
+
+}
+
+
+
+}
+
+
+
+});
+
+
+
+</script>
+
+
+
+{% endblock %}

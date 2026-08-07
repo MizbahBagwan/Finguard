@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FinGuard AI | OCR Scanner</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', path='css/ocr.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ========================= -->
+<!-- Sidebar -->
+<!-- ========================= -->
+
+<aside class="sidebar">
+
+<div class="logo">
+
+<div class="logo-icon">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+
+<div>
+<h2>FinGuard AI</h2>
+<p>Fraud Intelligence</p>
+</div>
+
+</div>
+
+<nav>
+
+<a href="/dashboard">
+<i class="fa-solid fa-chart-line"></i>
+Dashboard
+</a>
+
+<a href="/transactions">
+<i class="fa-solid fa-money-check-dollar"></i>
+Transactions
+</a>
+
+<a href="/reports">
+<i class="fa-solid fa-file-lines"></i>
+Reports
+</a>
+
+<a class="active" href="/ocr">
+<i class="fa-solid fa-camera"></i>
+OCR Scanner
+</a>
+
+<a href="/knowledge">
+<i class="fa-solid fa-brain"></i>
+Knowledge Graph
+</a>
+
+<a href="/settings">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+
+</nav>
+
+</aside>
+
+<!-- ========================= -->
+<!-- Main Content -->
+<!-- ========================= -->
+
+<main class="main-content">
+
+<!-- ========================= -->
+<!-- Navbar -->
+<!-- ========================= -->
+
+<header class="topbar">
+
+<div>
+
+<h1>
+<i class="fa-solid fa-file-lines"></i>
+OCR Scanner
+</h1>
+
+<p>
+AI Powered Document Intelligence Engine
+</p>
+
+</div>
+
+<div class="top-right">
+
+<div class="status">
+<span class="pulse"></span>
+AI Engine Online
+</div>
+
+<div class="profile">
+
+<div class="avatar">
+H
+</div>
+
+<div>
+<h4>Harshal</h4>
+<small>Administrator</small>
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ========================= -->
+<!-- Welcome Banner -->
+<!-- ========================= -->
+
+<section class="hero">
+
+<div class="hero-left">
+
+<span class="badge">
+AI Powered OCR
+</span>
+
+<h2>
+Scan Receipts, Invoices & Bank Statements
+</h2>
+
+<p>
+Extract transaction details using OCR and perform AI-based fraud detection in real time.
+</p>
+
+</div>
+
+<div class="hero-right">
+
+<div class="engine-card">
+
+<h3>OCR Engine</h3>
+
+<h1>99.82%</h1>
+
+<p>Recognition Accuracy</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Upload Section -->
+<!-- ========================= -->
+
+<section class="upload-grid">
+
+<div class="glass-card upload-card">
+
+<h2>
+<i class="fa-solid fa-cloud-arrow-up"></i>
+Upload Document
+</h2>
+
+<p>
+Upload Receipt, Invoice, Screenshot or Bank Statement
+</p>
+
+<form id="ocrForm">
+
+<div class="drop-zone">
+
+<i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+
+<h3>Drop Image Here</h3>
+
+<p>or</p>
+
+<label class="browse-btn">
+
+Browse Files
+<input
+type="file"
+id="ocrFile"
+name="file"
+accept="image/*"
+hidden>
+
+</label>
+
+<small>JPG • PNG • JPEG</small>
+
+</div>
+<button
+type="button"
+id="analyzeBtn"
+class="scan-btn">
+
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+
+Scan With AI
+
+</button>
+
+</form>
+
+</div>
+
+<!-- Preview -->
+
+<div class="glass-card preview-card">
+
+<h2>
+<i class="fa-solid fa-image"></i>
+Document Preview
+</h2>
+
+<img
+id="previewImage"
+class="preview-image"
+src=""
+alt="Preview">
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- Progress -->
+<!-- ========================= -->
+
+<section class="glass-card progress-card">
+
+<div class="progress-header">
+
+<h2>AI Processing</h2>
+
+<span id="progressText">
+Waiting...
+</span>
+
+</div>
+
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- OCR Steps -->
+<!-- ========================= -->
+
+<section class="steps">
+
+<div class="step active">
+<i class="fa-solid fa-upload"></i>
+<span>Upload</span>
+</div>
+
+<div class="step">
+<i class="fa-solid fa-eye"></i>
+<span>OCR</span>
+</div>
+
+<div class="step">
+<i class="fa-solid fa-brain"></i>
+<span>AI Analysis</span>
+</div>
+
+<div class="step">
+<i class="fa-solid fa-shield-halved"></i>
+<span>Risk Check</span>
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- KPI Cards -->
+<!-- ========================= -->
+
+<section class="cards">
+
+<div class="metric-card amount-card">
+
+<div class="metric-icon">
+<i class="fa-solid fa-money-bill-wave"></i>
+</div>
+
+<div>
+
+<h4>Amount</h4>
+
+<h2 id="amount">--</h2>
+
+</div>
+
+</div>
+
+<div class="metric-card file-size-card">
+
+<div class="metric-icon">
+<i class="fa-solid fa-weight-hanging"></i>
+</div>
+
+<div>
+
+<h4>File Size</h4>
+
+<h2 id="fileSize">--</h2>
+
+</div>
+
+</div>
+
+<div class="metric-card risk-card">
+
+<div class="metric-icon warning">
+<i class="fa-solid fa-triangle-exclamation"></i>
+</div>
+
+<div class="risk-content">
+
+<h4>Risk Score</h4>
+
+<div class="risk-meter">
+
+<svg width="120" height="120">
+
+<circle
+cx="60"
+cy="60"
+r="48"
+class="bg-circle">
+</circle>
+
+<circle
+id="riskCircle"
+cx="60"
+cy="60"
+r="48"
+class="progress-circle">
+</circle>
+
+</svg>
+
+<div class="risk-value">
+
+<h2 id="riskScore">0%</h2>
+
+<span id="riskLevel">
+Safe
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="metric-card keyword-card">
+
+<div class="metric-icon purple">
+<i class="fa-solid fa-tags"></i>
+</div>
+
+<div>
+
+<h4>Keywords</h4>
+
+<h2 id="keywordCount">0</h2>
+
+</div>
+
+</div>
+
+</section>
+<!-- ========================= -->
+<!-- Action Buttons -->
+<!-- ========================= -->
+
+<section class="action-buttons">
+
+    <button id="copyText" class="primary-btn">
+        <i class="fa-solid fa-copy"></i>
+        Copy Text
+    </button>
+
+    <button id="downloadReport" class="secondary-btn">
+        <i class="fa-solid fa-file-arrow-down"></i>
+        Export Report
+    </button>
+
+    <button id="resetOCR" class="danger-btn">
+        <i class="fa-solid fa-rotate-left"></i>
+        Reset
+    </button>
+
+</section>
+<!-- ========================= -->
+<!-- OCR Result -->
+<!-- ========================= -->
+
+<section class="glass-card">
+
+    <div class="card-header">
+
+        <h2>
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            Extracted Text
+
+        </h2>
+
+    </div>
+
+    <textarea
+        id="ocrText"
+        readonly
+        placeholder="OCR Result will appear here..."></textarea>
+
+</section>
+
+<!-- ========================= -->
+<!-- AI Keywords -->
+<!-- ========================= -->
+
+<section class="glass-card">
+
+    <div class="card-header">
+
+        <h2>
+
+            <i class="fa-solid fa-brain"></i>
+
+            AI Keywords
+
+        </h2>
+
+    </div>
+
+    <!-- JS uses keywordList -->
+    <div id="keywordList" class="chips"></div>
+
+</section>
+
+<!-- ========================= -->
+<!-- OCR Confidence -->
+<!-- ========================= -->
+
+<section class="glass-card">
+
+    <div class="confidence-header">
+
+        <span>OCR Confidence</span>
+
+        <strong id="confidenceValue">
+
+            0%
+
+        </strong>
+
+    </div>
+
+    <div class="confidence-bar">
+
+        <div
+            id="confidenceFill"
+            class="confidence-fill">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- AI Recommendation -->
+<!-- ========================= -->
+
+<section class="glass-card recommendation-card">
+
+    <div class="card-header">
+
+        <h2>
+
+            <i class="fa-solid fa-robot"></i>
+
+            AI Recommendation
+
+        </h2>
+
+    </div>
+
+    <p id="recommendation">
+
+        Upload a receipt, invoice or bank statement to begin OCR analysis.
+
+    </p>
+
+</section>
+
+<!-- ========================= -->
+<!-- Footer -->
+<!-- ========================= -->
+
+<footer class="footer">
+
+    <p>
+
+        © 2026 FinGuard AI • OCR Intelligence Engine • Secure Financial Analysis
+
+    </p>
+
+</footer>
+
+</main>
+
+</div>
+
+<script src="{{ url_for('static', path='js/ocr.js') }}"></script>
+
+</body>
+
+</html>
+
+

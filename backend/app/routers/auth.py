@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from fastapi import Body
 
 from app.database.connection import get_db
 from app.models.user import User
@@ -83,4 +84,19 @@ def get_me(
         "id": current_user.id,
         "full_name": current_user.full_name,
         "email": current_user.email
+    }
+
+@router.put("/two-factor")
+def update_two_factor(
+    data: dict = Body(...),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    current_user.two_factor_enabled = data["enabled"]
+
+    db.commit()
+
+    return {
+        "message": "Two-Factor Authentication Updated",
+        "enabled": current_user.two_factor_enabled
     }

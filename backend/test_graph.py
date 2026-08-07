@@ -1,8 +1,12 @@
-from app.services.graph_service import FraudGraph
+from neo4j import GraphDatabase
 
-graph = FraudGraph()
+driver = GraphDatabase.driver(
+    "bolt://localhost:7687",
+    auth=("neo4j", "Finguard@123")
+)
 
-graph.add_transaction("ACC1001", "ACC2001", 5000)
-graph.add_transaction("ACC1001", "ACC3001", 12000)
+with driver.session() as session:
+    result = session.run("RETURN 'Connected Successfully' AS msg")
+    print(result.single()["msg"])
 
-print(graph.get_connections("ACC1001"))
+driver.close()

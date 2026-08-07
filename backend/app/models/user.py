@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from app.database.connection import Base
 
 
@@ -27,4 +27,9 @@ class User(Base):
     password = Column(
         String,
         nullable=False
+    )
+
+    two_factor_enabled = Column(
+        Boolean,
+        default=False
     )

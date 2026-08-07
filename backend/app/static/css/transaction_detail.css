@@ -1,0 +1,863 @@
+/* =====================================================
+   TRANSACTION DETAIL PAGE
+===================================================== */
+
+.transaction-detail-page{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:30px;
+
+    padding-bottom:40px;
+
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.detail-hero{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:30px;
+
+    padding:35px;
+
+    border-radius:28px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #15284f,
+        #0c172d
+    );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,.35);
+
+}
+
+.hero-left{
+
+    flex:1;
+
+}
+
+.hero-tag{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    background:rgba(59,130,246,.15);
+
+    color:#7dd3fc;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    margin-bottom:20px;
+
+}
+
+.hero-left h1{
+
+    color:#fff;
+
+    font-size:42px;
+
+    font-weight:800;
+
+    margin-bottom:15px;
+
+}
+
+.hero-left h1 span{
+
+    color:#60a5fa;
+
+}
+
+.hero-left p{
+
+    color:#a8b7d5;
+
+    line-height:1.8;
+
+    max-width:650px;
+
+}
+
+
+/* =====================================================
+   RISK BADGE
+===================================================== */
+
+.risk-badge{
+
+    padding:16px 30px;
+
+    border-radius:50px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.risk-badge.high{
+
+    background:#dc2626;
+
+}
+
+.risk-badge.medium{
+
+    background:#f59e0b;
+
+}
+
+.risk-badge.low{
+
+    background:#16a34a;
+
+}
+
+
+/* =====================================================
+   STATS GRID
+===================================================== */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:22px;
+
+}
+
+
+/* =====================================================
+   STAT CARD
+===================================================== */
+
+.stat-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    background:
+    rgba(18,26,46,.88);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    transition:.35s;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:#3b82f6;
+
+}
+
+.stat-icon{
+
+    width:68px;
+
+    height:68px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:26px;
+
+}
+
+.stat-icon.blue{
+
+    background:#2563eb;
+
+}
+
+.stat-icon.cyan{
+
+    background:#0891b2;
+
+}
+
+.stat-icon.purple{
+
+    background:#7c3aed;
+
+}
+
+.stat-icon.orange{
+
+    background:#ea580c;
+
+}
+
+.stat-info span{
+
+    color:#9fb3d7;
+
+    font-size:13px;
+
+}
+
+.stat-info h2{
+
+    color:#fff;
+
+    margin-top:8px;
+
+    font-size:26px;
+
+}
+/* =====================================================
+   GLASS CARD
+===================================================== */
+
+.glass-card{
+
+    background:
+    rgba(18,26,46,.88);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:26px;
+
+    padding:30px;
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,.30);
+
+    transition:.35s;
+
+}
+
+.glass-card:hover{
+
+    border-color:#3b82f6;
+
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.card-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:30px;
+
+}
+
+.card-header h2{
+
+    color:#fff;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.card-header i{
+
+    color:#60a5fa;
+
+    margin-right:12px;
+
+}
+
+
+/* =====================================================
+   DETAIL GRID
+===================================================== */
+
+.detail-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+    gap:20px;
+
+}
+
+
+/* =====================================================
+   DETAIL ITEM
+===================================================== */
+
+.detail-item{
+
+    background:
+    rgba(255,255,255,.03);
+
+    border:
+    1px solid rgba(255,255,255,.06);
+
+    border-radius:18px;
+
+    padding:22px;
+
+}
+
+.detail-item label{
+
+    display:block;
+
+    color:#8fa7cc;
+
+    font-size:13px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    margin-bottom:10px;
+
+}
+
+.detail-item strong{
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    word-break:break-word;
+
+}
+
+
+/* =====================================================
+   ANALYSIS GRID
+===================================================== */
+
+.analysis-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:25px;
+
+}
+
+
+/* =====================================================
+   RISK CIRCLE
+===================================================== */
+
+.risk-circle{
+
+    width:180px;
+
+    height:180px;
+
+    margin:25px auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+
+    conic-gradient(
+
+        #3b82f6 0deg,
+
+        #06b6d4 220deg,
+
+        rgba(255,255,255,.08) 220deg
+
+    );
+
+    position:relative;
+
+}
+
+.risk-circle::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:135px;
+
+    height:135px;
+
+    border-radius:50%;
+
+    background:#121a2e;
+
+}
+
+.circle-value{
+
+    position:relative;
+
+    color:#fff;
+
+    font-size:34px;
+
+    font-weight:800;
+
+}
+
+
+/* =====================================================
+   PROGRESS BAR
+===================================================== */
+
+.progress-wrapper{
+
+    margin-top:20px;
+
+}
+
+.progress-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#d8e4ff;
+
+    margin-bottom:12px;
+
+    font-size:14px;
+
+}
+
+.progress-bar{
+
+    height:12px;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+    background:
+
+    rgba(255,255,255,.08);
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:50px;
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #3b82f6,
+        #06b6d4
+    );
+
+}
+
+
+/* =====================================================
+   PREDICTION
+===================================================== */
+
+.prediction{
+
+    padding:18px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin:15px 0 25px;
+
+}
+
+.prediction.safe{
+
+    background:#16a34a;
+
+}
+
+.prediction.fraud{
+
+    background:#dc2626;
+
+}
+
+.analysis-info{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px;
+
+}
+
+.analysis-info div{
+
+    background:
+    rgba(255,255,255,.03);
+
+    border-radius:16px;
+
+    padding:18px;
+
+}
+
+.analysis-info label{
+
+    display:block;
+
+    color:#90a8c8;
+
+    font-size:13px;
+
+    margin-bottom:8px;
+
+}
+
+.analysis-info strong{
+
+    color:#fff;
+
+    font-size:18px;
+
+}
+
+
+/* =====================================================
+   RECOMMENDATION
+===================================================== */
+
+.recommendation-box{
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:
+    rgba(255,255,255,.03);
+
+    color:#d6e4ff;
+
+    line-height:1.9;
+
+    border-left:5px solid #3b82f6;
+
+}
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
+
+.action-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:18px;
+
+    margin-top:30px;
+
+}
+
+.action-buttons .primary-btn,
+.action-buttons .secondary-btn{
+
+    min-width:220px;
+
+    justify-content:center;
+
+}
+
+
+/* =====================================================
+   HOVER EFFECTS
+===================================================== */
+
+.glass-card,
+.stat-card,
+.detail-hero{
+
+    transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    border-color .35s ease;
+
+}
+
+.glass-card:hover,
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 25px 50px rgba(0,0,0,.35);
+
+}
+
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#0d1528;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#3b82f6;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#60a5fa;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width:1200px){
+
+    .analysis-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media (max-width:992px){
+
+    .detail-hero{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .stats-grid{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .stats-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .detail-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .analysis-info{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .hero-left h1{
+
+        font-size:30px;
+
+    }
+
+    .risk-circle{
+
+        width:150px;
+
+        height:150px;
+
+    }
+
+    .risk-circle::before{
+
+        width:112px;
+
+        height:112px;
+
+    }
+
+    .circle-value{
+
+        font-size:28px;
+
+    }
+
+    .glass-card{
+
+        padding:22px;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .detail-hero{
+
+        padding:24px;
+
+    }
+
+    .hero-left h1{
+
+        font-size:26px;
+
+    }
+
+    .card-header h2{
+
+        font-size:20px;
+
+    }
+
+    .stat-card{
+
+        padding:20px;
+
+    }
+
+}
+
+
+/* =====================================================
+   PRINT
+===================================================== */
+
+@media print{
+
+    .sidebar,
+    .topbar,
+    .action-buttons{
+
+        display:none !important;
+
+    }
+
+    body{
+
+        background:#fff !important;
+
+    }
+
+    .glass-card,
+    .detail-hero,
+    .stat-card{
+
+        box-shadow:none !important;
+
+        border:1px solid #ccc;
+
+        background:#fff !important;
+
+        color:#000 !important;
+
+    }
+
+}
