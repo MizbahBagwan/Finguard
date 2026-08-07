@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Settings | FinGuard AI{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Settings</h1>
+
+        <p>Manage your profile, security and AI preferences</p>
+
+    </div>
+
+</div>
+
+<!-- Profile -->
+
+<div class="card">
+
+    <h2>👤 Profile Information</h2>
+
+    <br>
+
+    <div class="settings-grid">
+
+        <div class="input-group">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                value="Administrator">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                value="admin@finguard.ai">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Phone</label>
+
+            <input
+                type="text"
+                value="+91 9876543210">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Role</label>
+
+            <input
+                type="text"
+                value="System Administrator"
+                readonly>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Security -->
+
+<div class="card">
+
+    <h2>🔐 Security</h2>
+
+    <br>
+
+    <div class="settings-grid">
+
+        <div class="input-group">
+
+            <label>Current Password</label>
+
+            <input
+                type="password"
+                placeholder="********">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>New Password</label>
+
+            <input
+                type="password"
+                placeholder="********">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Confirm Password</label>
+
+            <input
+                type="password"
+                placeholder="********">
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Preferences -->
+
+<div class="card">
+
+    <h2>⚙ Preferences</h2>
+
+    <br>
+
+    <div class="setting-row">
+
+        <span>🌙 Dark Mode</span>
+
+        <label class="switch">
+
+            <input type="checkbox" checked>
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <div class="setting-row">
+
+        <span>🔔 Email Notifications</span>
+
+        <label class="switch">
+
+            <input type="checkbox" checked>
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <div class="setting-row">
+
+        <span>🤖 AI Fraud Alerts</span>
+
+        <label class="switch">
+
+            <input type="checkbox" checked>
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <div class="setting-row">
+
+        <span>📊 Weekly Reports</span>
+
+        <label class="switch">
+
+            <input type="checkbox">
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+</div>
+
+<!-- AI Engine -->
+
+<div class="card">
+
+    <h2>🤖 AI Engine Settings</h2>
+
+    <br>
+
+    <div class="settings-grid">
+
+        <div class="input-group">
+
+            <label>Detection Threshold</label>
+
+            <select>
+
+                <option>High</option>
+
+                <option selected>Medium</option>
+
+                <option>Low</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Model Version</label>
+
+            <input
+                type="text"
+                value="FinGuard AI v2.0"
+                readonly>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div style="text-align:right;margin-top:30px;">
+
+    <button class="btn-primary">
+
+        <i class="bi bi-save"></i>
+
+        Save Settings
+
+    </button>
+
+</div>
+
+{% endblock %}

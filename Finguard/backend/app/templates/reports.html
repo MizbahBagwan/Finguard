@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Investigation Reports</title>
+</head>
+
+<body>
+
+<h1>Fraud Investigation Reports</h1>
+
+<table border="1">
+
+<thead>
+<tr>
+    <th>ID</th>
+    <th>Transaction ID</th>
+    <th>Prediction</th>
+    <th>Fraud Probability</th>
+    <th>Risk Level</th>
+    <th>Summary</th>
+</tr>
+</thead>
+
+<tbody id="reportTable">
+
+</tbody>
+
+</table>
+
+
+<script>
+
+fetch("/api/investigations")
+.then(response => response.json())
+.then(data => {
+
+    let table = document.getElementById("reportTable");
+
+    data.forEach(report => {
+
+        table.innerHTML += `
+
+        <tr>
+
+            <td>${report.id}</td>
+
+            <td>${report.transaction_id}</td>
+
+            <td>${report.prediction}</td>
+
+            <td>${report.fraud_probability}%</td>
+
+            <td>${report.risk_level}</td>
+
+            <td>${report.summary}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+});
+
+</script>
+
+
+</body>
+</html>

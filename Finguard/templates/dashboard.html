@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - FinGuard AI{% endblock %}
+{% block content %}
+<section class="hero card">
+  <div>
+    <h1>Financial Intelligence Dashboard</h1>
+    <p>AI-powered fraud detection and transaction monitoring.</p>
+    <button class="btn-primary">Run AI Analysis</button>
+  </div>
+  <div class="hero-score"><h2>98.7%</h2><span>Detection Accuracy</span></div>
+</section>
+
+<section class="kpi-grid">
+<div class="card"><h4>Total Transactions</h4><h2>12,540</h2><p>+18% this month</p></div>
+<div class="card"><h4>Fraud Detected</h4><h2>339</h2><p>12 new today</p></div>
+<div class="card"><h4>Risk Alerts</h4><h2>41</h2><p>Medium Risk</p></div>
+<div class="card"><h4>Protected Amount</h4><h2>₹8.4 Cr</h2><p>AI secured</p></div>
+</section>
+
+<section class="chart-grid">
+<div class="card">
+<h3>Transaction Trend</h3>
+<canvas id="transactionChart"></canvas>
+</div>
+<div class="card">
+<h3>Fraud Distribution</h3>
+<canvas id="fraudChart"></canvas>
+</div>
+</section>
+
+<section class="card">
+<h3>AI Recommendation</h3>
+<div class="badge badge-danger">High Risk</div>
+<p>Multiple high-value transactions detected from different locations within 10 minutes.</p>
+<ul>
+<li>Temporarily freeze account</li>
+<li>Require OTP verification</li>
+<li>Notify customer</li>
+</ul>
+</section>
+
+<section class="card">
+<h3>Recent Transactions</h3>
+<table>
+<thead><tr><th>ID</th><th>User</th><th>Amount</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>#1001</td><td>Rahul</td><td>₹18,500</td><td><span class="badge badge-success">Safe</span></td></tr>
+<tr><td>#1002</td><td>Aisha</td><td>₹72,000</td><td><span class="badge badge-warning">Review</span></td></tr>
+<tr><td>#1003</td><td>Karan</td><td>₹1,45,000</td><td><span class="badge badge-danger">Fraud</span></td></tr>
+</tbody>
+</table>
+</section>
+{% endblock %}
