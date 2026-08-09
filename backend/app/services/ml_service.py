@@ -17,10 +17,23 @@ def predict_transaction(transaction: dict):
 
         df = pd.DataFrame([transaction])
 
-        print("========== ML INPUT ==========")
-        print(df.columns.tolist())
-        print(df)
-        print("==============================")
+        prediction = MODEL.predict(df)[0]
+
+        probability = (
+        MODEL.predict_proba(df)[0][1]
+        * 100
+        )
+
+        risk_score = round(
+        float(probability),
+        2
+        )
+
+        print("========== ML RESULT ==========")
+        print("Prediction:", prediction)
+        print("Fraud Probability:", risk_score)
+        print("Risk Score:", risk_score)
+        print("===============================")
 
 
         # create missing ML features

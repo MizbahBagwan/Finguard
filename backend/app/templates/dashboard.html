@@ -16,97 +16,113 @@ Real-Time Financial Fraud Monitoring System
 HERO SECTION
 ========================================== -->
 
-<section class="hero-section">
+<!-- ================= PREMIUM HERO ================= -->
 
-    <div class="hero-left">
+<div class="hero-left">
+
+    <div class="hero-header">
 
         <span class="hero-tag">
-
-            <i class="fa-solid fa-sparkles"></i>
-
-            AI Powered Security
-
+            <i class="fa-solid fa-shield-halved"></i>
+            AI Powered Financial Security
         </span>
 
-        <h2>
-
-            Welcome Back,
-
-            <span> 👋</span>
-
-        </h2>
-
-        <p>
-
-            Detect suspicious financial transactions,
-            monitor fraud in real time,
-            and generate intelligent AI reports
-            from a single dashboard.
-
-        </p>
-
-        <div class="hero-buttons">
-
-            <a href="/transactions"
-               class="primary-btn">
-
-                <i class="fa-solid fa-credit-card"></i>
-
-                Transactions
-
-            </a>
-
-            <button
-                class="secondary-btn"
-                id="runAIAnalysis">
-
-                <i class="fa-solid fa-brain"></i>
-
-                Run AI Analysis
-
-            </button>
-
+        <div class="hero-live">
+            <span class="live-dot"></span>
+            AI ONLINE
         </div>
 
     </div>
 
-    <div class="hero-right">
+    <h1 class="hero-title">
+        AI Fraud Detection
+        <span>Control Center</span>
+    </h1>
 
-        <div class="status-card">
+    <p class="hero-description">
+        Monitor financial transactions in real time, detect suspicious
+        activities, analyze fraud using artificial intelligence, and
+        protect every transaction through intelligent risk assessment.
+    </p>
 
-            <div class="status-top">
+    <div class="hero-buttons">
+
+        <a href="/transactions" class="primary-btn">
+            <i class="fa-solid fa-credit-card"></i>
+            View Transactions
+        </a>
+
+        <button
+            id="runAIAnalysis"
+            class="secondary-btn">
+
+            <i class="fa-solid fa-brain"></i>
+            Run AI Analysis
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= AI STATUS ================= -->
+
+<div class="hero-right">
+
+    <div class="status-card">
+
+        <div class="status-top">
+
+            <div class="status-left">
 
                 <span class="status-dot"></span>
 
-                AI Engine Online
+                <div>
+                    <strong>AI Engine Online</strong>
+                    <small>Real-Time Monitoring</small>
+                </div>
 
             </div>
 
-           <h2 id="aiAccuracy">
-    0%
-</h2>
+            <span class="status-badge">
+                LIVE
+            </span>
 
-            <p>
+        </div>
 
-                Detection Accuracy
 
-            </p>
+        <div class="status-body">
 
-            <div class="status-footer">
+            <div class="status-item">
 
-                Last Updated
+                <span>Detection Accuracy</span>
+
+                <strong id="aiAccuracy">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span>Last Updated</span>
 
                 <strong id="currentTime">
-
                     Loading...
-
                 </strong>
-                <p>
-Last AI Scan:
-<strong id="aiLastScan">
---:--:--
-</strong>
-</p>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span>System Status</span>
+
+                <strong class="online">
+                    Operational
+                </strong>
 
             </div>
 
@@ -114,8 +130,7 @@ Last AI Scan:
 
     </div>
 
-</section>
-
+</div>
 <!-- ==========================================
 STATISTICS
 ========================================== -->
@@ -145,6 +160,12 @@ STATISTICS
                 +15% This Week
 
             </small>
+       <div class="mini-line-chart blue-chart">
+    <svg viewBox="0 0 120 40">
+        <polyline points="0,30 20,26 40,28 60,18 80,20 100,10 120,14"/>
+    </svg>
+</div>
+
 
         </div>
 
@@ -167,7 +188,11 @@ STATISTICS
                 0
 
             </h2>
-
+        <div class="mini-line-chart red-chart">
+    <svg viewBox="0 0 120 40">
+        <polyline points="0,15 20,20 40,12 60,25 80,18 100,30 120,22"/>
+    </svg>
+</div>
             <small>
 
                 Immediate Action
@@ -195,6 +220,13 @@ STATISTICS
                 0
 
             </h2>
+      <div class="sparkline orange-chart">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 
             <small>
 
@@ -223,7 +255,11 @@ STATISTICS
                 0
 
             </h2>
-
+          <div class="mini-line-chart green-chart">
+    <svg viewBox="0 0 120 40">
+        <polyline points="0,22 15,22 25,18 35,24 50,20 65,20 80,12 95,15 120,8"/>
+    </svg>
+</div>
             <small>
 
                 Successfully Verified
@@ -238,141 +274,284 @@ STATISTICS
 <!-- ==========================================
 ANALYTICS SECTION
 ========================================== -->
+<!-- AI SECURITY CORE -->
 
-<section class="dashboard-grid">
+<div class="ai-core-card">
 
-    <!-- LEFT PANEL -->
 
-    <div class="left-panel">
+    <div class="card-header ai-core-header">
 
-        <!-- Risk Distribution -->
 
-        <div class="glass-card">
+        <h3>
 
-            <div class="card-header">
+            <i class="fa-solid fa-cube"></i>
 
-                <h3>
+            AI Security Core
 
-                    <i class="fa-solid fa-chart-pie"></i>
+        </h3>
 
-                    Risk Distribution
 
-                </h3>
 
-                <button class="card-btn">
+        <div class="ai-status-live">
 
-                    Today
+            <span class="live-dot"></span>
 
-                </button>
-
-            </div>
-
-           <canvas id="riskDistributionChart"></canvas>
+            AI ONLINE
 
         </div>
 
-        <!-- Fraud Trend -->
-
-        <div class="glass-card">
-
-            <div class="card-header">
-
-                <h3>
-
-                    <i class="fa-solid fa-chart-line"></i>
-
-                    Fraud Trend
-
-                </h3>
-
-                <button class="card-btn">
-
-                    Weekly
-
-                </button>
-
-            </div>
-
-            <canvas id="fraudTrendChart"></canvas>
-
-        </div>
 
     </div>
 
-    <!-- RIGHT PANEL -->
 
-    <div class="right-panel">
 
-        <!-- AI Insights -->
 
-        <div id="aiInsights">
+    <div class="ai-core-container">
 
-    <p>Loading AI Analysis...</p>
+
+        <div id="ai3DScene"></div>
+
+
+
+        <!-- Floating Stats -->
+
+
+        <div class="core-stat left-stat">
+
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <div>
+
+                <strong>99.8%</strong>
+
+                <span>Accuracy</span>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <div class="core-stat right-stat">
+
+
+            <i class="fa-solid fa-bolt"></i>
+
+
+            <div>
+
+                <strong>ACTIVE</strong>
+
+                <span>Threat Scan</span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
 
 </div>
 
-        <!-- Quick Actions -->
+<!-- ==============================
+     ANALYTICS TOP ROW
+================================ -->
 
-        <div class="glass-card">
+<div class="analytics-row">
 
-            <div class="card-header">
 
-                <h3>
+    <!-- RISK DISTRIBUTION -->
 
-                    <i class="fa-solid fa-bolt"></i>
+    <div class="glass-card chart-card premium-chart">
 
-                    Quick Actions
 
-                </h3>
+        <div class="card-header">
 
-            </div>
 
-            <div class="action-grid">
+            <h3>
 
-                <a href="/transactions" class="action-btn">
+                <i class="fa-solid fa-chart-pie"></i>
 
-                    <i class="fa-solid fa-list"></i>
+                Risk Distribution
 
-                    <span>Transactions</span>
+            </h3>
 
-                </a>
 
-                <a href="/ocr" class="action-btn">
 
-                    <i class="fa-solid fa-camera"></i>
+            <button class="card-btn">
 
-                    <span>OCR Scanner</span>
+                Today
 
-                </a>
+            </button>
 
-                <a href="/reports" class="action-btn">
-
-                    <i class="fa-solid fa-file-lines"></i>
-
-                    <span>Reports</span>
-
-                </a>
-
-                <a href="/knowledge-graph" class="action-btn">
-
-                    <i class="fa-solid fa-project-diagram"></i>
-
-                    <span>Knowledge Graph</span>
-
-                </a>
-
-            </div>
 
         </div>
 
+
+
+
+        <div class="risk-chart-area">
+
+
+            <canvas id="riskDistributionChart"></canvas>
+
+
+
+            <div class="risk-center">
+
+
+                <span>
+                    AI RISK
+                </span>
+
+
+                <strong>
+                    LIVE
+                </strong>
+
+
+            </div>
+
+
+        </div>
+
+
     </div>
 
-</section>
+
+
+
+
+
+
+    <!-- AI RISK INTELLIGENCE -->
+
+
+    <div class="glass-card chart-card premium-chart">
+
+
+        <div class="card-header">
+
+
+            <h3>
+
+                <i class="fa-solid fa-brain"></i>
+
+                AI Risk Intelligence
+
+            </h3>
+
+
+
+            <button class="card-btn active">
+
+                Live
+
+            </button>
+
+
+        </div>
+
+
+
+
+        <div class="ai-chart-area">
+
+
+            <canvas id="aiRiskChart"></canvas>
+
+
+
+            <div class="ai-status">
+
+
+                <span class="pulse"></span>
+
+
+                AI Monitoring
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ==============================
+        FRAUD TREND
+================================ -->
+
+
+<div class="glass-card chart-card premium-chart fraud-card">
+
+
+    <div class="card-header">
+
+
+        <h3>
+
+
+            <i class="fa-solid fa-chart-line"></i>
+
+
+            Fraud Trend
+
+
+        </h3>
+
+
+
+        <button class="card-btn">
+
+            Weekly
+
+        </button>
+
+
+    </div>
+
+
+
+
+    <div class="chart-container">
+
+
+        <canvas id="fraudTrendChart"></canvas>
+
+
+    </div>
+
+
+
+</div>
 <!-- ==========================================
 RECENT TRANSACTIONS
 ========================================== -->
 
-<section class="glass-card">
+<!-- RECENT TRANSACTIONS -->
+
+<div class="glass-card transaction-card">
+
 
     <div class="card-header">
 
@@ -384,6 +563,7 @@ RECENT TRANSACTIONS
 
         </h3>
 
+
         <a href="/transactions" class="view-all">
 
             View All →
@@ -392,32 +572,56 @@ RECENT TRANSACTIONS
 
     </div>
 
-    <table class="transaction-table">
 
-        <thead>
 
-            <tr>
+    <div class="transaction-table-wrapper">
 
-                <th>ID</th>
-                <th>Merchant</th>
-                <th>Amount</th>
-                <th>Risk</th>
-                <th>Status</th>
-                <th>AI Score</th>
 
-            </tr>
+        <table class="transaction-table ai-table">
 
-        </thead>
 
-        <tbody id="recentTransactionsBody">
+            <thead>
 
-            <!-- JS Will Load Data -->
+                <tr>
 
-        </tbody>
+                    <th>ID</th>
 
-    </table>
+                    <th>Merchant</th>
 
-</section>
+                    <th>Amount</th>
+
+                    <th>Risk</th>
+
+                    <th>Status</th>
+
+                    <th>AI Score</th>
+
+                </tr>
+
+            </thead>
+
+
+
+            <tbody id="recentTransactionsBody">
+
+                <!-- JS DATA -->
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
 
 <!-- ==========================================
 BOTTOM SECTION
@@ -578,6 +782,9 @@ FOOTER
     </div>
 
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="/static/js/ai-core.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/dashboard.js"></script>
 

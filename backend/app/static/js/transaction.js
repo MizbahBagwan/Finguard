@@ -510,240 +510,457 @@ update();
 // ======================================================
 
 
-function initializeCharts(){
+function initializeCharts() {
 
-    if(typeof Chart === "undefined"){
-        console.log("Chart.js not loaded");
+    if (typeof Chart === "undefined") {
+        console.error("Chart.js not loaded!");
         return;
     }
 
-
     fetch("/api/transaction-chart-data")
-    .then(response => response.json())
-    .then(data => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("API Error: " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
 
+            console.log("CHART DATA:", data);
 
-        // ==================================
-        // WEEKLY TRANSACTION TREND
-        // ==================================
+            // =========================================
+            // RISK DISTRIBUTION
+            // =========================================
 
-        const tx =
-        document.getElementById("transactionChart");
+            const riskCanvas =
+                document.getElementById("riskChart");
 
+            if (riskCanvas) {
 
-        if(tx){
+                const safe =
+                    Number(data.risk_distribution?.safe || 0);
 
-            new Chart(tx,{
+                const medium =
+                    Number(data.risk_distribution?.medium || 0);
 
-                type:"line",
+                const high =
+                    Number(data.risk_distribution?.high || 0);
 
-                data:{
+                console.log(
+                    "Risk:",
+                    safe,
+                    medium,
+                    high
+                );
 
-                    labels:[
-                        "Mon",
-                        "Tue",
-                        "Wed",
-                        "Thu",
-                        "Fri",
-                        "Sat",
-                        "Sun"
-                    ],
+                // Destroy previous chart
+                const oldRiskChart =
+                    Chart.getChart(riskCanvas);
 
-                    datasets:[{
+                if (oldRiskChart) {
+                    oldRiskChart.destroy();
+                }
 
-                        label:"Transactions",
+                new Chart(riskCanvas, {
 
-                        data:[
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            data.risk_distribution.safe +
-                            data.risk_distribution.high
+                    type: "doughnut",
+
+                    data: {
+
+                        labels: [
+                            "Safe",
+                            "Medium",
+                            "High"
                         ],
 
-                        tension:0.4,
+                        datasets: [{
 
-                        fill:true
+                            data: [
+                                safe,
+                                medium,
+                                high
+                            ],
 
-                    }]
+                            backgroundColor: [
+                                "#22c55e",
+                                "#f59e0b",
+                                "#ef4444"
+                            ],
 
-                },
+                            borderColor: "#0f172a",
 
+                            borderWidth: 4,
 
-                options:{
+                            hoverOffset: 10
 
-                    responsive:true,
+                        }]
 
-                    plugins:{
-                        legend:{
-                            display:false
-                        }
-                    }
+                    },
 
-                }
+                    options: {
 
-            });
+                        responsive: true,
 
-        }
+                        maintainAspectRatio: false,
 
+                        cutout: "65%",
 
+                        plugins: {
 
+                            legend: {
 
-        // ==================================
-        // RISK DISTRIBUTION
-        // ==================================
+                                display: true,
 
-        const risk =
-        document.getElementById("riskChart");
+                                position: "bottom",
 
+                                labels: {
 
-        if(risk){
+                                    color: "#cbd5e1",
 
+                                    usePointStyle: true,
 
-            new Chart(risk,{
+                                    padding: 18,
 
-                type:"doughnut",
+                                    generateLabels: function(chart) {
 
+                                        const values = [
+                                            safe,
+                                            medium,
+                                            high
+                                        ];
 
-                data:{
+                                        const colors = [
+                                            "#0b546f",
+                                            "#0b49f5",
+                                            "#36edbc"
+                                        ];
 
+                                        return chart.data.labels.map(
+                                            (label, index) => {
 
-                    labels:[
+                                                return {
 
-                        "Safe",
-                        "Medium",
-                        "High"
+                                                    text:
+                                                        `${label} (${values[index]})`,
 
-                    ],
+                                                    fillStyle:
+                                                        colors[index],
 
+                                                    strokeStyle:
+                                                        colors[index],
 
-                    datasets:[{
+                                                    lineWidth: 0,
 
-                        data:[
+                                                    hidden: false,
 
-                            data.risk_distribution.safe,
+                                                    index: index,
 
-                            data.risk_distribution.medium,
+                                                    pointStyle:
+                                                        "circle"
 
-                            data.risk_distribution.high
+                                                };
 
-                        ]
+                                            }
+                                        );
 
-                    }]
+                                    }
 
+                                }
 
-                },
+                            },
 
+                            tooltip: {
 
-                options:{
+                                callbacks: {
 
-                    responsive:true
+                                    label: function(context) {
 
-                }
+                                        const values = [
+                                            safe,
+                                            medium,
+                                            high
+                                        ];
 
+                                        return `${context.label}: ${values[context.dataIndex]}`;
 
-            });
+                                    }
 
+                                }
 
-        }
+                            }
 
+                        },
 
+                        animation: {
 
-
-        // ==================================
-        // FRAUD PROBABILITY CHART
-        // ==================================
-
-        const fraud =
-        document.getElementById("fraudChart");
-
-
-        if(fraud){
-
-
-            new Chart(fraud,{
-
-                type:"bar",
-
-
-                data:{
-
-
-                    labels:
-
-                    data.fraud_probability.map(
-                        item => item.id
-                    ),
-
-
-                    datasets:[{
-
-
-                        label:
-                        "Fraud Probability %",
-
-
-                        data:
-
-                        data.fraud_probability.map(
-                            item => item.score
-                        )
-
-
-                    }]
-
-
-                },
-
-
-                options:{
-
-
-                    responsive:true,
-
-
-                    scales:{
-
-
-                        y:{
-
-
-                            beginAtZero:true,
-
-
-                            max:100
-
+                            duration: 1000
 
                         }
 
-
                     }
 
+                });
 
+            } else {
+
+                console.error(
+                    "riskChart canvas not found!"
+                );
+
+            }
+
+
+            // =========================================
+            // FRAUD PROBABILITY
+            // =========================================
+
+            const fraudCanvas =
+                document.getElementById("fraudChart");
+
+            if (fraudCanvas) {
+
+                const fraudData =
+                    data.fraud_probability || [];
+
+                const labels =
+                    fraudData.map(item => item.id);
+
+                const scores =
+                    fraudData.map(
+                        item => Number(item.score || 0)
+                    );
+
+
+                // Destroy old chart
+                const oldFraudChart =
+                    Chart.getChart(fraudCanvas);
+
+                if (oldFraudChart) {
+                    oldFraudChart.destroy();
                 }
 
 
-            });
+                new Chart(fraudCanvas, {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            label:
+                                "Fraud Probability %",
+
+                            data: scores,
+
+                            backgroundColor:
+                                "rgba(13, 225, 244, 0.49)",
+                            borderRadius: 8
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                max: 100,
+
+                                ticks: {
+
+                                    color: "#cbd5e1"
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.08)"
+
+                                }
+
+                            },
+
+                            x: {
+
+                                ticks: {
+
+                                    color: "#cbd5e1"
+
+                                },
+
+                                grid: {
+
+                                    display: false
+
+                                }
+
+                            }
+
+                        },
+
+                        plugins: {
+
+                            legend: {
+
+                                labels: {
+
+                                    color: "#cbd5e1"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                });
+
+            } else {
+
+                console.error(
+                    "fraudChart canvas not found!"
+                );
+
+            }
 
 
-        }
+            // =========================================
+            // WEEKLY TRANSACTION TREND
+            // =========================================
+
+            const transactionCanvas =
+                document.getElementById(
+                    "transactionChart"
+                );
+
+            if (transactionCanvas) {
+
+                const totalTransactions =
+                    (data.risk_distribution?.safe || 0) +
+                    (data.risk_distribution?.medium || 0) +
+                    (data.risk_distribution?.high || 0);
 
 
+                const oldTransactionChart =
+                    Chart.getChart(transactionCanvas);
 
-    })
+                if (oldTransactionChart) {
+                    oldTransactionChart.destroy();
+                }
 
-    .catch(error=>{
 
-        console.log(
-            "Chart API Error:",
-            error
-        );
+                new Chart(transactionCanvas, {
 
-    });
+                    type: "line",
 
+                    data: {
+
+                        labels: [
+                            "Mon",
+                            "Tue",
+                            "Wed",
+                            "Thu",
+                            "Fri",
+                            "Sat",
+                            "Sun"
+                        ],
+
+                        datasets: [{
+
+                            label:
+                                "Transactions",
+
+                            data: [
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                totalTransactions
+                            ],
+
+                            tension: 0.4,
+
+                            fill: true,
+
+                            borderColor:
+                                "#38bdf8",
+
+                            backgroundColor:
+                                "rgba(56,189,248,0.12)",
+
+                            borderWidth: 3
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            }
+
+                        },
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                ticks: {
+                                    color: "#cbd5e1"
+                                }
+
+                            },
+
+                            x: {
+
+                                ticks: {
+                                    color: "#cbd5e1"
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                });
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Chart API Error:",
+                error
+            );
+
+        });
 
 }
 // ======================================================

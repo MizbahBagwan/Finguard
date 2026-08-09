@@ -24,403 +24,397 @@ HEADER
 ========================================= -->
 
 
-<div class="page-header">
+<<!-- =====================================================
+     TRANSACTIONS HERO
+     SAME THEME AS DASHBOARD
+===================================================== -->
 
-<div class="header-left">
+<div class="transaction-hero">
 
-<span class="page-badge">
+    <div class="hero-left">
 
-<i class="fa-solid fa-shield-halved"></i>
+        <span class="hero-tag">
+            <i class="fa-solid fa-shield-halved"></i>
+            AI Protection Active
+        </span>
 
-AI Protection Active
+        <h1>
+            Transaction
+            <span>Dashboard</span>
+        </h1>
 
-</span>
+        <p>
+            Monitor every financial transaction in real-time
+            using FinGuard AI Fraud Detection Engine.
+        </p>
 
-<h1>
+        <div class="hero-buttons">
 
-Transaction Dashboard
+            <a href="/add-transaction"
+               class="primary-btn">
 
-</h1>
+                <i class="fa-solid fa-plus"></i>
+                Add Transaction
+
+            </a>
+
+            <button
+                type="button"
+                class="secondary-btn"
+                id="openTransactionFilter">
+
+                <i class="fa-solid fa-filter"></i>
+                Apply Filter
+
+            </button>
+
+        </div>
+
+    </div>
 
 
+    <div class="hero-right">
 
-<p>
+        <div class="status-card">
 
-Monitor every financial transaction in real-time using
-FinGuard AI Fraud Detection Engine.
+            <div class="status-top">
 
-</p>
+                <div>
+                    <span class="status-dot"></span>
+                    AI Engine Online
+                </div>
 
+                <span class="ai-live-badge">
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <div class="transaction-ai-status">
+
+                <div class="ai-shield">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        Fraud Detection Active
+                    </strong>
+
+                    <span>
+                        Real-time transaction monitoring
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="status-footer">
+
+                <div>
+                    <span>AI Monitoring</span>
+                    <strong>ACTIVE</strong>
+                </div>
+
+                <div>
+                    <span>Protection</span>
+                    <strong>ENABLED</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+STEP 2 — ab transaction.css ke E
 
-
-
-
-
-<div class="header-right">
-
-
-
-<div class="search-box">
-
-<i class="fa-solid fa-magnifying-glass"></i>
-
-
-<input
-type="text"
-id="searchInput"
-placeholder="Search Merchant, Transaction ID..."
->
-
-
-</div>
-
-
-
-
-<button
-class="icon-btn"
-id="refreshPage">
-
-<i class="fa-solid fa-rotate"></i>
-
-</button>
-
-
-
-
-<button
-class="icon-btn"
-id="exportPdf">
-
-<i class="fa-solid fa-download"></i>
-
-</button>
-
-
-
-
-
-<button
-class="icon-btn">
-
-
-<i class="fa-solid fa-bell"></i>
-
-
-<span class="notify-dot"></span>
-
-
-</button>
-
-
-
-
-<a href="/add-transaction" class="btn-primary">
-
-
-<i class="fa-solid fa-plus"></i>
-
-
-Add Transaction
-
-
-</a>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
+<
 <!-- =========================================
-SUMMARY
+     PREMIUM TRANSACTION SUMMARY
 ========================================= -->
-
 
 <div class="summary-grid">
 
 
+    <!-- TOTAL TRANSACTIONS -->
+    <div class="summary-card blue">
 
-<div class="summary-card blue">
+        <!-- premium glow -->
+        <div class="card-glow"></div>
 
+        <div class="card-top">
 
-<div class="card-top">
+            <div class="icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
 
+            <span class="trend positive">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                +12%
+            </span>
 
-<div class="icon">
-
-<i class="fa-solid fa-wallet"></i>
-
-</div>
-
-
-<span class="trend positive">
-
-+12%
-
-</span>
-
-
-</div>
+        </div>
 
 
+        <div class="card-label-row">
 
-<h2 class="counter"
-data-target="{{ total_transactions|default(0) }}">
+            <span class="live-indicator">
+                <span></span>
+                LIVE
+            </span>
 
-0
+            <span class="card-category">
+                TRANSACTION FLOW
+            </span>
 
-</h2>
-
-
-
-<h4>
-Total Transactions
-
-</h4>
+        </div>
 
 
-
-<div class="mini-progress">
-
-<div class="mini-fill blue"
-style="width:90%">
-
-</div>
-
-</div>
+        <h2 class="counter"
+            data-target="{{ total_transactions|default(0) }}">
+            0
+        </h2>
 
 
-
-<small>
-Recorded in Database
-</small>
-
+        <h4>
+            Total Transactions
+        </h4>
 
 
-</div>
+        <div class="mini-progress">
+
+            <div class="mini-fill blue"
+                 style="width:90%">
+            </div>
+
+        </div>
+
+
+        <div class="card-footer">
+
+            <small>
+                <i class="fa-solid fa-database"></i>
+                Recorded in Database
+            </small>
+
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+
+        </div>
+
+    </div>
 
 
 
-
-
-
-
-
+    <!-- SAFE TRANSACTIONS -->
+    <!-- SAFE TRANSACTIONS -->
 <div class="summary-card green">
 
+    <div class="card-glow"></div>
 
-<div class="card-top">
+    <div class="card-top">
 
+        <div class="icon">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
 
-<div class="icon">
+        <span class="trend positive">
+            <i class="fa-solid fa-shield-check"></i>
+            Safe
+        </span>
 
-<i class="fa-solid fa-circle-check"></i>
-
-</div>
-
-
-<span class="trend positive">
-
-Safe
-
-</span>
+    </div>
 
 
-</div>
+    <div class="card-label-row">
+
+        <span class="live-indicator green-live">
+            <span></span>
+            VERIFIED
+        </span>
+
+        <span class="card-category">
+            PROTECTED
+        </span>
+
+    </div>
 
 
-
-<h2 class="counter"
-data-target="{{ safe_transactions|default(0) }}">
-
-0
-
+    <!-- IMPORTANT: backend value directly shown -->
+   <h2 class="counter"
+    data-target="{{ safe_transactions|default(0) }}">
+    {{ safe_transactions|default(0) }}
 </h2>
 
 
-
-<h4>
-Safe Transactions
-</h4>
-
+    <h4>
+        Safe Transactions
+    </h4>
 
 
-<div class="mini-progress">
+    <div class="mini-progress">
 
-<div class="mini-fill green"
-style="width:95%">
+        <div
+            class="mini-fill green"
+            style="width:95%">
+        </div>
 
-</div>
-
-</div>
-
-
-
-<small>
-Verified by AI
-</small>
+    </div>
 
 
+    <div class="card-footer">
 
-</div>
+        <small>
+            <i class="fa-solid fa-shield-halved"></i>
+            Verified by AI
+        </small>
 
+        <i class="fa-solid fa-circle-check card-arrow"></i>
 
-
-
-
-
-
-
-
-<div class="summary-card red">
-
-
-<div class="card-top">
-
-
-<div class="icon">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
 
 </div>
 
 
-<span class="trend negative">
+    <!-- FRAUD DETECTED -->
+    <div class="summary-card red">
 
-Alert
+        <div class="card-glow"></div>
 
-</span>
+        <div class="card-top">
+
+            <div class="icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <span class="trend negative">
+                <i class="fa-solid fa-bell"></i>
+                Alert
+            </span>
+
+        </div>
+
+
+        <div class="card-label-row">
+
+            <span class="live-indicator red-live">
+                <span></span>
+                ALERT
+            </span>
+
+            <span class="card-category">
+                THREAT DETECTION
+            </span>
+
+        </div>
+
+
+        <h2 class="counter"
+            data-target="{{ fraud_transactions|default(0) }}">
+            0
+        </h2>
+
+
+        <h4>
+            Fraud Detected
+        </h4>
+
+
+        <div class="mini-progress">
+
+            <div class="mini-fill red"
+                 style="width:45%">
+            </div>
+
+        </div>
+
+
+        <div class="card-footer">
+
+            <small>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Needs Investigation
+            </small>
+
+            <i class="fa-solid fa-arrow-right card-arrow"></i>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- AVERAGE RISK -->
+    <div class="summary-card purple">
+
+        <div class="card-glow"></div>
+
+        <div class="card-top">
+
+            <div class="icon">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+
+            <span class="trend warning">
+                <i class="fa-solid fa-brain"></i>
+                AI
+            </span>
+
+        </div>
+
+
+        <div class="card-label-row">
+
+            <span class="live-indicator purple-live">
+                <span></span>
+                AI ACTIVE
+            </span>
+
+            <span class="card-category">
+                RISK ENGINE
+            </span>
+
+        </div>
+
+
+        <h2>
+            {{ average_risk|default(0) }}%
+        </h2>
+
+
+        <h4>
+            Average Risk
+        </h4>
+
+
+        <div class="mini-progress">
+
+            <div class="mini-fill purple"
+                 style="width:{{ average_risk|default(0) }}%">
+            </div>
+
+        </div>
+
+
+        <div class="card-footer">
+
+            <small>
+                <i class="fa-solid fa-brain"></i>
+                AI Prediction
+            </small>
+
+            <i class="fa-solid fa-chart-line card-arrow"></i>
+
+        </div>
+
+    </div>
 
 
 </div>
-
-
-
-<h2 class="counter"
-data-target="{{ fraud_transactions|default(0) }}">
-
-0
-
-</h2>
-
-
-
-<h4>
-Fraud Detected
-</h4>
-
-
-
-<div class="mini-progress">
-
-<div class="mini-fill red"
-style="width:45%">
-
-</div>
-
-</div>
-
-
-
-<small>
-Needs Investigation
-</small>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="summary-card purple">
-
-
-<div class="card-top">
-
-
-<div class="icon">
-
-<i class="fa-solid fa-chart-pie"></i>
-
-</div>
-
-
-<span class="trend warning">
-
-AI
-
-</span>
-
-
-</div>
-
-
-
-
-<h2>
-
-{{ average_risk|default(0) }}%
-
-</h2>
-
-
-
-
-<h4>
-Average Risk
-</h4>
-
-
-
-
-<div class="mini-progress">
-
-
-<div class="mini-fill purple"
-style="width:{{ average_risk|default(0) }}%">
-
-</div>
-
-
-</div>
-
-
-
-<small>
-AI Prediction
-</small>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
 
 <!-- =========================================
 FILTER BAR
@@ -1227,8 +1221,8 @@ CHARTS
         </div>
 
 
-
         <canvas id="riskChart"></canvas>
+        
 
 
     </div>

@@ -1867,3 +1867,12 @@ transform:translateY(0);
     font-size:17px;
     font-weight:600;
 }
+.sidebar-item {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.sidebar-item:hover {
+    text-decoration: none;
+}

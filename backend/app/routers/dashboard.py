@@ -7,6 +7,9 @@ from fastapi import Depends
 from app.models.report import ReportDB
 from app.database.connection import Base
 from app.models.transaction import TransactionDB
+from app.database.graph import get_session
+from fastapi import APIRouter, Depends, HTTPException
+from neo4j.exceptions import ServiceUnavailable
 
 
 router = APIRouter(
@@ -140,3 +143,86 @@ def dashboard_ai_insight(
         "recommendation": latest_transaction.recommendation,
         "status": latest_transaction.status
     }
+
+@router.get("/knowledge-graph")
+def knowledge_graph():
+
+    try:
+        print("KNOWLEDGE GRAPH: Connecting to Neo4j...")
+
+        with get_session() as graph:
+
+            result = graph.run("""
+                MATCH (n)
+                OPTIONAL MATCH (n)-[r]->(m)
+
+                RETURN
+                    collect(DISTINCT {
+                        id: elementId(n),
+                        label: coalesce(
+                            n.name,
+                            n.id,
+                            n.transaction_id,
+                            elementId(n)
+                        ),
+                        type: CASE
+                            WHEN labels(n)[0] IS NOT NULL
+                            THEN labels(n)[0]
+                            ELSE "Unknown"
+                        END,
+                        properties: properties(n)
+                    }) AS nodes,
+
+                    collect(DISTINCT {
+                        source: elementId(n),
+                        target: CASE
+                            WHEN m IS NOT NULL
+                            THEN elementId(m)
+                            ELSE NULL
+                        END,
+                        type: CASE
+                            WHEN r IS NOT NULL
+                            THEN type(r)
+                            ELSE NULL
+                        END
+                    }) AS relationships
+            """)
+
+            record = result.single()
+
+            if not record:
+                return {
+                    "nodes": [],
+                    "relationships": []
+                }
+
+            nodes = record["nodes"] or []
+            relationships = record["relationships"] or []
+
+            relationships = [
+                rel
+                for rel in relationships
+                if rel.get("source")
+                and rel.get("target")
+            ]
+
+            print(
+                f"KNOWLEDGE GRAPH: "
+                f"{len(nodes)} nodes, "
+                f"{len(relationships)} relationships"
+            )
+
+            return {
+                "nodes": nodes,
+                "relationships": relationships
+            }
+
+    except Exception as e:
+
+        print("KNOWLEDGE GRAPH ERROR:", repr(e))
+
+        return {
+            "nodes": [],
+            "relationships": [],
+            "error": str(e)
+        }

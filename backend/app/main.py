@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from httpcore import request
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
 from sqlalchemy.orm import Session
@@ -461,29 +462,97 @@ async def transactions(
     db: Session = Depends(get_db)
 ):
 
+    # ==========================================
+    # GET ALL TRANSACTIONS
+    # ==========================================
+
     transactions = (
         db.query(TransactionDB)
         .order_by(TransactionDB.created_at.desc())
         .all()
     )
 
+
+    # ==========================================
+    # TOTAL
+    # ==========================================
+
     total_transactions = len(transactions)
 
-    fraud_transactions = len([
-        t for t in transactions
-        if t.prediction == "Fraud"
-    ])
 
-    safe_transactions = len([
-        t for t in transactions
-        if t.prediction == "Safe"
-    ])
+    # ==========================================
+    # FRAUD
+    # Handles:
+    # Fraud
+    # FRAUD
+    # fraud
+    # ==========================================
+
+    fraud_transactions = sum(
+        1
+        for t in transactions
+        if str(t.prediction or "").strip().lower() == "fraud"
+    )
+
+
+    # ==========================================
+    # SAFE / LEGITIMATE
+    # Handles:
+    # Safe
+    # SAFE
+    # Legitimate
+    # LEGITIMATE
+    # Legit
+    # ==========================================
+
+    safe_transactions = sum(
+        1
+        for t in transactions
+        if str(t.prediction or "").strip().lower()
+        in ["safe", "legitimate", "legit"]
+    )
+
+
+    # ==========================================
+    # AVERAGE RISK
+    # ==========================================
 
     average_risk = round(
-        sum(t.risk_score or 0 for t in transactions) /
-        total_transactions,
+        sum(
+            float(t.risk_score or 0)
+            for t in transactions
+        ) / total_transactions,
         2
     ) if total_transactions else 0
+
+
+    # ==========================================
+    # DEBUG
+    # ==========================================
+
+    print("========================================")
+    print("TRANSACTION DASHBOARD")
+    print("Total:", total_transactions)
+    print("Safe:", safe_transactions)
+    print("Fraud:", fraud_transactions)
+    print("Average Risk:", average_risk)
+
+    for t in transactions[:10]:
+        print(
+            "ID:",
+            t.id,
+            "| Prediction:",
+            repr(t.prediction),
+            "| Risk:",
+            t.risk_score
+        )
+
+    print("========================================")
+
+
+    # ==========================================
+    # SEND DATA TO TEMPLATE
+    # ==========================================
 
     return templates.TemplateResponse(
         "transactions.html",
@@ -2124,6 +2193,8 @@ def fraud_trend(
 
     ]
 
+
+
 @app.get("/api/transaction-chart-data")
 async def transaction_chart_data(
     db: Session = Depends(get_db)
@@ -2134,46 +2205,57 @@ async def transaction_chart_data(
         .all()
     )
 
-
-    # Risk Distribution
     safe = 0
     medium = 0
     high = 0
 
-
     for t in transactions:
 
-        if t.risk_level == "High":
+        risk = str(t.risk_level or "").strip().lower()
+
+        print(
+            "Transaction:",
+            t.transaction_id,
+            "| Risk Level:",
+            repr(t.risk_level)
+        )
+
+        if "high" in risk:
             high += 1
 
-        elif t.risk_level == "Medium":
+        elif "medium" in risk:
             medium += 1
 
-        else:
+        elif (
+            "low" in risk
+            or "safe" in risk
+            or "legitimate" in risk
+        ):
             safe += 1
 
-
-
-    # Fraud Probability Data
     fraud_data = []
 
     for t in transactions:
 
         fraud_data.append({
             "id": t.transaction_id,
-            "score": t.fraud_probability or 0
+            "score": float(t.fraud_probability or 0)
         })
 
-
+    print(
+        "RISK DISTRIBUTION:",
+        {
+            "safe": safe,
+            "medium": medium,
+            "high": high
+        }
+    )
 
     return {
-
         "risk_distribution": {
             "safe": safe,
             "medium": medium,
             "high": high
         },
-
         "fraud_probability": fraud_data
-
     }

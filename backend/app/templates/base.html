@@ -49,122 +49,206 @@ href="{{ url_for('static',path='css/dashboard.css') }}">
 <!-- Main Layout -->
 
 <div class="app-layout">
-    <!-- ================= SIDEBAR ================= -->
+```html
+<!-- ==========================
+     SIDEBAR
+========================== -->
 
 <aside class="sidebar">
 
-<div class="sidebar-header">
+    <!-- LOGO -->
 
-<div class="logo">
+    <div class="sidebar-logo">
 
-<div class="logo-icon">
+        <div class="logo-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
 
-<i class="fa-solid fa-shield-halved"></i>
+        <div>
+            <strong>Fraud Intelligence</strong>
+        </div>
 
-</div>
+    </div>
 
-<div>
 
-<h2>FinGuard AI</h2>
+    <!-- NAVIGATION -->
 
-<span>Fraud Intelligence</span>
+    <nav class="sidebar-nav">
 
-</div>
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="sidebar-item"
+        >
 
-</div>
+            <i class="fa-solid fa-chart-line"></i>
 
-</div>
+            <span>Dashboard</span>
 
-<nav class="sidebar-menu">
+        </a>
 
-<a href="/dashboard"
-class="{% if active_page=='dashboard' %}active{% endif %}">
 
-<i class="fa-solid fa-chart-line"></i>
+        <a
+            href="{{ url_for('transactions') }}"
+            class="sidebar-item"
+        >
 
-<span>Dashboard</span>
+            <i class="fa-solid fa-money-bill-transfer"></i>
 
-</a>
+            <span>Transactions</span>
 
-<a href="/transactions"
-class="{% if active_page=='transactions' %}active{% endif %}">
+        </a>
 
-<i class="fa-solid fa-list"></i>
 
-<span>Transactions</span>
+        <a
+            href="{{ url_for('reports') }}"
+            class="sidebar-item"
+        >
 
-</a>
+            <i class="fa-solid fa-file-lines"></i>
 
-<a href="/reports"
-class="{% if active_page=='reports' %}active{% endif %}">
+            <span>Reports</span>
 
-<i class="fa-solid fa-file-lines"></i>
+        </a>
 
-<span>Reports</span>
 
-</a>
+        <a
+            href="{{ url_for('ocr') }}"
+            class="sidebar-item"
+        >
 
-<a href="/ocr"
-class="{% if active_page=='ocr' %}active{% endif %}">
+            <i class="fa-solid fa-file-image"></i>
 
-<i class="fa-solid fa-camera"></i>
+            <span>OCR Scanner</span>
 
-<span>OCR Scanner</span>
+        </a>
 
-</a>
 
-<a href="/knowledge-graph"
-class="{% if active_page=='knowledge-graph' %}active{% endif %}">
+        <!-- KNOWLEDGE GRAPH -->
 
-<i class="fa-solid fa-project-diagram"></i>
+        <a
+            href="{{ url_for('knowledge_graph') }}"
+            class="sidebar-item"
+        >
 
-<span>Knowledge Graph</span>
+            <i class="fa-solid fa-diagram-project"></i>
 
-</a>
+            <span>Knowledge Graph</span>
 
-<a href="/settings"
-class="{% if active_page=='settings' %}active{% endif %}">
+        </a>
 
-<i class="fa-solid fa-gear"></i>
 
-<span>Settings</span>
+        <a
+            href="{{ url_for('settings') }}"
+            class="sidebar-item"
+        >
 
-</a>
+            <i class="fa-solid fa-gear"></i>
 
-</nav>
-<div class="sidebar-footer">
+            <span>Settings</span>
 
-<div class="ai-card">
+        </a>
 
-<div class="ai-top">
+    </nav>
 
-<span class="online-dot"></span>
 
-AI Protection
+    <!-- AI STATUS -->
 
-</div>
+    <div class="sidebar-status">
 
-<h3>System Online</h3>
+        <div class="status-title">
 
-<p>
+            <span class="status-dot"></span>
 
-Real-time fraud monitoring is active.
+            <strong>AI Protection</strong>
 
-</p>
+        </div>
 
-<div class="ai-progress">
 
-<div class="progress-fill"></div>
+        <p>
+            Real-time fraud monitoring is active.
+        </p>
 
-</div>
 
-<small>99.8% Detection Accuracy</small>
+        <strong class="accuracy">
+            99.8% Detection Accuracy
+        </strong>
 
-</div>
-
-</div>
+    </div>
 
 </aside>
+
+
+<!-- ==========================
+     TOPBAR
+========================== -->
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+            type="button"
+            class="menu-btn"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+
+        <div>
+
+            <h1>
+
+                {% block page_title %}
+                    Dashboard
+                {% endblock %}
+
+            </h1>
+
+
+            <p>
+
+                {% block page_subtitle %}
+                    AI Powered Financial Fraud Detection Platform
+                {% endblock %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="topbar-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            placeholder="Search transactions, reports, merchants..."
+        >
+
+    </div>
+
+</header>
+
+
+<!-- ==========================
+     PAGE CONTENT
+========================== -->
+
+<main class="page-content">
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+```
+
 <!-- ==========================
 MAIN AREA
 ========================== -->
@@ -228,72 +312,7 @@ MAIN AREA
 
         <!-- RIGHT -->
 
-        <div class="topbar-right">
-
-            <!-- AI STATUS -->
-
-            <div class="live-status">
-
-                <span class="pulse-dot"></span>
-
-                AI Online
-
-            </div>
-
-            <!-- Notification -->
-
-            <button class="icon-btn">
-
-                <i class="fa-regular fa-bell"></i>
-
-                <span class="notify-count">
-
-                    3
-
-                </span>
-
-            </button>
-
-            <!-- Theme -->
-
-            <button class="icon-btn">
-
-                <i class="fa-regular fa-moon"></i>
-
-            </button>
-
-            <!-- Profile -->
-
-            <div class="profile">
-
-                <div class="avatar">
-
-                    H
-
-                </div>
-
-                <div class="profile-info">
-
-                    <strong>
-
-                        Harshal
-
-                    </strong>
-
-                    <span>
-
-                        Administrator
-
-                    </span>
-
-                </div>
-
-                <i class="fa-solid fa-chevron-down"></i>
-
-            </div>
-
-        </div>
-
+       
     </header>
 
     <!-- ==========================

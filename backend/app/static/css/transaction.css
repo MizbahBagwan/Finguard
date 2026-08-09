@@ -2595,3 +2595,2653 @@ tbody tr{
 .pagination-section{
     margin-top:5px !important;
 }
+/* =====================================================
+   FINGUARD TRANSACTION PAGE
+   REMOVE SIDE SPACE + DASHBOARD STYLE LAYOUT
+===================================================== */
+
+/* Main content ko available width properly use karvao */
+.main-content {
+    margin-left: 220px !important;
+    width: calc(100% - 220px) !important;
+    max-width: none !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box;
+}
+
+
+/* Agar content wrapper/container hai */
+.content-wrapper,
+.page-content,
+.dashboard-content,
+.transaction-page,
+.transactions-page {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   TRANSACTION HERO
+   SAME ROW AS DASHBOARD
+===================================================== */
+
+.transaction-hero {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 20px 0 !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 390px !important;
+
+    gap: 22px !important;
+
+    box-sizing: border-box;
+}
+
+
+/* LEFT HERO */
+
+.transaction-hero .hero-left {
+    width: 100% !important;
+    min-width: 0;
+}
+
+
+/* RIGHT AI STATUS */
+
+.transaction-hero .hero-right {
+    width: 100% !important;
+    min-width: 0;
+}
+
+
+/* STATUS CARD */
+
+.transaction-hero .status-card {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 300px;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   SEARCH BAR
+===================================================== */
+
+.transaction-toolbar {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 22px 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 12px !important;
+
+    box-sizing: border-box;
+}
+
+
+/* Search should take available space */
+
+.transaction-search {
+    flex: 1 !important;
+    width: auto !important;
+}
+
+
+/* =====================================================
+   KPI SECTION
+===================================================== */
+
+.transaction-kpis {
+    width: 100% !important;
+    max-width: none !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
+
+    gap: 18px !important;
+
+    margin: 0 0 22px 0 !important;
+}
+
+
+/* =====================================================
+   TRANSACTION TABLE
+===================================================== */
+
+.transaction-panel {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   CHARTS
+===================================================== */
+
+.analytics-grid {
+    width: 100% !important;
+    max-width: none !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 20px !important;
+}
+
+
+/* =====================================================
+   MONITORING
+===================================================== */
+
+.monitoring-grid {
+    width: 100% !important;
+    max-width: none !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 20px !important;
+}
+
+
+/* =====================================================
+   AI INSIGHTS
+===================================================== */
+
+.ai-insights-grid {
+    width: 100% !important;
+    max-width: none !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 18px !important;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1100px) {
+
+    .transaction-hero {
+        grid-template-columns: 1fr !important;
+    }
+
+    .transaction-kpis {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .ai-insights-grid {
+        grid-template-columns:
+            1fr 1fr !important;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
+    }
+
+    .transaction-kpis {
+        grid-template-columns: 1fr !important;
+    }
+
+    .ai-insights-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .monitoring-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .transaction-toolbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+}
+/* =====================================================
+   FIN GUARD - REMOVE INNER CONTENT SPACE
+   ===================================================== */
+
+main {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+}
+
+
+/* Main page wrapper */
+main > div,
+main .content,
+main .page-content,
+main .main-content,
+main .content-wrapper,
+main .dashboard-content,
+main .dashboard-container,
+main .transaction-container,
+main .transactions-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+
+/* Remove horizontal padding creating the gap */
+main .content,
+main .page-content,
+main .main-content,
+main .content-wrapper,
+main .dashboard-content,
+main .dashboard-container,
+main .transaction-container,
+main .transactions-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+/* Transaction hero */
+.transaction-hero {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+
+/* Toolbar */
+.transaction-toolbar {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+
+/* KPI */
+.transaction-kpis {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+
+/* Table */
+.transaction-panel {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+
+/* Charts */
+.analytics-grid,
+.ai-insights-grid,
+.monitoring-grid {
+    width: 100% !important;
+    max-width: none !important;
+}
+.sidebar {
+    width: 270px;
+    min-width: 270px;
+}
+
+/* Sidebar ke andar content properly align rahe */
+.sidebar-menu,
+.sidebar-nav {
+    width: 100%;
+}
+
+/* Main content sidebar ke according adjust ho */
+.main-content {
+    margin-left: 270px;
+}
+/* =====================================================
+   PART 2 — PREMIUM KPI CARDS
+===================================================== */
+
+.transaction-kpis {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    width: 100%;
+
+    margin: 0 0 24px;
+
+}
+
+
+/* ===============================
+   MAIN CARD
+================================ */
+
+.transaction-kpi-card {
+
+    position: relative;
+
+    min-height: 205px;
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 23, 42, .92),
+            rgba(2, 8, 23, .96)
+        );
+
+    border: 1px solid
+        rgba(0, 212, 255, .16);
+
+    box-shadow:
+
+        0 15px 40px
+        rgba(0, 0, 0, .25),
+
+        inset 0 0 25px
+        rgba(0, 212, 255, .025);
+
+    overflow: hidden;
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+}
+
+
+/* TOP GLOW LINE */
+
+.transaction-kpi-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d4ff,
+            #3b82f6,
+            transparent
+        );
+
+    opacity: .85;
+
+}
+
+
+/* BACKGROUND GLOW */
+
+.transaction-kpi-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    right: -55px;
+    bottom: -65px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 212, 255, .07);
+
+    filter: blur(25px);
+
+    pointer-events: none;
+
+}
+
+
+/* HOVER */
+
+.transaction-kpi-card:hover {
+
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(0, 212, 255, .42);
+
+    box-shadow:
+
+        0 20px 45px
+        rgba(0, 0, 0, .35),
+
+        0 0 25px
+        rgba(0, 212, 255, .08),
+
+        inset 0 0 30px
+        rgba(0, 212, 255, .04);
+
+}
+
+
+/* ===============================
+   TOP
+================================ */
+
+.kpi-card-top {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+}
+
+
+/* ===============================
+   ICON
+================================ */
+
+.kpi-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 20px;
+
+    color: white;
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.25);
+
+}
+
+
+/* ICON COLORS */
+
+.kpi-icon.blue {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0ea5e9,
+            #2563eb
+        );
+
+}
+
+.kpi-icon.green {
+
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #10b981
+        );
+
+}
+
+.kpi-icon.red {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4444,
+            #f43f5e
+        );
+
+}
+
+.kpi-icon.purple {
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #6366f1
+        );
+
+}
+
+
+/* ===============================
+   BADGES
+================================ */
+
+.kpi-live-badge {
+
+    padding: 6px 11px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .8px;
+
+    border: 1px solid;
+
+}
+
+
+.blue-badge {
+
+    color: #38bdf8;
+
+    background:
+        rgba(14,165,233,.10);
+
+    border-color:
+        rgba(14,165,233,.25);
+
+}
+
+
+.green-badge {
+
+    color: #22c55e;
+
+    background:
+        rgba(34,197,94,.10);
+
+    border-color:
+        rgba(34,197,94,.25);
+
+}
+
+
+.red-badge {
+
+    color: #fb7185;
+
+    background:
+        rgba(244,63,94,.10);
+
+    border-color:
+        rgba(244,63,94,.25);
+
+}
+
+
+.purple-badge {
+
+    color: #a78bfa;
+
+    background:
+        rgba(139,92,246,.10);
+
+    border-color:
+        rgba(139,92,246,.25);
+
+}
+
+
+/* ===============================
+   CONTENT
+================================ */
+
+.kpi-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.kpi-label {
+
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.kpi-value {
+
+    margin-top: 2px;
+
+    color: #f8fafc;
+
+    font-size: 32px;
+
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+
+    text-shadow:
+        0 0 18px
+        rgba(0,212,255,.12);
+
+}
+
+
+.kpi-description {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+
+}
+
+
+/* ===============================
+   BOTTOM
+================================ */
+
+.kpi-bottom {
+
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+    bottom: 17px;
+
+    padding-top: 12px;
+
+    border-top:
+        1px solid
+        rgba(148,163,184,.10);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.kpi-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #64748b;
+
+    font-size: 10px;
+
+}
+
+
+.kpi-bottom > i {
+
+    color: #38bdf8;
+
+    font-size: 13px;
+
+}
+
+
+.danger-status {
+
+    color: #94a3b8;
+
+}
+
+
+/* ===============================
+   MINI STATUS DOT
+================================ */
+
+.status-mini-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    display: inline-block;
+
+    box-shadow: 0 0 8px currentColor;
+
+}
+
+
+.status-mini-dot.blue {
+
+    background: #38bdf8;
+    color: #38bdf8;
+
+}
+
+
+.status-mini-dot.green {
+
+    background: #22c55e;
+    color: #22c55e;
+
+}
+
+
+.status-mini-dot.red {
+
+    background: #ef4444;
+    color: #ef4444;
+
+}
+
+
+.status-mini-dot.purple {
+
+    background: #a78bfa;
+    color: #a78bfa;
+
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1100px) {
+
+    .transaction-kpis {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .transaction-kpis {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+/* =========================================================
+   PREMIUM SUMMARY CARDS
+   FinGuard AI
+========================================================= */
+
+.summary-grid {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    width: 100%;
+
+    margin-top: 22px;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.summary-card {
+
+    position: relative;
+
+    min-height: 215px;
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 23, 42, .94),
+            rgba(3, 8, 23, .98)
+        ) !important;
+
+    border:
+        1px solid
+        rgba(56, 189, 248, .14) !important;
+
+    box-shadow:
+
+        0 15px 35px
+        rgba(0, 0, 0, .28),
+
+        inset 0 1px 0
+        rgba(255,255,255,.035),
+
+        inset 0 0 35px
+        rgba(0, 212, 255, .025);
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+}
+
+
+/* TOP ENERGY LINE */
+
+.summary-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 12%;
+
+    width: 76%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d4ff,
+            #3b82f6,
+            transparent
+        );
+
+    opacity: .9;
+
+}
+
+
+/* SOFT INTERNAL GLOW */
+
+.card-glow {
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -70px;
+    bottom: -80px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 212, 255, .10);
+
+    filter: blur(35px);
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.summary-card:hover {
+
+    transform: translateY(-6px);
+
+    border-color:
+        rgba(0, 212, 255, .42) !important;
+
+    box-shadow:
+
+        0 22px 45px
+        rgba(0, 0, 0, .38),
+
+        0 0 28px
+        rgba(0, 212, 255, .08),
+
+        inset 0 0 35px
+        rgba(0, 212, 255, .045);
+
+}
+
+
+/* =========================================================
+   TOP AREA
+========================================================= */
+
+.summary-card .card-top {
+
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.summary-card .icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    color: #fff;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 8px 22px
+        rgba(0,0,0,.28);
+
+}
+
+
+/* Blue */
+
+.summary-card.blue .icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #06b6d4,
+            #2563eb
+        );
+
+}
+
+
+/* Green */
+
+.summary-card.green .icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #059669
+        );
+
+}
+
+
+/* Red */
+
+.summary-card.red .icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4444,
+            #e11d48
+        );
+
+}
+
+
+/* Purple */
+
+.summary-card.purple .icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #6366f1
+        );
+
+}
+
+
+/* =========================================================
+   TREND BADGES
+========================================================= */
+
+.summary-card .trend {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+
+/* =========================================================
+   CATEGORY ROW
+========================================================= */
+
+.card-label-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 6px;
+
+}
+
+
+.card-category {
+
+    color: #475569;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* =========================================================
+   LIVE INDICATOR
+========================================================= */
+
+.live-indicator {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #38bdf8;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .7px;
+
+}
+
+
+.live-indicator > span {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #38bdf8;
+
+    box-shadow:
+        0 0 10px #38bdf8;
+
+    animation:
+        summaryPulse 1.7s infinite;
+
+}
+
+
+.green-live {
+
+    color: #22c55e;
+
+}
+
+
+.green-live > span {
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 10px #22c55e;
+
+}
+
+
+.red-live {
+
+    color: #fb7185;
+
+}
+
+
+.red-live > span {
+
+    background: #fb7185;
+
+    box-shadow:
+        0 0 10px #fb7185;
+
+}
+
+
+.purple-live {
+
+    color: #a78bfa;
+
+}
+
+
+.purple-live > span {
+
+    background: #a78bfa;
+
+    box-shadow:
+        0 0 10px #a78bfa;
+
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.summary-card h2 {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 4px 0 2px;
+
+    color: #f8fafc;
+
+    font-size: 34px;
+
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    letter-spacing: -.7px;
+
+    text-shadow:
+        0 0 18px
+        rgba(56,189,248,.12);
+
+}
+
+
+/* TITLE */
+
+.summary-card h4 {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 0;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.summary-card .mini-progress {
+
+    position: relative;
+
+    z-index: 2;
+
+    height: 4px;
+
+    margin-top: 15px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background:
+        rgba(148,163,184,.10);
+
+}
+
+
+.summary-card .mini-fill {
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    position: relative;
+
+}
+
+
+.summary-card .mini-fill::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 35px;
+    height: 100%;
+
+    background:
+        rgba(255,255,255,.45);
+
+    filter: blur(5px);
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.card-footer {
+
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+    bottom: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-top: 11px;
+
+    border-top:
+        1px solid
+        rgba(148,163,184,.09);
+
+}
+
+
+.card-footer small {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #64748b;
+
+    font-size: 10px;
+
+}
+
+
+.card-footer small i {
+
+    color: #38bdf8;
+
+}
+
+
+.card-arrow {
+
+    color: #475569;
+
+    font-size: 11px;
+
+    transition:
+        transform .25s ease,
+        color .25s ease;
+
+}
+
+
+.summary-card:hover .card-arrow {
+
+    color: #38bdf8;
+
+    transform: translateX(4px);
+
+}
+
+
+/* =========================================================
+   PULSE
+========================================================= */
+
+@keyframes summaryPulse {
+
+    0% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        opacity: .45;
+
+        transform: scale(.75);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .summary-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .summary-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+/* =========================================================
+   FINGUARD AI — PREMIUM TRANSACTION THEME
+   ONLY VISUAL UPGRADE — NO HTML/JS CHANGE
+========================================================= */
+
+/* Main transaction area */
+.transaction-section,
+.table-card,
+.transactions-card,
+.transaction-table-wrapper {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 23, 42, 0.94),
+            rgba(2, 8, 23, 0.97)
+        ) !important;
+
+    border: 1px solid rgba(0, 212, 255, 0.16) !important;
+
+    border-radius: 20px !important;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255,255,255,0.035) !important;
+
+}
+
+
+/* Search / filter area */
+
+.filter-bar,
+.filters,
+.transaction-filters {
+
+    background:
+        rgba(15, 23, 42, 0.70) !important;
+
+    border: 1px solid rgba(0, 212, 255, 0.10) !important;
+
+    border-radius: 14px !important;
+
+    box-shadow:
+        inset 0 0 25px rgba(0, 212, 255, 0.025) !important;
+
+}
+
+
+/* Search input */
+
+#searchInput {
+
+    background:
+        rgba(2, 8, 23, 0.72) !important;
+
+    color: #e2f3ff !important;
+
+    border: 1px solid rgba(0, 212, 255, 0.14) !important;
+
+    border-radius: 10px !important;
+
+}
+
+
+#searchInput:focus {
+
+    border-color:
+        rgba(0, 212, 255, 0.50) !important;
+
+    box-shadow:
+        0 0 18px rgba(0, 212, 255, 0.10) !important;
+
+}
+
+
+/* Selects */
+
+#riskFilter,
+#dateFilter {
+
+    background:
+        rgba(2, 8, 23, 0.78) !important;
+
+    color: #cbd5e1 !important;
+
+    border: 1px solid rgba(0, 212, 255, 0.12) !important;
+
+}
+
+
+/* Apply filter */
+
+#applyFilter {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #2563eb
+        ) !important;
+
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+
+    box-shadow:
+        0 7px 22px rgba(0, 150, 255, 0.16) !important;
+
+}
+
+
+/* Reset */
+
+#resetFilter {
+
+    background:
+        rgba(15, 23, 42, 0.75) !important;
+
+    color: #94a3b8 !important;
+
+    border: 1px solid rgba(148, 163, 184, 0.12) !important;
+
+}
+
+
+/* Table */
+
+.transaction-table {
+
+    background: transparent !important;
+
+    border-collapse: separate !important;
+
+    border-spacing: 0 !important;
+
+}
+
+
+/* Table header */
+
+.transaction-table thead {
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(15, 23, 42, 0.96),
+            rgba(8, 15, 30, 0.90)
+        ) !important;
+
+}
+
+
+.transaction-table th {
+
+    color: #64748b !important;
+
+    background: transparent !important;
+
+    border-bottom:
+        1px solid rgba(0, 212, 255, 0.10) !important;
+
+    font-size: 10px !important;
+
+    letter-spacing: .7px;
+
+}
+
+
+/* Rows */
+
+.transaction-table tbody tr {
+
+    background:
+        rgba(15, 23, 42, 0.32) !important;
+
+    transition:
+        all .25s ease !important;
+
+}
+
+
+/* Premium hover */
+
+.transaction-table tbody tr:hover {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 212, 255, 0.055),
+            rgba(37, 99, 235, 0.035)
+        ) !important;
+
+    box-shadow:
+        inset 3px 0 0 #00d4ff !important;
+
+}
+
+
+/* Cells */
+
+.transaction-table td {
+
+    border-bottom:
+        1px solid rgba(148, 163, 184, 0.055) !important;
+
+    color: #cbd5e1 !important;
+
+}
+
+
+/* Transaction ID */
+
+.transaction-table td:first-child {
+
+    color: #38bdf8 !important;
+
+    font-weight: 700;
+
+}
+
+
+/* Amount */
+
+.transaction-table td:nth-child(3) {
+
+    color: #f8fafc !important;
+
+    font-weight: 700;
+
+}
+
+
+/* Risk score */
+
+.transaction-table td {
+
+    position: relative;
+
+}
+
+
+/* Premium status badges */
+
+.transaction-table .badge,
+.transaction-table .status,
+.transaction-table .risk-badge {
+
+    border-radius: 999px !important;
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+/* High risk */
+
+.transaction-table .high,
+.transaction-table .risk-high {
+
+    background:
+        rgba(239, 68, 68, 0.08) !important;
+
+    border:
+        1px solid rgba(239, 68, 68, 0.20) !important;
+
+    color: #fb7185 !important;
+
+}
+
+
+/* Medium risk */
+
+.transaction-table .medium,
+.transaction-table .risk-medium {
+
+    background:
+        rgba(245, 158, 11, 0.08) !important;
+
+    border:
+        1px solid rgba(245, 158, 11, 0.20) !important;
+
+    color: #fbbf24 !important;
+
+}
+
+
+/* Low risk */
+
+.transaction-table .low,
+.transaction-table .risk-low {
+
+    background:
+        rgba(34, 197, 94, 0.08) !important;
+
+    border:
+        1px solid rgba(34, 197, 94, 0.20) !important;
+
+    color: #4ade80 !important;
+
+}
+
+
+/* Scrollbar */
+
+.transaction-table-wrapper::-webkit-scrollbar {
+
+    height: 5px;
+
+}
+
+
+.transaction-table-wrapper::-webkit-scrollbar-track {
+
+    background:
+        rgba(2, 8, 23, 0.7);
+
+}
+
+
+.transaction-table-wrapper::-webkit-scrollbar-thumb {
+
+    background:
+        linear-gradient(
+            90deg,
+            #0891b2,
+            #2563eb
+        );
+
+    border-radius: 10px;
+
+}
+
+
+/* Premium subtle top glow */
+
+.transaction-section::before,
+.table-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 10%;
+
+    width: 80%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,212,255,.65),
+            transparent
+        );
+
+    pointer-events: none;
+
+}
+/* =========================================================
+   FINGUARD AI — PREMIUM 3D CHART SECTION
+   CSS ONLY — NO HTML / JS CHANGE
+========================================================= */
+
+.chart-card {
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 23, 42, 0.96),
+            rgba(2, 8, 23, 0.98)
+        ) !important;
+
+    border: 1px solid
+        rgba(0, 212, 255, 0.16) !important;
+
+    border-radius: 22px !important;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.38),
+        0 5px 15px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255,255,255,0.045),
+        inset 0 0 35px rgba(0,212,255,0.025) !important;
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        border-color 0.35s ease !important;
+
+}
+
+
+/* =========================================================
+   3D HOVER
+========================================================= */
+
+.chart-card:hover {
+
+    transform:
+        translateY(-6px)
+        perspective(900px)
+        rotateX(1deg);
+
+    border-color:
+        rgba(0, 212, 255, 0.32) !important;
+
+    box-shadow:
+        0 28px 60px rgba(0,0,0,0.50),
+        0 0 28px rgba(0,212,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.06) !important;
+
+}
+
+
+/* =========================================================
+   TOP CYAN LIGHT
+========================================================= */
+
+.chart-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 8%;
+
+    width: 84%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d4ff,
+            #3b82f6,
+            transparent
+        );
+
+    box-shadow:
+        0 0 12px rgba(0,212,255,0.45);
+
+}
+
+
+/* =========================================================
+   AMBIENT 3D GLOW
+========================================================= */
+
+.chart-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    right: -110px;
+    bottom: -110px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,212,255,0.10),
+            transparent 70%
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.chart-header {
+
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.chart-header h3 {
+
+    color: #e2f3ff !important;
+
+    font-size: 15px !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0.2px;
+
+}
+
+
+.chart-header span {
+
+    color: #64748b !important;
+
+    font-size: 10px !important;
+
+}
+
+
+/* =========================================================
+   CHART ICON
+========================================================= */
+
+.chart-header > i {
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: #38bdf8 !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,165,233,0.14),
+            rgba(37,99,235,0.08)
+        ) !important;
+
+    border:
+        1px solid rgba(56,189,248,0.18);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+
+    transition: 0.3s ease;
+
+}
+
+
+.chart-card:hover .chart-header > i {
+
+    transform:
+        translateY(-2px)
+        scale(1.05);
+
+    box-shadow:
+        0 0 22px rgba(0,212,255,0.15);
+
+}
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.chart-card canvas {
+
+    position: relative;
+
+    z-index: 2;
+
+    filter:
+        drop-shadow(
+            0 8px 12px rgba(0,0,0,0.22)
+        );
+
+}
+
+
+/* =========================================================
+   PREMIUM CHART AREA
+========================================================= */
+
+.chart-card canvas {
+
+    padding: 5px;
+
+}
+
+
+/* =========================================================
+   DARK CHART BACKGROUND DEPTH
+========================================================= */
+
+.chart-card {
+
+    isolation: isolate;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .chart-card {
+
+        border-radius: 18px !important;
+
+        padding: 18px !important;
+
+    }
+
+    .chart-header > i {
+
+        width: 36px;
+        height: 36px;
+
+    }
+
+}
+/* =========================================
+   COMPACT TRANSACTION LAYOUT
+   ========================================= */
+
+.summary-grid {
+    gap: 12px !important;
+    margin-top: 14px !important;
+    margin-bottom: 18px !important;
+}
+
+.summary-card {
+    margin: 0 !important;
+}
+
+.charts-grid {
+    gap: 12px !important;
+    margin-top: 14px !important;
+    margin-bottom: 14px !important;
+}
+
+.chart-card {
+    margin: 0 !important;
+    padding: 18px !important;
+    min-height: 300px !important;
+}
+
+/* Remove extra spacing from sections */
+.hero-left,
+.hero-right {
+    margin-bottom: 0 !important;
+}
+
+.transaction-search {
+    margin-bottom: 10px !important;
+}
+
+/* Chart canvas */
+.chart-card canvas {
+    margin: 0 !important;
+}
+
+/* Header */
+.chart-header {
+    margin-bottom: 10px !important;
+}
+
+/* No unwanted bottom space */
+.chart-card:last-child {
+    margin-bottom: 0 !important;
+}
+/* =========================================================
+   FIN GUARD TRANSACTIONS - FINAL COMPACT LAYOUT
+   ========================================================= */
+
+/* Transaction page par dashboard ke generic spacing ko override */
+body:has(.hero-left) .main-content,
+body:has(.hero-left) .content,
+body:has(.hero-left) .page-content,
+body:has(.hero-left) main {
+    box-sizing: border-box !important;
+    max-width: none !important;
+}
+
+/* Hero ko screen ki available width use karne do */
+body:has(.hero-left) .hero-left {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+}
+
+body:has(.hero-left) .hero-right {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+}
+
+/* Hero ke cards ke beech ka gap */
+body:has(.hero-left) .hero-left + .hero-right {
+    margin-left: 0 !important;
+}
+
+/* Hero ke neeche ka gap */
+body:has(.hero-left) .hero-left,
+body:has(.hero-left) .hero-right {
+    margin-bottom: 0 !important;
+}
+
+/* Search ko hero ke close lao */
+body:has(.hero-left) .transaction-search {
+    margin-top: 8px !important;
+}
+
+/* Search/filter row */
+body:has(.hero-left) .transaction-search + button {
+    margin-top: 8px !important;
+}
+
+/* Summary cards */
+body:has(.hero-left) .summary-grid {
+    margin-top: 10px !important;
+}
+/* =========================================
+   TRANSACTION PAGE - BASE CONTENT OVERRIDE
+========================================= */
+
+.page-content {
+    padding-top: 12px !important;
+    padding-right: 24px !important;
+    padding-bottom: 24px !important;
+    padding-left: 24px !important;
+
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+
+    min-height: auto !important;
+    height: auto !important;
+
+    box-sizing: border-box !important;
+}
+/* FINAL SMALL GAP FIX */
+
+.page-content {
+    padding-top: 5px !important;
+}
+
+.transaction-page {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.transaction-page .transaction-hero {
+    margin-top: 0 !important;
+}
+
+.transaction-page .transaction-search {
+    margin-top: 6px !important;
+}
+/* =========================================
+   FIN GUARD - DARK CYAN TRANSACTION THEME
+   ========================================= */
+
+body {
+    background:
+        radial-gradient(circle at 75% 35%, rgba(0, 220, 255, 0.10), transparent 35%),
+        radial-gradient(circle at 20% 80%, rgba(0, 150, 255, 0.07), transparent 30%),
+        #06101d !important;
+}
+
+/* Main transaction content */
+.transactions-page,
+.transaction-container,
+.main-content {
+    background: transparent !important;
+}
+
+
+/* =========================================
+   ALL DASHBOARD / ANALYTICS CARDS
+   ========================================= */
+
+.stat-card,
+.ai-confidence-card,
+.threat-card,
+.highest-risk-card,
+.chart-card,
+.analytics-card,
+.transaction-chart-card,
+.risk-distribution-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14, 27, 48, 0.96),
+            rgba(7, 20, 35, 0.98)
+        ) !important;
+
+    border: 1px solid rgba(0, 210, 255, 0.22) !important;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035),
+        0 0 25px rgba(0, 210, 255, 0.035) !important;
+
+    border-radius: 22px !important;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Hover */
+.stat-card:hover,
+.ai-confidence-card:hover,
+.threat-card:hover,
+.highest-risk-card:hover,
+.chart-card:hover,
+.analytics-card:hover,
+.transaction-chart-card:hover,
+.risk-distribution-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: rgba(0, 220, 255, 0.55) !important;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.45),
+        0 0 28px rgba(0, 210, 255, 0.12) !important;
+}
+
+
+/* =========================================
+   CYAN ICON CIRCLE
+   ========================================= */
+
+.stat-card .icon,
+.ai-confidence-card .icon,
+.threat-card .icon,
+.highest-risk-card .icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00c6ff,
+            #008cff
+        ) !important;
+
+    box-shadow:
+        0 0 22px rgba(0, 198, 255, 0.35) !important;
+}
+
+
+/* =========================================
+   CARD TITLES
+   ========================================= */
+
+.stat-card h3,
+.stat-card h4,
+.ai-confidence-card h3,
+.threat-card h3,
+.highest-risk-card h3,
+.chart-card h3,
+.analytics-card h3 {
+
+    color: #c9d9ee !important;
+}
+
+
+/* =========================================
+   IMPORTANT NUMBERS
+   ========================================= */
+
+.stat-card .value,
+.stat-card .number,
+.ai-confidence-card .value,
+.threat-card .value,
+.highest-risk-card .value {
+
+    color: #f4f9ff !important;
+
+    text-shadow:
+        0 0 18px rgba(0, 210, 255, 0.12);
+}
+
+
+/* =========================================
+   CYAN ACCENT LINE
+   ========================================= */
+
+.chart-card::before,
+.analytics-card::before,
+.transaction-chart-card::before,
+.risk-distribution-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 30px;
+    right: 30px;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d9ff,
+            #38bdf8,
+            transparent
+        );
+
+    opacity: 0.8;
+}
+
+
+/* =========================================
+   CHART HEADER ICON
+   ========================================= */
+
+.chart-card .chart-icon,
+.analytics-card .chart-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d9ff,
+            #1677ff
+        ) !important;
+
+    color: white !important;
+
+    box-shadow:
+        0 0 20px rgba(0, 217, 255, 0.30);
+}
+
+
+/* =========================================
+   CHART CARD
+   ========================================= */
+
+.chart-card,
+.analytics-card,
+.transaction-chart-card,
+.risk-distribution-card {
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   TABLE CONTAINER
+   ========================================= */
+
+.table-card,
+.transactions-table,
+.transaction-list {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10, 23, 41, 0.97),
+            rgba(5, 16, 29, 0.99)
+        ) !important;
+
+    border: 1px solid rgba(0, 210, 255, 0.18) !important;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.35) !important;
+}
+
+
+/* Table header */
+.table-card thead,
+.transactions-table thead {
+
+    background:
+        rgba(0, 180, 220, 0.07) !important;
+}
+
+
+/* Table row */
+.table-card tbody tr,
+.transactions-table tbody tr {
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.045) !important;
+
+    transition: background 0.2s ease;
+}
+
+
+.table-card tbody tr:hover,
+.transactions-table tbody tr:hover {
+
+    background:
+        rgba(0, 210, 255, 0.045) !important;
+}
+
+
+/* =========================================
+   PAGINATION
+   ========================================= */
+
+.pagination-section {
+
+    background: transparent !important;
+}
+
+
+.pagination-section button {
+
+    background:
+        rgba(1, 9, 19, 0.95) !important;
+
+    border:
+        1px solid rgba(0, 210, 255, 0.20) !important;
+
+    color: #c9d9ee !important;
+}
+
+
+.pagination-section button:hover,
+.pagination-section button.active {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00c6ff,
+            #1677ff
+        ) !important;
+
+    color: white !important;
+
+    box-shadow:
+        0 0 15px rgba(4, 39, 49, 0.25);
+}
+/* =========================================
+   QUICK ACTION CENTER
+   ========================================= */
+
+.quick-action-center {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10, 24, 42, 0.98),
+            rgba(5, 16, 30, 0.99)
+        ) !important;
+
+    border: 1px solid rgba(0, 210, 255, 0.25) !important;
+
+    border-radius: 22px !important;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.40),
+        0 0 25px rgba(0, 210, 255, 0.05) !important;
+
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* Cyan top glow */
+.quick-action-center::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 30px;
+    right: 30px;
+
+    height: 2px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        #38bdf8,
+        transparent
+    );
+
+    box-shadow:
+        0 0 12px rgba(0, 217, 255, 0.5);
+}
+
+
+/* Heading */
+.quick-action-center h2,
+.quick-action-center h3,
+.quick-action-center .section-title {
+    color: #d7e9f7 !important;
+}
+
+
+/* Action buttons */
+.quick-action-center button,
+.quick-action,
+.action-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 35, 58, 0.95),
+            rgba(8, 23, 40, 0.98)
+        ) !important;
+
+    border: 1px solid rgba(0, 210, 255, 0.18) !important;
+
+    color: #dbeafe !important;
+
+    border-radius: 16px !important;
+
+    transition: all 0.25s ease;
+}
+
+
+/* Hover */
+.quick-action-center button:hover,
+.quick-action:hover,
+.action-card:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 180, 230, 0.15),
+            rgba(20, 55, 85, 0.95)
+        ) !important;
+
+    border-color:
+        rgba(0, 220, 255, 0.60) !important;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 0 22px rgba(0, 210, 255, 0.14);
+}
+
+
+/* Action icons */
+.quick-action-center .icon,
+.quick-action .icon,
+.action-card .icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d9ff,
+            #1677ff
+        ) !important;
+
+    color: white !important;
+
+    box-shadow:
+        0 0 18px rgba(0, 217, 255, 0.30);
+}
+
+
+/* Action title */
+.quick-action-center .action-title,
+.quick-action .action-title,
+.action-card h4 {
+
+    color: #e6f7ff !important;
+}
+
+
+/* Action description */
+.quick-action-center p,
+.quick-action .description,
+.action-card p {
+
+    color: #8faec8 !important;
+}

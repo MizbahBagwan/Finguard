@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}
+Knowledge Graph | FinGuard AI
+{% endblock %}
+
+{% block page_title %}
+Knowledge Graph
+{% endblock %}
+
+{% block page_subtitle %}
+AI Fraud Intelligence Network
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', path='css/knowledge_graph.css') }}">
+
+<div class="kg-page">
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <section class="kg-hero">
+
+        <div class="kg-hero-content">
+
+            <div class="kg-eyebrow">
+                <span class="kg-live-dot"></span>
+                AI FRAUD INTELLIGENCE
+            </div>
+
+            <h1>
+                Knowledge
+                <span>Graph</span>
+            </h1>
+
+            <p>
+                Explore relationships between transactions, accounts,
+                merchants, cards, devices and fraud alerts.
+            </p>
+
+            <div class="kg-network-status">
+
+                <span class="status-dot"></span>
+
+                <strong>NETWORK ONLINE</strong>
+
+                <span>
+                    Real-Time Intelligence
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO VISUAL -->
+
+        <div class="kg-hero-visual">
+
+            <div class="kg-orbit orbit-one"></div>
+            <div class="kg-orbit orbit-two"></div>
+
+            <div class="kg-core">
+
+                <div class="kg-core-ring"></div>
+
+                <i class="fa-solid fa-network-wired"></i>
+
+            </div>
+
+            <span class="kg-node node-one"></span>
+            <span class="kg-node node-two"></span>
+            <span class="kg-node node-three"></span>
+            <span class="kg-node node-four"></span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CONTROL BAR
+    ========================================== -->
+
+    <section class="kg-controls">
+
+        <div class="kg-search-wrapper">
+
+            <label>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                SEARCH NODE
+            </label>
+
+            <div class="kg-search-box">
+
+                <i class="fa-solid fa-search"></i>
+
+                <input
+                    type="text"
+                    id="nodeSearch"
+                    placeholder="Search transaction, account, merchant..."
+                    autocomplete="off"
+                >
+
+                <kbd>CTRL K</kbd>
+
+            </div>
+
+        </div>
+
+
+        <div class="kg-filter-wrapper">
+
+            <label>
+                <i class="fa-solid fa-filter"></i>
+                NODE TYPE
+            </label>
+
+            <select id="nodeType">
+
+                <option value="all">All Nodes</option>
+
+                <option value="Transaction">Transaction</option>
+                <option value="Account">Account</option>
+                <option value="User">User</option>
+                <option value="Merchant">Merchant</option>
+                <option value="Location">Location</option>
+                <option value="Card">Card</option>
+                <option value="Device">Device</option>
+                <option value="IPAddress">IP Address</option>
+                <option value="FraudAlert">Fraud Alert</option>
+                <option value="FraudRing">Fraud Ring</option>
+
+            </select>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="refreshGraph"
+            class="kg-refresh-btn">
+
+            <i class="fa-solid fa-rotate"></i>
+
+            <span>Refresh Network</span>
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================================
+         GRAPH CARD
+    ========================================== -->
+
+    <section class="kg-graph-card">
+
+        <div class="kg-card-header">
+
+            <div>
+
+                <div class="kg-section-label">
+
+                    <span></span>
+
+                    FRAUD RELATIONSHIP NETWORK
+
+                </div>
+
+                <h2>
+                    Interactive Intelligence Map
+                </h2>
+
+                <p>
+                    Click any node to investigate its connected entities.
+                </p>
+
+            </div>
+
+
+            <div class="kg-live-status">
+
+                <span></span>
+
+                <div>
+
+                    <strong>LIVE NETWORK</strong>
+
+                    <small>
+                        AI relationship engine active
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GRAPH -->
+
+        <div
+            id="graph"
+            class="knowledge-graph">
+
+            <div
+                id="graphLoading"
+                class="kg-loading">
+
+                <div class="kg-loading-animation">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+                <strong>
+                    Initializing AI Network
+                </strong>
+
+                <small>
+                    Loading relationship intelligence...
+                </small>
+
+            </div>
+
+            <canvas id="graphCanvas"></canvas>
+
+            <div
+                id="graphEmpty"
+                class="kg-empty"
+                style="display:none;">
+
+                <i class="fa-solid fa-network-wired"></i>
+
+                <strong>
+                    No matching nodes
+                </strong>
+
+                <span>
+                    Try another search or node type.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             LEGEND
+        ====================================== -->
+
+        <div class="kg-legend">
+
+            <div class="kg-legend-title">
+                ENTITY TYPES
+            </div>
+
+            <div class="kg-legend-items">
+
+                <span>
+                    <i class="kg-dot transaction"></i>
+                    Transaction
+                </span>
+
+                <span>
+                    <i class="kg-dot account"></i>
+                    Account
+                </span>
+
+                <span>
+                    <i class="kg-dot merchant"></i>
+                    Merchant
+                </span>
+
+                <span>
+                    <i class="kg-dot device"></i>
+                    Device
+                </span>
+
+                <span>
+                    <i class="kg-dot card"></i>
+                    Card
+                </span>
+
+                <span>
+                    <i class="kg-dot fraud"></i>
+                    Fraud Alert
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         NODE DETAILS
+    ========================================== -->
+
+    <aside
+        id="nodeDetails"
+        class="kg-details">
+
+        <div class="kg-details-header">
+
+            <div>
+
+                <span>
+                    AI INVESTIGATION
+                </span>
+
+                <h3>
+                    Selected Node
+                </h3>
+
+            </div>
+
+            <button
+                type="button"
+                id="closeDetails"
+                class="kg-close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="detailsContent"
+            class="kg-details-content">
+
+            <div class="kg-empty-details">
+
+                <div class="kg-empty-icon">
+
+                    <i class="fa-solid fa-crosshairs"></i>
+
+                </div>
+
+                <strong>
+                    Select a Node
+                </strong>
+
+                <p>
+                    Click any entity in the network
+                    to inspect its intelligence.
+                </p>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <div class="kg-footer">
+
+        <div>
+
+            <span class="kg-footer-dot"></span>
+
+            <strong>
+                AI NETWORK ACTIVE
+            </strong>
+
+        </div>
+
+        <span>
+            Fraud Intelligence Engine
+        </span>
+
+        <strong>
+            FinGuard AI
+        </strong>
+
+    </div>
+
+</div>
+
+
+<script src="{{ url_for('static', path='js/knowledge_graph.js') }}"></script>
+
+{% endblock %}
