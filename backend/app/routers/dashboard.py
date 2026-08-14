@@ -145,7 +145,7 @@ def dashboard_ai_insight(
     }
 
 @router.get("/knowledge-graph")
-def knowledge_graph():
+def knowledge_graph_api():
 
     try:
         print("KNOWLEDGE GRAPH: Connecting to Neo4j...")
@@ -226,3 +226,14 @@ def knowledge_graph():
             "relationships": [],
             "error": str(e)
         }
+
+# ==========================================
+# POTENTIAL FRAUD DETECTION
+# ==========================================
+
+@router.get("/fraud-detection")
+def potential_fraud_detection(
+    db: Session = Depends(get_db)
+):
+
+    return dashboard_service.get_potential_fraud_detection(db)

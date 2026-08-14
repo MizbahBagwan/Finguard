@@ -390,3 +390,144 @@ def get_ai_insights(db: Session):
             "Running"
 
     }
+
+# ==========================================
+# POTENTIAL FRAUD DETECTION
+# ==========================================
+
+def get_potential_fraud_detection(db: Session):
+    """
+    Potential fraud detection dashboard data
+    """
+
+    total_transactions = (
+        db.query(
+            func.count(TransactionDB.id)
+        )
+        .scalar()
+        or 0
+    )
+
+    suspicious_transactions = (
+        db.query(
+            func.count(TransactionDB.id)
+        )
+        .filter(
+            TransactionDB.risk_level != "Low"
+        )
+        .scalar()
+        or 0
+    )
+
+    high_risk_transactions = (
+        db.query(
+            func.count(TransactionDB.id)
+        )
+        .filter(
+            TransactionDB.risk_level == "High"
+        )
+        .scalar()
+        or 0
+    )
+
+    fraud_transactions = (
+        db.query(
+            func.count(TransactionDB.id)
+        )
+        .filter(
+            TransactionDB.prediction == "Fraud"
+        )
+        .scalar()
+        or 0
+    )
+
+    safe_transactions = (
+        db.query(
+            func.count(TransactionDB.id)
+        )
+        .filter(
+            TransactionDB.prediction == "Safe"
+        )
+        .scalar()
+        or 0
+    )
+
+    average_fraud_probability = (
+        db.query(
+            func.avg(
+                TransactionDB.fraud_probability
+            )
+        )
+        .scalar()
+        or 0
+    )
+
+    average_risk_score = (
+        db.query(
+            func.avg(
+                TransactionDB.risk_score
+            )
+        )
+        .scalar()
+        or 0
+    )
+
+    latest_suspicious = (
+        db.query(TransactionDB)
+        .filter(
+            TransactionDB.risk_level != "Low"
+        )
+        .order_by(
+            desc(TransactionDB.updated_at)
+        )
+        .limit(10)
+        .all()
+    )
+
+    alerts = []
+
+    for transaction in latest_suspicious:
+
+        alerts.append({
+            "transaction_id": transaction.transaction_id,
+            "prediction": transaction.prediction,
+            "risk_level": transaction.risk_level,
+            "risk_score": transaction.risk_score,
+            "fraud_probability": transaction.fraud_probability,
+            "amount": float(transaction.amount or 0),
+            "merchant": transaction.merchant,
+            "recommendation": transaction.recommendation,
+            "status": transaction.status
+        })
+
+    return {
+
+        "total_transactions": total_transactions,
+
+        "suspicious_transactions":
+            suspicious_transactions,
+
+        "high_risk_transactions":
+            high_risk_transactions,
+
+        "fraud_transactions":
+            fraud_transactions,
+
+        "safe_transactions":
+            safe_transactions,
+
+        "average_fraud_probability":
+            round(
+                float(average_fraud_probability),
+                2
+            ),
+
+        "average_risk_score":
+            round(
+                float(average_risk_score),
+                2
+            ),
+
+        "alerts": alerts
+    }
+

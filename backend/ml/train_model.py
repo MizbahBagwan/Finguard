@@ -33,7 +33,9 @@ from sklearn.metrics import (
     classification_report
 )
 
+
 warnings.filterwarnings("ignore")
+
 
 # ==========================================================
 # PATH CONFIGURATION
@@ -50,6 +52,7 @@ DATASET_PATH = (
 MODEL_DIR = BASE_DIR / "ml"
 MODEL_DIR.mkdir(exist_ok=True)
 
+
 # ==========================================================
 # REQUIRED DATASET COLUMNS
 # ==========================================================
@@ -62,6 +65,7 @@ REQUIRED_COLUMNS = [
     "Amount"
 ]
 
+
 # ==========================================================
 # LOGGING
 # ==========================================================
@@ -72,6 +76,8 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("FinGuard-ML")
+
+
 # ==========================================================
 # LOAD DATASET
 # ==========================================================
@@ -126,6 +132,7 @@ if missing_columns:
 
 logger.info("Dataset validation passed")
 
+
 # ==========================================================
 # REMOVE DUPLICATES
 # ==========================================================
@@ -142,6 +149,7 @@ if duplicate_count > 0:
 
 logger.info(f"Current Rows : {len(df)}")
 
+
 # ==========================================================
 # DATASET SUMMARY
 # ==========================================================
@@ -152,6 +160,8 @@ print("=" * 60)
 print(df.head())
 print("\nShape :", df.shape)
 print("=" * 60)
+
+
 # ==========================================================
 # HANDLE MISSING VALUES
 # ==========================================================
@@ -186,9 +196,14 @@ for col in numeric_columns:
 
 
 logger.info("Missing value handling completed")
+
+
 # ==========================================================
 # DATE FEATURE ENGINEERING
 # ==========================================================
+
+# Existing section preserved.
+
 
 # ==========================================================
 # FEATURE ENGINEERING
@@ -197,9 +212,15 @@ logger.info("Missing value handling completed")
 logger.info("Creating FinGuard features...")
 
 
-df["large_transaction"] = (
-    df["amount"] >
+# Calculate the threshold ONCE.
+# This exact value will also be saved for inference.
+amount_95_percentile = float(
     df["amount"].quantile(0.95)
+)
+
+
+df["large_transaction"] = (
+    df["amount"] > amount_95_percentile
 ).astype(int)
 
 
@@ -212,6 +233,7 @@ df["risk_indicator"] = (
 
 logger.info("Feature engineering completed")
 
+
 # ==========================================================
 # AMOUNT FEATURES
 # ==========================================================
@@ -222,19 +244,49 @@ logger.info("Creating amount features...")
 df["abs_amount"] = df["amount"].abs()
 
 
+# Use the SAME threshold calculated above.
 df["large_transaction"] = (
-    df["amount"] >
-    df["amount"].quantile(0.95)
+    df["amount"] > amount_95_percentile
 ).astype(int)
 
 
 logger.info("Amount features completed")
 
+
+# ==========================================================
+# SAVE FEATURE CONFIGURATION
+# ==========================================================
+
+feature_config_path = MODEL_DIR / "feature_config.json"
+
+with open(
+    feature_config_path,
+    "w",
+    encoding="utf-8"
+) as f:
+
+    json.dump(
+        {
+            "amount_95_percentile": amount_95_percentile
+        },
+        f,
+        indent=4
+    )
+
+
+logger.info(
+    f"Feature configuration saved to: {feature_config_path}"
+)
+
+
 # ==========================================================
 # MERCHANT CATEGORY FREQUENCY
 # ==========================================================
 
-logger.info("Creating merchant category frequency features...")
+logger.info(
+    "Creating merchant category frequency features..."
+)
+
 
 # Dataset column: merchant_category
 
@@ -243,13 +295,43 @@ merchant_category_frequency = (
     .value_counts()
 )
 
+
+merchant_frequency_path = (
+    MODEL_DIR
+    / "merchant_category_frequency.json"
+)
+
+
+with open(
+    merchant_frequency_path,
+    "w",
+    encoding="utf-8"
+) as f:
+
+    json.dump(
+        merchant_category_frequency.to_dict(),
+        f,
+        indent=4
+    )
+
+
+logger.info(
+    f"Merchant frequency mapping saved to: "
+    f"{merchant_frequency_path}"
+)
+
+
 df["merchant_category_frequency"] = (
     df["merchant_category"]
     .map(merchant_category_frequency)
 )
 
 
-logger.info("Merchant category frequency completed")
+logger.info(
+    "Merchant category frequency completed"
+)
+
+
 # ==========================================================
 # CREATE TARGET LABEL
 # ==========================================================
@@ -263,8 +345,9 @@ logger.info(
     f"Fraud Transactions : {df['is_fraud'].sum()}"
 )
 
+
 logger.info(
-    f"Safe Transactions  : {(df['is_fraud']==0).sum()}"
+    f"Safe Transactions  : {(df['is_fraud'] == 0).sum()}"
 )
 
 
@@ -289,7 +372,9 @@ X = df.drop(
     columns=[TARGET_COLUMN]
 )
 
+
 y = df[TARGET_COLUMN]
+
 
 # ==========================================================
 # FEATURE TYPES
@@ -300,14 +385,22 @@ categorical_features = [
     "merchant_category"
 ]
 
+
 numerical_features = [
     col
     for col in X.columns
     if col not in categorical_features
 ]
 
-logger.info(f"Categorical Features : {categorical_features}")
-logger.info(f"Numerical Features   : {numerical_features}")
+
+logger.info(
+    f"Categorical Features : {categorical_features}"
+)
+
+logger.info(
+    f"Numerical Features   : {numerical_features}"
+)
+
 
 # ==========================================================
 # NUMERIC PIPELINE
@@ -322,6 +415,7 @@ numeric_pipeline = Pipeline(
     ]
 )
 
+
 # ==========================================================
 # CATEGORICAL PIPELINE
 # ==========================================================
@@ -330,7 +424,9 @@ categorical_pipeline = Pipeline(
     steps=[
         (
             "imputer",
-            SimpleImputer(strategy="most_frequent")
+            SimpleImputer(
+                strategy="most_frequent"
+            )
         ),
         (
             "encoder",
@@ -340,6 +436,7 @@ categorical_pipeline = Pipeline(
         )
     ]
 )
+
 
 # ==========================================================
 # COLUMN TRANSFORMER
@@ -360,13 +457,18 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-logger.info("Preprocessing pipeline created successfully")
+
+logger.info(
+    "Preprocessing pipeline created successfully"
+)
+
 
 # ==========================================================
 # TRAIN TEST SPLIT
 # ==========================================================
 
 logger.info("Splitting dataset...")
+
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
@@ -376,8 +478,15 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-logger.info(f"Training Samples : {len(X_train)}")
-logger.info(f"Testing Samples  : {len(X_test)}")
+
+logger.info(
+    f"Training Samples : {len(X_train)}"
+)
+
+logger.info(
+    f"Testing Samples  : {len(X_test)}"
+)
+
 
 print("\n" + "=" * 60)
 print("TRAIN / TEST SPLIT")
@@ -385,15 +494,23 @@ print("=" * 60)
 print(f"Training : {X_train.shape}")
 print(f"Testing  : {X_test.shape}")
 print("=" * 60)
+
+
 # ==========================================================
 # MODEL PIPELINE
 # ==========================================================
 
-logger.info("Creating Machine Learning Pipeline...")
+logger.info(
+    "Creating Machine Learning Pipeline..."
+)
+
 
 pipeline = Pipeline(
     steps=[
-        ("preprocessor", preprocessor),
+        (
+            "preprocessor",
+            preprocessor
+        ),
         (
             "classifier",
             RandomForestClassifier(
@@ -405,17 +522,43 @@ pipeline = Pipeline(
     ]
 )
 
+
 # ==========================================================
 # HYPERPARAMETER GRID
 # ==========================================================
 
 param_grid = {
-    "classifier__n_estimators": [100, 200, 300],
-    "classifier__max_depth": [None, 10, 20, 30],
-    "classifier__min_samples_split": [2, 5, 10],
-    "classifier__min_samples_leaf": [1, 2, 4],
-    "classifier__max_features": ["sqrt", "log2"]
+    "classifier__n_estimators": [
+        100,
+        200,
+        300
+    ],
+
+    "classifier__max_depth": [
+        None,
+        10,
+        20,
+        30
+    ],
+
+    "classifier__min_samples_split": [
+        2,
+        5,
+        10
+    ],
+
+    "classifier__min_samples_leaf": [
+        1,
+        2,
+        4
+    ],
+
+    "classifier__max_features": [
+        "sqrt",
+        "log2"
+    ]
 }
+
 
 # ==========================================================
 # STRATIFIED K-FOLD
@@ -426,6 +569,7 @@ cv = StratifiedKFold(
     shuffle=True,
     random_state=42
 )
+
 
 # ==========================================================
 # GRID SEARCH
@@ -440,54 +584,87 @@ grid_search = GridSearchCV(
     verbose=2
 )
 
-logger.info("Model training started...")
+
+logger.info(
+    "Model training started..."
+)
+
 
 grid_search.fit(
     X_train,
     y_train
 )
 
+
 best_model = grid_search.best_estimator_
 
-logger.info("Training completed successfully")
+
+logger.info(
+    "Training completed successfully"
+)
+
 
 logger.info(
     f"Best Parameters : {grid_search.best_params_}"
 )
 
+
 logger.info(
-    f"Best CV Score : {grid_search.best_score_:.4f}"
+    f"Best CV Score : "
+    f"{grid_search.best_score_:.4f}"
 )
+
 
 print("\n" + "=" * 60)
 print("BEST MODEL")
 print("=" * 60)
 
+
 print("Best Parameters:")
 print(grid_search.best_params_)
 
+
 print("\nBest F1 Score:")
-print(round(grid_search.best_score_, 4))
+print(
+    round(
+        grid_search.best_score_,
+        4
+    )
+)
+
 
 print("=" * 60)
+
+
 # ==========================================================
 # MODEL EVALUATION
 # ==========================================================
 
 logger.info("Evaluating model...")
 
+
 # ----------------------------------------------------------
 # Predictions
 # ----------------------------------------------------------
 
-y_pred = best_model.predict(X_test)
-y_prob = best_model.predict_proba(X_test)[:, 1]
+y_pred = best_model.predict(
+    X_test
+)
+
+y_prob = best_model.predict_proba(
+    X_test
+)[:, 1]
+
 
 # ----------------------------------------------------------
 # Performance Metrics
 # ----------------------------------------------------------
 
-accuracy = accuracy_score(y_test, y_pred)
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
+
 
 precision = precision_score(
     y_test,
@@ -495,11 +672,13 @@ precision = precision_score(
     zero_division=0
 )
 
+
 recall = recall_score(
     y_test,
     y_pred,
     zero_division=0
 )
+
 
 f1 = f1_score(
     y_test,
@@ -507,10 +686,12 @@ f1 = f1_score(
     zero_division=0
 )
 
+
 roc_auc = roc_auc_score(
     y_test,
     y_prob
 )
+
 
 # ----------------------------------------------------------
 # Confusion Matrix
@@ -521,7 +702,9 @@ cm = confusion_matrix(
     y_pred
 )
 
+
 tn, fp, fn, tp = cm.ravel()
+
 
 # ----------------------------------------------------------
 # Print Results
@@ -531,21 +714,55 @@ print("\n" + "=" * 70)
 print("FinGuard AI - MODEL EVALUATION")
 print("=" * 70)
 
-print(f"Accuracy       : {accuracy:.4f}")
-print(f"Precision      : {precision:.4f}")
-print(f"Recall         : {recall:.4f}")
-print(f"F1 Score       : {f1:.4f}")
-print(f"ROC AUC Score  : {roc_auc:.4f}")
+
+print(
+    f"Accuracy       : {accuracy:.4f}"
+)
+
+print(
+    f"Precision      : {precision:.4f}"
+)
+
+print(
+    f"Recall         : {recall:.4f}"
+)
+
+print(
+    f"F1 Score       : {f1:.4f}"
+)
+
+print(
+    f"ROC AUC Score  : {roc_auc:.4f}"
+)
+
 
 print("\nConfusion Matrix")
 print(cm)
 
-print("\nTrue Negative :", tn)
-print("False Positive:", fp)
-print("False Negative:", fn)
-print("True Positive :", tp)
+
+print(
+    "\nTrue Negative :",
+    tn
+)
+
+print(
+    "False Positive:",
+    fp
+)
+
+print(
+    "False Negative:",
+    fn
+)
+
+print(
+    "True Positive :",
+    tp
+)
+
 
 print("\nClassification Report")
+
 print(
     classification_report(
         y_test,
@@ -554,9 +771,10 @@ print(
     )
 )
 
-# ----------------------------------------------------------
-# Save Evaluation Report
-# ----------------------------------------------------------
+
+# ==========================================================
+# SAVE EVALUATION REPORT
+# ==========================================================
 
 report = f"""
 ==============================
@@ -587,27 +805,49 @@ Classification Report
 )}
 """
 
-report_path = MODEL_DIR / "evaluation_report.txt"
 
-with open(report_path, "w", encoding="utf-8") as f:
+report_path = (
+    MODEL_DIR
+    / "evaluation_report.txt"
+)
+
+
+with open(
+    report_path,
+    "w",
+    encoding="utf-8"
+) as f:
+
     f.write(report)
 
-logger.info(f"Evaluation report saved to: {report_path}")
+
+logger.info(
+    f"Evaluation report saved to: {report_path}"
+)
+
+
 # ==========================================================
 # FEATURE IMPORTANCE
 # ==========================================================
 
-logger.info("Generating feature importance...")
+logger.info(
+    "Generating feature importance..."
+)
+
 
 feature_names = (
-    best_model.named_steps["preprocessor"]
+    best_model
+    .named_steps["preprocessor"]
     .get_feature_names_out()
 )
 
+
 importances = (
-    best_model.named_steps["classifier"]
+    best_model
+    .named_steps["classifier"]
     .feature_importances_
 )
+
 
 importance_df = (
     pd.DataFrame(
@@ -622,32 +862,58 @@ importance_df = (
     )
 )
 
-print("\nTop 20 Important Features\n")
-print(importance_df.head(20))
 
-feature_path = MODEL_DIR / "feature_importance.csv"
+print(
+    "\nTop 20 Important Features\n"
+)
+
+print(
+    importance_df.head(20)
+)
+
+
+feature_path = (
+    MODEL_DIR
+    / "feature_importance.csv"
+)
+
 
 importance_df.to_csv(
     feature_path,
     index=False
 )
 
-logger.info(f"Feature importance saved to: {feature_path}")
+
+logger.info(
+    f"Feature importance saved to: {feature_path}"
+)
+
 
 # ==========================================================
 # SAVE MODEL
 # ==========================================================
 
-logger.info("Saving trained model...")
+logger.info(
+    "Saving trained model..."
+)
 
-model_path = MODEL_DIR / "fraud_model.pkl"
+
+model_path = (
+    MODEL_DIR
+    / "fraud_model.pkl"
+)
+
 
 joblib.dump(
     best_model,
     model_path
 )
 
-logger.info(f"Model saved to: {model_path}")
+
+logger.info(
+    f"Model saved to: {model_path}"
+)
+
 
 # ==========================================================
 # SAVE METADATA
@@ -655,57 +921,167 @@ logger.info(f"Model saved to: {model_path}")
 
 metadata = {
     "project": "FinGuard AI",
-    "model_name": "RandomForestClassifier",
-    "version": "2.0.0",
-    "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    "dataset": str(DATASET_PATH),
-    "total_rows": int(len(df)),
-    "training_rows": int(len(X_train)),
-    "testing_rows": int(len(X_test)),
-    "features": list(X.columns),
-    "target": "is_fraud",
-    "accuracy": round(float(accuracy), 4),
-    "precision": round(float(precision), 4),
-    "recall": round(float(recall), 4),
-    "f1_score": round(float(f1), 4),
-    "roc_auc": round(float(roc_auc), 4),
-    "best_parameters": grid_search.best_params_
+
+    "model_name":
+        "RandomForestClassifier",
+
+    "version":
+        "2.0.0",
+
+    "created_at":
+        datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        ),
+
+    "dataset":
+        str(DATASET_PATH),
+
+    "total_rows":
+        int(len(df)),
+
+    "training_rows":
+        int(len(X_train)),
+
+    "testing_rows":
+        int(len(X_test)),
+
+    "features":
+        list(X.columns),
+
+    "target":
+        "is_fraud",
+
+    "accuracy":
+        round(
+            float(accuracy),
+            4
+        ),
+
+    "precision":
+        round(
+            float(precision),
+            4
+        ),
+
+    "recall":
+        round(
+            float(recall),
+            4
+        ),
+
+    "f1_score":
+        round(
+            float(f1),
+            4
+        ),
+
+    "roc_auc":
+        round(
+            float(roc_auc),
+            4
+        ),
+
+    "merchant_frequency_file":
+        str(merchant_frequency_path),
+
+    "feature_config_file":
+        str(feature_config_path),
+
+    "best_parameters":
+        grid_search.best_params_
 }
 
-metadata_path = MODEL_DIR / "model_metadata.json"
+
+metadata_path = (
+    MODEL_DIR
+    / "model_metadata.json"
+)
+
 
 with open(
     metadata_path,
     "w",
     encoding="utf-8"
 ) as f:
+
     json.dump(
         metadata,
         f,
         indent=4
     )
 
-logger.info(f"Metadata saved to: {metadata_path}")
+
+logger.info(
+    f"Metadata saved to: {metadata_path}"
+)
+
 
 # ==========================================================
 # TRAINING COMPLETED
 # ==========================================================
 
 print("\n" + "=" * 70)
-print("FinGuard AI MODEL TRAINING COMPLETED SUCCESSFULLY")
+
+print(
+    "FinGuard AI MODEL TRAINING "
+    "COMPLETED SUCCESSFULLY"
+)
+
 print("=" * 70)
 
-print(f"Model File          : {model_path}")
-print(f"Metadata File       : {metadata_path}")
-print(f"Evaluation Report   : {MODEL_DIR / 'evaluation_report.txt'}")
-print(f"Feature Importance  : {feature_path}")
+
+print(
+    f"Model File          : {model_path}"
+)
+
+print(
+    f"Metadata File       : {metadata_path}"
+)
+
+print(
+    f"Evaluation Report   : "
+    f"{MODEL_DIR / 'evaluation_report.txt'}"
+)
+
+print(
+    f"Feature Importance  : "
+    f"{feature_path}"
+)
+
+print(
+    f"Merchant Frequency  : "
+    f"{merchant_frequency_path}"
+)
+
+print(
+    f"Feature Config      : "
+    f"{feature_config_path}"
+)
+
 
 print("\nModel Performance")
 print("------------------------------")
-print(f"Accuracy  : {accuracy:.4f}")
-print(f"Precision : {precision:.4f}")
-print(f"Recall    : {recall:.4f}")
-print(f"F1 Score  : {f1:.4f}")
-print(f"ROC AUC   : {roc_auc:.4f}")
+
+
+print(
+    f"Accuracy  : {accuracy:.4f}"
+)
+
+print(
+    f"Precision : {precision:.4f}"
+)
+
+print(
+    f"Recall    : {recall:.4f}"
+)
+
+print(
+    f"F1 Score  : {f1:.4f}"
+)
+
+print(
+    f"ROC AUC   : {roc_auc:.4f}"
+)
+
 
 print("=" * 70)

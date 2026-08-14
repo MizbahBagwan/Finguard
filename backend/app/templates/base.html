@@ -1,338 +1,396 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>{% block title %}FinGuard AI{% endblock %}</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<!-- Google Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>
+        {% block title %}
+            FinGuard AI
+        {% endblock %}
+    </title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet">
 
-<!-- Font Awesome -->
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <!-- Google Font -->
 
-<!-- Main CSS -->
-<link rel="stylesheet"
-href="{{ url_for('static',path='css/dashboard.css') }}">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-<link rel="stylesheet"
-      href="{{ url_for('static', path='css/transaction_detail.css') }}">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
 
-{% block extra_css %}
-{% endblock %}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    >
+
+
+    <!-- Main Dashboard CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/dashboard.css') }}"
+    >
+
+
+    <!-- Transaction Detail CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/transaction_detail.css') }}"
+    >
+
+
+    {% block extra_css %}
+    {% endblock %}
 
 </head>
 
+
 <body>
 
-<!-- Animated Background -->
-
-<div class="background">
-
-<div class="gradient gradient1"></div>
-
-<div class="gradient gradient2"></div>
-
-<div class="grid-overlay"></div>
-
-</div>
-
-<!-- Main Layout -->
-
-<div class="app-layout">
-```html
-<!-- ==========================
-     SIDEBAR
-========================== -->
-
-<aside class="sidebar">
-
-    <!-- LOGO -->
-
-    <div class="sidebar-logo">
-
-        <div class="logo-icon">
-            <i class="fa-solid fa-shield-halved"></i>
-        </div>
-
-        <div>
-            <strong>Fraud Intelligence</strong>
-        </div>
-
-    </div>
-
-
-    <!-- NAVIGATION -->
-
-    <nav class="sidebar-nav">
-
-        <a
-            href="{{ url_for('dashboard') }}"
-            class="sidebar-item"
-        >
-
-            <i class="fa-solid fa-chart-line"></i>
-
-            <span>Dashboard</span>
-
-        </a>
-
-
-        <a
-            href="{{ url_for('transactions') }}"
-            class="sidebar-item"
-        >
-
-            <i class="fa-solid fa-money-bill-transfer"></i>
-
-            <span>Transactions</span>
-
-        </a>
-
-
-        <a
-            href="{{ url_for('reports') }}"
-            class="sidebar-item"
-        >
-
-            <i class="fa-solid fa-file-lines"></i>
-
-            <span>Reports</span>
-
-        </a>
-
-
-        <a
-            href="{{ url_for('ocr') }}"
-            class="sidebar-item"
-        >
-
-            <i class="fa-solid fa-file-image"></i>
-
-            <span>OCR Scanner</span>
-
-        </a>
-
-
-        <!-- KNOWLEDGE GRAPH -->
-
-        <a
-            href="{{ url_for('knowledge_graph') }}"
-            class="sidebar-item"
-        >
-
-            <i class="fa-solid fa-diagram-project"></i>
-
-            <span>Knowledge Graph</span>
-
-        </a>
-
-
-        <a
-            href="{{ url_for('settings') }}"
-            class="sidebar-item"
-        >
-
-            <i class="fa-solid fa-gear"></i>
-
-            <span>Settings</span>
-
-        </a>
-
-    </nav>
-
-
-    <!-- AI STATUS -->
-
-    <div class="sidebar-status">
-
-        <div class="status-title">
-
-            <span class="status-dot"></span>
-
-            <strong>AI Protection</strong>
-
-        </div>
-
-
-        <p>
-            Real-time fraud monitoring is active.
-        </p>
-
-
-        <strong class="accuracy">
-            99.8% Detection Accuracy
-        </strong>
-
-    </div>
-
-</aside>
-
-
-<!-- ==========================
-     TOPBAR
-========================== -->
-
-<header class="topbar">
-
-    <div class="topbar-left">
-
-        <button
-            type="button"
-            class="menu-btn"
-        >
-
-            <i class="fa-solid fa-bars"></i>
-
-        </button>
-
-
-        <div>
-
-            <h1>
-
-                {% block page_title %}
-                    Dashboard
-                {% endblock %}
-
-            </h1>
-
-
-            <p>
-
-                {% block page_subtitle %}
-                    AI Powered Financial Fraud Detection Platform
-                {% endblock %}
-
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="topbar-search">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
-        <input
-            type="text"
-            placeholder="Search transactions, reports, merchants..."
-        >
-
-    </div>
-
-</header>
-
-
-<!-- ==========================
-     PAGE CONTENT
-========================== -->
-
-<main class="page-content">
-
-    {% block content %}
-
-    {% endblock %}
-
-</main>
-```
-
-<!-- ==========================
-MAIN AREA
-========================== -->
-
-<div class="main-wrapper">
 
     <!-- ==========================
-    TOPBAR
+         ANIMATED BACKGROUND
     ========================== -->
 
-    <header class="topbar">
+    <div class="background">
 
-        <!-- LEFT -->
+        <div class="gradient gradient1"></div>
 
-        <div class="topbar-left">
+        <div class="gradient gradient2"></div>
 
-            <button class="menu-btn">
+        <div class="grid-overlay"></div>
 
-                <i class="fa-solid fa-bars"></i>
+    </div>
 
-            </button>
 
-            <div>
+    <!-- ==========================
+         MAIN APPLICATION
+    ========================== -->
 
-                <h1>
+    <div class="app-layout">
 
-                    {% block page_title %}
 
-                    Dashboard
+        <!-- ==========================
+             SIDEBAR
+        ========================== -->
 
-                    {% endblock %}
+        <aside class="sidebar">
 
-                </h1>
 
-                <p>
+            <!-- SIDEBAR HEADER -->
 
-                    {% block page_subtitle %}
+            <div class="sidebar-header">
 
-                    AI Powered Financial Fraud Detection Platform
+                <div class="logo">
 
-                    {% endblock %}
+                    <div class="logo-icon">
 
-                </p>
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Fraud Intelligence
+                        </h2>
+
+                        <span>
+                            FinGuard AI
+                        </span>
+
+                    </div>
+
+                </div>
 
             </div>
 
+
+            <!-- ==========================
+                 NAVIGATION
+            ========================== -->
+
+            <nav class="sidebar-menu">
+
+
+                <!-- Dashboard -->
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="active"
+                >
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- Transactions -->
+
+               
+<a
+    href="/transactions"
+    class="{% if active_page == 'transactions' %}active{% endif %}"
+>
+    <i class="fa-solid fa-money-bill-transfer"></i>
+    <span>Transactions</span>
+</a>
+
+
+                <!-- Reports -->
+
+                <a
+                    href="{{ url_for('reports_page') }}"
+                >
+
+                    <i class="fa-solid fa-file-lines"></i>
+
+                    <span>
+                        Reports
+                    </span>
+
+                </a>
+
+
+                <!-- OCR -->
+
+                <a
+                    href="{{ url_for('ocr') }}"
+                >
+
+                    <i class="fa-solid fa-file-image"></i>
+
+                    <span>
+                        OCR Scanner
+                    </span>
+
+                </a>
+
+
+                <!-- Knowledge Graph -->
+<a
+    href="/knowledge-graph"
+    class="sidebar-item"
+>
+    <i class="fa-solid fa-diagram-project"></i>
+
+    <span>
+        Knowledge Graph
+    </span>
+</a>
+
+<a
+    href="/financial-management"
+    class="{% if active_page == 'financial' %}active{% endif %}"
+>
+    <i class="fa-solid fa-wallet"></i>
+
+    <span>
+        Financial Management
+    </span>
+</a>
+
+
+                <!-- Settings -->
+
+                <a
+                    href="{{ url_for('settings') }}"
+                >
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </a>
+
+
+            </nav>
+
+
+            <!-- ==========================
+                 AI PROTECTION CARD
+            ========================== -->
+
+            <div class="ai-card">
+
+
+                <div class="ai-top">
+
+                    <span class="online-dot"></span>
+
+                    <strong>
+                        AI Protection
+                    </strong>
+
+                </div>
+
+
+                <h3>
+                    Real-Time Monitoring
+                </h3>
+
+
+                <p>
+                    AI powered fraud detection and
+                    financial transaction monitoring
+                    is active.
+                </p>
+
+
+                <div class="ai-progress">
+
+                    <div class="progress-fill"></div>
+
+                </div>
+
+
+                <small>
+                    99.8% Detection Accuracy
+                </small>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- ==========================
+             MAIN WRAPPER
+        ========================== -->
+
+        <div class="main-wrapper">
+
+
+            <!-- ==========================
+                 TOPBAR
+            ========================== -->
+
+            <header class="topbar">
+
+
+                <!-- LEFT -->
+
+                <div class="topbar-left">
+
+
+                    <button
+                        type="button"
+                        class="menu-btn"
+                    >
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>
+
+
+                    <div class="topbar-title">
+
+                        <h1>
+
+                            {% block page_title %}
+                                Dashboard
+                            {% endblock %}
+
+                        </h1>
+
+
+                        <p>
+
+                            {% block page_subtitle %}
+                                AI Powered Financial Fraud Detection Platform
+                            {% endblock %}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- CENTER SEARCH -->
+
+                <div class="topbar-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        placeholder="Search transactions, reports, merchants..."
+                    >
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <div class="topbar-right">
+
+                    {% block topbar_right %}
+                    {% endblock %}
+
+                </div>
+
+
+            </header>
+
+
+            <!-- ==========================
+                 PAGE CONTENT
+            ========================== -->
+
+            <main class="page-content">
+
+                {% block content %}
+                {% endblock %}
+
+            </main>
+
+
         </div>
 
-        <!-- CENTER SEARCH -->
 
-        <div class="topbar-search">
+    </div>
 
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-            <input
-                type="text"
-                placeholder="Search transactions, reports, merchants..."
-            >
-
-        </div>
-
-        <!-- RIGHT -->
-
-       
-    </header>
 
     <!-- ==========================
-    PAGE CONTENT
+         JAVASCRIPT
     ========================== -->
 
-    <main class="page-content">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        {% block content %}
 
-        {% endblock %}
-
-    </main>
-
-</div>
-{% block extra_js %}
-{% endblock %}
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    {% block extra_js %}
+    {% endblock %}
 
 
 </body>

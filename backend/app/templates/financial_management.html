@@ -1,0 +1,1375 @@
+{% extends "base.html" %}
+
+{% block title %}
+Financial Management | FinGuard AI
+{% endblock %}
+
+
+{% block page_title %}
+Financial Management
+{% endblock %}
+
+
+{% block page_subtitle %}
+AI Powered Financial Management & Transaction Monitoring
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/financial_management.css') }}"
+>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="financial-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="financial-page-header">
+
+        <div class="financial-title-section">
+
+            <div class="financial-page-badge">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                Financial Management
+
+            </div>
+
+
+            <h1>
+                Financial Overview
+            </h1>
+
+
+            <p>
+                Monitor your income, expenses, balance and financial activity.
+            </p>
+
+        </div>
+
+
+        <div class="financial-header-actions">
+
+            <button
+                type="button"
+                class="financial-refresh-btn"
+                id="refreshFinancialBtn"
+            >
+
+                <i class="fa-solid fa-rotate"></i>
+
+                Refresh
+
+            </button>
+
+
+            <button
+                type="button"
+                class="financial-add-btn"
+                id="openAddTransactionBtn"
+            >
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Transaction
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+    ====================================================== -->
+
+    <div class="financial-summary-grid">
+
+
+        <!-- INCOME -->
+
+        <div class="financial-stat-card income-card">
+
+            <div class="financial-stat-top">
+
+                <div class="financial-stat-icon">
+
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                </div>
+
+
+                <span class="financial-stat-status income-status">
+
+                    <i class="fa-solid fa-arrow-up"></i>
+
+                    Income
+
+                </span>
+
+            </div>
+
+
+            <div class="financial-stat-content">
+
+                <span class="financial-stat-label">
+                    Total Income
+                </span>
+
+
+                <h2 id="totalIncome">
+                    ₹0
+                </h2>
+
+            </div>
+
+
+            <div class="financial-stat-footer">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Total money received
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EXPENSE -->
+
+        <div class="financial-stat-card expense-card">
+
+            <div class="financial-stat-top">
+
+                <div class="financial-stat-icon">
+
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+
+                </div>
+
+
+                <span class="financial-stat-status expense-status">
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                    Expenses
+
+                </span>
+
+            </div>
+
+
+            <div class="financial-stat-content">
+
+                <span class="financial-stat-label">
+                    Total Expenses
+                </span>
+
+
+                <h2 id="totalExpense">
+                    ₹0
+                </h2>
+
+            </div>
+
+
+            <div class="financial-stat-footer">
+
+                <i class="fa-solid fa-receipt"></i>
+
+                Total money spent
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BALANCE -->
+
+        <div class="financial-stat-card balance-card">
+
+            <div class="financial-stat-top">
+
+                <div class="financial-stat-icon">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                </div>
+
+
+                <span class="financial-stat-status balance-status">
+
+                    <i class="fa-solid fa-scale-balanced"></i>
+
+                    Balance
+
+                </span>
+
+            </div>
+
+
+            <div class="financial-stat-content">
+
+                <span class="financial-stat-label">
+                    Available Balance
+                </span>
+
+
+                <h2 id="balance">
+                    ₹0
+                </h2>
+
+            </div>
+
+
+            <div class="financial-stat-footer">
+
+                <i class="fa-solid fa-calculator"></i>
+
+                Income minus expenses
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HEALTH -->
+
+        <div class="financial-stat-card health-card">
+
+            <div class="financial-stat-top">
+
+                <div class="financial-stat-icon">
+
+                    <i class="fa-solid fa-shield-heart"></i>
+
+                </div>
+
+
+                <span class="financial-stat-status health-status">
+
+                    <i class="fa-solid fa-heart-pulse"></i>
+
+                    Health
+
+                </span>
+
+            </div>
+
+
+            <div class="financial-stat-content">
+
+                <span class="financial-stat-label">
+                    Financial Health
+                </span>
+
+
+                <h2 id="financialHealth">
+                    0%
+                </h2>
+
+            </div>
+
+
+            <div class="financial-stat-footer">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Based on current balance
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="financial-content-grid">
+
+
+        <!-- =================================================
+             SPENDING BY CATEGORY
+        ================================================== -->
+
+        <div class="financial-panel category-panel">
+
+
+            <div class="financial-panel-header">
+
+                <div class="financial-panel-title">
+
+                    <div class="financial-panel-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Spending by Category
+                        </h2>
+
+                        <p>
+                            Your expense distribution
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <span class="financial-panel-badge">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    Expenses
+
+                </span>
+
+            </div>
+
+
+
+            <!-- CATEGORY LOADING -->
+
+            <div
+                id="categoriesLoading"
+                class="financial-loading"
+            >
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                Loading categories...
+
+            </div>
+
+
+
+            <!-- CATEGORY EMPTY -->
+
+            <div
+                id="categoriesEmpty"
+                class="financial-empty"
+                style="display:none;"
+            >
+
+                <div class="financial-empty-icon">
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
+                </div>
+
+
+                <h3>
+                    No spending data
+                </h3>
+
+
+                <p>
+                    Add an expense transaction to see your spending categories.
+                </p>
+
+            </div>
+
+
+
+            <!-- CATEGORY LIST -->
+
+            <div
+                id="categoryList"
+                class="category-list"
+            ></div>
+
+
+        </div>
+
+
+
+       <!-- =========================================================
+     FINANCIAL HEALTH
+========================================================= -->
+<section class="financial-health-card">
+
+    <!-- Header -->
+    <div class="financial-health-header">
+
+        <div class="financial-health-title">
+
+            <div class="financial-health-icon">
+                <span>↗</span>
+            </div>
+
+            <div>
+                <h2>Financial Health</h2>
+                <p>Current financial position</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Health Score -->
+    <div class="health-score-box">
+
+        <div class="health-circle"
+             id="healthCircle">
+
+            <div class="health-circle-inner">
+                <span id="healthPercentage">0%</span>
+            </div>
+
+        </div>
+
+
+        <div class="health-score-info">
+
+            <h3 id="healthStatus">
+                Calculating...
+            </h3>
+
+            <p id="healthMessage">
+                Your financial health is being calculated.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Financial Statistics -->
+    <div class="health-stats-grid">
+
+
+        <!-- Income -->
+        <div class="health-stat-card income-card">
+
+            <div class="health-stat-icon">
+                ↑
+            </div>
+
+            <div class="health-stat-content">
+
+                <span>Income</span>
+
+                <strong id="healthIncome">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Expenses -->
+        <div class="health-stat-card expense-card">
+
+            <div class="health-stat-icon">
+                ↘
+            </div>
+
+            <div class="health-stat-content">
+
+                <span>Expenses</span>
+
+                <strong id="healthExpenses">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Savings -->
+        <div class="health-stat-card savings-card">
+
+            <div class="health-stat-icon">
+                ₹
+            </div>
+
+            <div class="health-stat-content">
+
+                <span>Savings</span>
+
+                <strong id="healthSavings">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Savings Rate -->
+        <div class="health-stat-card rate-card">
+
+            <div class="health-stat-icon">
+                %
+            </div>
+
+            <div class="health-stat-content">
+
+                <span>Savings Rate</span>
+
+                <strong id="healthSavingsRate">
+                    0%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+   <!-- =========================================================
+     RECENT TRANSACTIONS
+========================================================= -->
+
+<section class="recent-transactions-card">
+
+    <!-- Header -->
+    <div class="recent-header">
+
+        <div class="recent-title">
+
+            <div class="recent-icon">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+            </div>
+
+            <div>
+                <h2>Recent Transactions</h2>
+                <p>Latest financial activity</p>
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            id="refreshTransactionsBtn"
+            class="refresh-btn"
+            onclick="loadRecentTransactions()"
+        >
+            <i class="fa-solid fa-rotate"></i>
+            <span>Refresh</span>
+        </button>
+
+    </div>
+
+
+    <!-- Divider -->
+    <div class="recent-divider"></div>
+
+
+    <!-- Loading -->
+    <div
+        id="transactionsLoading"
+        class="transactions-loading"
+    >
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <span>Loading transactions...</span>
+    </div>
+
+
+    <!-- Error -->
+    <div
+        id="transactionsError"
+        class="transactions-error"
+        style="display: none;"
+    >
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        <div>
+            <strong>Unable to load transactions</strong>
+            <p id="transactionsErrorText">
+                Please try again.
+            </p>
+        </div>
+
+        <button
+            type="button"
+            onclick="loadRecentTransactions()"
+        >
+            Retry
+        </button>
+    </div>
+
+
+    <!-- Empty -->
+    <div
+        id="transactionsEmpty"
+        class="transactions-empty"
+        style="display: none;"
+    >
+        <i class="fa-solid fa-receipt"></i>
+
+        <h3>No transactions yet</h3>
+
+        <p>
+            Your recent financial transactions will appear here.
+        </p>
+    </div>
+
+
+    <!-- Transactions List -->
+    <div
+        id="recentTransactionsList"
+        class="recent-transactions-list"
+    >
+        <!-- Transactions will be inserted by JavaScript -->
+    </div>
+
+</section>
+<!-- =========================================================
+     ADD TRANSACTION MODAL
+========================================================= -->
+
+<div
+    id="transactionModal"
+    class="financial-modal"
+    style="display:none;"
+>
+
+
+    <div
+        class="financial-modal-overlay"
+        id="modalOverlay"
+    ></div>
+
+
+    <div class="financial-modal-content">
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="financial-modal-header">
+
+            <div>
+
+                <span class="modal-badge">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                    FINANCIAL MANAGEMENT
+
+                </span>
+
+
+                <h2>
+                    Add Transaction
+                </h2>
+
+
+                <p>
+                    Add income or expense to your financial records.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="financial-modal-close"
+                id="closeTransactionModalBtn"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <form
+            id="transactionForm"
+        >
+
+
+            <div class="financial-form-grid">
+
+
+                <!-- TRANSACTION ID -->
+
+                <div class="financial-form-group">
+
+                    <label for="transactionId">
+
+                        Transaction ID
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="transactionId"
+                        name="transaction_id"
+                        placeholder="FIN007"
+                        maxlength="50"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- ACCOUNT ID -->
+
+                <div class="financial-form-group">
+
+                    <label for="accountId">
+
+                        Account ID
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="accountId"
+                        name="account_id"
+                        placeholder="ACC001"
+                        maxlength="50"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- TYPE -->
+
+                <div class="financial-form-group">
+
+                    <label for="transactionType">
+
+                        Transaction Type
+
+                    </label>
+
+                    <select
+                        id="transactionType"
+                        name="transaction_type"
+                        required
+                    >
+
+                        <option value="Income">
+                            Income
+                        </option>
+
+                        <option value="Expense">
+                            Expense
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- CATEGORY -->
+
+                <div class="financial-form-group">
+
+                    <label for="transactionCategory">
+
+                        Category
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="transactionCategory"
+                        name="category"
+                        placeholder="Food / Salary / Shopping"
+                        maxlength="50"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- AMOUNT -->
+
+                <div class="financial-form-group">
+
+                    <label for="transactionAmount">
+
+                        Amount
+
+                    </label>
+
+
+                    <div class="financial-amount-input">
+
+                        <span>
+                            ₹
+                        </span>
+
+
+                        <input
+                            type="number"
+                            id="transactionAmount"
+                            name="amount"
+                            placeholder="0.00"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="financial-form-group full-width">
+
+                    <label for="transactionDescription">
+
+                        Description
+
+                    </label>
+
+
+                    <textarea
+                        id="transactionDescription"
+                        name="description"
+                        rows="4"
+                        maxlength="255"
+                        placeholder="Enter transaction description..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- FORM ERROR / SUCCESS -->
+
+            <div
+                id="transactionFormMessage"
+                class="transaction-form-message"
+                style="display:none;"
+            ></div>
+
+
+
+            <!-- FORM BUTTONS -->
+
+            <div class="financial-modal-actions">
+
+
+                <button
+                    type="button"
+                    class="financial-cancel-btn"
+                    id="cancelTransactionBtn"
+                >
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="financial-save-btn"
+                    id="saveTransactionBtn"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Save Transaction
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     TOAST NOTIFICATION
+========================================================= -->
+
+<div
+    id="financialToast"
+    class="financial-toast"
+    style="display:none;"
+>
+
+
+    <div class="toast-icon">
+
+        <i class="fa-solid fa-check"></i>
+
+    </div>
+
+
+    <div class="toast-content">
+
+        <strong id="toastTitle">
+            Success
+        </strong>
+
+
+        <span id="toastMessage">
+            Transaction saved successfully.
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="closeToastBtn"
+    >
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script
+    src="{{ url_for('static', path='js/financial_management.js') }}"
+></script>
+<script>
+/* =========================================================
+   FINANCIAL HEALTH
+========================================================= */
+
+async function loadFinancialHealth() {
+
+    try {
+
+        console.log("Loading Financial Health...");
+
+
+        const response = await fetch(
+            "/financial/summary?_" + Date.now(),
+            {
+                method: "GET",
+
+                headers: {
+                    "Accept": "application/json"
+                },
+
+                cache: "no-store"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Summary API returned " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Financial Summary:",
+            data
+        );
+
+
+        /* =================================================
+           BACKEND VALUES
+        ================================================= */
+
+        const income =
+            Number(data.total_income) || 0;
+
+
+        const expenses =
+            Number(data.total_expenses) || 0;
+
+
+        let savings =
+            Number(data.balance);
+
+
+        /*
+         * If backend balance is missing,
+         * calculate it ourselves.
+         */
+
+        if (!Number.isFinite(savings)) {
+
+            savings =
+                income - expenses;
+
+        }
+
+
+        /* =================================================
+           SAVINGS RATE
+           
+           IMPORTANT:
+           
+           savings / income * 100
+           
+           Example:
+           
+           46500 / 65200 * 100
+           = 71.32%
+        ================================================= */
+
+        let savingsRate = 0;
+
+
+        if (income > 0) {
+
+            savingsRate =
+                (savings / income) * 100;
+
+        }
+
+
+        savingsRate =
+            Math.round(savingsRate);
+
+
+        /*
+         * Keep value between 0 and 100
+         */
+
+        savingsRate =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    savingsRate
+                )
+            );
+
+
+        /* =================================================
+           HEALTH SCORE
+        ================================================= */
+
+        const healthScore =
+            savingsRate;
+
+
+        /* =================================================
+           UPDATE DOM
+        ================================================= */
+
+        const incomeElement =
+            document.getElementById(
+                "healthIncome"
+            );
+
+
+        const expensesElement =
+            document.getElementById(
+                "healthExpenses"
+            );
+
+
+        const savingsElement =
+            document.getElementById(
+                "healthSavings"
+            );
+
+
+        const savingsRateElement =
+            document.getElementById(
+                "healthSavingsRate"
+            );
+
+
+        const percentageElement =
+            document.getElementById(
+                "healthPercentage"
+            );
+
+
+        const circleElement =
+            document.getElementById(
+                "healthCircle"
+            );
+
+
+        const statusElement =
+            document.getElementById(
+                "healthStatus"
+            );
+
+
+        const messageElement =
+            document.getElementById(
+                "healthMessage"
+            );
+
+
+        /* =================================================
+           VALUES
+        ================================================= */
+
+        if (incomeElement) {
+
+            incomeElement.textContent =
+                formatINR(income);
+
+        }
+
+
+        if (expensesElement) {
+
+            expensesElement.textContent =
+                formatINR(expenses);
+
+        }
+
+
+        if (savingsElement) {
+
+            savingsElement.textContent =
+                formatINR(savings);
+
+        }
+
+
+        /*
+         * THIS FIXES YOUR 0% PROBLEM
+         */
+
+        if (savingsRateElement) {
+
+            savingsRateElement.textContent =
+                savingsRate + "%";
+
+        }
+
+
+        if (percentageElement) {
+
+            percentageElement.textContent =
+                healthScore + "%";
+
+        }
+
+
+        /* =================================================
+           CIRCLE
+        ================================================= */
+
+        if (circleElement) {
+
+            const degrees =
+                healthScore * 3.6;
+
+
+            circleElement.style.setProperty(
+                "--health-progress",
+                degrees + "deg"
+            );
+
+        }
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        let status =
+            "Calculating...";
+
+
+        let message =
+            "Your financial health is being calculated.";
+
+
+        if (income <= 0) {
+
+            status =
+                "No Financial Data";
+
+            message =
+                "Add income transactions to calculate your financial health.";
+
+        }
+
+        else if (savingsRate <= 20) {
+
+            status =
+                "Needs Attention";
+
+            message =
+                "Your expenses are high compared with your income.";
+
+        }
+
+        else if (savingsRate <= 40) {
+
+            status =
+                "Needs Improvement";
+
+            message =
+                "You have some savings, but there is room for improvement.";
+
+        }
+
+        else if (savingsRate <= 60) {
+
+            status =
+                "Fair";
+
+            message =
+                "Your financial position is stable.";
+
+        }
+
+        else if (savingsRate <= 80) {
+
+            status =
+                "Good";
+
+            message =
+                "Great! You are maintaining a healthy savings level.";
+
+        }
+
+        else {
+
+            status =
+                "Excellent";
+
+            message =
+                "Excellent! Your savings position is very strong.";
+
+        }
+
+
+        if (statusElement) {
+
+            statusElement.textContent =
+                status;
+
+        }
+
+
+        if (messageElement) {
+
+            messageElement.textContent =
+                message;
+
+        }
+
+
+        console.log(
+            "Financial Health:",
+            {
+                income,
+                expenses,
+                savings,
+                savingsRate,
+                healthScore
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Financial Health Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   INR FORMAT
+========================================================= */
+
+function formatINR(value) {
+
+    return new Intl.NumberFormat(
+        "en-IN",
+        {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 0
+        }
+    ).format(
+        Number(value) || 0
+    );
+
+}
+
+
+/* =========================================================
+   PAGE LOAD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadFinancialHealth();
+
+    }
+);
+</script>
+
+{% endblock %}

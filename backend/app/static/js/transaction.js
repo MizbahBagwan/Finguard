@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     initializeLoader();
 
+    loadTransactions();
+
 
 });
 
@@ -1278,5 +1280,247 @@ if(overview && typeof Chart !== "undefined"){
 
     });
 
+
+}
+async function loadTransactions() {
+
+    try {
+
+        const response = await fetch("/api/transactions");
+
+        if (!response.ok) {
+            throw new Error("Failed to load transactions");
+        }
+
+        const transactions = await response.json();
+
+        const tbody = document.querySelector(".transaction-table tbody");
+
+        if (!tbody) return;
+
+        tbody.innerHTML = "";
+
+        transactions.forEach((t, index) => {
+
+            const risk = Number(t.risk_score || 0);
+
+            const riskLevel =
+                (t.risk_level || "Low").toLowerCase();
+
+            const prediction =
+                t.prediction || "Unknown";
+
+            const riskClass =
+                riskLevel === "high"
+                    ? "danger"
+                    : riskLevel === "medium"
+                        ? "warning"
+                        : "success";
+
+            const predictionClass =
+                prediction.toLowerCase() === "fraud"
+                    ? "danger"
+                    : prediction.toLowerCase() === "safe"
+                        ? "success"
+                        : "warning";
+
+            const merchant =
+                t.merchant || "Unknown";
+
+            const transactionId =
+                t.transaction_id || t.id;
+
+            const location =
+                t.location || "Unknown";
+
+            const cardType =
+                t.card_type || "Unknown";
+
+            const amount =
+                Number(t.amount || 0).toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+            const date =
+                t.time ? String(t.time).substring(0, 10) : "";
+
+            const firstLetter =
+                merchant.charAt(0).toUpperCase();
+
+            const row = document.createElement("tr");
+
+            row.className = "transaction-row";
+
+            row.dataset.risk = riskLevel;
+
+            row.dataset.date = date;
+
+            row.innerHTML = `
+
+                <td>
+                    <div class="txn-id">
+                        #${index + 1}
+                    </div>
+                </td>
+
+                <td>
+                    <div class="merchant-cell">
+
+                        <div class="merchant-avatar">
+                            ${firstLetter}
+                        </div>
+
+                        <div>
+                            <h4>${merchant}</h4>
+                            <p>${transactionId}</p>
+                        </div>
+
+                    </div>
+                </td>
+
+                <td>
+                    <div class="amount">
+                        ₹ ${amount}
+                    </div>
+                </td>
+
+                <td>
+                    <div class="location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        ${location}
+                    </div>
+                </td>
+
+                <td>
+                    <span class="card-chip">
+                        ${cardType}
+                    </span>
+                </td>
+
+                <td>
+
+                    <div class="risk-wrapper">
+
+                        <div class="risk-progress">
+
+                            <div
+                                class="risk-fill"
+                                style="width:${risk}%">
+                            </div>
+
+                        </div>
+
+                        <span>
+                            ${risk}%
+                        </span>
+
+                    </div>
+
+                </td>
+
+                <td>
+                    <span class="status ${riskClass}">
+                        ${t.risk_level || "Low"}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="status ${predictionClass}">
+                        ${prediction}
+                    </span>
+                </td>
+
+                <td>
+                    <a
+                        href="/transaction/${transactionId}"
+                        class="view-btn">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </a>
+                </td>
+
+            `;
+
+            tbody.appendChild(row);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Transaction loading error:",
+            error
+        );
+
+    }
+
+}
+async function initializeCounters() {
+
+    try {
+
+        const response = await fetch("/api/transaction-stats");
+
+        if (!response.ok) {
+            throw new Error("Failed to load transaction stats");
+        }
+
+        const data = await response.json();
+
+        console.log("TRANSACTION STATS:", data);
+
+        const counters = document.querySelectorAll(".counter");
+
+        if (!counters.length) {
+            console.warn("No .counter elements found");
+            return;
+        }
+
+        const values = [
+            data.total_transactions || 0,
+            data.safe_transactions || 0,
+            data.fraud_transactions || 0
+        ];
+
+        counters.forEach((counter, index) => {
+
+            const target = Number(values[index] || 0);
+
+            let current = 0;
+
+            const speed = Math.max(1, target / 50);
+
+            function update() {
+
+                current += speed;
+
+                if (current < target) {
+
+                    counter.innerText = Math.floor(current);
+
+                    requestAnimationFrame(update);
+
+                } else {
+
+                    counter.innerText = target;
+
+                }
+
+            }
+
+            update();
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Transaction stats error:",
+            error
+        );
+
+    }
 
 }

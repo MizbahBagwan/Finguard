@@ -37,6 +37,7 @@ from datetime import datetime
 from fastapi import FastAPI, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
+from app.routers.financial import router as financial_router
 
 from app.database.connection import (
     Base,
@@ -118,13 +119,16 @@ from app.services.graph_service import (
 from app.fraud_engine import create_ai_report
 from fastapi import Form
 from fastapi.responses import RedirectResponse
-from app.routers.dashboard import router as dashboard_router
 from pydantic import BaseModel
 import google.generativeai as genai
 import os
 
 from app.models.transaction import TransactionDB
 from app.services.alert_service import create_alert
+from app.routers.dashboard import router as dashboard_router
+
+
+
 
 
 
@@ -176,6 +180,7 @@ app.include_router(chart_router)
 app.include_router(ocr.router)
 app.include_router(reports_router)
 app.include_router(settings.router)
+app.include_router(financial_router)
 
 
 def calculate_risk(
@@ -718,6 +723,11 @@ async def add_transaction(
 
         prediction = ml_result["prediction"]
 
+        fraud_probability = ml_result.get(
+            "fraud_probability",
+            risk_score
+        )
+
 
 # ==============================
 # GEMINI AI ANALYSIS
@@ -819,6 +829,8 @@ async def add_transaction(
             is_international=is_international,
 
             risk_score=risk_score,
+
+            fraud_probability=fraud_probability,
 
             risk_level=risk_level,
 
@@ -1305,14 +1317,36 @@ from sqlalchemy.orm import Session
 @app.get("/transaction/{transaction_id}", response_class=HTMLResponse)
 async def transaction_detail(
     request: Request,
-    transaction_id: int,
+    transaction_id: str,
     db: Session = Depends(get_db)
 ):
 
     transaction = (
         db.query(TransactionDB)
-        .filter(TransactionDB.id == transaction_id)
+        .filter(
+            TransactionDB.transaction_id == transaction_id
+        )
         .first()
+    )
+
+    if transaction is None:
+        return HTMLResponse(
+            "Transaction not found",
+            status_code=404
+        )
+
+    print("========== PAGE DATA ==========")
+    print("TRANSACTION ID:", transaction.transaction_id)
+    print("DB NOTES:", transaction.notes)
+    print("DB RECOMMENDATION:", transaction.recommendation)
+    print("================================")
+
+    return templates.TemplateResponse(
+        "transaction_detail.html",
+        {
+            "request": request,
+            "transaction": transaction
+        }
     )
 
 
@@ -1346,7 +1380,7 @@ async def transaction_detail(
 
 @app.post("/analyze/{transaction_id}")
 async def run_ai_analysis(
-    transaction_id: int,
+    transaction_id: str,
     db: Session = Depends(get_db)
 ):
 
@@ -1361,8 +1395,10 @@ async def run_ai_analysis(
 
         transaction = (
             db.query(TransactionDB)
-            .filter(TransactionDB.id == transaction_id)
-            .first()
+            .filter(
+            TransactionDB.transaction_id == transaction_id
+             )
+        .first()
         )
 
 
@@ -1858,6 +1894,47 @@ async def get_transactions(
     )
     
 
+@app.get("/api/transaction-by-code/{transaction_id}")
+async def get_transaction_by_code(
+    transaction_id: str,
+    db: Session = Depends(get_db)
+):
+
+    transaction = (
+        db.query(TransactionDB)
+        .filter(
+            TransactionDB.transaction_id == transaction_id
+        )
+        .first()
+    )
+
+    if transaction is None:
+        return {
+            "success": False,
+            "message": f"Transaction {transaction_id} not found"
+        }
+
+    return {
+        "success": True,
+        "transaction": {
+            "id": transaction.id,
+            "transaction_id": transaction.transaction_id,
+            "account_id": transaction.account_id,
+            "amount": transaction.amount,
+            "merchant": transaction.merchant,
+            "location": transaction.location,
+            "time": transaction.time,
+            "card_type": transaction.card_type,
+            "transaction_type": transaction.transaction_type,
+            "merchant_category": transaction.merchant_category,
+            "risk_score": transaction.risk_score,
+            "fraud_probability": transaction.fraud_probability,
+            "risk_level": transaction.risk_level,
+            "prediction": transaction.prediction,
+            "recommendation": transaction.recommendation,
+            "notes": transaction.notes
+        }
+    }
 
 
 # =====================================================
@@ -2259,3 +2336,16 @@ async def transaction_chart_data(
         },
         "fraud_probability": fraud_data
     }
+
+@app.get("/financial-management", response_class=HTMLResponse)
+async def financial_management(
+    request: Request
+):
+
+    return templates.TemplateResponse(
+        "financial_management.html",
+        {
+            "request": request,
+            "active_page": "financial-management"
+        }
+    )

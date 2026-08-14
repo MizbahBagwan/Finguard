@@ -23,14 +23,12 @@ Transactions | FinGuard AI
 HEADER
 ========================================= -->
 
-
-<<!-- =====================================================
+<!-- =========================================
      TRANSACTIONS HERO
      SAME THEME AS DASHBOARD
-===================================================== -->
+========================================= -->
 
 <div class="transaction-hero">
-
     <div class="hero-left">
 
         <span class="hero-tag">
@@ -131,9 +129,9 @@ HEADER
     </div>
 
 </div>
-STEP 2 — ab transaction.css ke E
 
-<
+
+
 <!-- =========================================
      PREMIUM TRANSACTION SUMMARY
 ========================================= -->
@@ -585,6 +583,7 @@ TRANSACTION TABLE
 {% for transaction in transactions|default([]) %}
 
 <tr class="transaction-row"
+    data-transaction-id="{{ transaction.transaction_id }}"
     data-risk="{{ transaction.risk_level.lower() }}"
     data-date="{{ transaction.created_at.strftime('%Y-%m-%d') }}">
 
@@ -798,8 +797,8 @@ Unknown
 <td>
 
 
-<a href="/transaction/{{ transaction.id }}"
-class="view-btn">
+<a href="/transaction/{{ transaction.transaction_id }}"
+   class="view-btn">
 
 
 <i class="fa-solid fa-eye"></i>
@@ -2343,14 +2342,13 @@ if (runAI) {
 
         for (const row of rows) {
 
-            const id = row.querySelector(".txn-id")
-                          .innerText
-                          .replace("#", "")
-                          .trim();
+           const id = row.dataset.transactionId;
 
-            await fetch(`/analyze/${id}`, {
-                method: "POST"
-            });
+            if (!id) continue;
+
+            await fetch(`/analyze/${encodeURIComponent(id)}`, {
+            method: "POST"
+        });
 
         }
 
@@ -2386,7 +2384,7 @@ loadStats();*/
 
 
 
-
+<script src="/static/js/transaction.js"></script>
 
 
 {% endblock %}
