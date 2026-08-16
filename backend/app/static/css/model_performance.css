@@ -1,0 +1,681 @@
+/* ==========================================================
+   FIN GUARD AI
+   MODEL PERFORMANCE
+========================================================== */
+
+.model-performance-page {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.performance-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 28px 32px;
+    margin-bottom: 24px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15, 35, 75, 0.96),
+            rgba(25, 48, 92, 0.90)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+
+.hero-icon {
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    font-size: 26px;
+}
+
+
+.hero-label,
+.section-label {
+    display: block;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+
+    opacity: 0.65;
+
+    margin-bottom: 5px;
+}
+
+
+.performance-hero h2 {
+    margin: 0 0 6px;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+
+.performance-hero p {
+    margin: 0;
+
+    font-size: 13px;
+
+    opacity: 0.72;
+}
+
+
+.model-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+.model-badge > i {
+    font-size: 22px;
+}
+
+
+.model-badge span {
+    display: block;
+
+    font-size: 10px;
+    opacity: 0.6;
+
+    text-transform: uppercase;
+}
+
+
+.model-badge strong {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================================
+   METRIC GRID
+========================================================== */
+
+.metrics-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+
+.metric-card {
+    position: relative;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    backdrop-filter: blur(12px);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.metric-card:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+
+.metric-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    margin-bottom: 18px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    font-size: 17px;
+}
+
+
+.metric-info span {
+    display: block;
+
+    font-size: 12px;
+
+    opacity: 0.65;
+
+    margin-bottom: 5px;
+}
+
+
+.metric-info strong {
+    display: block;
+
+    font-size: 28px;
+    font-weight: 800;
+}
+
+
+.metric-description {
+    margin-top: 8px;
+
+    font-size: 10px;
+
+    opacity: 0.48;
+
+    line-height: 1.4;
+}
+
+
+/* ==========================================================
+   INFORMATION GRID
+========================================================== */
+
+.information-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+
+.performance-card {
+    padding: 24px;
+
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.card-heading {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+
+.card-heading h3 {
+    margin: 0;
+
+    font-size: 17px;
+    font-weight: 750;
+}
+
+
+.card-heading > i {
+    font-size: 19px;
+
+    opacity: 0.45;
+}
+
+
+/* ==========================================================
+   INFO LIST
+========================================================== */
+
+.info-list {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.info-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+
+.info-row span {
+    font-size: 12px;
+    opacity: 0.62;
+}
+
+
+.info-row strong {
+    font-size: 13px;
+}
+
+
+/* ==========================================================
+   FEATURE TAGS
+========================================================== */
+
+.feature-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+}
+
+
+.feature-tag {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px 11px;
+
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    font-size: 11px;
+
+    opacity: 0.85;
+}
+
+
+.feature-tag i {
+    font-size: 9px;
+}
+
+
+/* ==========================================================
+   DETAILS
+========================================================== */
+
+.model-details {
+    margin-bottom: 18px;
+}
+
+
+.details-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px;
+}
+
+
+.detail-item {
+    padding: 16px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.035);
+}
+
+
+.detail-item span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    opacity: 0.5;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+
+.detail-item strong {
+    font-size: 12px;
+
+    word-break: break-word;
+}
+
+
+/* ==========================================================
+   SUMMARY
+========================================================== */
+
+.performance-summary {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 22px 24px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(18, 65, 55, 0.55),
+            rgba(20, 70, 65, 0.35)
+        );
+
+    border: 1px solid rgba(100, 220, 180, 0.14);
+}
+
+
+.summary-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    font-size: 22px;
+}
+
+
+.performance-summary > div:nth-child(2) {
+    flex: 1;
+}
+
+
+.performance-summary > div:nth-child(2) > span {
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    opacity: 0.55;
+}
+
+
+.performance-summary h3 {
+    margin: 4px 0;
+
+    font-size: 16px;
+}
+
+
+.performance-summary p {
+    margin: 0;
+
+    font-size: 11px;
+
+    opacity: 0.55;
+}
+
+
+.summary-score {
+    text-align: right;
+}
+
+
+.summary-score strong {
+    display: block;
+
+    font-size: 30px;
+
+    font-weight: 800;
+}
+
+
+.summary-score span {
+    font-size: 10px;
+
+    opacity: 0.55;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 1200px) {
+
+    .metrics-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .details-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .performance-hero {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+
+    .metrics-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .information-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .performance-summary {
+        align-items: flex-start;
+    }
+
+
+    .summary-score {
+        display: none;
+    }
+
+}
+/* ==========================================================
+   CONFUSION MATRIX
+========================================================== */
+
+.confusion-card {
+    margin-bottom: 18px;
+}
+
+.matrix-description {
+    margin: -10px 0 22px;
+
+    font-size: 12px;
+
+    opacity: 0.55;
+
+    line-height: 1.5;
+}
+
+.confusion-matrix {
+    display: grid;
+
+    grid-template-columns: 130px 1fr 1fr;
+
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.matrix-corner {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.matrix-header {
+    padding: 16px;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    background: rgba(255, 255, 255, 0.055);
+
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.matrix-label {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.matrix-cell {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 90px;
+
+    font-size: 28px;
+    font-weight: 800;
+
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.safe-cell {
+    background: rgba(30, 150, 100, 0.16);
+}
+
+.fraud-cell {
+    background: rgba(220, 70, 70, 0.18);
+}
+
+.error-cell {
+    background: rgba(230, 160, 60, 0.12);
+}
+
+.matrix-legend {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    margin-top: 18px;
+
+    font-size: 10px;
+
+    opacity: 0.55;
+}
+
+.matrix-legend span {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.matrix-legend i {
+    font-size: 7px;
+}

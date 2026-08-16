@@ -45,6 +45,7 @@ from app.database.connection import (
     get_db,
     SessionLocal
 )
+from app.routers import model_performance
 
 from app.models.transaction import TransactionDB
 from app.models.transaction_log import TransactionLog
@@ -181,6 +182,9 @@ app.include_router(ocr.router)
 app.include_router(reports_router)
 app.include_router(settings.router)
 app.include_router(financial_router)
+app.include_router(
+    model_performance.router
+)
 
 
 def calculate_risk(

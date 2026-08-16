@@ -1,0 +1,1031 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Model Performance | FinGuard AI
+{% endblock %}
+
+
+{% block page_title %}
+    Model Performance
+{% endblock %}
+
+
+{% block page_subtitle %}
+    AI fraud detection model evaluation and performance metrics
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/model_performance.css') }}"
+>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="model-performance-page">
+
+
+    <!-- =====================================================
+         MODEL PERFORMANCE HERO
+    ====================================================== -->
+
+    <section class="performance-hero">
+
+        <div class="hero-content">
+
+            <div class="hero-icon">
+
+                <i class="fa-solid fa-brain"></i>
+
+            </div>
+
+
+            <div>
+
+                <span class="hero-label">
+                    MACHINE LEARNING
+                </span>
+
+
+                <h2>
+                    FinGuard AI Model Performance
+                </h2>
+
+
+                <p>
+                    Evaluation of the fraud detection model
+                    using the test dataset.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="model-badge">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+
+            <div>
+
+                <span>
+                    MODEL
+                </span>
+
+
+                <strong>
+                    {{ metadata.model_name or "Random Forest Classifier" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+
+    <!-- =====================================================
+         PERFORMANCE METRICS
+    ====================================================== -->
+
+    <section class="metrics-grid">
+
+
+        <!-- ACCURACY -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon accuracy">
+
+                <i class="fa-solid fa-bullseye"></i>
+
+            </div>
+
+
+            <div class="metric-info">
+
+                <span>
+                    Accuracy
+                </span>
+
+
+                <strong>
+
+                    {{ "%.2f"|format(
+                        (metadata.accuracy or 0) * 100
+                    ) }}%
+
+                </strong>
+
+            </div>
+
+
+            <div class="metric-description">
+
+                Overall correct predictions
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- PRECISION -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon precision">
+
+                <i class="fa-solid fa-crosshairs"></i>
+
+            </div>
+
+
+            <div class="metric-info">
+
+                <span>
+                    Precision
+                </span>
+
+
+                <strong>
+
+                    {{ "%.2f"|format(
+                        (metadata.precision or 0) * 100
+                    ) }}%
+
+                </strong>
+
+            </div>
+
+
+            <div class="metric-description">
+
+                Accuracy of fraud predictions
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- RECALL -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon recall">
+
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+            </div>
+
+
+            <div class="metric-info">
+
+                <span>
+                    Recall
+                </span>
+
+
+                <strong>
+
+                    {{ "%.2f"|format(
+                        (metadata.recall or 0) * 100
+                    ) }}%
+
+                </strong>
+
+            </div>
+
+
+            <div class="metric-description">
+
+                Fraud cases correctly detected
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- F1 SCORE -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon f1">
+
+                <i class="fa-solid fa-scale-balanced"></i>
+
+            </div>
+
+
+            <div class="metric-info">
+
+                <span>
+                    F1 Score
+                </span>
+
+
+                <strong>
+
+                    {{ "%.2f"|format(
+                        (metadata.f1_score or 0) * 100
+                    ) }}%
+
+                </strong>
+
+            </div>
+
+
+            <div class="metric-description">
+
+                Balance between precision and recall
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- ROC AUC -->
+
+        <div class="metric-card">
+
+            <div class="metric-icon roc">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+
+            <div class="metric-info">
+
+                <span>
+                    ROC-AUC
+                </span>
+
+
+                <strong>
+
+                    {{ "%.2f"|format(
+                        (metadata.roc_auc or 0) * 100
+                    ) }}%
+
+                </strong>
+
+            </div>
+
+
+            <div class="metric-description">
+
+                Model classification capability
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+
+    <!-- =====================================================
+         DATASET + FEATURES
+    ====================================================== -->
+
+    <section class="information-grid">
+
+
+        <!-- DATASET INFORMATION -->
+
+        <div class="performance-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        DATASET
+                    </span>
+
+
+                    <h3>
+                        Training Information
+                    </h3>
+
+                </div>
+
+
+                <i class="fa-solid fa-database"></i>
+
+            </div>
+
+
+
+            <div class="info-list">
+
+
+                <!-- TOTAL -->
+
+                <div class="info-row">
+
+                    <span>
+                        Total Transactions
+                    </span>
+
+
+                    <strong>
+
+                        {{ "{:,}".format(
+                            metadata.total_rows or 0
+                        ) }}
+
+                    </strong>
+
+                </div>
+
+
+
+                <!-- TRAINING -->
+
+                <div class="info-row">
+
+                    <span>
+                        Training Samples
+                    </span>
+
+
+                    <strong>
+
+                        {{ "{:,}".format(
+                            metadata.training_rows or 0
+                        ) }}
+
+                    </strong>
+
+                </div>
+
+
+
+                <!-- TESTING -->
+
+                <div class="info-row">
+
+                    <span>
+                        Testing Samples
+                    </span>
+
+
+                    <strong>
+
+                        {{ "{:,}".format(
+                            metadata.testing_rows or 0
+                        ) }}
+
+                    </strong>
+
+                </div>
+
+
+
+                <!-- VERSION -->
+
+                <div class="info-row">
+
+                    <span>
+                        Model Version
+                    </span>
+
+
+                    <strong>
+
+                        {{ metadata.version or "N/A" }}
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- MODEL FEATURES -->
+
+        <div class="performance-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        FEATURES
+                    </span>
+
+
+                    <h3>
+                        Model Inputs
+                    </h3>
+
+                </div>
+
+
+                <i class="fa-solid fa-sliders"></i>
+
+            </div>
+
+
+
+            <div class="feature-list">
+
+
+                {% if metadata.features %}
+
+
+                    {% for feature in metadata.features %}
+
+                    <span class="feature-tag">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        {{ feature }}
+
+                    </span>
+
+                    {% endfor %}
+
+
+                {% else %}
+
+                    <span class="feature-tag">
+
+                        No feature information available
+
+                    </span>
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+
+    <!-- =====================================================
+         CONFUSION MATRIX
+    ====================================================== -->
+
+    <section class="performance-card confusion-card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <span class="section-label">
+                    MODEL EVALUATION
+                </span>
+
+
+                <h3>
+                    Confusion Matrix
+                </h3>
+
+            </div>
+
+
+            <i class="fa-solid fa-table-cells-large"></i>
+
+        </div>
+
+
+
+        <p class="matrix-description">
+
+            The confusion matrix shows how the model
+            classified safe and fraudulent transactions.
+
+        </p>
+
+
+
+        {% set matrix = metadata.get('confusion_matrix') %}
+
+
+        {% if matrix and matrix|length >= 2 and matrix[0]|length >= 2 and matrix[1]|length >= 2 %}
+
+
+        <div class="confusion-matrix">
+
+
+            <!-- EMPTY CORNER -->
+
+            <div class="matrix-corner"></div>
+
+
+
+            <!-- COLUMN HEADERS -->
+
+            <div class="matrix-header">
+
+                Predicted Safe
+
+            </div>
+
+
+            <div class="matrix-header">
+
+                Predicted Fraud
+
+            </div>
+
+
+
+            <!-- ACTUAL SAFE -->
+
+            <div class="matrix-label">
+
+                Actual Safe
+
+            </div>
+
+
+
+            <!-- TRUE NEGATIVE -->
+
+            <div class="matrix-cell safe-cell">
+
+                <span class="matrix-number">
+
+                    {{ matrix[0][0] }}
+
+                </span>
+
+
+                <small>
+
+                    True Negative
+
+                </small>
+
+            </div>
+
+
+
+            <!-- FALSE POSITIVE -->
+
+            <div class="matrix-cell error-cell">
+
+                <span class="matrix-number">
+
+                    {{ matrix[0][1] }}
+
+                </span>
+
+
+                <small>
+
+                    False Positive
+
+                </small>
+
+            </div>
+
+
+
+            <!-- ACTUAL FRAUD -->
+
+            <div class="matrix-label">
+
+                Actual Fraud
+
+            </div>
+
+
+
+            <!-- FALSE NEGATIVE -->
+
+            <div class="matrix-cell error-cell">
+
+                <span class="matrix-number">
+
+                    {{ matrix[1][0] }}
+
+                </span>
+
+
+                <small>
+
+                    False Negative
+
+                </small>
+
+            </div>
+
+
+
+            <!-- TRUE POSITIVE -->
+
+            <div class="matrix-cell fraud-cell">
+
+                <span class="matrix-number">
+
+                    {{ matrix[1][1] }}
+
+                </span>
+
+
+                <small>
+
+                    True Positive
+
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- MATRIX LEGEND -->
+
+        <div class="matrix-legend">
+
+            <span>
+
+                <i class="fa-solid fa-circle"></i>
+
+                Correct Prediction
+
+            </span>
+
+
+            <span>
+
+                <i class="fa-solid fa-circle"></i>
+
+                Incorrect Prediction
+
+            </span>
+
+        </div>
+
+
+
+        <!-- CONFUSION MATRIX SUMMARY -->
+
+        <div class="matrix-summary">
+
+
+            <div class="matrix-summary-item">
+
+                <span>
+                    True Negatives
+                </span>
+
+                <strong>
+                    {{ matrix[0][0] }}
+                </strong>
+
+                <small>
+                    Safe transactions correctly identified
+                </small>
+
+            </div>
+
+
+
+            <div class="matrix-summary-item">
+
+                <span>
+                    False Positives
+                </span>
+
+                <strong>
+                    {{ matrix[0][1] }}
+                </strong>
+
+                <small>
+                    Safe transactions flagged as fraud
+                </small>
+
+            </div>
+
+
+
+            <div class="matrix-summary-item">
+
+                <span>
+                    False Negatives
+                </span>
+
+                <strong>
+                    {{ matrix[1][0] }}
+                </strong>
+
+                <small>
+                    Fraud transactions missed
+                </small>
+
+            </div>
+
+
+
+            <div class="matrix-summary-item">
+
+                <span>
+                    True Positives
+                </span>
+
+                <strong>
+                    {{ matrix[1][1] }}
+                </strong>
+
+                <small>
+                    Fraud transactions correctly detected
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+
+        {% else %}
+
+
+
+        <!-- MATRIX NOT AVAILABLE -->
+
+        <div class="matrix-unavailable">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+
+            <h4>
+                Confusion Matrix Data Not Available
+            </h4>
+
+
+            <p>
+
+                The model metrics are available, but the
+                confusion matrix values have not yet been
+                stored in the model metadata.
+
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+
+    <!-- =====================================================
+         MODEL CONFIGURATION
+    ====================================================== -->
+
+    <section class="performance-card model-details">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <span class="section-label">
+                    MODEL INFORMATION
+                </span>
+
+
+                <h3>
+                    Training Configuration
+                </h3>
+
+            </div>
+
+
+            <i class="fa-solid fa-gears"></i>
+
+        </div>
+
+
+
+        <div class="details-grid">
+
+
+            <!-- ALGORITHM -->
+
+            <div class="detail-item">
+
+                <span>
+                    Algorithm
+                </span>
+
+
+                <strong>
+
+                    {{ metadata.model_name
+                       or "Random Forest Classifier" }}
+
+                </strong>
+
+            </div>
+
+
+
+            <!-- TARGET -->
+
+            <div class="detail-item">
+
+                <span>
+                    Target Variable
+                </span>
+
+
+                <strong>
+
+                    {{ metadata.target
+                       or "is_fraud" }}
+
+                </strong>
+
+            </div>
+
+
+
+            <!-- VALIDATION -->
+
+            <div class="detail-item">
+
+                <span>
+                    Validation
+                </span>
+
+
+                <strong>
+                    5-Fold Stratified
+                </strong>
+
+            </div>
+
+
+
+            <!-- DATASET -->
+
+            <div class="detail-item">
+
+                <span>
+                    Dataset
+                </span>
+
+
+                <strong>
+
+                    {{ "{:,}".format(
+                        metadata.total_rows or 0
+                    ) }}
+
+                    Transactions
+
+                </strong>
+
+            </div>
+
+
+
+            <!-- MODEL VERSION -->
+
+            <div class="detail-item">
+
+                <span>
+                    Model Version
+                </span>
+
+
+                <strong>
+
+                    {{ metadata.version or "N/A" }}
+
+                </strong>
+
+            </div>
+
+
+
+            <!-- TRAINING DATE -->
+
+            <div class="detail-item">
+
+                <span>
+                    Training Date
+                </span>
+
+
+                <strong>
+
+                    {{ metadata.created_at or "N/A" }}
+
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+
+    <!-- =====================================================
+         MODEL STATUS
+    ====================================================== -->
+
+    <section class="performance-summary">
+
+
+        <div class="summary-icon">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+
+
+        <div>
+
+            <span>
+                MODEL STATUS
+            </span>
+
+
+            <h3>
+                Fraud Detection Model Active
+            </h3>
+
+
+            <p>
+
+                The trained model is integrated with
+                FinGuard AI and is available for
+                transaction risk prediction.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="summary-score">
+
+            <strong>
+
+                {{ "%.1f"|format(
+                    (metadata.accuracy or 0) * 100
+                ) }}%
+
+            </strong>
+
+
+            <span>
+                Accuracy
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+{% endblock %}

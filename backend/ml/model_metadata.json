@@ -2,7 +2,7 @@
     "project": "FinGuard AI",
     "model_name": "RandomForestClassifier",
     "version": "2.0.0",
-    "created_at": "2026-08-13 11:01:18",
+    "created_at": "2026-08-14 21:01:39",
     "dataset": "D:\\finguard_clean\\finguard_si1\\finguard_si1\\backend\\uploads\\finguard_transactions_10000.csv",
     "total_rows": 10000,
     "training_rows": 8000,
@@ -27,6 +27,20 @@
     "recall": 0.9966,
     "f1_score": 0.9966,
     "roc_auc": 1.0,
+    "confusion_matrix": [
+        [
+            1418,
+            2
+        ],
+        [
+            2,
+            578
+        ]
+    ],
+    "true_negative": 1418,
+    "false_positive": 2,
+    "false_negative": 2,
+    "true_positive": 578,
     "merchant_frequency_file": "D:\\finguard_clean\\finguard_si1\\finguard_si1\\backend\\ml\\merchant_category_frequency.json",
     "feature_config_file": "D:\\finguard_clean\\finguard_si1\\finguard_si1\\backend\\ml\\feature_config.json",
     "best_parameters": {

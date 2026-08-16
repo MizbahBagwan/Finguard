@@ -214,6 +214,7 @@ logger.info("Creating FinGuard features...")
 
 # Calculate the threshold ONCE.
 # This exact value will also be saved for inference.
+
 amount_95_percentile = float(
     df["amount"].quantile(0.95)
 )
@@ -245,6 +246,7 @@ df["abs_amount"] = df["amount"].abs()
 
 
 # Use the SAME threshold calculated above.
+
 df["large_transaction"] = (
     df["amount"] > amount_95_percentile
 ).astype(int)
@@ -259,6 +261,7 @@ logger.info("Amount features completed")
 
 feature_config_path = MODEL_DIR / "feature_config.json"
 
+
 with open(
     feature_config_path,
     "w",
@@ -267,7 +270,8 @@ with open(
 
     json.dump(
         {
-            "amount_95_percentile": amount_95_percentile
+            "amount_95_percentile":
+                amount_95_percentile
         },
         f,
         indent=4
@@ -275,7 +279,8 @@ with open(
 
 
 logger.info(
-    f"Feature configuration saved to: {feature_config_path}"
+    f"Feature configuration saved to: "
+    f"{feature_config_path}"
 )
 
 
@@ -342,19 +347,25 @@ logger.info("Creating fraud labels...")
 # Target already exists in dataset
 
 logger.info(
-    f"Fraud Transactions : {df['is_fraud'].sum()}"
+    f"Fraud Transactions : "
+    f"{df['is_fraud'].sum()}"
 )
 
 
 logger.info(
-    f"Safe Transactions  : {(df['is_fraud'] == 0).sum()}"
+    f"Safe Transactions  : "
+    f"{(df['is_fraud'] == 0).sum()}"
 )
 
 
 logger.info("Feature engineering completed")
 
 
-print("\nFinal Dataset Shape :", df.shape)
+print(
+    "\nFinal Dataset Shape :",
+    df.shape
+)
+
 print(df.head())
 
 
@@ -394,11 +405,14 @@ numerical_features = [
 
 
 logger.info(
-    f"Categorical Features : {categorical_features}"
+    f"Categorical Features : "
+    f"{categorical_features}"
 )
 
+
 logger.info(
-    f"Numerical Features   : {numerical_features}"
+    f"Numerical Features   : "
+    f"{numerical_features}"
 )
 
 
@@ -410,7 +424,9 @@ numeric_pipeline = Pipeline(
     steps=[
         (
             "imputer",
-            SimpleImputer(strategy="median")
+            SimpleImputer(
+                strategy="median"
+            )
         )
     ]
 )
@@ -483,6 +499,7 @@ logger.info(
     f"Training Samples : {len(X_train)}"
 )
 
+
 logger.info(
     f"Testing Samples  : {len(X_test)}"
 )
@@ -491,8 +508,15 @@ logger.info(
 print("\n" + "=" * 60)
 print("TRAIN / TEST SPLIT")
 print("=" * 60)
-print(f"Training : {X_train.shape}")
-print(f"Testing  : {X_test.shape}")
+
+print(
+    f"Training : {X_train.shape}"
+)
+
+print(
+    f"Testing  : {X_test.shape}"
+)
+
 print("=" * 60)
 
 
@@ -605,7 +629,8 @@ logger.info(
 
 
 logger.info(
-    f"Best Parameters : {grid_search.best_params_}"
+    f"Best Parameters : "
+    f"{grid_search.best_params_}"
 )
 
 
@@ -621,10 +646,13 @@ print("=" * 60)
 
 
 print("Best Parameters:")
-print(grid_search.best_params_)
+print(
+    grid_search.best_params_
+)
 
 
 print("\nBest F1 Score:")
+
 print(
     round(
         grid_search.best_score_,
@@ -650,6 +678,7 @@ logger.info("Evaluating model...")
 y_pred = best_model.predict(
     X_test
 )
+
 
 y_prob = best_model.predict_proba(
     X_test
@@ -706,9 +735,9 @@ cm = confusion_matrix(
 tn, fp, fn, tp = cm.ravel()
 
 
-# ----------------------------------------------------------
-# Print Results
-# ----------------------------------------------------------
+# ==========================================================
+# PRINT RESULTS
+# ==========================================================
 
 print("\n" + "=" * 70)
 print("FinGuard AI - MODEL EVALUATION")
@@ -719,17 +748,21 @@ print(
     f"Accuracy       : {accuracy:.4f}"
 )
 
+
 print(
     f"Precision      : {precision:.4f}"
 )
+
 
 print(
     f"Recall         : {recall:.4f}"
 )
 
+
 print(
     f"F1 Score       : {f1:.4f}"
 )
+
 
 print(
     f"ROC AUC Score  : {roc_auc:.4f}"
@@ -737,6 +770,7 @@ print(
 
 
 print("\nConfusion Matrix")
+
 print(cm)
 
 
@@ -745,15 +779,18 @@ print(
     tn
 )
 
+
 print(
     "False Positive:",
     fp
 )
 
+
 print(
     "False Negative:",
     fn
 )
+
 
 print(
     "True Positive :",
@@ -762,6 +799,7 @@ print(
 
 
 print("\nClassification Report")
+
 
 print(
     classification_report(
@@ -822,7 +860,8 @@ with open(
 
 
 logger.info(
-    f"Evaluation report saved to: {report_path}"
+    f"Evaluation report saved to: "
+    f"{report_path}"
 )
 
 
@@ -867,6 +906,7 @@ print(
     "\nTop 20 Important Features\n"
 )
 
+
 print(
     importance_df.head(20)
 )
@@ -885,7 +925,8 @@ importance_df.to_csv(
 
 
 logger.info(
-    f"Feature importance saved to: {feature_path}"
+    f"Feature importance saved to: "
+    f"{feature_path}"
 )
 
 
@@ -920,7 +961,9 @@ logger.info(
 # ==========================================================
 
 metadata = {
-    "project": "FinGuard AI",
+
+    "project":
+        "FinGuard AI",
 
     "model_name":
         "RandomForestClassifier",
@@ -981,11 +1024,46 @@ metadata = {
             4
         ),
 
+    # ======================================================
+    # CONFUSION MATRIX
+    # ======================================================
+
+    "confusion_matrix": [
+        [
+            int(tn),
+            int(fp)
+        ],
+        [
+            int(fn),
+            int(tp)
+        ]
+    ],
+
+    "true_negative":
+        int(tn),
+
+    "false_positive":
+        int(fp),
+
+    "false_negative":
+        int(fn),
+
+    "true_positive":
+        int(tp),
+
+    # ======================================================
+    # FEATURE CONFIGURATION FILES
+    # ======================================================
+
     "merchant_frequency_file":
         str(merchant_frequency_path),
 
     "feature_config_file":
         str(feature_config_path),
+
+    # ======================================================
+    # BEST PARAMETERS
+    # ======================================================
 
     "best_parameters":
         grid_search.best_params_
@@ -1022,10 +1100,12 @@ logger.info(
 
 print("\n" + "=" * 70)
 
+
 print(
     "FinGuard AI MODEL TRAINING "
     "COMPLETED SUCCESSFULLY"
 )
+
 
 print("=" * 70)
 
@@ -1034,24 +1114,29 @@ print(
     f"Model File          : {model_path}"
 )
 
+
 print(
     f"Metadata File       : {metadata_path}"
 )
+
 
 print(
     f"Evaluation Report   : "
     f"{MODEL_DIR / 'evaluation_report.txt'}"
 )
 
+
 print(
     f"Feature Importance  : "
     f"{feature_path}"
 )
 
+
 print(
     f"Merchant Frequency  : "
     f"{merchant_frequency_path}"
 )
+
 
 print(
     f"Feature Config      : "
@@ -1067,20 +1152,44 @@ print(
     f"Accuracy  : {accuracy:.4f}"
 )
 
+
 print(
     f"Precision : {precision:.4f}"
 )
+
 
 print(
     f"Recall    : {recall:.4f}"
 )
 
+
 print(
     f"F1 Score  : {f1:.4f}"
 )
 
+
 print(
     f"ROC AUC   : {roc_auc:.4f}"
+)
+
+
+print("\nConfusion Matrix")
+print("------------------------------")
+
+print(
+    f"True Negative  : {tn}"
+)
+
+print(
+    f"False Positive : {fp}"
+)
+
+print(
+    f"False Negative : {fn}"
+)
+
+print(
+    f"True Positive  : {tp}"
 )
 
 
