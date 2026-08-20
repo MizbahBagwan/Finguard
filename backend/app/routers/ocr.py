@@ -86,6 +86,15 @@ async def run_ocr(file: UploadFile = File(...)):
 
         print("========== OCR COMPLETE ==========")
 
+        result = analyze_text(text)
+
+        print("========== OCR RESULT ==========")
+        print(result)
+
+        result["success"] = True
+
+        print("========== OCR COMPLETE ==========")
+
         return JSONResponse(content=result)
 
     except Exception as e:

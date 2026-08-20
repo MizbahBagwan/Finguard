@@ -2,225 +2,486 @@ import os
 import json
 import re
 
+import google.generativeai as genai
 from dotenv import load_dotenv
-from google import genai
+
+from app.config import GEMINI_MODEL
+
+
+# ============================================================
+# ENVIRONMENT
+# ============================================================
 
 load_dotenv()
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not API_KEY:
+    raise RuntimeError("GEMINI_API_KEY is not configured in .env")
 
 
-def analyze_transaction(transaction):
+# ============================================================
+# GEMINI CONFIGURATION
+# ============================================================
+
+genai.configure(api_key=API_KEY)
+
+model = genai.GenerativeModel(GEMINI_MODEL)
+
+
+# ============================================================
+# HELPER: CLEAN GEMINI JSON RESPONSE
+# ============================================================
+
+def clean_json_response(text: str) -> str:
+
+    if not text:
+        raise ValueError("Gemini returned an empty response.")
+
+    text = text.strip()
+
+    # Remove ```json
+    text = re.sub(
+        r"^```(?:json)?\s*",
+        "",
+        text,
+        flags=re.IGNORECASE
+    )
+
+    # Remove closing ```
+    text = re.sub(
+        r"\s*```$",
+        "",
+        text
+    )
+
+    return text.strip()
+
+
+# ============================================================
+# MAIN AI ANALYSIS
+# ============================================================
+
+def analyze_transaction(data):
+
+    # --------------------------------------------------------
+    # ML RESULT
+    # --------------------------------------------------------
+
+    ml_prediction = data.get(
+        "prediction",
+        "Unknown"
+    )
+
+    ml_risk_score = data.get(
+        "risk_score",
+        0
+    )
+
+    ml_fraud_probability = data.get(
+        "fraud_probability",
+        ml_risk_score
+    )
+
+    # --------------------------------------------------------
+    # GEMINI PROMPT
+    # --------------------------------------------------------
 
     prompt = f"""
-You are a financial fraud detection AI.
+You are FinGuard AI, a financial fraud investigation assistant.
 
-Analyze the following transaction carefully.
+Your job is ONLY to explain the transaction and provide
+a practical security recommendation.
 
-Transaction Details:
-{json.dumps(transaction, indent=2)}
+The Machine Learning model is the FINAL authority for:
 
-Return ONLY valid JSON.
+- Prediction
+- Risk Score
+- Fraud Probability
+- Risk Level
 
-Do NOT return markdown.
-Do NOT use ```json.
-Do NOT use ```.
+DO NOT change or recalculate the ML result.
 
-The JSON MUST contain exactly these fields:
+ML Prediction:
+{ml_prediction}
+
+IMPORTANT:
+The ML Prediction above is authoritative.
+
+If ML Prediction is "Fraud":
+- reason MUST describe the transaction as fraudulent/high risk.
+- recommendation MUST NOT say "Allow the transaction".
+- recommendation MUST recommend blocking, holding, or verifying the transaction.
+
+If ML Prediction is "Safe":
+- reason may describe the transaction as safe.
+- recommendation may allow normal monitoring.{ml_prediction}
+
+ML Risk Score:
+{ml_risk_score}%
+
+ML Fraud Probability:
+{ml_fraud_probability}%
+
+
+TRANSACTION DETAILS
+
+Transaction ID:
+{data.get("transaction_id", "")}
+
+Account ID:
+{data.get("account_id", "")}
+
+Amount:
+₹{data.get("amount", 0)}
+
+Merchant:
+{data.get("merchant", "")}
+
+Location:
+{data.get("location", "")}
+
+Time:
+{data.get("time", "")}
+
+Card Type:
+{data.get("card_type", "")}
+
+Transaction Type:
+{data.get("transaction_type", "")}
+
+Merchant Category:
+{data.get("merchant_category", "")}
+
+Hour:
+{data.get("hour", "")}
+
+Location Risk:
+{data.get("location_risk", 0)}
+
+Device Trusted:
+{data.get("device_trusted", False)}
+
+Failed Attempts:
+{data.get("failed_attempts", 0)}
+
+International Transaction:
+{data.get("is_international", False)}
+
+
+IMPORTANT RULES
+
+1. Do NOT change the ML prediction.
+
+2. Do NOT change the ML risk score.
+
+3. Do NOT change the ML fraud probability.
+
+4. Do NOT invent any transaction information.
+
+5. Use the actual values provided above.
+
+6. Mention specific risk factors when they exist.
+
+7. If failed attempts are 0, do NOT say there were
+   multiple failed attempts.
+
+8. If the device is trusted, do NOT call it untrusted.
+
+9. If the transaction is not international, do NOT
+   call it international.
+
+10. Use the actual Location Risk value.
+
+11. Do NOT call Location Risk 10 or 0 maximum/high risk.
+
+12. Do NOT say a merchant category is automatically fraudulent.
+
+13. For a Safe transaction, explain that the available
+    indicators do not show significant risk.
+
+14. For a Fraud transaction, mention the strongest
+    available risk indicators.
+
+15. Keep the explanation short and professional.
+
+16. Give a practical security recommendation.
+
+17. Return ONLY reason and recommendation.
+
+
+RETURN ONLY VALID JSON:
 
 {{
-    "risk_score": 0,
-    "fraud_probability": 0,
-    "prediction": "Safe",
-    "risk_level": "Low",
-    "reason": "",
-    "recommendation": ""
+    "reason": "Short explanation using the actual transaction data.",
+    "recommendation": "Practical security recommendation."
 }}
 
-Rules:
+Do NOT return:
 
-1. risk_score must be an integer from 0 to 100.
-2. fraud_probability must be an integer from 0 to 100.
-3. prediction must be either "Safe" or "Fraud".
-4. risk_level must be one of:
-   "Low", "Medium", "High".
-5. High risk should generally have risk_score >= 70.
-6. Medium risk should generally have risk_score between 35 and 69.
-7. Low risk should generally have risk_score below 35.
-8. Consider amount, transaction time, device trust,
-   failed attempts, location risk, international status,
-   merchant, merchant category and transaction type.
-9. The reason must explain the important risk factors.
-10. The recommendation must give a clear action.
-
-Return ONLY the JSON object.
+- risk_score
+- fraud_probability
+- prediction
+- risk_level
 """
+
+
+    # ========================================================
+    # GEMINI API CALL
+    # ========================================================
 
     try:
 
-        response = client.models.generate_content(
-            model="gemini-3.6-flash",
-            contents=prompt
+        response = model.generate_content(prompt)
+
+        print("========== GEMINI RESPONSE ==========")
+        print(response.text)
+
+        # ----------------------------------------------------
+        # CLEAN RESPONSE
+        # ----------------------------------------------------
+
+        cleaned_response = clean_json_response(
+            response.text
         )
 
-        response_text = response.text.strip()
+        print("========== CLEANED GEMINI JSON ==========")
+        print(cleaned_response)
 
-        print("========== GEMINI RAW RESPONSE ==========")
-        print(response_text)
+        # ----------------------------------------------------
+        # PARSE JSON
+        # ----------------------------------------------------
 
-        # Remove markdown fences if Gemini adds them
-        response_text = re.sub(
-            r"^```json\s*",
-            "",
-            response_text,
-            flags=re.IGNORECASE
+        ai_result = json.loads(
+            cleaned_response
         )
 
-        response_text = re.sub(
-            r"^```\s*",
-            "",
-            response_text
-        )
+        # ----------------------------------------------------
+        # GET EXPLANATION
+        # ----------------------------------------------------
 
-        response_text = re.sub(
-            r"\s*```$",
-            "",
-            response_text
-        )
-
-        response_text = response_text.strip()
-
-        print("========== CLEAN GEMINI RESPONSE ==========")
-        print(response_text)
-
-        result = json.loads(response_text)
-
-        print("========== PARSED AI RESULT ==========")
-        print(result)
-
-        # ------------------------------------
-        # Validate required fields
-        # ------------------------------------
-
-        required_fields = [
-            "risk_score",
-            "fraud_probability",
-            "prediction",
-            "risk_level",
+        reason = ai_result.get(
             "reason",
-            "recommendation"
-        ]
-
-        for field in required_fields:
-
-            if field not in result:
-
-                raise ValueError(
-                    f"Missing Gemini field: {field}"
-                )
-
-        # ------------------------------------
-        # Normalize values
-        # ------------------------------------
-
-        result["risk_score"] = int(
-            max(
-                0,
-                min(
-                    100,
-                    float(result["risk_score"])
-                )
-            )
+            "No detailed explanation was provided."
         )
 
-        result["fraud_probability"] = int(
-            max(
-                0,
-                min(
-                    100,
-                    float(result["fraud_probability"])
-                )
-            )
+        recommendation = ai_result.get(
+            "recommendation",
+            "Review the transaction manually."
         )
 
-        result["prediction"] = str(
-            result["prediction"]
-        ).strip()
+        # ----------------------------------------------------
+        # FINAL GEMINI RESULT
+        # ----------------------------------------------------
 
-        result["risk_level"] = str(
-            result["risk_level"]
-        ).strip()
+        result = {
+            "reason": str(reason),
+            "recommendation": str(recommendation)
+        }
 
-        result["reason"] = str(
-            result["reason"]
-        ).strip()
-
-        result["recommendation"] = str(
-            result["recommendation"]
-        ).strip()
-
-        # ------------------------------------
-        # Normalize prediction
-        # ------------------------------------
-
-        if result["prediction"].lower() == "legitimate":
-
-            result["prediction"] = "Safe"
-
-        elif result["prediction"].lower() == "safe":
-
-            result["prediction"] = "Safe"
-
-        elif result["prediction"].lower() == "fraud":
-
-            result["prediction"] = "Fraud"
-
-        # ------------------------------------
-        # Normalize risk level
-        # ------------------------------------
-
-        score = result["risk_score"]
-
-        if score >= 70:
-
-            result["risk_level"] = "High"
-
-        elif score >= 35:
-
-            result["risk_level"] = "Medium"
-
-        else:
-
-            result["risk_level"] = "Low"
-
-        # ------------------------------------
-        # Fraud status
-        # ------------------------------------
-
-        result["fraud_status"] = result["risk_level"]
-
-        print("========== FINAL AI RESULT ==========")
+        print("========== AI EXPLANATION ==========")
         print(result)
 
         return result
 
+
+    # ========================================================
+    # FALLBACK LOGIC
+    # ========================================================
+
     except Exception as e:
 
-        print("❌ GEMINI ANALYSIS ERROR")
-        print(type(e).__name__, ":", e)
+        print("Gemini API Error:", e)
 
-        # IMPORTANT:
-        # Do NOT silently pretend that a failed AI
-        # analysis is a Safe transaction.
+        # ----------------------------------------------------
+        # TRANSACTION VALUES
+        # ----------------------------------------------------
+
+        amount = data.get(
+            "amount",
+            0
+        )
+
+        location_risk = data.get(
+            "location_risk",
+            0
+        )
+
+        device_trusted = data.get(
+            "device_trusted",
+            False
+        )
+
+        failed_attempts = data.get(
+            "failed_attempts",
+            0
+        )
+
+        is_international = data.get(
+            "is_international",
+            False
+        )
+
+        ml_prediction = str(
+            data.get(
+                "prediction",
+                "Unknown"
+            )
+        )
+
+
+        # ----------------------------------------------------
+        # CONVERT NUMBERS
+        # ----------------------------------------------------
+
+        try:
+
+            amount = float(amount)
+
+        except (TypeError, ValueError):
+
+            amount = 0
+
+
+        try:
+
+            location_risk = float(
+                location_risk
+            )
+
+        except (TypeError, ValueError):
+
+            location_risk = 0
+
+
+        # ----------------------------------------------------
+        # BUILD RISK FACTORS
+        # ----------------------------------------------------
+
+        risk_factors = []
+
+
+        if amount >= 40000:
+
+            risk_factors.append(
+                f"large transaction amount of ₹{amount:,.0f}"
+            )
+
+
+        if not device_trusted:
+
+            risk_factors.append(
+                "untrusted device"
+            )
+
+
+        if failed_attempts > 0:
+
+            risk_factors.append(
+                f"{failed_attempts} failed attempt(s)"
+            )
+
+
+        if is_international:
+
+            risk_factors.append(
+                "international transaction"
+            )
+
+
+        if location_risk >= 70:
+
+            risk_factors.append(
+                f"high location risk score of {location_risk:g}"
+            )
+
+
+        # ----------------------------------------------------
+        # FRAUD
+        # ----------------------------------------------------
+
+        if ml_prediction.lower() == "fraud":
+
+            if risk_factors:
+
+                reason = (
+                    "The ML model classified this transaction "
+                    "as fraud. Important risk indicators include "
+                    + ", ".join(risk_factors)
+                    + "."
+                )
+
+            else:
+
+                reason = (
+                    "The ML model classified this transaction "
+                    "as fraud. The transaction should be reviewed "
+                    "for additional risk indicators."
+                )
+
+
+            recommendation = (
+                "Block the transaction temporarily and verify "
+                "the customer using MFA or direct verification."
+            )
+
+
+        # ----------------------------------------------------
+        # SUSPICIOUS / MEDIUM
+        # ----------------------------------------------------
+
+        elif ml_prediction.lower() in [
+            "suspicious",
+            "medium"
+        ]:
+
+            if risk_factors:
+
+                reason = (
+                    "The transaction requires additional review. "
+                    "Available risk indicators include "
+                    + ", ".join(risk_factors)
+                    + "."
+                )
+
+            else:
+
+                reason = (
+                    "The transaction requires additional "
+                    "monitoring based on the ML model result."
+                )
+
+
+            recommendation = (
+                "Verify the customer before processing the "
+                "transaction and continue monitoring."
+            )
+
+
+        # ----------------------------------------------------
+        # SAFE
+        # ----------------------------------------------------
+
+        else:
+
+            reason = (
+                "The ML model classified this transaction "
+                "as safe. The available transaction data "
+                "does not show significant risk."
+            )
+
+
+            recommendation = (
+                "Allow the transaction while continuing "
+                "normal monitoring."
+            )
+
+
+        # ----------------------------------------------------
+        # FINAL FALLBACK RESULT
+        # ----------------------------------------------------
 
         return {
-            "risk_score": 0,
-            "fraud_probability": 0,
-            "prediction": "Analysis Failed",
-            "risk_level": "Unknown",
-            "fraud_status": "Unknown",
-            "reason": "Gemini analysis failed and no reliable AI result was available.",
-            "recommendation": "Please run the AI analysis again."
+            "reason": reason,
+            "recommendation": recommendation
         }

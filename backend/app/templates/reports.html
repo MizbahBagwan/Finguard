@@ -1,1477 +1,1227 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Reports | FinGuard AI{% endblock %}
 
-    <title>FinGuard | AI Investigation Reports</title>
+{% block page_title %}
+Reports & Analytics
+{% endblock %}
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', path='css/reports.css') }}">
+{% block page_subtitle %}
+Generate, monitor and analyze your financial fraud detection reports
+{% endblock %}
 
-    <!-- Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{{ url_for('static', path='css/reports.css') }}">
+{% endblock %}
 
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+{% block content %}
 
-    <!-- Chart -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="reports-page">
 
-</head>
+    <!-- =====================================================
+         REPORTS HEADER
+    ====================================================== -->
+    <div class="reports-header">
 
+        <div class="reports-header-left">
 
-<body>
+            <div class="reports-icon">
+                <i class="fas fa-file-chart-column"></i>
+            </div>
 
-
-<div class="dashboard">
-
-
-<!-- ================= SIDEBAR ================= -->
-
-<aside class="sidebar">
-
-
-    <!-- Logo -->
-
-    <div class="logo">
-
-        <div class="logo-icon">
-            <i class="ri-shield-check-fill"></i>
-        </div>
-
-
-        <div class="logo-text">
-
-            <h2>FinGuard</h2>
-
-            <span>
-                AI Fraud Detection
-            </span>
+            <div>
+                <h1>Reports & Analytics</h1>
+                <p>
+                    Comprehensive insights into transactions,
+                    fraud detection and financial risk.
+                </p>
+            </div>
 
         </div>
 
+        <div class="reports-header-actions">
+
+            <button class="report-btn secondary"
+                    onclick="window.location.reload()">
+                <i class="fas fa-sync-alt"></i>
+                Refresh
+            </button>
+
+            <button class="report-btn primary"
+                    onclick="generateReport()">
+                <i class="fas fa-file-export"></i>
+                Generate Report
+            </button>
+
+        </div>
 
     </div>
 
 
+    <!-- =====================================================
+         HERO SECTION
+    ====================================================== -->
+    <section class="reports-hero">
 
-    <!-- Navigation -->
+        <div class="reports-hero-content">
 
-    <nav>
+            <div class="hero-badge">
+                <i class="fas fa-shield-halved"></i>
+                AI-Powered Financial Intelligence
+            </div>
 
-        <ul class="menu">
+            <h2>
+                Monitor Your
+                <span>Financial Security</span>
+            </h2>
+
+            <p>
+                Get a complete overview of transaction activity,
+                fraud risks and AI-powered detection insights
+                from one centralized reporting system.
+            </p>
+
+            <div class="hero-actions">
+
+                <button class="hero-btn primary"
+                        onclick="generateReport()">
+                    <i class="fas fa-chart-line"></i>
+                    Generate New Report
+                </button>
+
+                <button class="hero-btn outline"
+                        onclick="scrollToReports()">
+                    <i class="fas fa-eye"></i>
+                    View Reports
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="reports-hero-visual">
+
+            <div class="hero-shield">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+
+            <div class="floating-card card-one">
+                <i class="fas fa-circle-check"></i>
+                <div>
+                    <strong>System Secure</strong>
+                    <span>AI Monitoring Active</span>
+                </div>
+            </div>
+
+            <div class="floating-card card-two">
+                <i class="fas fa-brain"></i>
+                <div>
+                    <strong>AI Analysis</strong>
+                    <span>Real-Time Detection</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
 
 
-            <li>
-                <a href="/dashboard">
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+    <section class="report-stats">
 
-                    <i class="ri-dashboard-line"></i>
+        <!-- Total Transactions -->
+        <div class="report-stat-card">
 
-                    <span>
-                        Dashboard
+            <div class="stat-icon blue">
+                <i class="fas fa-arrow-right-arrow-left"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>Total Transactions</span>
+                <h3 id="totalTransactions">
+                    {{ total_transactions | default(0) }}
+                </h3>
+
+                <small class="positive">
+                    <i class="fas fa-chart-line"></i>
+                    Overall activity
+                </small>
+            </div>
+
+        </div>
+
+
+        <!-- Fraud Detected -->
+        <div class="report-stat-card">
+
+            <div class="stat-icon red">
+                <i class="fas fa-triangle-exclamation"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>Fraud Detected</span>
+
+                <h3 id="fraudDetected">
+                    {{ fraud_detected | default(0) }}
+                </h3>
+
+                <small class="danger">
+                    <i class="fas fa-arrow-up"></i>
+                    Threat detection
+                </small>
+            </div>
+
+        </div>
+
+
+        <!-- High Risk -->
+        <div class="report-stat-card">
+
+            <div class="stat-icon orange">
+                <i class="fas fa-shield-virus"></i>
+            </div>
+
+            <div class="stat-content">
+
+                <span>High Risk</span>
+
+                <h3 id="highRisk">
+                    {{ high_risk | default(0) }}
+                </h3>
+
+                <small class="warning">
+                    <i class="fas fa-bolt"></i>
+                    Requires attention
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- Detection Accuracy -->
+        <div class="report-stat-card">
+
+            <div class="stat-icon green">
+                <i class="fas fa-bullseye"></i>
+            </div>
+
+            <div class="stat-content">
+
+                <span>Detection Accuracy</span>
+
+               <h3 id="detectionAccuracy">Loading...</h3>
+
+                <small class="positive">
+                    <i class="fas fa-check-circle"></i>
+                    Model performance
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN REPORT GRID
+    ====================================================== -->
+    <section class="reports-grid"
+             id="reportsSection">
+
+
+        <!-- =================================================
+             GENERATE REPORT CARD
+        ================================================== -->
+        <div class="report-card generate-card">
+
+            <div class="report-card-header">
+
+                <div>
+                    <span class="section-label">
+                        REPORT CENTER
                     </span>
 
-                </a>
-            </li>
-
-
-
-            <li class="active">
-
-                <a href="/reports">
-
-                    <i class="ri-file-list-3-line"></i>
-
-                    <span>
-                        Reports
-                    </span>
-
-                </a>
-
-            </li>
-
-
-
-
-            <li>
-
-                <a href="/transactions">
-
-                    <i class="ri-bank-card-line"></i>
-
-                    <span>
-                        Transactions
-                    </span>
-
-                </a>
-
-            </li>
-
-
-
-
-
-            <li>
-
-                <a href="/graph">
-
-                    <i class="ri-git-branch-line"></i>
-
-                    <span>
-                        Knowledge Graph
-                    </span>
-
-                </a>
-
-            </li>
-
-
-
-
-
-            <li>
-
-                <a href="/alerts">
-
-                    <i class="ri-alarm-warning-line"></i>
-
-                    <span>
-                        Alerts
-                    </span>
-
-                </a>
-
-            </li>
-
-
-
-
-
-            <li>
-
-                <a href="/models">
-
-                    <i class="ri-cpu-line"></i>
-
-                    <span>
-                        AI Models
-                    </span>
-
-                </a>
-
-            </li>
-
-
-
-
-
-            <li>
-
-                <a href="/settings">
-
-                    <i class="ri-settings-3-line"></i>
-
-                    <span>
-                        Settings
-                    </span>
-
-                </a>
-
-            </li>
-
-
-
-        </ul>
-
-
-    </nav>
-
-
-
-
-
-    <!-- Sidebar User -->
-
-
-    <div class="sidebar-footer">
-
-
-        <div class="profile">
-
-
-            <img 
-            src="https://i.pravatar.cc/100?img=12"
-            alt="Admin profile">
-
-
-            <div>
-
-                <h4>
-                    Admin
-                </h4>
-
-
-                <span>
-                    Fraud Analyst
-                </span>
-
+                    <h3>
+                        Generate Financial Report
+                    </h3>
+
+                    <p>
+                        Create a detailed report based on
+                        your selected transaction data.
+                    </p>
+                </div>
+
+                <div class="card-header-icon">
+                    <i class="fas fa-file-circle-plus"></i>
+                </div>
 
             </div>
 
 
-        </div>
+            <div class="report-form">
 
+                <div class="form-group">
 
-    </div>
+                    <label for="reportType">
+                        Report Type
+                    </label>
 
+                    <div class="select-wrapper">
 
+                        <i class="fas fa-file-lines"></i>
 
-</aside>
+                        <select id="reportType">
 
+                            <option value="comprehensive">
+                                Comprehensive Report
+                            </option>
 
+                            <option value="fraud">
+                                Fraud Detection Report
+                            </option>
 
+                            <option value="transactions">
+                                Transaction Report
+                            </option>
 
+                            <option value="risk">
+                                Risk Analysis Report
+                            </option>
 
+                        </select>
 
+                        <i class="fas fa-chevron-down arrow"></i>
 
-<!-- ================= MAIN CONTENT ================= -->
+                    </div>
 
+                </div>
 
-<main class="main-content">
 
+                <div class="form-row">
 
+                    <div class="form-group">
 
-<!-- ================= TOP NAVBAR ================= -->
+                        <label for="startDate">
+                            Start Date
+                        </label>
 
+                        <div class="input-wrapper">
 
-<header class="top-navbar">
+                            <i class="fas fa-calendar"></i>
 
+                            <input type="date"
+                                   id="startDate">
 
-    <div class="page-title">
+                        </div>
 
+                    </div>
 
-        <h1>
-            Investigation Reports
-        </h1>
 
+                    <div class="form-group">
 
-        <p>
-            AI powered fraud investigation dashboard
-        </p>
+                        <label for="endDate">
+                            End Date
+                        </label>
 
+                        <div class="input-wrapper">
 
-    </div>
+                            <i class="fas fa-calendar"></i>
 
+                            <input type="date"
+                                   id="endDate">
 
+                        </div>
 
+                    </div>
 
+                </div>
 
-    <div class="navbar-right">
 
+                <div class="report-options">
 
+                    <label class="custom-checkbox">
 
-        <button 
-        class="nav-btn"
-        aria-label="Search">
+                        <input type="checkbox"
+                               id="includeAI"
+                               checked>
 
-            <i class="ri-search-line"></i>
+                        <span class="checkmark"></span>
 
-        </button>
+                        <div>
+                            <strong>
+                                Include AI Insights
+                            </strong>
 
+                            <small>
+                                Add AI-generated risk analysis
+                                and recommendations.
+                            </small>
+                        </div>
 
+                    </label>
 
 
+                    <label class="custom-checkbox">
 
-        <button 
-        class="nav-btn"
-        aria-label="Notifications">
+                        <input type="checkbox"
+                               id="includeCharts"
+                               checked>
 
-            <i class="ri-notification-3-line"></i>
+                        <span class="checkmark"></span>
 
-        </button>
+                        <div>
+                            <strong>
+                                Include Analytics
+                            </strong>
 
+                            <small>
+                                Add charts and risk distribution.
+                            </small>
+                        </div>
 
+                    </label>
 
+                </div>
 
 
-        <button 
-        class="nav-btn"
-        aria-label="Dark mode">
+                <button class="generate-main-btn"
+                        onclick="generateReport()">
 
-            <i class="ri-moon-line"></i>
-
-        </button>
-
-
-
-
-
-        <div class="user">
-
-
-            <img 
-            src="https://i.pravatar.cc/60?img=12"
-            alt="Administrator">
-
-
-            <span>
-                Administrator
-            </span>
-
-
-        </div>
-
-
-
-    </div>
-
-
-
-</header>
-
-
-
-
-
-
-<!-- ================= PAGE CONTENT START ================= -->
-
-
-<div class="page-content">
-    <!-- ================= HERO SECTION ================= -->
-
-<section class="hero card">
-
-
-    <div class="hero-content">
-
-
-
-        <div class="hero-left">
-
-
-            <span class="hero-badge">
-
-                <i class="ri-ai-generate"></i>
-
-                AI Investigation Suite
-
-            </span>
-
-
-
-            <h1>
-
-                Investigation
-
-                <span>
-                    Reports
-                </span>
-
-            </h1>
-
-
-
-            <p>
-
-                Generate AI powered fraud investigation reports
-                with risk scoring, transaction intelligence,
-                entity analysis and predictive fraud detection.
-
-            </p>
-
-
-
-
-
-            <div class="hero-buttons">
-
-
-                <button 
-                id="generateReportBtn"
-                class="btn btn-primary">
-
-
-                    <i class="ri-magic-line"></i>
+                    <i class="fas fa-wand-magic-sparkles"></i>
 
                     Generate Report
 
+                    <i class="fas fa-arrow-right"></i>
 
                 </button>
 
+            </div>
+
+        </div>
 
 
+        <!-- =================================================
+             RISK OVERVIEW CARD
+        ================================================== -->
+        <div class="report-card risk-card">
 
+            <div class="report-card-header">
 
-                <button 
-                id="exportReportBtn"
-                class="btn btn-outline">
+                <div>
 
+                    <span class="section-label">
+                        RISK OVERVIEW
+                    </span>
 
-                    <i class="ri-download-line"></i>
+                    <h3>
+                        Transaction Risk
+                    </h3>
 
-                    Export PDF
+                    <p>
+                        Current risk distribution
+                    </p>
 
+                </div>
 
-                </button>
-
+                <div class="card-header-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
 
             </div>
 
 
+            <div class="risk-overview">
 
+                <div class="risk-circle">
 
+                    <div class="risk-circle-inner">
 
+                        <strong id="riskPercentage">
+                            {{ average_risk | default(0) }}%
+                        </strong>
 
-            <div class="hero-features">
+                        <span>
+                            Avg. Risk
+                        </span>
 
-
-                <div class="feature">
-
-                    <i class="ri-robot-line"></i>
-
-                    AI Powered
-
-                </div>
-
-
-
-
-                <div class="feature">
-
-                    <i class="ri-shield-check-line"></i>
-
-                    Secure
+                    </div>
 
                 </div>
 
 
+                <div class="risk-list">
+
+                    <div class="risk-item">
+
+                        <div class="risk-label">
+
+                            <span class="risk-dot safe"></span>
+
+                            <span>
+                                Safe
+                            </span>
+
+                        </div>
+
+                        <strong id="safeCount">
+                            {{ safe_transactions | default(0) }}
+                        </strong>
+
+                    </div>
 
 
+                    <div class="risk-item">
 
-                <div class="feature">
+                        <div class="risk-label">
 
-                    <i class="ri-flashlight-line"></i>
+                            <span class="risk-dot medium"></span>
 
-                    Real Time
+                            <span>
+                                Medium
+                            </span>
+
+                        </div>
+
+                        <strong id="mediumCount">
+                            {{ medium_risk | default(0) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="risk-item">
+
+                        <div class="risk-label">
+
+                            <span class="risk-dot high"></span>
+
+                            <span>
+                                High
+                            </span>
+
+                        </div>
+
+                        <strong id="highCount">
+                            {{ high_risk | default(0) }}
+                        </strong>
+
+                    </div>
 
                 </div>
 
+            </div>
+
+        </div>
 
 
+        <!-- =================================================
+             AI INSIGHTS
+        ================================================== -->
+        <div class="report-card ai-insights-card">
 
+            <div class="report-card-header">
 
-                <div class="feature">
+                <div>
 
-                    <i class="ri-git-branch-line"></i>
+                    <span class="section-label">
+                        ARTIFICIAL INTELLIGENCE
+                    </span>
 
-                    Knowledge Graph
+                    <h3>
+                        AI Security Insights
+                    </h3>
+
+                    <p>
+                        Intelligent analysis of your
+                        financial activity.
+                    </p>
 
                 </div>
 
+                <div class="ai-status">
 
+                    <span class="status-pulse"></span>
+
+                    AI ACTIVE
+
+                </div>
 
             </div>
 
 
+            <div class="insights-grid">
 
-        </div>
+                <div class="insight-item">
 
+                    <div class="insight-icon blue">
+                        <i class="fas fa-brain"></i>
+                    </div>
 
+                    <div>
 
+                        <strong>
+                            Intelligent Detection
+                        </strong>
 
+                        <p>
+                            AI continuously analyzes
+                            transaction patterns.
+                        </p>
 
-
-        <div class="hero-right">
-
-
-            <div class="shield-container">
-
-
-                <div class="ring ring1"></div>
-
-                <div class="ring ring2"></div>
-
-                <div class="ring ring3"></div>
-
-
-
-                <div class="shield-icon">
-
-                    <i class="ri-shield-check-fill"></i>
+                    </div>
 
                 </div>
 
 
+                <div class="insight-item">
+
+                    <div class="insight-icon red">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Fraud Prevention
+                        </strong>
+
+                        <p>
+                            Suspicious activity is
+                            automatically identified.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="insight-item">
+
+                    <div class="insight-icon orange">
+                        <i class="fas fa-magnifying-glass-chart"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Risk Analysis
+                        </strong>
+
+                        <p>
+                            Risk levels are calculated
+                            using transaction behavior.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="insight-item">
+
+                    <div class="insight-icon green">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Financial Security
+                        </strong>
+
+                        <p>
+                            Protect accounts with
+                            continuous monitoring.
+                        </p>
+
+                    </div>
+
+                </div>
+
             </div>
 
-
         </div>
 
 
+        <!-- =================================================
+             RECENT REPORTS
+        ================================================== -->
+        <!-- =========================================================
+     REPORT HISTORY
+========================================================= -->
 
+<div class="report-card recent-reports-card">
 
-    </div>
-
-
-
-</section>
-
-
-
-
-
-
-
-<!-- ================= STATISTICS ================= -->
-
-
-<section class="stats-grid">
-
-
-
-    <div class="stat-card card">
-
+    <div class="report-card-header">
 
         <div>
 
-            <span>
-                Total Reports
+            <span class="section-label">
+                REPORT HISTORY
             </span>
 
-
-            <h2 id="totalReports">
-                {{ reports|length }}
-            </h2>
-
-
-        </div>
-
-
-        <i class="ri-file-list-3-line"></i>
-
-
-    </div>
-
-
-
-
-
-
-    <div class="stat-card card">
-
-
-        <div>
-
-            <span>
-                High Risk
-            </span>
-
-
-            <h2 id="highRisk">
-                0
-            </h2>
-
-
-        </div>
-
-
-        <i class="ri-alarm-warning-fill"></i>
-
-
-    </div>
-
-
-
-
-
-
-
-    <div class="stat-card card">
-
-
-        <div>
-
-            <span>
-                Medium Risk
-            </span>
-
-
-            <h2 id="mediumRisk">
-                0
-            </h2>
-
-
-        </div>
-
-
-        <i class="ri-error-warning-fill"></i>
-
-
-    </div>
-
-
-
-
-
-
-
-    <div class="stat-card card">
-
-
-        <div>
-
-            <span>
-                Low Risk
-            </span>
-
-
-            <h2 id="lowRisk">
-                0
-            </h2>
-
-
-        </div>
-
-
-        <i class="ri-shield-check-line"></i>
-
-
-    </div>
-
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-<!-- ================= SEARCH FILTER ================= -->
-
-
-<section class="search-section card">
-
-
-    <div class="search-box">
-
-
-        <i class="ri-search-line"></i>
-
-
-        <input 
-        type="text"
-        id="searchInput"
-        placeholder="Search reports, investigators, IDs...">
-
-
-    </div>
-
-
-
-
-
-    <div class="filters">
-
-
-
-        <select id="riskFilter">
-
-            <option value="">
-                All Risk Levels
-            </option>
-
-
-            <option value="Critical">
-                Critical
-            </option>
-
-
-            <option value="High">
-                High
-            </option>
-
-
-            <option value="Medium">
-                Medium
-            </option>
-
-
-            <option value="Low">
-                Low
-            </option>
-
-
-        </select>
-
-
-
-
-
-        <select id="statusFilter">
-
-
-            <option value="">
-                All Status
-            </option>
-
-
-            <option value="Completed">
-                Completed
-            </option>
-
-
-            <option value="Processing">
-                Processing
-            </option>
-
-
-            <option value="Pending">
-                Pending
-            </option>
-
-
-
-        </select>
-
-
-
-
-
-
-        <button 
-        id="applyFilterBtn"
-        class="btn btn-primary">
-
-
-            <i class="ri-filter-3-line"></i>
-
-            Apply
-
-
-        </button>
-
-
-
-
-    </div>
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- ================= AI ANALYTICS ================= -->
-
-
-<section class="analytics-section card">
-
-
-
-    <div class="section-title">
-
-
-        <h2>
-            AI Risk Analytics
-        </h2>
-
-
-        <p>
-            Real time fraud risk distribution
-        </p>
-
-
-    </div>
-
-
-
-
-
-    <div class="chart-container">
-
-
-        <canvas id="riskChart"></canvas>
-
-
-    </div>
-
-
-
-
-</section>
-<!-- ================= REPORT TABLE ================= -->
-
-
-<section class="table-section card">
-
-
-    <div class="table-header">
-
-
-        <div>
-
-            <h2>
-                Investigation Reports
-            </h2>
-
+            <h3>
+                Recent Reports
+            </h3>
 
             <p>
-                AI generated fraud investigation records
+                Previously generated reports
             </p>
 
-
         </div>
 
-
-
-
-
-        <div class="table-actions">
-
-
-            <button 
-            id="refreshBtn"
-            class="btn btn-outline">
-
-
-                <i class="ri-refresh-line"></i>
-
-                Refresh
-
-
-            </button>
-
-
-
-
-
-            <button 
-            id="newReportBtn"
-            class="btn btn-primary">
-
-
-                <i class="ri-add-line"></i>
-
-                New Report
-
-
-            </button>
-
-
-
-        </div>
-
-
+        <button
+            type="button"
+            class="view-all-btn"
+            onclick="viewAllReports()"
+        >
+            View All
+            <i class="fas fa-arrow-right"></i>
+        </button>
 
     </div>
 
 
+    <!-- =====================================================
+         REPORT TABLE
+    ====================================================== -->
 
+    <div class="reports-table-wrapper">
 
-
-
-
-    <div class="table-responsive">
-
-
-        <table id="reportTable">
-
+        <table class="reports-table">
 
             <thead>
 
                 <tr>
 
-                    <th>ID</th>
+                    <th>
+                        Report
+                    </th>
 
-                    <th>Report</th>
+                    <th>
+                        Type
+                    </th>
 
-                    <th>Risk</th>
+                    <th>
+                        Generated
+                    </th>
 
-                    <th>AI Score</th>
+                    <th>
+                        Status
+                    </th>
 
-                    <th>Date</th>
-
-                    <th>Status</th>
-
-                    <th>Actions</th>
-
+                    <th>
+                        Action
+                    </th>
 
                 </tr>
 
             </thead>
 
 
+            <tbody id="reportsTableBody">
 
+                {% if reports %}
 
+                    {% for report in reports %}
 
-            <tbody id="reportBody">
+                    <tr>
 
+                        <!-- =================================
+                             REPORT NAME
+                        ================================== -->
 
+                        <td>
 
-                {% for report in reports %}
+                            <div class="report-name">
 
+                                <div class="table-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
 
+                                <div>
 
-                <tr>
+                                    <strong>
+                                        {{ report.name | default('Financial Report') }}
+                                    </strong>
 
+                                    <small>
+                                        {{ report.id | default('Report') }}
+                                    </small>
 
-                    <td>
-                        #{{ report.id }}
-                    </td>
-
-
-
-
-
-                    <td>
-
-
-                        <div class="report-info">
-
-
-                            <h4>
-                                {{ report.title }}
-                            </h4>
-
-
-                            <small>
-                                AI Investigation
-                            </small>
-
-
-                        </div>
-
-
-                    </td>
-
-
-
-
-
-
-                    <td>
-
-
-                        <span class="badge {{ report.risk|lower }}">
-
-                            {{ report.risk }}
-
-                        </span>
-
-
-                    </td>
-
-
-
-
-
-
-                    <td>
-
-
-                        <div class="score-box">
-
-
-                            <div class="score-bar">
-
-
-                                <span 
-                                style="width:{{ report.score }}%">
-                                </span>
-
+                                </div>
 
                             </div>
 
+                        </td>
 
 
-                            <strong>
-                                {{ report.score }}%
-                            </strong>
+                        <!-- =================================
+                             REPORT TYPE
+                        ================================== -->
 
+                        <td>
+                            {{ report.type | default('Comprehensive') }}
+                        </td>
 
-                        </div>
 
+                        <!-- =================================
+                             CREATED DATE
+                        ================================== -->
 
-                    </td>
+                        <td>
+                            {{ report.created_at | default('Recently') }}
+                        </td>
 
 
+                        <!-- =================================
+                             STATUS
+                        ================================== -->
 
+                        <td>
 
+                            <span class="status-badge completed">
 
+                                <span></span>
 
-                    <td>
+                                {{ report.status | default('Completed') }}
 
-                        {{ report.date }}
+                            </span>
 
-                    </td>
+                        </td>
 
 
+                        <!-- =================================
+                             ACTIONS
+                        ================================== -->
 
+                        <td>
 
+                            <div class="table-actions">
 
+                                <!-- VIEW -->
 
-                    <td>
+                                <button
+                                    type="button"
+                                    class="view-report-btn"
+                                    data-report-id="{{ report.id }}"
+                                    onclick="viewReport('{{ report.id }}')"
+                                    title="View Report"
+                                >
 
+                                    <i class="fas fa-eye"></i>
 
-                        <span class="status {{ report.status|lower }}">
+                                </button>
 
 
-                            {{ report.status }}
+                                <!-- DOWNLOAD -->
 
+                                <button
+                                    type="button"
+                                    class="download-report-btn"
+                                    data-report-id="{{ report.id }}"
+                                    onclick="downloadReport('{{ report.id }}')"
+                                    title="Download Report"
+                                >
 
-                        </span>
+                                    <i class="fas fa-download"></i>
 
+                                </button>
 
-                    </td>
 
+                                <!-- DELETE -->
 
+                                <button
+                                    type="button"
+                                    class="delete-report-btn"
+                                    data-report-id="{{ report.id }}"
+                                    title="Delete Report"
+                                >
 
+                                    <i class="fas fa-trash"></i>
 
+                                </button>
 
+                            </div>
 
+                        </td>
 
-                    <td>
+                    </tr>
 
+                    {% endfor %}
 
-                        <button 
-                        class="icon-btn view"
-                        title="View Report"
-                        aria-label="View Report">
 
+                {% else %}
 
-                            <i class="ri-eye-line"></i>
+                    <!-- =================================
+                         EMPTY STATE
+                    ================================== -->
 
+                    <tr class="empty-row">
 
-                        </button>
+                        <td colspan="5">
 
+                            <div class="empty-state">
 
+                                <div class="empty-icon">
 
+                                    <i class="fas fa-file-circle-xmark"></i>
 
+                                </div>
 
-                        <button 
-                        class="icon-btn download"
-                        title="Download Report"
-                        aria-label="Download Report">
 
+                                <strong>
+                                    No Reports Available
+                                </strong>
 
-                            <i class="ri-download-line"></i>
 
+                                <p>
+                                    Generate your first financial
+                                    security report to see it here.
+                                </p>
 
-                        </button>
 
+                                <button
+                                    type="button"
+                                    onclick="generateReport()"
+                                >
 
+                                    <i class="fas fa-plus"></i>
 
+                                    Generate Report
 
+                                </button>
 
-                        <button 
-                        class="icon-btn delete"
-                        title="Delete Report"
-                        aria-label="Delete Report">
+                            </div>
 
+                        </td>
 
-                            <i class="ri-delete-bin-line"></i>
+                    </tr>
 
-
-                        </button>
-
-
-
-                    </td>
-
-
-
-                </tr>
-
-
-
-                {% endfor %}
-
-
-
-
+                {% endif %}
 
             </tbody>
 
-
         </table>
 
-
-
     </div>
 
+</div>
 
+    <!-- =====================================================
+         SECURITY FOOTER
+    ====================================================== -->
+    <div class="reports-security-footer">
 
-</section>
+        <div class="security-footer-icon">
+            <i class="fas fa-shield-halved"></i>
+        </div>
 
+        <div>
 
+            <strong>
+                FinGuard AI Security Engine
+            </strong>
 
-
-
-
-
-
-
-<!-- ================= REPORT MODAL ================= -->
-
-
-<div 
-id="reportModal"
-class="modal"
-aria-hidden="true">
-
-
-    <div class="modal-content">
-
-
-        <button 
-        class="close-modal"
-        aria-label="Close Modal">
-
-
-            <i class="ri-close-line"></i>
-
-
-        </button>
-
-
-
-
-
-        <h2>
-            AI Investigation Report
-        </h2>
-
-
-
-
-
-        <div id="modalReportContent">
+            <span>
+                Your financial data is continuously monitored
+                using AI-powered fraud detection.
+            </span>
 
         </div>
 
+        <div class="security-status">
 
+            <span class="status-pulse"></span>
+
+            SYSTEM SECURE
+
+        </div>
 
     </div>
-
 
 </div>
 
 
+<!-- =====================================================
+     REPORT JAVASCRIPT
+====================================================== -->
+<script>
 
+document.addEventListener("DOMContentLoaded", function () {
 
+    const today = new Date();
 
+    const endDate =
+        document.getElementById("endDate");
 
+    const startDate =
+        document.getElementById("startDate");
 
+    if (endDate) {
 
+        endDate.value =
+            today.toISOString().split("T")[0];
 
-<!-- ================= INSIGHTS ================= -->
+    }
 
+    if (startDate) {
 
-<section class="insights-grid">
+        const previousDate =
+            new Date(today);
 
+        previousDate.setDate(
+            previousDate.getDate() - 30
+        );
 
+        startDate.value =
+            previousDate
+                .toISOString()
+                .split("T")[0];
 
-    <div class="insight-card card">
+    }
 
+});
 
-        <div class="insight-header">
 
+function scrollToReports() {
 
-            <i class="ri-bar-chart-box-line"></i>
+    const section =
+        document.getElementById("reportsSection");
 
+    if (section) {
 
-            <h3>
-                AI Accuracy
-            </h3>
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
 
+    }
 
-        </div>
+}
 
 
+async function generateReport() {
 
-        <h2>
-            98.4%
-        </h2>
+    const button =
+        document.querySelector(".generate-main-btn");
 
+    if (!button) return;
 
+    const originalHTML =
+        button.innerHTML;
 
-        <p>
-            Fraud detection model accuracy
-        </p>
+    button.disabled = true;
 
+    button.innerHTML = `
+        <i class="fas fa-spinner fa-spin"></i>
+        Generating Report...
+    `;
 
-    </div>
+    try {
 
+        const reportType =
+            document.getElementById("reportType")?.value
+            || "comprehensive";
 
+        const startDate =
+            document.getElementById("startDate")?.value
+            || "";
 
+        const endDate =
+            document.getElementById("endDate")?.value
+            || "";
 
+        const includeAI =
+            document.getElementById("includeAI")?.checked
+            ?? true;
 
+        const includeCharts =
+            document.getElementById("includeCharts")?.checked
+            ?? true;
 
 
-    <div class="insight-card card">
+        const response =
+            await fetch("/api/reports/generate", {
 
+                method: "POST",
 
-        <div class="insight-header">
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
 
+                body: JSON.stringify({
 
-            <i class="ri-time-line"></i>
+                    report_type: reportType,
 
+                    start_date: startDate,
 
-            <h3>
-                Processing Time
-            </h3>
+                    end_date: endDate,
 
+                    include_ai: includeAI,
 
-        </div>
+                    include_charts: includeCharts
 
+                })
 
+            });
 
-        <h2>
-            2.4 min
-        </h2>
 
+        if (!response.ok) {
 
+            throw new Error(
+                "Report generation failed"
+            );
 
-        <p>
-            Average AI investigation time
-        </p>
+        }
 
 
-    </div>
+        const data =
+            await response.json();
 
 
+        if (data.download_url) {
 
+            window.open(
+                data.download_url,
+                "_blank"
+            );
 
+        } else {
 
+            showReportMessage(
+                "Report generated successfully!",
+                "success"
+            );
 
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
 
-    <div class="insight-card card">
+        }
 
+    }
 
-        <div class="insight-header">
+    catch (error) {
 
+        console.error(
+            "Report Error:",
+            error
+        );
 
-            <i class="ri-shield-star-line"></i>
+        showReportMessage(
+            "Unable to generate report. Please try again.",
+            "error"
+        );
 
+    }
 
-            <h3>
-                Solved Cases
-            </h3>
+    finally {
 
+        button.disabled = false;
 
-        </div>
+        button.innerHTML =
+            originalHTML;
 
+    }
 
+}
 
-        <h2>
-            215
-        </h2>
 
+function viewReport(id) {
 
+    if (!id) return;
 
-        <p>
-            Successful investigations
-        </p>
+    window.location.href =
+        `/reports/${id}`;
 
+}
 
-    </div>
 
+function downloadReport(id) {
 
+    if (!id) return;
 
-</section>
+    window.open(
+        `/reports/${id}/download`,
+        "_blank"
+    );
 
+}
 
 
+function viewAllReports() {
 
+    window.location.href =
+        "/reports";
 
+}
 
 
+function showReportMessage(message, type) {
 
+    const existing =
+        document.querySelector(
+            ".report-toast"
+        );
 
-<!-- ================= RECENT ACTIVITY ================= -->
+    if (existing) {
+        existing.remove();
+    }
 
 
-<section class="activity-section card">
+    const toast =
+        document.createElement("div");
 
+    toast.className =
+        `report-toast ${type}`;
 
-    <div class="section-title">
 
+    toast.innerHTML = `
 
-        <h2>
-            Recent Activity
-        </h2>
+        <i class="fas ${
+            type === "success"
+                ? "fa-circle-check"
+                : "fa-circle-exclamation"
+        }"></i>
 
+        <span>${message}</span>
 
-    </div>
+    `;
 
 
+    document.body.appendChild(toast);
 
 
+    setTimeout(() => {
 
+        toast.classList.add(
+            "show"
+        );
 
+    }, 50);
 
-    <div class="timeline">
 
+    setTimeout(() => {
 
+        toast.classList.remove(
+            "show"
+        );
 
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
 
+    }, 3500);
 
-        <div class="timeline-item">
+}
 
-
-            <div class="timeline-dot success"></div>
-
-
-
-            <div>
-
-                <h4>
-                    Fraud Report Generated
-                </h4>
-
-
-                <p>
-                    High risk transaction detected by AI.
-                </p>
-
-
-                <small>
-                    2 minutes ago
-                </small>
-
-
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-
-
-        <div class="timeline-item">
-
-
-            <div class="timeline-dot warning"></div>
-
-
-
-            <div>
-
-
-                <h4>
-                    Suspicious Activity Found
-                </h4>
-
-
-                <p>
-                    AI linked unusual transaction patterns.
-                </p>
-
-
-                <small>
-                    20 minutes ago
-                </small>
-
-
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-
-
-
-        <div class="timeline-item">
-
-
-            <div class="timeline-dot primary"></div>
-
-
-
-            <div>
-
-
-                <h4>
-                    Knowledge Graph Updated
-                </h4>
-
-
-                <p>
-                    New fraud entities connected.
-                </p>
-
-
-                <small>
-                    1 hour ago
-                </small>
-
-
-            </div>
-
-
-        </div>
-
-
-
-
-
-    </div>
-
-
-
-</section>
-</div>
-<!-- page-content end -->
-
-
-</main>
-<!-- main-content end -->
-
-
-</div>
-<!-- dashboard end -->
-
-
-
-
-
-<footer class="footer">
-
-    <p>
-        © 2026 FinGuard AI • Investigation Dashboard
-    </p>
-
-</footer>
-
-
-
-
-
+</script>
 <script src="{{ url_for('static', path='js/reports.js') }}"></script>
 
-
-</body>
-
-</html>
+{% endblock %}

@@ -8,8 +8,15 @@ from sqlalchemy.orm import Session
 from app.database.connection import get_db
 from app.models.user import User
 
-# Secret key
-SECRET_KEY = "finguard_super_secret_key_2026"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY is not configured")
 
 # Algorithm
 ALGORITHM = "HS256"

@@ -1178,37 +1178,22 @@ async function loadDashboardLive(){
         );
 
 
-        if(performanceItems.length >= 4){
+       if(performanceItems.length >= 4){
 
+    const avgElement =
+        document.getElementById("avgDetection");
 
-            performanceItems[0].innerText =
-            data.performance.detection_rate + "%";
+    if(avgElement){
+        avgElement.innerText =
+            data.performance.average_risk_score;
+    }
 
+    performanceItems[2].innerText =
+        data.performance.total_transactions;
 
-           const avgElement =
-document.getElementById("avgDetection");
-
-
-if(avgElement){
-
-    avgElement.innerText =
-    data.performance.average_risk_score;
-
+    performanceItems[3].innerText =
+        data.performance.frauds_detected;
 }
-
-
-            performanceItems[2].innerText =
-            data.performance.total_transactions;
-
-
-            performanceItems[3].innerText =
-            data.performance.frauds_detected;
-
-
-        }
-
-
-
 
 
         /* =============================
@@ -1457,9 +1442,8 @@ const accuracy =
 document.getElementById("aiAccuracy");
 
 if (accuracy) {
-    accuracy.innerText = "99.82%";
+    accuracy.innerText = "Live";
 }
-
 const scan =
 document.getElementById("aiLastScan");
 
@@ -3809,3 +3793,58 @@ document.addEventListener(
     }
 );
 
+async function loadModelPerformance() {
+
+    try {
+
+        const response =
+            await fetch("/api/model-performance");
+
+        if (!response.ok) {
+            throw new Error("Model performance API failed");
+        }
+
+        const data =
+            await response.json();
+
+        const accuracy =
+            (Number(data.accuracy) * 100).toFixed(2);
+
+        // Dashboard Accuracy
+        const dashboardAccuracy =
+            document.getElementById("dashboardAccuracy");
+
+        if (dashboardAccuracy) {
+            dashboardAccuracy.innerText =
+                accuracy + "%";
+        }
+
+        // AI Performance Accuracy
+        const performanceItems =
+            document.querySelectorAll(
+                ".performance-item h2"
+            );
+
+        if (performanceItems.length >= 1) {
+            performanceItems[0].innerText =
+                accuracy + "%";
+        }
+
+        console.log(
+            "ML Model Accuracy:",
+            accuracy + "%"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Model performance error:",
+            error
+        );
+
+    }
+
+}
+
+loadModelPerformance();

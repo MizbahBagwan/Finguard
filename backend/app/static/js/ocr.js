@@ -270,15 +270,11 @@ function activateSteps(){
             steps[index].classList.add("active");
             index++;
 
-        }else{
+       }else{
 
-            clearInterval(timer);
+    clearInterval(timer);
 
-            setTimeout(()=>{
-                updateRiskMeter(78);
-            },400);
-
-        }
+}
 
     },700);
 

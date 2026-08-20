@@ -1,3 +1,4 @@
+from app.services.gemini_service import analyze_transaction
 from pathlib import Path
 from datetime import datetime
 from app.services.gemini_service import analyze_transaction
@@ -9,11 +10,11 @@ from fastapi.templating import Jinja2Templates
 
 from httpcore import request
 from fastapi.staticfiles import StaticFiles
+from app.models.reports import ReportDB
 from starlette.middleware.sessions import SessionMiddleware
 
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from app.models.report import ReportDB
 
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -71,7 +72,7 @@ from app.services.security import (
     verify_password
 )
 
-from app.services.ai_service import analyze_transaction
+
 from app.services.ml_service import predict_transaction
 
 from app.services.report_service import (
@@ -105,7 +106,7 @@ from app.services.security import (
     verify_password
 )
 
-from app.services.ai_service import analyze_transaction
+
 
 from app.services.ml_service import predict_transaction
 
@@ -144,6 +145,15 @@ load_dotenv()
 # FastAPI App
 # ==========================
 app = FastAPI(title="FinGuard AI")
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ==========================
@@ -1069,7 +1079,7 @@ class CopilotRequest(BaseModel):
 
 
 from pydantic import BaseModel
-from app.services.ai_service import model
+
 
 class ChatRequest(BaseModel):
     message: str
@@ -1392,7 +1402,6 @@ async def run_ai_analysis(
 
         print(f"🔥 ANALYSIS START : {transaction_id}")
 
-
         # ==========================
         # FETCH TRANSACTION
         # ==========================
@@ -1400,31 +1409,51 @@ async def run_ai_analysis(
         transaction = (
             db.query(TransactionDB)
             .filter(
-            TransactionDB.transaction_id == transaction_id
-             )
-        .first()
+                TransactionDB.transaction_id == transaction_id
+            )
+            .first()
         )
 
-
         if transaction is None:
-
             return HTMLResponse(
                 "Transaction not found",
                 status_code=404
             )
 
+        # ==========================
+        # KEEP EXISTING ML RESULT
+        # ==========================
+
+        ml_prediction = transaction.prediction or "Unknown"
+        ml_risk_score = transaction.risk_score or 0
+        ml_fraud_probability = (
+            transaction.fraud_probability
+            if transaction.fraud_probability is not None
+            else ml_risk_score
+        )
+        ml_risk_level = transaction.risk_level or "Unknown"
+
+        print("========== ML RESULT ==========")
+        print("Prediction:", ml_prediction)
+        print("Risk Score:", ml_risk_score)
+        print("Fraud Probability:", ml_fraud_probability)
+        print("Risk Level:", ml_risk_level)
 
         # ==========================
-        # GEMINI AI ANALYSIS
+        # DATA FOR GEMINI
         # ==========================
 
-        result = analyze_transaction({
+        ai_input = {
+
+            "transaction_id": transaction.transaction_id,
+            "account_id": transaction.account_id,
 
             "amount": transaction.amount,
 
             "merchant": transaction.merchant,
 
-            "merchant_category": transaction.merchant_category,
+            "merchant_category":
+                transaction.merchant_category,
 
             "location": transaction.location,
 
@@ -1432,69 +1461,64 @@ async def run_ai_analysis(
 
             "card_type": transaction.card_type,
 
-            "device_trusted": transaction.device_trusted,
+            "transaction_type":
+                transaction.transaction_type,
 
-            "failed_attempts": transaction.failed_attempts,
+            "hour": transaction.hour,
 
-            "location_risk": transaction.location_risk,
+            "device_trusted":
+                transaction.device_trusted,
 
-            "is_international": transaction.is_international
+            "failed_attempts":
+                transaction.failed_attempts,
 
-        })
+            "location_risk":
+                transaction.location_risk,
 
+            "is_international":
+                transaction.is_international,
 
-        print("========== AI RESULT ==========")
+            # IMPORTANT:
+            # Pass ML result to Gemini
+            "prediction": ml_prediction,
+
+            "risk_score": ml_risk_score,
+
+            "fraud_probability":
+                ml_fraud_probability,
+
+            "risk_level": ml_risk_level
+        }
+
+        # ==========================
+        # GEMINI AI EXPLANATION
+        # ==========================
+
+        result = analyze_transaction(ai_input)
+
+        print("========== GEMINI RESULT ==========")
         print(result)
 
-
-
         # ==========================
-        # UPDATE TRANSACTION
+        # SAVE ONLY EXPLANATION
         # ==========================
-
-        transaction.risk_score = float(
-            str(result.get("risk_score",0))
-            .replace("%","")
-        )
-
-
-        transaction.fraud_probability = float(
-            result.get(
-                "fraud_probability",
-                transaction.risk_score
-            )
-        )
-
-
-        transaction.prediction = result.get(
-            "prediction",
-            "Safe"
-        )
-
-
-        transaction.risk_level = result.get(
-            "risk_level",
-            "Low"
-        )
-
 
         transaction.recommendation = result.get(
             "recommendation",
-            ""
+            "Review the transaction manually."
         )
-
 
         transaction.notes = result.get(
             "reason",
-            ""
+            "No detailed explanation was provided."
         )
 
-
         print("========== NOTES DEBUG ==========")
-        print("AI REASON:", result.get("reason"))
-        print("TRANSACTION NOTES:", transaction.notes)
-
-
+        print("AI REASON:", transaction.notes)
+        print(
+            "AI RECOMMENDATION:",
+            transaction.recommendation
+        )
 
         # ==========================
         # SAVE REPORT
@@ -1504,29 +1528,20 @@ async def run_ai_analysis(
 
             transaction_id=str(transaction_id),
 
-            prediction=result.get("prediction"),
+            # KEEP ML RESULT
+            prediction=ml_prediction,
 
-            fraud_probability=result.get(
-                "fraud_probability"
-            ),
+            fraud_probability=ml_fraud_probability,
 
-            risk_level=result.get(
-                "risk_level"
-            ),
+            risk_level=ml_risk_level,
 
-            risk_score=result.get(
-                "risk_score"
-            ),
+            risk_score=ml_risk_score,
 
-            reason=result.get(
-                "reason"
-            ),
+            # GEMINI ONLY EXPLAINS
+            reason=transaction.notes,
 
-            recommendation=result.get(
-                "recommendation"
-            )
+            recommendation=transaction.recommendation
         )
-
 
         db.add(ai_report)
 
@@ -1538,8 +1553,10 @@ async def run_ai_analysis(
 
         print("========== AFTER COMMIT ==========")
         print("SAVED NOTES:", transaction.notes)
-
-
+        print(
+            "SAVED RECOMMENDATION:",
+            transaction.recommendation
+        )
 
         # ==========================
         # LOG
@@ -1549,17 +1566,16 @@ async def run_ai_analysis(
 
             db=db,
 
-            transaction_id=transaction.transaction_id,
+            transaction_id=
+                transaction.transaction_id,
 
             action="AI_ANALYSIS",
 
             status="SUCCESS",
 
-            message="AI fraud analysis completed successfully."
-
+            message=
+                "AI fraud analysis completed successfully."
         )
-
-
 
         # ==========================
         # HISTORY
@@ -1569,87 +1585,71 @@ async def run_ai_analysis(
 
             db=db,
 
-            transaction_id=transaction.transaction_id,
+            transaction_id=
+                transaction.transaction_id,
 
             stage="AI Analysis",
 
-            description="AI completed fraud analysis."
-
+            description=
+                "AI completed fraud analysis."
         )
-
-
 
         # ==========================
         # ALERT
         # ==========================
 
         if (
-
-            transaction.prediction == "Fraud"
-
-            or transaction.risk_level == "High"
-
-            or transaction.risk_score >= 80
-
+            ml_prediction.lower() == "fraud"
+            or ml_risk_level.lower() == "high"
+            or ml_risk_score >= 80
         ):
 
             create_alert(
 
                 db=db,
 
-                transaction_id=transaction.transaction_id,
+                transaction_id=
+                    transaction.transaction_id,
 
                 alert_type="AI_ALERT",
 
-                message="AI marked transaction as Fraud."
-
+                message=
+                    "AI marked transaction as Fraud."
             )
-
-
 
         db.commit()
 
         db.refresh(transaction)
 
-        print("========== AFTER COMMIT CHECK ==========")
-        print("NOTES:", transaction.notes)
-        print("RECOMMENDATION:", transaction.recommendation)
-
-
         print("========== FINAL DATABASE CHECK ==========")
         print("NOTES:", transaction.notes)
-        print("RECOMMENDATION:", transaction.recommendation)
-
+        print(
+            "RECOMMENDATION:",
+            transaction.recommendation
+        )
 
         print("✅ Transaction Updated Successfully")
-
 
         return RedirectResponse(
 
             url=f"/transaction/{transaction_id}",
 
             status_code=303
-
         )
-
-
 
     except Exception as e:
 
-
         db.rollback()
-
 
         print("❌ Transaction Failed")
         print(str(e))
 
-
         return HTMLResponse(
 
-            content=f"AI Analysis Failed : {str(e)}",
+            content=
+                f"AI Analysis Failed : {str(e)}",
 
             status_code=500
-
         )
 # =====================================================
 # PREDICTION API
@@ -2103,71 +2103,125 @@ def recent_transactions(
 
     ]
 
-
+import json
+from pathlib import Path
 
 @app.get("/api/dashboard-live")
 def dashboard_live(
     db: Session = Depends(get_db)
 ):
 
+    # ==========================
+    # MODEL ACCURACY
+    # ==========================
+
+    metadata_path = (
+        Path(__file__).resolve().parents[2]
+        / "ml"
+        / "model_metadata.json"
+    )
+
+    model_accuracy = 0
+    precision = 0
+    recall = 0
+    f1_score = 0
+    roc_auc = 0
+
+    if metadata_path.exists():
+
+        with open(
+            metadata_path,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            metadata = json.load(f)
+
+        model_accuracy = round(
+            metadata.get("accuracy", 0) * 100,
+            2
+        )
+
+        precision = round(
+            metadata.get("precision", 0) * 100,
+            2
+        )
+
+        recall = round(
+            metadata.get("recall", 0) * 100,
+            2
+        )
+
+        f1_score = round(
+            metadata.get("f1_score", 0) * 100,
+            2
+        )
+
+        roc_auc = round(
+            metadata.get("roc_auc", 0) * 100,
+            2
+        )
+
+    # ==========================
+    # TRANSACTIONS
+    # ==========================
+
     transactions = (
         db.query(TransactionDB)
         .all()
     )
 
-
     total = len(transactions)
 
+    # ==========================
+    # RISK COUNTS
+    # ==========================
 
-    high = (
-        db.query(TransactionDB)
-        .filter(
-            TransactionDB.risk_level == "High"
-        )
-        .count()
+    high = sum(
+        1
+        for t in transactions
+        if str(t.risk_level or "").lower() == "high"
     )
 
-
-    medium = (
-        db.query(TransactionDB)
-        .filter(
-            TransactionDB.risk_level == "Medium"
-        )
-        .count()
+    medium = sum(
+        1
+        for t in transactions
+        if str(t.risk_level or "").lower() == "medium"
     )
 
-
-    safe = (
-        db.query(TransactionDB)
-        .filter(
-            TransactionDB.prediction == "Safe"
-        )
-        .count()
+    safe = sum(
+        1
+        for t in transactions
+        if str(t.prediction or "").lower()
+        in ["safe", "legitimate", "legit"]
     )
 
-
-    frauds = (
-        db.query(TransactionDB)
-        .filter(
-            TransactionDB.prediction == "Fraud"
-        )
-        .count()
+    frauds = sum(
+        1
+        for t in transactions
+        if str(t.prediction or "").lower()
+        == "fraud"
     )
 
+    # ==========================
+    # AVERAGE RISK
+    # ==========================
 
     avg_score = 0
-
 
     if total:
 
         avg_score = round(
             sum(
-                t.risk_score or 0
+                float(t.risk_score or 0)
                 for t in transactions
             ) / total,
             2
         )
 
+    # ==========================
+    # RECENT THREATS
+    # ==========================
 
     recent_threats = (
         db.query(TransactionDB)
@@ -2184,9 +2238,11 @@ def dashboard_live(
         .all()
     )
 
+    # ==========================
+    # RESPONSE
+    # ==========================
 
     return {
-
 
         "performance": {
 
@@ -2196,37 +2252,50 @@ def dashboard_live(
 
             "average_risk_score": avg_score,
 
-            "avg_detection": 2.3,
+            "detection_rate": round(
+                (frauds / total) * 100,
+                2
+            ) if total else 0,
 
-            "detection_rate":
-                round((frauds / total) * 100, 2)
-                if total else 0
+            "safe_transactions": safe,
+
+            "medium_risk": medium,
+
+            "high_risk": high
 
         },
-
 
         "ai_engine": {
 
             "status": "Online",
 
-            "accuracy":
-                round((safe / total) * 100, 2)
-                if total else 0,
+            "accuracy": model_accuracy,
+
+            "precision": precision,
+
+            "recall": recall,
+
+            "f1_score": f1_score,
+
+            "roc_auc": roc_auc,
 
             "last_scan":
-                datetime.utcnow().strftime("%H:%M:%S")
+                datetime.utcnow().strftime(
+                    "%H:%M:%S"
+                )
 
         },
-
 
         "threats": [
 
             {
-
                 "merchant": t.merchant,
+
                 "amount": t.amount,
 
                 "risk": t.risk_level,
+
+                "prediction": t.prediction,
 
                 "time":
                     t.created_at.strftime("%H:%M")
@@ -2234,11 +2303,9 @@ def dashboard_live(
             }
 
             for t in recent_threats
-
         ]
 
     }
-
 from sqlalchemy import func
 from datetime import datetime
 
@@ -2353,3 +2420,22 @@ async def financial_management(
             "active_page": "financial-management"
         }
     )
+
+@app.get("/api/model-performance")
+async def get_model_performance():
+
+    model_path = Path(__file__).resolve().parent.parent / "ml" / "model_metadata.json"
+
+    if not model_path.exists():
+        return {"error": "Model metadata not found"}
+
+    with open(model_path, "r", encoding="utf-8") as file:
+        metadata = json.load(file)
+
+    return {
+        "accuracy": metadata.get("accuracy", 0),
+        "precision": metadata.get("precision", 0),
+        "recall": metadata.get("recall", 0),
+        "f1_score": metadata.get("f1_score", 0),
+        "roc_auc": metadata.get("roc_auc", 0)
+    }

@@ -40,7 +40,7 @@ class FinancialTransactionRequest(BaseModel):
 # ADD FINANCIAL TRANSACTION
 # ============================================================
 
-@router.post("/transaction")
+@router.post("/transactions")
 def add_financial_transaction(
     data: FinancialTransactionRequest,
     db: Session = Depends(get_db)

@@ -18,70 +18,64 @@ AI Powered Fraud Detection & Investigation Center
         HERO SECTION
     =========================================== -->
 
-    <section class="detail-hero">
+   <section class="detail-hero">
 
-        <div class="hero-left">
+    <div class="hero-left">
 
-            <span class="hero-tag">
-                <i class="fa-solid fa-shield-halved"></i>
-                FinGuard AI Investigation
-            </span>
+        <span class="hero-tag">
+            <i class="fa-solid fa-shield-halved"></i>
+            FinGuard AI Investigation
+        </span>
 
-            <h1>
+        <h1>
+            Transaction
+            <span>#{{ transaction.transaction_id }}</span>
+        </h1>
 
-                Transaction
+        <p>
+            Complete investigation report with AI fraud analysis,
+            transaction information and security insights.
+        </p>
 
-                <span>#{{ transaction.transaction_id }}</span>
+    </div>
 
-            </h1>
+    <div class="hero-right">
 
-            <p>
+        {% if transaction.risk_level == "High" %}
 
-                Complete investigation report with AI fraud analysis,
-                transaction information and security insights.
+        <div class="risk-badge high">
 
-            </p>
+            <i class="fa-solid fa-triangle-exclamation"></i>
 
-        </div>
-
-        <div class="hero-right">
-
-            {% if transaction.risk_level == "High" %}
-
-            <div class="risk-badge high">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-                HIGH RISK
-
-            </div>
-
-            {% elif transaction.risk_level == "Medium" %}
-
-            <div class="risk-badge medium">
-
-                <i class="fa-solid fa-circle-exclamation"></i>
-
-                MEDIUM RISK
-
-            </div>
-
-            {% else %}
-
-            <div class="risk-badge low">
-
-                <i class="fa-solid fa-circle-check"></i>
-
-                LOW RISK
-
-            </div>
-
-            {% endif %}
+            HIGH RISK
 
         </div>
 
-    </section>
+        {% elif transaction.risk_level == "Medium" or transaction.risk_level == "Medium-High" %}
 
+        <div class="risk-badge medium">
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+            MEDIUM RISK
+
+        </div>
+
+        {% else %}
+
+        <div class="risk-badge low">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            LOW RISK
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
     <!-- ==========================================
         QUICK STATS
     =========================================== -->
@@ -347,25 +341,35 @@ AI Powered Fraud Detection & Investigation Center
 
                 {% if transaction.prediction == "Fraud" %}
 
-                <div class="prediction fraud">
+<div class="prediction fraud">
 
-                    <i class="fa-solid fa-triangle-exclamation"></i>
+    <i class="fa-solid fa-triangle-exclamation"></i>
 
-                    FRAUD DETECTED
+    FRAUD DETECTED
 
-                </div>
+</div>
 
-                {% else %}
+{% elif transaction.prediction == "Suspicious" %}
 
-                <div class="prediction safe">
+<div class="prediction suspicious">
 
-                    <i class="fa-solid fa-circle-check"></i>
+    <i class="fa-solid fa-triangle-exclamation"></i>
 
-                    SAFE TRANSACTION
+    SUSPICIOUS TRANSACTION
 
-                </div>
+</div>
 
-                {% endif %}
+{% else %}
+
+<div class="prediction safe">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    SAFE TRANSACTION
+
+</div>
+
+{% endif %}
 
             </div>
 

@@ -40,10 +40,14 @@ async function loadFinancialSummary() {
         const data = await response.json();
 
         console.log("Financial Summary:", data);
-
         const income = Number(data.total_income) || 0;
         const expenses = Number(data.total_expenses) || 0;
-        const balance = Number(data.balance) || 0;
+
+        let balance = Number(data.balance);
+
+        if (!Number.isFinite(balance)) {
+        balance = income - expenses;
+        }
 
 
         /* Summary cards */
@@ -52,15 +56,14 @@ async function loadFinancialSummary() {
             "totalIncome",
             formatMoney(income)
         );
-
         setText(
-            "totalExpenses",
+            "totalExpense",
             formatMoney(expenses)
         );
 
         setText(
-            "availableBalance",
-            formatMoney(balance)
+           "balance",
+           formatMoney(balance)
         );
 
 
@@ -235,10 +238,9 @@ function calculateFinancialHealth(
 
 
     setText(
-        "savingsRate",
-        `${savingsRate}%`
-    );
-
+    "healthSavingsRate",
+    `${savingsRate}%`
+);
 }
 
 
@@ -841,3 +843,196 @@ function escapeHtml(value) {
         );
 
 }
+/* =========================================================
+   ADD TRANSACTION MODAL
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const openBtn =
+        document.getElementById("openAddTransactionBtn");
+
+    const modal =
+        document.getElementById("transactionModal");
+
+    const closeBtn =
+        document.getElementById("closeTransactionModalBtn");
+
+    const cancelBtn =
+        document.getElementById("cancelTransactionBtn");
+
+    const overlay =
+        document.getElementById("modalOverlay");
+
+
+    function openModal() {
+
+        if (modal) {
+            modal.style.display = "flex";
+        }
+
+    }
+
+
+    function closeModal() {
+
+        if (modal) {
+            modal.style.display = "none";
+        }
+
+    }
+
+
+    if (openBtn) {
+
+        openBtn.addEventListener(
+            "click",
+            openModal
+        );
+
+    }
+
+
+    if (closeBtn) {
+
+        closeBtn.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+
+    if (cancelBtn) {
+
+        cancelBtn.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+});
+/* =========================================================
+   SAVE TRANSACTION
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form =
+        document.getElementById("transactionForm");
+
+    const message =
+        document.getElementById("transactionFormMessage");
+
+    if (!form) {
+        return;
+    }
+
+    form.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const formData =
+            new FormData(form);
+
+        const payload = {
+            transaction_id:
+                formData.get("transaction_id"),
+
+            account_id:
+                formData.get("account_id"),
+
+            transaction_type:
+                formData.get("transaction_type"),
+
+            category:
+                formData.get("category"),
+
+            amount:
+                Number(formData.get("amount")),
+
+            description:
+                formData.get("description")
+        };
+
+        try {
+
+            const response =
+                await fetch(
+                    "/financial/transactions",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(payload)
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    data.message ||
+                    "Unable to save transaction."
+                );
+
+            }
+
+            if (message) {
+
+                message.style.display = "block";
+
+                message.textContent =
+                    "Transaction saved successfully.";
+
+            }
+
+            form.reset();
+
+            await loadFinancialSummary();
+            await loadFinancialCategories();
+            await loadRecentTransactions();
+
+        } catch (error) {
+
+            console.error(
+                "Save transaction failed:",
+                error
+            );
+
+            if (message) {
+
+                message.style.display = "block";
+
+                message.textContent =
+                    error.message;
+
+            }
+
+        }
+
+    });
+
+});

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.database.connection import get_db
 from app.services import dashboard_service
 from fastapi import Depends
-from app.models.report import ReportDB
+from app.models.reports import ReportDB
 from app.database.connection import Base
 from app.models.transaction import TransactionDB
 from app.database.graph import get_session

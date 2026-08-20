@@ -16,6 +16,7 @@ pytesseract.pytesseract.tesseract_cmd = (
     r"C:\Users\mizba\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
 )
 
+
 # ---------------------------------------------------
 # IMAGE PREPROCESSING
 # ---------------------------------------------------
@@ -114,7 +115,7 @@ def extract_amount(text):
 
         r"AMOUNT\s*PAYABLE[^0-9]*(\d+[.,]\d{2})",
 
-        r"₹\s*([\d,]+\.\d{2})",
+        r"â‚¹\s*([\d,]+\.\d{2})",
 
         r"Rs\.?\s*([\d,]+\.\d{2})"
 
@@ -278,6 +279,8 @@ def extract_payment(text):
             return method
 
     return "--"
+
+
 # ---------------------------------------------------
 # AI FRAUD ANALYSIS
 # ---------------------------------------------------
@@ -301,7 +304,6 @@ def analyze_text(text):
     high_risk = [
         "otp",
         "password",
-        "verify",
         "urgent",
         "lottery",
         "reward",
@@ -316,15 +318,11 @@ def analyze_text(text):
     ]
 
     medium_risk = [
-        "bank",
-        "account",
         "security",
         "update",
         "expired",
         "verification",
-        "wallet",
-        "credit",
-        "debit"
+        "wallet"
     ]
 
     low_risk = [
@@ -340,7 +338,7 @@ def analyze_text(text):
     risk = 0
 
     # ---------------------------------------
-    # High Risk
+    # HIGH-RISK INDICATORS
     # ---------------------------------------
 
     for word in high_risk:
@@ -353,7 +351,7 @@ def analyze_text(text):
             risk += 25
 
     # ---------------------------------------
-    # Medium Risk
+    # MEDIUM-RISK INDICATORS
     # ---------------------------------------
 
     for word in medium_risk:
@@ -363,11 +361,13 @@ def analyze_text(text):
             if word not in keywords:
                 keywords.append(word)
 
-            risk += 10
+            risk += 8
 
     # ---------------------------------------
-    # Low Risk
+    # LOW-RISK INDICATORS
     # ---------------------------------------
+    # Normal financial-document words should
+    # NOT increase fraud risk.
 
     for word in low_risk:
 
@@ -376,28 +376,37 @@ def analyze_text(text):
             if word not in keywords:
                 keywords.append(word)
 
-            risk += 2
-
     # ---------------------------------------
-    # Extra Rules
+    # MISSING-FIELD PENALTIES
     # ---------------------------------------
+    # Missing fields are only small signals.
+    # GSTIN is optional, so it is NOT penalized.
 
     if merchant == "--":
-        risk += 10
+        risk += 5
 
     if amount == "--":
-        risk += 10
+        risk += 5
 
     if payment == "--":
-        risk += 5
+        risk += 3
 
-    if gstin == "--":
-        risk += 5
+    # ---------------------------------------
+    # LARGE AMOUNT CHECK
+    # ---------------------------------------
+    # A large amount alone should not make
+    # a document fraudulent. Therefore this
+    # is intentionally not used as a fraud
+    # penalty here.
+
+    # ---------------------------------------
+    # RISK CAP
+    # ---------------------------------------
 
     risk = min(risk, 100)
 
     # ---------------------------------------
-    # Risk Level
+    # RISK LEVEL + RECOMMENDATION
     # ---------------------------------------
 
     if risk >= 70:
@@ -405,7 +414,8 @@ def analyze_text(text):
         risk_level = "High"
 
         recommendation = (
-            "High Risk detected. Verify the merchant, payment details and invoice before processing."
+            "High Risk detected. Verify the merchant, "
+            "payment details and invoice before processing."
         )
 
     elif risk >= 35:
@@ -413,7 +423,8 @@ def analyze_text(text):
         risk_level = "Medium"
 
         recommendation = (
-            "Medium Risk detected. Manual verification is recommended."
+            "Medium Risk detected. Manual verification "
+            "is recommended."
         )
 
     else:
@@ -421,11 +432,12 @@ def analyze_text(text):
         risk_level = "Low"
 
         recommendation = (
-            "Document appears legitimate. No major fraud indicators detected."
+            "Document appears legitimate. "
+            "No major fraud indicators detected."
         )
 
     # ---------------------------------------
-    # OCR Confidence
+    # OCR CONFIDENCE
     # ---------------------------------------
 
     if text.strip():
@@ -433,15 +445,19 @@ def analyze_text(text):
         words = len(text.split())
 
         if words > 80:
+
             confidence = 99
 
         elif words > 40:
+
             confidence = 97
 
         elif words > 20:
+
             confidence = 95
 
         else:
+
             confidence = 90
 
     else:
@@ -449,7 +465,7 @@ def analyze_text(text):
         confidence = 0
 
     # ---------------------------------------
-    # Final Response
+    # FINAL RESPONSE
     # ---------------------------------------
 
     return {
