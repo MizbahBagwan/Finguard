@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, Text, DateTime
 from datetime import datetime
 
-from app.database.connection import Base
+from backend.app.database.connection import Base
 
 
 class Report(Base):

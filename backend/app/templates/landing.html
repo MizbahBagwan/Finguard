@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#071426"
+    >
+
+    <meta
+        name="description"
+        content="FinGuard AI - Intelligent Financial Fraud Detection and Risk Intelligence Platform"
+    >
+
+    <title>FinGuard AI | Intelligent Financial Security</title>
+
+    
+
+    <!-- =========================================================
+         FONT AWESOME
+    ========================================================== -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    >
+    <!-- FinGuard AI Global Theme -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/theme.css') }}"
+>
+
+    <!-- =========================================================
+         LANDING PAGE CSS
+    ========================================================== -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/landing.css') }}"
+    >
+</head>
+
+
+<body>
+
+<!-- =============================================================
+     BACKGROUND
+============================================================== -->
+
+<div class="landing-background">
+
+    <div class="bg-grid"></div>
+
+    <div class="bg-glow bg-glow-one"></div>
+    <div class="bg-glow bg-glow-two"></div>
+    <div class="bg-glow bg-glow-three"></div>
+
+</div>
+
+
+<!-- =============================================================
+     NAVBAR
+============================================================== -->
+
+<header class="landing-navbar">
+
+    <div class="navbar-container">
+
+        <!-- LOGO -->
+
+        <a href="/" class="landing-logo">
+
+            <div class="landing-logo-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div class="landing-logo-text">
+
+                <strong>FinGuard AI</strong>
+
+                <span>Financial Intelligence</span>
+
+            </div>
+
+        </a>
+
+
+        <!-- DESKTOP NAV -->
+
+        <nav class="landing-nav">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#intelligence">
+                Intelligence
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </nav>
+
+
+        <!-- ACTIONS -->
+
+        <div class="navbar-actions">
+
+            <a
+                href="/login"
+                class="nav-login"
+            >
+                Sign In
+            </a>
+
+            <a
+                href="/register"
+                class="nav-start"
+            >
+                Get Started
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open navigation"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =============================================================
+     MOBILE NAVIGATION
+============================================================== -->
+
+<div
+    class="mobile-nav"
+    id="mobileNav"
+>
+
+    <a href="#features">
+        Features
+    </a>
+
+    <a href="#how-it-works">
+        How It Works
+    </a>
+
+    <a href="#intelligence">
+        Intelligence
+    </a>
+
+    <a href="#about">
+        About
+    </a>
+
+    <a href="/login">
+        Sign In
+    </a>
+
+    <a
+        href="/register"
+        class="mobile-start"
+    >
+        Get Started
+    </a>
+
+</div>
+
+
+<!-- =============================================================
+     HERO SECTION
+============================================================== -->
+
+<main>
+
+<section class="hero-section">
+
+    <div class="hero-container">
+
+
+        <!-- =====================================================
+             HERO LEFT
+        ====================================================== -->
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+
+                <span class="hero-badge-dot"></span>
+
+                <span>
+                    AI-POWERED FINANCIAL SECURITY
+                </span>
+
+            </div>
+
+
+            <h1>
+
+                Detect Fraud.
+
+                <span>
+                    Analyze Risk.
+                </span>
+
+                Protect Every Transaction.
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                FinGuard AI is an intelligent financial security
+                platform designed to detect potential fraud,
+                analyze transaction risk, investigate suspicious
+                activity, and provide actionable financial
+                intelligence.
+
+            </p>
+
+
+            <!-- HERO BUTTONS -->
+
+            <div class="hero-actions">
+
+                <a
+                    href="/register"
+                    class="hero-primary-btn"
+                >
+
+                    Get Started
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+
+                <a
+                    href="#features"
+                    class="hero-secondary-btn"
+                >
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Explore Platform
+
+                </a>
+
+            </div>
+
+
+            <!-- TRUST INFO -->
+
+            <div class="hero-trust">
+
+                <div class="trust-item">
+
+                    <div class="trust-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+
+                    <div>
+                        <strong>AI Security</strong>
+                        <span>Intelligent Detection</span>
+                    </div>
+
+                </div>
+
+
+                <div class="trust-divider"></div>
+
+
+                <div class="trust-item">
+
+                    <div class="trust-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+
+                    <div>
+                        <strong>Real-Time</strong>
+                        <span>Transaction Monitoring</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             HERO RIGHT - AI TRANSACTION PANEL
+        ====================================================== -->
+
+        <div class="hero-visual">
+
+
+            <!-- MAIN AI PANEL -->
+
+            <div class="ai-dashboard-card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="ai-dashboard-header">
+
+                    <div class="ai-dashboard-title">
+
+                        <div class="mini-shield">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                AI Transaction Intelligence
+                            </strong>
+
+                            <span>
+                                FinGuard AI Monitoring
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ai-online">
+
+                        <span></span>
+
+                        ONLINE
+
+                    </div>
+
+                </div>
+
+
+                <!-- TRANSACTION -->
+
+                <div class="transaction-preview">
+
+                    <div class="transaction-heading">
+
+                        <div>
+
+                            <span class="small-label">
+                                TRANSACTION
+                            </span>
+
+                            <strong>
+                                TXN2001
+                            </strong>
+
+                        </div>
+
+                        <span class="transaction-status">
+                            ANALYZED
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-details">
+
+                        <div class="detail-item">
+
+                            <span>
+                                Amount
+                            </span>
+
+                            <strong>
+                                ₹12,500
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span>
+                                Location
+                            </span>
+
+                            <strong>
+                                Haryana
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span>
+                                Transaction Type
+                            </span>
+
+                            <strong>
+                                Online Payment
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span>
+                                Device
+                            </span>
+
+                            <strong class="verified">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                Trusted
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RISK AREA -->
+
+                <div class="risk-section">
+
+
+                    <div class="risk-score-box">
+
+                        <div class="risk-circle">
+
+                            <div class="risk-circle-inner">
+
+                                <strong>
+                                    82%
+                                </strong>
+
+                                <span>
+                                    RISK
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="risk-text">
+
+                            <span class="small-label">
+                                SECURITY ASSESSMENT
+                            </span>
+
+                            <strong>
+                                High Risk Detected
+                            </strong>
+
+                            <p>
+                                AI identified multiple
+                                suspicious transaction signals.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RISK METRICS -->
+
+                    <div class="risk-metrics">
+
+                        <div class="risk-metric">
+
+                            <span>
+                                Fraud Probability
+                            </span>
+
+                            <strong class="danger">
+                                91.4%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="risk-metric">
+
+                            <span>
+                                Location Risk
+                            </span>
+
+                            <strong class="warning">
+                                High
+                            </strong>
+
+                        </div>
+
+
+                        <div class="risk-metric">
+
+                            <span>
+                                Device Trust
+                            </span>
+
+                            <strong class="safe">
+                                Verified
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI SIGNALS -->
+
+                <div class="security-signals">
+
+                    <div class="signals-heading">
+
+                        <span>
+                            AI SECURITY SIGNALS
+                        </span>
+
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    </div>
+
+
+                    <div class="signal-row">
+
+                        <div class="signal-left">
+
+                            <span class="signal-icon blue">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </span>
+
+                            <span>
+                                Location Analysis
+                            </span>
+
+                        </div>
+
+                        <span class="signal-result high">
+                            HIGH RISK
+                        </span>
+
+                    </div>
+
+
+                    <div class="signal-row">
+
+                        <div class="signal-left">
+
+                            <span class="signal-icon purple">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                            </span>
+
+                            <span>
+                                Device Analysis
+                            </span>
+
+                        </div>
+
+                        <span class="signal-result safe">
+                            VERIFIED
+                        </span>
+
+                    </div>
+
+
+                    <div class="signal-row">
+
+                        <div class="signal-left">
+
+                            <span class="signal-icon cyan">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </span>
+
+                            <span>
+                                Transaction Pattern
+                            </span>
+
+                        </div>
+
+                        <span class="signal-result medium">
+                            SUSPICIOUS
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI FOOTER -->
+
+                <div class="ai-card-footer">
+
+                    <div>
+
+                        <span class="live-dot"></span>
+
+                        <span>
+                            AI Engine Active
+                        </span>
+
+                    </div>
+
+                    <span>
+                        Real-Time Monitoring
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLOATING CARD 1 -->
+
+            <div class="floating-card fraud-floating">
+
+                <div class="floating-icon red">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        Fraud Detection
+                    </span>
+
+                    <strong>
+                        Active
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLOATING CARD 2 -->
+
+            <div class="floating-card ai-floating">
+
+                <div class="floating-icon blue">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        AI Analysis
+                    </span>
+
+                    <strong>
+                        Running
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================================================
+     PLATFORM OVERVIEW
+============================================================== -->
+
+<section
+    class="overview-section"
+    id="about"
+>
+
+    <div class="section-container">
+
+        <div class="section-heading">
+
+            <div class="section-badge">
+                <i class="fa-solid fa-layer-group"></i>
+                FINANCIAL INTELLIGENCE PLATFORM
+            </div>
+
+            <h2>
+                One Platform.
+                <span>Complete Financial Intelligence.</span>
+            </h2>
+
+            <p>
+                FinGuard AI brings transaction monitoring,
+                fraud detection, risk analysis, AI investigation,
+                OCR processing and financial intelligence together
+                in one centralized platform.
+            </p>
+
+        </div>
+
+
+        <div class="overview-stats">
+
+            <div class="overview-stat">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <div>
+                    <strong>AI</strong>
+                    <span>Fraud Detection</span>
+                </div>
+
+            </div>
+
+
+            <div class="overview-stat">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <div>
+                    <strong>Risk</strong>
+                    <span>Intelligent Scoring</span>
+                </div>
+
+            </div>
+
+
+            <div class="overview-stat">
+
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                <div>
+                    <strong>Live</strong>
+                    <span>Transaction Monitoring</span>
+                </div>
+
+            </div>
+
+
+            <div class="overview-stat">
+
+                <i class="fa-solid fa-file-shield"></i>
+
+                <div>
+                    <strong>Smart</strong>
+                    <span>Investigation Reports</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================================================
+     FEATURES
+============================================================== -->
+
+<section
+    class="features-section"
+    id="features"
+>
+
+    <div class="section-container">
+
+
+        <div class="section-heading centered">
+
+            <div class="section-badge">
+
+                <i class="fa-solid fa-sparkles"></i>
+
+                POWERFUL CAPABILITIES
+
+            </div>
+
+
+            <h2>
+
+                Everything You Need To
+
+                <span>Understand Financial Risk.</span>
+
+            </h2>
+
+
+            <p>
+
+                Built around the core capabilities of FinGuard AI
+                to help users detect, investigate and manage
+                financial risks.
+
+            </p>
+
+        </div>
+
+
+        <div class="features-grid">
+
+
+            <!-- FEATURE 1 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon blue-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    01
+                </span>
+
+                <h3>
+                    AI Fraud Detection
+                </h3>
+
+                <p>
+                    Identify potentially fraudulent transactions
+                    using intelligent transaction analysis and
+                    risk signals.
+                </p>
+
+                <a href="/register">
+                    Explore Detection
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 2 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon purple-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    02
+                </span>
+
+                <h3>
+                    AI Investigation
+                </h3>
+
+                <p>
+                    Analyze suspicious transactions and receive
+                    AI-powered investigation insights for faster
+                    decision making.
+                </p>
+
+                <a href="/register">
+                    Explore Investigation
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 3 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon cyan-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    03
+                </span>
+
+                <h3>
+                    Risk Analysis
+                </h3>
+
+                <p>
+                    Understand transaction risk through risk
+                    scores, fraud probability and security
+                    signals.
+                </p>
+
+                <a href="/register">
+                    Explore Risk Analysis
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 4 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon green-icon">
+
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    04
+                </span>
+
+                <h3>
+                    Transaction Monitoring
+                </h3>
+
+                <p>
+                    Manage and monitor financial transactions
+                    with filtering, tracking and detailed
+                    transaction intelligence.
+                </p>
+
+                <a href="/register">
+                    Monitor Transactions
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 5 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon orange-icon">
+
+                    <i class="fa-solid fa-file-image"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    05
+                </span>
+
+                <h3>
+                    AI Powered OCR
+                </h3>
+
+                <p>
+                    Extract useful information from receipts,
+                    invoices and financial documents using
+                    intelligent OCR processing.
+                </p>
+
+                <a href="/register">
+                    Explore OCR
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 6 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon pink-icon">
+
+                    <i class="fa-solid fa-diagram-project"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    06
+                </span>
+
+                <h3>
+                    Knowledge Graph
+                </h3>
+
+                <p>
+                    Visualize relationships and connections
+                    between financial entities and transaction
+                    intelligence.
+                </p>
+
+                <a href="/register">
+                    Explore Knowledge Graph
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 7 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon wallet-icon">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    07
+                </span>
+
+                <h3>
+                    Financial Management
+                </h3>
+
+                <p>
+                    Organize and understand financial activity
+                    through centralized financial management
+                    tools.
+                </p>
+
+                <a href="/register">
+                    Explore Management
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+
+            <!-- FEATURE 8 -->
+
+            <article class="feature-card">
+
+                <div class="feature-icon model-icon">
+
+                    <i class="fa-solid fa-microchip"></i>
+
+                </div>
+
+                <span class="feature-number">
+                    08
+                </span>
+
+                <h3>
+                    Model Performance
+                </h3>
+
+                <p>
+                    Review AI model performance and understand
+                    how the fraud detection system performs
+                    across transaction data.
+                </p>
+
+                <a href="/register">
+                    View AI Performance
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================================================
+     INTELLIGENCE SECTION
+============================================================== -->
+
+<section
+    class="intelligence-section"
+    id="intelligence"
+>
+
+    <div class="section-container">
+
+        <div class="intelligence-wrapper">
+
+
+            <!-- LEFT -->
+
+            <div class="intelligence-content">
+
+                <div class="section-badge dark-badge">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    INTELLIGENT RISK ENGINE
+
+                </div>
+
+
+                <h2>
+
+                    Turn Transaction Data Into
+
+                    <span>Actionable Intelligence.</span>
+
+                </h2>
+
+
+                <p>
+
+                    FinGuard AI combines transaction information,
+                    security signals and intelligent analysis to
+                    help identify potentially risky activity before
+                    it becomes a bigger financial problem.
+
+                </p>
+
+
+                <div class="intelligence-list">
+
+                    <div class="intelligence-list-item">
+
+                        <div class="check-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Transaction Risk Scoring
+                            </strong>
+
+                            <span>
+                                Understand the overall risk level
+                                of individual transactions.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="intelligence-list-item">
+
+                        <div class="check-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Fraud Probability Analysis
+                            </strong>
+
+                            <span>
+                                Estimate the likelihood of suspicious
+                                or fraudulent activity.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="intelligence-list-item">
+
+                        <div class="check-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Security Signal Analysis
+                            </strong>
+
+                            <span>
+                                Evaluate device, location and
+                                transaction behavior.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="intelligence-list-item">
+
+                        <div class="check-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Investigation Insights
+                            </strong>
+
+                            <span>
+                                Convert analysis into meaningful
+                                investigation information.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT - ANALYTICS CARD -->
+
+            <div class="intelligence-visual">
+
+
+                <div class="analytics-card">
+
+
+                    <div class="analytics-header">
+
+                        <div>
+
+                            <span>
+                                RISK INTELLIGENCE
+                            </span>
+
+                            <strong>
+                                Transaction Analysis
+                            </strong>
+
+                        </div>
+
+                        <div class="analytics-live">
+                            LIVE
+                        </div>
+
+                    </div>
+
+
+                    <!-- RISK BARS -->
+
+                    <div class="risk-distribution">
+
+                        <div class="distribution-header">
+
+                            <span>
+                                Risk Distribution
+                            </span>
+
+                            <span>
+                                Current Activity
+                            </span>
+
+                        </div>
+
+
+                        <div class="risk-bar">
+
+                            <div
+                                class="risk-bar-fill safe-bar"
+                                style="width:68%"
+                            ></div>
+
+                        </div>
+
+                        <div class="distribution-row">
+
+                            <span>
+                                <i class="dot safe-dot"></i>
+                                Safe
+                            </span>
+
+                            <strong>
+                                68%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="risk-bar">
+
+                            <div
+                                class="risk-bar-fill medium-bar"
+                                style="width:19%"
+                            ></div>
+
+                        </div>
+
+                        <div class="distribution-row">
+
+                            <span>
+                                <i class="dot medium-dot"></i>
+                                Medium
+                            </span>
+
+                            <strong>
+                                19%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="risk-bar">
+
+                            <div
+                                class="risk-bar-fill high-bar"
+                                style="width:13%"
+                            ></div>
+
+                        </div>
+
+                        <div class="distribution-row">
+
+                            <span>
+                                <i class="dot high-dot"></i>
+                                High
+                            </span>
+
+                            <strong>
+                                13%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ANALYTICS METRICS -->
+
+                    <div class="analytics-metrics">
+
+                        <div>
+
+                            <span>
+                                Transactions
+                            </span>
+
+                            <strong>
+                                Monitored
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                AI Engine
+                            </span>
+
+                            <strong class="green-text">
+                                Online
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Detection
+                            </span>
+
+                            <strong>
+                                Active
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVITY -->
+
+                    <div class="activity-preview">
+
+                        <div class="activity-heading">
+
+                            <span>
+                                RECENT AI ACTIVITY
+                            </span>
+
+                            <i class="fa-solid fa-ellipsis"></i>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <span class="activity-icon red-activity">
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Suspicious transaction detected
+                                </strong>
+
+                                <span>
+                                    High risk activity identified
+                                </span>
+
+                            </div>
+
+                            <small>
+                                Just now
+                            </small>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <span class="activity-icon blue-activity">
+
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    AI analysis completed
+                                </strong>
+
+                                <span>
+                                    Transaction intelligence updated
+                                </span>
+
+                            </div>
+
+                            <small>
+                                2m ago
+                            </small>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <span class="activity-icon green-activity">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Transaction verified
+                                </strong>
+
+                                <span>
+                                    No immediate threat detected
+                                </span>
+
+                            </div>
+
+                            <small>
+                                4m ago
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================================================
+     HOW IT WORKS
+============================================================== -->
+
+<section
+    class="how-section"
+    id="how-it-works"
+>
+
+    <div class="section-container">
+
+
+        <div class="section-heading centered">
+
+            <div class="section-badge">
+
+                <i class="fa-solid fa-route"></i>
+
+                SIMPLE INTELLIGENT WORKFLOW
+
+            </div>
+
+
+            <h2>
+
+                How
+
+                <span>FinGuard AI</span>
+
+                Works
+
+            </h2>
+
+
+            <p>
+
+                From transaction input to intelligent risk
+                insights, FinGuard AI keeps the workflow simple
+                and understandable.
+
+            </p>
+
+        </div>
+
+
+        <div class="workflow">
+
+
+            <!-- STEP 1 -->
+
+            <div class="workflow-step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+
+                </div>
+
+                <h3>
+                    Add Transaction
+                </h3>
+
+                <p>
+                    Enter or process transaction information
+                    inside the FinGuard AI platform.
+                </p>
+
+            </div>
+
+
+            <div class="workflow-line"></div>
+
+
+            <!-- STEP 2 -->
+
+            <div class="workflow-step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+                <h3>
+                    AI Analysis
+                </h3>
+
+                <p>
+                    The system evaluates transaction details
+                    and relevant security signals.
+                </p>
+
+            </div>
+
+
+            <div class="workflow-line"></div>
+
+
+            <!-- STEP 3 -->
+
+            <div class="workflow-step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <h3>
+                    Risk Detection
+                </h3>
+
+                <p>
+                    Risk score and fraud probability help
+                    identify potentially suspicious activity.
+                </p>
+
+            </div>
+
+
+            <div class="workflow-line"></div>
+
+
+            <!-- STEP 4 -->
+
+            <div class="workflow-step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-file-shield"></i>
+
+                </div>
+
+                <h3>
+                    Investigation
+                </h3>
+
+                <p>
+                    Review AI insights and generate meaningful
+                    financial security information.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================================================
+     CTA
+============================================================== -->
+
+<section class="cta-section">
+
+    <div class="cta-container">
+
+
+        <div class="cta-shield">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+
+        <div class="cta-content">
+
+            <div class="cta-badge">
+
+                <span></span>
+
+                AI FINANCIAL SECURITY
+
+            </div>
+
+
+            <h2>
+
+                Ready To Make Your
+
+                <span>Financial Activity Smarter?</span>
+
+            </h2>
+
+
+            <p>
+
+                Start using FinGuard AI to understand
+                transactions, detect potential risks and
+                explore intelligent financial insights.
+
+            </p>
+
+
+            <div class="cta-actions">
+
+                <a
+                    href="/register"
+                    class="cta-primary"
+                >
+
+                    Get Started With FinGuard AI
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+
+                <a
+                    href="/login"
+                    class="cta-secondary"
+                >
+                    Already have an account?
+                    <strong>Sign In</strong>
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =============================================================
+     FOOTER
+============================================================== -->
+
+<footer class="landing-footer">
+
+    <div class="footer-container">
+
+
+        <div class="footer-brand">
+
+            <a
+                href="/"
+                class="landing-logo"
+            >
+
+                <div class="landing-logo-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <div class="landing-logo-text">
+
+                    <strong>
+                        FinGuard AI
+                    </strong>
+
+                    <span>
+                        Financial Intelligence
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <p>
+                Intelligent financial fraud detection,
+                risk analysis and transaction intelligence.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <div>
+
+                <strong>
+                    Platform
+                </strong>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="#intelligence">
+                    Intelligence
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Account
+                </strong>
+
+                <a href="/login">
+                    Sign In
+                </a>
+
+                <a href="/register">
+                    Register
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 FinGuard AI. All rights reserved.
+        </span>
+
+        <span>
+            AI-Powered Financial Security Platform
+        </span>
+
+    </div>
+
+</footer>
+
+
+<!-- =============================================================
+     MOBILE MENU JS
+============================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const menuButton =
+            document.getElementById(
+                "mobileMenuBtn"
+            );
+
+        const mobileNav =
+            document.getElementById(
+                "mobileNav"
+            );
+
+
+        if (!menuButton || !mobileNav) {
+            return;
+        }
+
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                mobileNav.classList.toggle(
+                    "open"
+                );
+
+                menuButton.innerHTML =
+                    mobileNav.classList.contains("open")
+                    ?
+                    '<i class="fa-solid fa-xmark"></i>'
+                    :
+                    '<i class="fa-solid fa-bars"></i>';
+
+            }
+        );
+
+
+        mobileNav
+            .querySelectorAll("a")
+            .forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            mobileNav.classList.remove(
+                                "open"
+                            );
+
+                            menuButton.innerHTML =
+                                '<i class="fa-solid fa-bars"></i>';
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>

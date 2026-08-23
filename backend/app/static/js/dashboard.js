@@ -1,958 +1,526 @@
-/* ==========================================
+/* ==========================================================
    FinGuard AI Dashboard
-========================================== */
+   FINAL CLEAN dashboard.js
 
-document.addEventListener("DOMContentLoaded", () => {
+   - Single initialization flow
+   - Single 3D AI Core
+   - Single live dashboard loader
+   - Single Potential Fraud loader
+   - Single Recent Transactions loader
+   - Backend AI insights preserved
+   - Model accuracy separated from risk score
+   - Robust API field handling
+   ========================================================== */
 
-    initClock();
+"use strict";
 
-    startAIStatus();
 
-    initAI3D();
+/* ==========================================================
+   GLOBAL CONFIG
+   ========================================================== */
 
-    loadPotentialFraud();
+const DASHBOARD_CONFIG = {
 
-});
+    summaryEndpoint: "/dashboard/summary",
 
-/* ==========================================
+    liveEndpoint: "/api/dashboard-live",
+
+    fraudEndpoint: "/dashboard/fraud-detection",
+
+    recentEndpoint: "/api/recent-transactions",
+
+    trendEndpoint: "/dashboard/trend",
+
+    riskEndpoint: "/dashboard/risk",
+
+    insightEndpoint: "/dashboard/ai-insight",
+
+    modelPerformanceEndpoint: "/api/model-performance",
+
+    liveRefreshInterval: 30000,
+
+    toastInterval: 12000,
+
+    insightInterval: 7000
+
+};
+
+
+/* ==========================================================
+   DOM HELPERS
+   ========================================================== */
+
+function getElement(id) {
+
+    return document.getElementById(id);
+
+}
+
+
+function setText(id, value) {
+
+    const element = getElement(id);
+
+    if (element) {
+
+        element.innerText =
+            value ?? "";
+
+    }
+
+}
+
+
+function safeNumber(value, fallback = 0) {
+
+    const number = Number(value);
+
+    return Number.isFinite(number)
+        ? number
+        : fallback;
+
+}
+
+
+function formatNumber(value) {
+
+    return safeNumber(value)
+        .toLocaleString("en-IN");
+
+}
+
+
+function formatPercentage(value, decimals = 1) {
+
+    const number = safeNumber(value);
+
+    return number.toFixed(decimals) + "%";
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==========================================================
+   API HELPER
+   ========================================================== */
+
+async function fetchJSON(url, options = {}) {
+
+    const response = await fetch(url, {
+
+        ...options,
+
+        headers: {
+
+            "Accept": "application/json",
+
+            ...(options.headers || {})
+
+        }
+
+    });
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            `${url} failed: ${response.status}`
+        );
+
+    }
+
+
+    return await response.json();
+
+}
+
+
+/* ==========================================================
    LIVE CLOCK
-========================================== */
+   ========================================================== */
 
-function initClock(){
+function initClock() {
 
-    const el=document.getElementById("currentTime");
+    const element =
+        getElement("currentTime");
 
-    if(!el) return;
+    if (!element) return;
 
-    function update(){
 
-        const now=new Date();
+    function updateClock() {
 
-        el.innerHTML=now.toLocaleTimeString([],{
+        const now = new Date();
 
-            hour:"2-digit",
 
-            minute:"2-digit",
+        element.innerText =
+            now.toLocaleTimeString([], {
 
-            second:"2-digit"
+                hour: "2-digit",
+
+                minute: "2-digit",
+
+                second: "2-digit"
+
+            });
+
+    }
+
+
+    updateClock();
+
+
+    setInterval(
+        updateClock,
+        1000
+    );
+
+}
+
+
+/* ==========================================================
+   COUNTER
+   ========================================================== */
+
+function counter(id, target) {
+
+    const element =
+        getElement(id);
+
+    if (!element) return;
+
+
+    target =
+        safeNumber(target);
+
+
+    let value = 0;
+
+
+    const speed =
+        Math.max(
+            1,
+            Math.floor(target / 80)
+        );
+
+
+    const timer =
+        setInterval(() => {
+
+            value += speed;
+
+
+            if (value >= target) {
+
+                value = target;
+
+                clearInterval(timer);
+
+            }
+
+
+            element.innerText =
+                formatNumber(value);
+
+        }, 20);
+
+}
+
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+function initSidebar() {
+
+    const menuBtn =
+        document.querySelector(".menu-btn");
+
+    const sidebar =
+        document.querySelector(".sidebar");
+
+
+    if (!menuBtn || !sidebar) return;
+
+
+    menuBtn.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "collapsed"
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   DARK MODE
+   ========================================================== */
+
+function initTheme() {
+
+    const themeIcon =
+        document.querySelector(".fa-moon");
+
+
+    if (!themeIcon) return;
+
+
+    const button =
+        themeIcon.parentElement;
+
+
+    if (!button) return;
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            document.body.classList.toggle(
+                "light-mode"
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   RIPPLE EFFECT
+   ========================================================== */
+
+function initRippleEffect() {
+
+    document
+        .querySelectorAll(
+            "button, .primary-btn, .action-btn"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    const rect =
+                        this.getBoundingClientRect();
+
+
+                    const size =
+                        Math.max(
+                            rect.width,
+                            rect.height
+                        );
+
+
+                    const ripple =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    ripple.style.width =
+                        size + "px";
+
+
+                    ripple.style.height =
+                        size + "px";
+
+
+                    ripple.style.left =
+                        (
+                            event.clientX -
+                            rect.left -
+                            size / 2
+                        ) + "px";
+
+
+                    ripple.style.top =
+                        (
+                            event.clientY -
+                            rect.top -
+                            size / 2
+                        ) + "px";
+
+
+                    ripple.className =
+                        "ripple";
+
+
+                    this.appendChild(
+                        ripple
+                    );
+
+
+                    setTimeout(
+                        () => ripple.remove(),
+                        600
+                    );
+
+                }
+            );
 
         });
 
+}
+
+
+/* ==========================================================
+   FADE IN
+   ========================================================== */
+
+function initFadeAnimation() {
+
+    if (
+        typeof IntersectionObserver ===
+        "undefined"
+    ) {
+        return;
     }
 
-    update();
 
-    setInterval(update,1000);
+    const observer =
+        new IntersectionObserver(
+            entries => {
 
-}
+                entries.forEach(
+                    entry => {
 
-/* ==========================================
-   ANIMATED COUNTERS
-========================================== */
+                        if (
+                            entry.isIntersecting
+                        ) {
 
-function counter(id,target){
+                            entry.target
+                                .classList
+                                .add("show");
 
-    const el=document.getElementById(id);
-
-    if(!el) return;
-
-    let value=0;
-
-    const speed=Math.max(1,Math.floor(target/80));
-
-    const timer=setInterval(()=>{
-
-        value+=speed;
-
-        if(value>=target){
-
-            value=target;
-
-            clearInterval(timer);
-
-        }
-
-        el.innerHTML=value.toLocaleString();
-
-    },20);
-
-}
-
-/*function animateCounters(){
-
-    counter("totalTransactions",15482);
-
-    counter("highRisk",126);
-
-    counter("mediumRisk",412);
-
-    counter("safeTransactions",14944);
-
-}*/
-
-/* ==========================================
-   AI STATUS
-========================================== */
-
-function startAIStatus(){
-
-    const messages=[
-
-        "Monitoring live transactions...",
-
-        "Scanning merchant behaviour...",
-
-        "AI model updated successfully.",
-
-        "No critical fraud detected.",
-
-        "Risk engine running normally."
-
-    ];
-
-    const box=document.getElementById("aiInsights");
-
-    if(!box) return;
-
-    setInterval(()=>{
-
-        const msg=messages[
-            Math.floor(Math.random()*messages.length)
-        ];
-
-        const item=document.createElement("div");
-
-        item.className="insight info";
-
-        item.innerHTML=`
-        <i class="fa-solid fa-robot"></i>
-        ${msg}
-        `;
-
-        box.prepend(item);
-
-        if(box.children.length>4){
-
-            box.removeChild(box.lastChild);
-
-        }
-
-    },7000);
-
-}
-/* ==========================================
-   CHARTS
-========================================== */
-
-
-  
-async function initCharts(){
-
-    await initRiskChart();
-
-    await initTrendChart();
-
-}
-
-/* ==========================================
-   RISK DISTRIBUTION
-========================================== */
-
-async function initRiskChart(){
-
-
-
-    console.log("NEW RISK FUNCTION RUNNING");
-
-    const canvas=document.getElementById(
-        "riskDistributionChart"
-    );
-
-    if(!canvas) return;
-
-
-    const response = await fetch(
-        "/dashboard/risk"
-    );
-
-    const data = await response.json();
-    data.push({
-    risk_level:"Medium",
-    count:0
-});
-    console.log("Risk API Data:", data);
-
-  
-
-
-    const riskData = {
-
-        High:0,
-        Medium:0,
-        Low:0
-
-    };
-
-
-   data.forEach(item=>{
-
-    const level = item.risk_level.toLowerCase();
-
-
-    if(level.includes("high")){
-
-        riskData.High = item.count;
-
-    }
-    else if(level.includes("medium")){
-
-        riskData.Medium = item.count;
-
-    }
-    else if(level.includes("low") || level.includes("safe")){
-
-        riskData.Low = item.count;
-
-    }
-
-});
-
-console.log(riskData);
-
-
-
-    const labels=[
-
-        "High Risk",
-        "Medium Risk",
-        "Low Risk"
-
-    ];
-    if(riskData.Medium === 0){
-    riskData.Medium = 1;
-}
-
-    const values=[
-
-        riskData.High,
-        riskData.Medium,
-        riskData.Low
-
-    ];
-
-
-
-    new Chart(canvas,{
-
-        type:"doughnut",
-
-
-        data:{
-
-
-            labels:labels,
-
-
-            datasets:[{
-
-                data:values,
-
-
-                backgroundColor:[
-
-                    "#EF4444",
-                    "#F59E0B",
-                    "#22C55E"
-
-                ],
-
-
-                borderColor:[
-
-                    "#ff7b7b",
-                    "#ffd166",
-                    "#4ade80"
-
-                ],
-
-
-                borderWidth:2,
-
-
-                hoverOffset:20
-
-
-            }]
-
-
-        },
-
-
-        options:{
-
-
-            responsive:true,
-
-
-            maintainAspectRatio:false,
-
-
-            cutout:"75%",
-
-
-
-            animation:{
-
-
-                animateRotate:true,
-
-                duration:1500
-
-
-            },
-
-
-
-            plugins:{
-
-
-                legend:{
-
-
-                    position:"bottom",
-
-
-                    labels:{
-
-
-                        color:"#94A3B8",
-
-                        padding:20,
-
-                        usePointStyle:true
-
+                        }
 
                     }
-
-
-                }
-
-
+                );
 
             }
-
-
-        }
-
-
-    });
-
-
-}
-
-/* ==========================================
-   FRAUD TREND
-========================================== */
-
-async function initTrendChart(){
-
-    const canvas = document.getElementById("fraudTrendChart");
-
-    if(!canvas) return;
-
-
-    const response = await fetch("/dashboard/trend");
-
-    const trendData = await response.json();
-
-
-    const labels = trendData.map(
-        item => item.date
-    );
-
-
-    const values = trendData.map(
-        item => item.transactions
-    );
-
-
-    new Chart(canvas,{
-
-        type:"line",
-
-
-        data:{
-
-
-            labels: labels,
-
-
-            datasets:[{
-
-
-                label:"Transactions",
-
-
-                data: values,
-
-
-                borderColor:"#00D4FF",
-
-
-                backgroundColor:
-                "rgba(0,212,255,0.12)",
-
-
-                borderWidth:3,
-
-
-                pointRadius:4,
-
-
-                pointHoverRadius:8,
-
-
-                pointBackgroundColor:"#00D4FF",
-
-
-                pointBorderColor:"#ffffff",
-
-
-                pointBorderWidth:2,
-
-
-                fill:true,
-
-
-                tension:.45
-
-
-            }]
-
-
-        },
-
-
-        options:{
-
-
-            responsive:true,
-
-
-            maintainAspectRatio:false,
-
-
-            animation:{
-
-
-                duration:1500,
-
-
-                easing:"easeOutQuart"
-
-
-            },
-
-
-            plugins:{
-
-
-                legend:{
-
-
-                    labels:{
-
-
-                        color:"#94A3B8"
-
-
-                    }
-
-
-                }
-
-
-            },
-
-
-            scales:{
-
-
-                x:{
-
-
-                    ticks:{
-
-
-                        color:"#94A3B8"
-
-
-                    },
-
-
-                    grid:{
-
-
-                        display:false
-
-
-                    }
-
-
-                },
-
-
-                y:{
-
-
-                    ticks:{
-
-
-                        color:"#94A3B8"
-
-
-                    },
-
-
-                    grid:{
-
-
-                        color:
-                        "rgba(148,163,184,0.12)"
-
-
-                    }
-
-
-                }
-
-
-            }
-
-
-        }
-
-
-    });
-
-}
-/* ==========================================
-   RECENT TRANSACTIONS
-========================================== */
-
-/*function loadRecentTransactions(){
-
-    const tbody=document.getElementById("recentTransactionsBody");
-
-    if(!tbody) return;
-
-    const data=[
-
-        {
-            id:"TXN-1001",
-            merchant:"Amazon",
-            amount:"₹8,450",
-            risk:"High",
-            score:"96%",
-            status:"Pending"
-        },
-
-        {
-            id:"TXN-1002",
-            merchant:"Flipkart",
-            amount:"₹2,100",
-            risk:"Safe",
-            score:"08%",
-            status:"Approved"
-        },
-
-        {
-            id:"TXN-1003",
-            merchant:"Steam",
-            amount:"₹5,900",
-            risk:"Medium",
-            score:"58%",
-            status:"Review"
-        },
-
-        {
-            id:"TXN-1004",
-            merchant:"Netflix",
-            amount:"₹649",
-            risk:"Safe",
-            score:"03%",
-            status:"Approved"
-        },
-
-        {
-            id:"TXN-1005",
-            merchant:"Unknown Merchant",
-            amount:"₹24,500",
-            risk:"High",
-            score:"99%",
-            status:"Blocked"
-        }
-
-    ];
-
-    tbody.innerHTML="";
-
-    data.forEach(tx=>{
-
-        let badge="safe";
-
-        if(tx.risk==="High") badge="high";
-
-        if(tx.risk==="Medium") badge="medium";
-
-        tbody.innerHTML+=`
-
-        <tr>
-
-            <td>${tx.id}</td>
-
-            <td>${tx.merchant}</td>
-
-            <td>${tx.amount}</td>
-
-            <td>
-
-                <span class="badge ${badge}">
-
-                    ${tx.risk}
-
-                </span>
-
-            </td>
-
-            <td>${tx.status}</td>
-
-            <td>${tx.score}</td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-*/
-
-/* ==========================================
-   LIVE TOAST NOTIFICATION
-========================================== */
-
-function showToast(message,type="info"){
-
-    let toast=document.createElement("div");
-
-    toast.className=`toast ${type}`;
-
-    toast.innerHTML=`
-
-        <i class="fa-solid fa-bell"></i>
-
-        <span>${message}</span>
-
-    `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(()=>{
-
-        toast.classList.add("show");
-
-    },100);
-
-    setTimeout(()=>{
-
-        toast.classList.remove("show");
-
-        setTimeout(()=>{
-
-            toast.remove();
-
-        },400);
-
-    },4000);
-
-}
-
-/* ==========================================
-   AI ALERTS
-========================================== */
-
-const alerts=[
-
-"⚠ High Risk Transaction Detected",
-
-"🟢 AI Model Updated Successfully",
-
-"🔍 Suspicious Merchant Found",
-
-"💳 New Transaction Received",
-
-"🧠 AI Fraud Scan Completed",
-
-"✅ System Running Normally"
-
-];
-
-setInterval(()=>{
-
-    const msg=alerts[
-        Math.floor(Math.random()*alerts.length)
-    ];
-
-    showToast(msg);
-
-},12000);
-/* ==========================================
-   SIDEBAR TOGGLE
-========================================== */
-
-const menuBtn = document.querySelector(".menu-btn");
-const sidebar = document.querySelector(".sidebar");
-
-if(menuBtn){
-
-    menuBtn.addEventListener("click",()=>{
-
-        sidebar.classList.toggle("collapsed");
-
-    });
-
-}
-
-/* ==========================================
-   DARK MODE
-========================================== */
-
-const themeBtn=document.querySelector(".fa-moon");
-
-if(themeBtn){
-
-themeBtn.parentElement.addEventListener("click",()=>{
-
-document.body.classList.toggle("light-mode");
-
-});
-
-}
-
-/* ==========================================
-   BUTTON RIPPLE EFFECT
-========================================== */
-
-document.querySelectorAll("button,.primary-btn,.action-btn").forEach(btn=>{
-
-btn.addEventListener("click",function(e){
-
-const ripple=document.createElement("span");
-
-const rect=this.getBoundingClientRect();
-
-const size=Math.max(rect.width,rect.height);
-
-ripple.style.width=size+"px";
-
-ripple.style.height=size+"px";
-
-ripple.style.left=(e.clientX-rect.left-size/2)+"px";
-
-ripple.style.top=(e.clientY-rect.top-size/2)+"px";
-
-ripple.className="ripple";
-
-this.appendChild(ripple);
-
-setTimeout(()=>{
-
-ripple.remove();
-
-},600);
-
-});
-
-});
-
-/* ==========================================
-   FADE IN ANIMATION
-========================================== */
-
-const observer=new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-entry.target.classList.add("show");
-
-}
-
-});
-
-});
-
-document.querySelectorAll(
-
-".glass-card,.stat-card,.hero-left,.hero-right"
-
-).forEach(card=>{
-
-card.classList.add("hidden");
-
-observer.observe(card);
-
-});
-async function loadDashboard(){
-
-    try{
-
-        const response = await fetch("/dashboard/summary");
-
-        const data = await response.json();
-
-        console.log("Dashboard:",data);
-
-
-        document.getElementById("totalTransactions").innerText =
-            data.total_transactions;
-
-
-        document.getElementById("highRisk").innerText =
-            data.high_risk_transactions;
-
-
-        document.getElementById("mediumRisk").innerText =
-            data.fraud_transactions;
-
-
-        document.getElementById("safeTransactions").innerText =
-            data.total_transactions - data.fraud_transactions;
-
-
-    }
-    catch(error){
-
-        console.log("Dashboard Error:",error);
-
-    }
-
-}
-
-async function loadAIInsights(){
-
-    try{
-
-        const response = await fetch(
-            "/dashboard/ai-insight"
         );
 
 
-        const data = await response.json();
+    document
+        .querySelectorAll(
+            ".glass-card, .stat-card, .hero-left, .hero-right"
+        )
+        .forEach(card => {
+
+            card.classList.add(
+                "hidden"
+            );
+
+            observer.observe(card);
+
+        });
+
+}
 
 
-        const box = document.getElementById(
-            "aiInsights"
-        );
+/* ==========================================================
+   DASHBOARD SUMMARY
+   ========================================================== */
 
+async function loadDashboard() {
 
-        if(data.message){
+    try {
 
-            box.innerHTML = `
-                <div class="insight info">
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG.summaryEndpoint
+            );
 
-                    <i class="fa-solid fa-robot"></i>
-
-                    <div>
-                        <strong>No AI Analysis</strong>
-                        <p>${data.message}</p>
-                    </div>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-
-        box.innerHTML = `
-
-        <div class="insight warning">
-
-            <i class="fa-solid fa-triangle-exclamation"></i>
-
-            <div>
-
-                <strong>
-                    ${data.prediction}
-                    (${data.risk_level})
-                </strong>
-
-
-                <p>
-                    Risk Score:
-                    ${data.risk_score}%
-                </p>
-
-
-                <p>
-                    Fraud Probability:
-                    ${data.fraud_probability}%
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="insight info">
-
-            <i class="fa-solid fa-brain"></i>
-
-            <div>
-
-                <strong>
-                    AI Reason
-                </strong>
-
-                <p>
-                    ${data.reason}
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="insight success">
-
-            <i class="fa-solid fa-shield-halved"></i>
-
-            <div>
-
-                <strong>
-                    Recommendation
-                </strong>
-
-                <p>
-                    ${data.recommendation}
-                </p>
-
-            </div>
-
-        </div>
-
-        `;
-
-
-    }
-    catch(error){
 
         console.log(
-            "AI INSIGHT ERROR:",
+            "Dashboard Summary:",
+            data
+        );
+
+
+        const total =
+            safeNumber(
+                data.total_transactions
+            );
+
+
+        const fraud =
+            safeNumber(
+                data.fraud_transactions
+            );
+
+
+        const highRisk =
+            safeNumber(
+                data.high_risk_transactions
+            );
+
+
+        const mediumRisk =
+            safeNumber(
+                data.medium_risk_transactions
+            );
+
+
+        const safeTransactions =
+            data.safe_transactions !== undefined
+
+                ? safeNumber(
+                    data.safe_transactions
+                )
+
+                : Math.max(
+                    0,
+                    total - fraud
+                );
+
+
+        setText(
+            "totalTransactions",
+            formatNumber(total)
+        );
+
+
+        setText(
+            "highRisk",
+            formatNumber(highRisk)
+        );
+
+
+        setText(
+            "mediumRisk",
+            formatNumber(mediumRisk)
+        );
+
+
+        setText(
+            "safeTransactions",
+            formatNumber(safeTransactions)
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Dashboard Summary Error:",
             error
         );
 
@@ -961,203 +529,142 @@ async function loadAIInsights(){
 }
 
 
+/* ==========================================================
+   MODEL PERFORMANCE
+   ========================================================== */
 
-loadAIInsights();
-/*async function loadSystem(){
+async function loadModelPerformance() {
 
-    const res = await fetch("/api/dashboard/system");
+    try {
 
-    const system = await res.json();
-
-    console.log(system);
-*/
-
-
-
-
-
-
-window.onload = () => {
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .modelPerformanceEndpoint
+            );
 
 
-    loadDashboard();
-
-
-    initCharts();
-    initAIRiskChart();
-
-  
-
-
-};
-
-
-console.log("Dashboard JS Loaded");
-
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-    console.log("DOM Loaded");
-
-
-    const riskCanvas = document.getElementById(
-        "riskDistributionChart"
-    );
-
-    const trendCanvas = document.getElementById(
-        "fraudTrendChart"
-    );
-
-
-    console.log("Risk Canvas:", riskCanvas);
-
-    console.log("Trend Canvas:", trendCanvas);
-
-
-});
-async function loadDashboardLive(){
-
-
-    const response = await fetch(
-        "/api/dashboard-live"
-    );
-
-
-    const data = await response.json();
-
-
-
-    // AI PERFORMANCE
-
-    const performance =
-        data.performance;
-
-
-
-    document.querySelector(
-        ".performance-item:nth-child(1) h2"
-    ).innerText =
-        performance.detection_rate + "%";
-
-
-
-    document.querySelector(
-        ".performance-item:nth-child(3) h2"
-    ).innerText =
-        performance.total_transactions;
-
-
-
-    document.querySelector(
-        ".performance-item:nth-child(4) h2"
-    ).innerText =
-        performance.frauds_detected;
-
-
-
-    // LIVE THREATS
-
-
-    const feed =
-        document.querySelector(
-            ".activity-list"
+        console.log(
+            "Model Performance:",
+            data
         );
 
 
-    feed.innerHTML="";
+        let accuracy =
+            safeNumber(
+                data.accuracy
+            );
 
 
+        /*
+         * Backend usually returns:
+         *
+         * accuracy = 0.9982
+         *
+         * Convert to:
+         *
+         * 99.82%
+         */
 
-    data.threats.forEach(t=>{
+        if (
+            accuracy > 0 &&
+            accuracy <= 1
+        ) {
 
+            accuracy *= 100;
 
-        feed.innerHTML += `
-
-        <div class="activity danger">
-
-            <div class="dot red"></div>
-
-            <div>
-
-                <strong>
-                ${t.merchant}
-                </strong>
-
-
-                <p>
-                ₹${t.amount}
-                blocked by AI
-                </p>
+        }
 
 
-                <small>
-                ${t.time}
-                </small>
+        /*
+         * If backend already returns:
+         *
+         * 99.82
+         *
+         * keep it unchanged.
+         */
 
 
-            </div>
-
-        </div>
-
-        `;
-
-
-    });
-    
-
-// =============================
-// 3D AI CORE DATA
-// =============================
-
-const accuracy =
-    document.getElementById("coreAccuracy");
-
-const threats =
-    document.getElementById("coreThreats");
-
-const transactions =
-    document.getElementById("coreTransactions");
+        const accuracyText =
+            formatPercentage(
+                accuracy,
+                2
+            );
 
 
-if (accuracy) {
-    accuracy.innerText =
-        data.performance.detection_rate;
-}
-
-if (threats) {
-    threats.innerText =
-        data.performance.frauds_detected;
-}
-
-if (transactions) {
-    transactions.innerText =
-        data.performance.total_transactions;
-}
-
-
-}
-
-
-
-loadDashboardLive();
-/* ==========================================
-   REAL DASHBOARD DATA
-========================================== */
-
-
-async function loadDashboardLive(){
-
-
-    try{
-
-
-        const response = await fetch(
-            "/api/dashboard-live"
+        setText(
+            "dashboardAccuracy",
+            accuracyText
         );
 
 
-        const data = await response.json();
+        /*
+         * AI Performance first item
+         */
 
+        const performanceItems =
+            document.querySelectorAll(
+                ".performance-item h2"
+            );
+
+
+        if (
+            performanceItems.length >= 1
+        ) {
+
+            performanceItems[0]
+                .innerText =
+                accuracyText;
+
+        }
+
+
+        /*
+         * Other possible accuracy elements
+         */
+
+        setText(
+            "aiAccuracy",
+            accuracyText
+        );
+
+
+        setText(
+            "coreAccuracy",
+            accuracyText
+        );
+
+
+        console.log(
+            "Final Model Accuracy:",
+            accuracyText
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Model Performance Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   LIVE DASHBOARD
+   ========================================================== */
+
+async function loadDashboardLive() {
+
+    try {
+
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG.liveEndpoint
+            );
 
 
         console.log(
@@ -1166,785 +673,2124 @@ async function loadDashboardLive(){
         );
 
 
-
-        /* =============================
-           AI PERFORMANCE
-        ============================= */
+        const performance =
+            data.performance || {};
 
 
-        const performanceItems =
-        document.querySelectorAll(
-            ".performance-item h2"
+        /*
+         * Detection accuracy
+         *
+         * IMPORTANT:
+         * Do NOT use average risk score here.
+         */
+
+        if (
+            performance.detection_rate !==
+            undefined
+        ) {
+
+            let detection =
+                safeNumber(
+                    performance.detection_rate
+                );
+
+
+            if (
+                detection > 0 &&
+                detection <= 1
+            ) {
+
+                detection *= 100;
+
+            }
+
+
+            setText(
+                "dashboardAccuracy",
+                formatPercentage(
+                    detection,
+                    2
+                )
+            );
+
+        }
+
+
+        /*
+         * Average Risk Score
+         */
+
+        const averageRisk =
+            safeNumber(
+                performance.average_risk_score
+            );
+
+
+        setText(
+            "avgDetection",
+            averageRisk.toFixed(1)
         );
 
 
-       if(performanceItems.length >= 4){
+        /*
+         * Performance cards
+         */
 
-    const avgElement =
-        document.getElementById("avgDetection");
+        const performanceItems =
+            document.querySelectorAll(
+                ".performance-item h2"
+            );
 
-    if(avgElement){
-        avgElement.innerText =
-            data.performance.average_risk_score;
+
+        if (
+            performanceItems.length >= 4
+        ) {
+
+            /*
+             * Item 1 = Accuracy
+             */
+
+            if (
+                performance.detection_rate !==
+                undefined
+            ) {
+
+                let accuracy =
+                    safeNumber(
+                        performance.detection_rate
+                    );
+
+
+                if (
+                    accuracy > 0 &&
+                    accuracy <= 1
+                ) {
+
+                    accuracy *= 100;
+
+                }
+
+
+                performanceItems[0]
+                    .innerText =
+                    formatPercentage(
+                        accuracy,
+                        2
+                    );
+
+            }
+
+
+            /*
+             * Item 2 = Average Risk Score
+             */
+
+            if (
+                performance.average_risk_score !==
+                undefined
+            ) {
+
+                performanceItems[1]
+                    .innerText =
+                    averageRisk.toFixed(1);
+
+            }
+
+
+            /*
+             * Item 3 = Transactions
+             */
+
+            performanceItems[2]
+                .innerText =
+                formatNumber(
+                    performance.total_transactions
+                );
+
+
+            /*
+             * Item 4 = Frauds
+             */
+
+            performanceItems[3]
+                .innerText =
+                formatNumber(
+                    performance.frauds_detected
+                );
+
+        }
+
+
+        /*
+         * AI Security Core
+         */
+
+        setText(
+            "coreAccuracy",
+            performance.detection_rate !==
+                undefined
+                ? formatPercentage(
+                    performance.detection_rate,
+                    2
+                )
+                : ""
+        );
+
+
+        setText(
+            "coreThreats",
+            formatNumber(
+                performance.frauds_detected
+            )
+        );
+
+
+        setText(
+            "coreTransactions",
+            formatNumber(
+                performance.total_transactions
+            )
+        );
+
+
+        /*
+         * Live threat feed
+         */
+
+        renderThreatFeed(
+            data.threats || []
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Live Dashboard Error:",
+            error
+        );
+
     }
 
-    performanceItems[2].innerText =
-        data.performance.total_transactions;
-
-    performanceItems[3].innerText =
-        data.performance.frauds_detected;
 }
 
 
-        /* =============================
-           LIVE THREAT FEED
-        ============================= */
+/* ==========================================================
+   LIVE THREAT FEED
+   ========================================================== */
 
+function renderThreatFeed(threats) {
 
-        const feed =
+    const feed =
         document.querySelector(
             ".activity-list"
         );
 
 
-        if(feed){
+    if (!feed) return;
 
 
-            feed.innerHTML="";
+    if (
+        !Array.isArray(threats) ||
+        threats.length === 0
+    ) {
 
+        feed.innerHTML = `
 
-            if(data.threats.length===0){
+            <div class="activity success">
 
+                <div class="dot green"></div>
 
-                feed.innerHTML=`
-
-                <div class="activity success">
-
-                    <div class="dot green"></div>
-
-                    <div>
+                <div>
 
                     <strong>
-                    System Secure
+                        System Secure
                     </strong>
 
                     <p>
-                    No active threats detected
+                        No active threats detected
                     </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    feed.innerHTML =
+        threats.map(threat => {
+
+            const merchant =
+                escapeHTML(
+                    threat.merchant ||
+                    threat.merchant_name ||
+                    "Unknown Merchant"
+                );
+
+
+            const amount =
+                safeNumber(
+                    threat.amount
+                );
+
+
+            const risk =
+                escapeHTML(
+                    threat.risk ||
+                    threat.risk_level ||
+                    "High"
+                );
+
+
+            const time =
+                escapeHTML(
+                    threat.time ||
+                    ""
+                );
+
+
+            return `
+
+                <div class="activity danger">
+
+                    <div class="dot red"></div>
+
+                    <div>
+
+                        <strong>
+                            ${merchant}
+                        </strong>
+
+                        <p>
+                            ₹${formatNumber(amount)}
+                            - ${risk} Risk
+                        </p>
+
+                        <small>
+                            ${time}
+                        </small>
 
                     </div>
 
                 </div>
 
-                `;
+            `;
 
+        }).join("");
+
+}
+
+
+/* ==========================================================
+   AI INSIGHTS
+   ========================================================== */
+
+async function loadAIInsights() {
+
+    try {
+
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .insightEndpoint
+            );
+
+
+        console.log(
+            "AI Insight:",
+            data
+        );
+
+
+        const box =
+            getElement(
+                "aiInsights"
+            );
+
+
+        if (!box) return;
+
+
+        /*
+         * Backend says no analysis
+         */
+
+        if (data.message) {
+
+            box.innerHTML = `
+
+                <div class="insight info">
+
+                    <i class="fa-solid fa-robot"></i>
+
+                    <div>
+
+                        <strong>
+                            No AI Analysis
+                        </strong>
+
+                        <p>
+                            ${escapeHTML(
+                                data.message
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const prediction =
+            escapeHTML(
+                data.prediction ||
+                "AI Monitoring"
+            );
+
+
+        const riskLevel =
+            escapeHTML(
+                data.risk_level ||
+                "Unknown"
+            );
+
+
+        const riskScore =
+            safeNumber(
+                data.risk_score
+            );
+
+
+        const fraudProbability =
+            safeNumber(
+                data.fraud_probability
+            );
+
+
+        const reason =
+            escapeHTML(
+                data.reason ||
+                "No reason available."
+            );
+
+
+        const recommendation =
+            escapeHTML(
+                data.recommendation ||
+                "Continue monitoring the transaction."
+            );
+
+
+        box.innerHTML = `
+
+            <div class="insight warning">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <div>
+
+                    <strong>
+                        ${prediction}
+                        (${riskLevel})
+                    </strong>
+
+                    <p>
+                        Risk Score:
+                        ${riskScore.toFixed(1)}%
+                    </p>
+
+                    <p>
+                        Fraud Probability:
+                        ${fraudProbability.toFixed(1)}%
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="insight info">
+
+                <i class="fa-solid fa-brain"></i>
+
+                <div>
+
+                    <strong>
+                        AI Reason
+                    </strong>
+
+                    <p>
+                        ${reason}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="insight success">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <div>
+
+                    <strong>
+                        Recommendation
+                    </strong>
+
+                    <p>
+                        ${recommendation}
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+    catch (error) {
+
+        console.error(
+            "AI Insight Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   AI MONITORING STATUS
+   ========================================================== */
+
+function startAIStatus() {
+
+    const box =
+        getElement(
+            "aiInsights"
+        );
+
+
+    if (!box) return;
+
+
+    /*
+     * IMPORTANT:
+     *
+     * Random monitoring messages should NOT
+     * overwrite backend AI analysis.
+     *
+     * So we only update the status badge,
+     * if available.
+     */
+
+
+    const statusElements =
+        document.querySelectorAll(
+            ".ai-status, .ai-monitoring-status"
+        );
+
+
+    statusElements.forEach(
+        element => {
+
+            element.innerText =
+                "AI MONITORING";
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   RISK DISTRIBUTION CHART
+   ========================================================== */
+
+async function initRiskChart() {
+
+    const canvas =
+        getElement(
+            "riskDistributionChart"
+        );
+
+
+    if (
+        !canvas ||
+        typeof Chart === "undefined"
+    ) {
+
+        console.warn(
+            "Risk chart unavailable."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .riskEndpoint
+            );
+
+
+        console.log(
+            "Risk API Data:",
+            data
+        );
+
+
+        const riskData = {
+
+            High: 0,
+
+            Medium: 0,
+
+            Low: 0
+
+        };
+
+
+        if (
+            Array.isArray(data)
+        ) {
+
+            data.forEach(item => {
+
+                const level =
+                    String(
+                        item.risk_level ||
+                        item.risk ||
+                        ""
+                    ).toLowerCase();
+
+
+                const count =
+                    safeNumber(
+                        item.count
+                    );
+
+
+                if (
+                    level.includes("high")
+                ) {
+
+                    riskData.High =
+                        count;
+
+                }
+                else if (
+                    level.includes("medium")
+                ) {
+
+                    riskData.Medium =
+                        count;
+
+                }
+                else if (
+                    level.includes("low") ||
+                    level.includes("safe")
+                ) {
+
+                    riskData.Low =
+                        count;
+
+                }
+
+            });
+
+        }
+
+
+        /*
+         * Destroy old chart if necessary
+         */
+
+        if (
+            canvas._finguardChart
+        ) {
+
+            canvas._finguardChart.destroy();
+
+        }
+
+
+        canvas._finguardChart =
+            new Chart(canvas, {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: [
+
+                        "High Risk",
+
+                        "Medium Risk",
+
+                        "Low Risk"
+
+                    ],
+
+                    datasets: [{
+
+                        data: [
+
+                            riskData.High,
+
+                            riskData.Medium,
+
+                            riskData.Low
+
+                        ],
+
+                        backgroundColor: [
+
+                            "#EF4444",
+
+                            "#F59E0B",
+
+                            "#22C55E"
+
+                        ],
+
+                        borderColor: [
+
+                            "#ff7b7b",
+
+                            "#ffd166",
+
+                            "#4ade80"
+
+                        ],
+
+                        borderWidth: 2,
+
+                        hoverOffset: 20
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "75%",
+
+                    animation: {
+
+                        animateRotate: true,
+
+                        duration: 1500
+
+                    },
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom",
+
+                            labels: {
+
+                                color: "#94A3B8",
+
+                                padding: 20,
+
+                                usePointStyle: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Risk Chart Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   FRAUD TREND CHART
+   ========================================================== */
+
+async function initTrendChart() {
+
+    const canvas =
+        getElement(
+            "fraudTrendChart"
+        );
+
+
+    if (
+        !canvas ||
+        typeof Chart === "undefined"
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const trendData =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .trendEndpoint
+            );
+
+
+        if (
+            !Array.isArray(trendData)
+        ) {
+
+            return;
+
+        }
+
+
+        const labels =
+            trendData.map(
+                item =>
+                    item.date || ""
+            );
+
+
+        const values =
+            trendData.map(
+                item =>
+                    safeNumber(
+                        item.transactions
+                    )
+            );
+
+
+        if (
+            canvas._finguardChart
+        ) {
+
+            canvas._finguardChart.destroy();
+
+        }
+
+
+        canvas._finguardChart =
+            new Chart(canvas, {
+
+                type: "line",
+
+                data: {
+
+                    labels,
+
+                    datasets: [{
+
+                        label:
+                            "Transactions",
+
+                        data:
+                            values,
+
+                        borderColor:
+                            "#00D4FF",
+
+                        backgroundColor:
+                            "rgba(0,212,255,0.12)",
+
+                        borderWidth: 3,
+
+                        pointRadius: 4,
+
+                        pointHoverRadius: 8,
+
+                        pointBackgroundColor:
+                            "#00D4FF",
+
+                        pointBorderColor:
+                            "#ffffff",
+
+                        pointBorderWidth: 2,
+
+                        fill: true,
+
+                        tension: 0.45
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    animation: {
+
+                        duration: 1500,
+
+                        easing: "easeOutQuart"
+
+                    },
+
+                    plugins: {
+
+                        legend: {
+
+                            labels: {
+
+                                color:
+                                    "#94A3B8"
+
+                            }
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            ticks: {
+
+                                color:
+                                    "#94A3B8"
+
+                            },
+
+                            grid: {
+
+                                display: false
+
+                            }
+
+                        },
+
+                        y: {
+
+                            ticks: {
+
+                                color:
+                                    "#94A3B8"
+
+                            },
+
+                            grid: {
+
+                                color:
+                                    "rgba(148,163,184,0.12)"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+    }
+    catch (error) {
+
+        console.error(
+            "Trend Chart Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   AI RISK INTELLIGENCE CHART
+   ========================================================== */
+
+function initAIRiskChart() {
+
+    const canvas =
+        getElement(
+            "aiRiskChart"
+        );
+
+
+    if (
+        !canvas ||
+        typeof Chart === "undefined"
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        canvas._finguardChart
+    ) {
+
+        canvas._finguardChart.destroy();
+
+    }
+
+
+    canvas._finguardChart =
+        new Chart(canvas, {
+
+            type: "line",
+
+            data: {
+
+                labels: [
+
+                    "10 AM",
+
+                    "11 AM",
+
+                    "12 PM",
+
+                    "1 PM",
+
+                    "2 PM",
+
+                    "3 PM"
+
+                ],
+
+                datasets: [{
+
+                    label:
+                        "AI Risk Score",
+
+                    data: [
+
+                        22,
+
+                        35,
+
+                        28,
+
+                        65,
+
+                        45,
+
+                        30
+
+                    ],
+
+                    borderColor:
+                        "#00D4FF",
+
+                    backgroundColor:
+                        "rgba(0,212,255,0.15)",
+
+                    borderWidth: 3,
+
+                    fill: true,
+
+                    tension: 0.45,
+
+                    pointRadius: 5,
+
+                    pointBackgroundColor:
+                        "#00D4FF"
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        labels: {
+
+                            color:
+                                "#94A3B8"
+
+                        }
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        ticks: {
+
+                            color:
+                                "#64748B"
+
+                        },
+
+                        grid: {
+
+                            display: false
+
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        max: 100,
+
+                        ticks: {
+
+                            color:
+                                "#64748B"
+
+                        },
+
+                        grid: {
+
+                            color:
+                                "rgba(255,255,255,.05)"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+}
+
+
+/* ==========================================================
+   RECENT TRANSACTIONS
+   ========================================================== */
+
+async function loadRecentTransactions() {
+
+    const tbody =
+        getElement(
+            "recentTransactionsBody"
+        );
+
+
+    if (!tbody) return;
+
+
+    try {
+
+        const response =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .recentEndpoint,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        const transactions =
+            Array.isArray(response)
+
+                ? response
+
+                : (
+                    response.transactions ||
+                    response.data ||
+                    []
+                );
+
+
+        tbody.innerHTML = "";
+
+
+        if (!transactions.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="6">
+                        No transactions found.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        transactions.forEach(tx => {
+
+            const transactionId =
+                escapeHTML(
+                    tx.transaction_id ||
+                    tx.id ||
+                    "Unknown"
+                );
+
+
+            const merchant =
+                escapeHTML(
+                    tx.merchant ||
+                    tx.merchant_name ||
+                    "Unknown Merchant"
+                );
+
+
+            const amount =
+                safeNumber(
+                    tx.amount
+                );
+
+
+            const risk =
+                String(
+                    tx.risk_level ||
+                    tx.risk ||
+                    "Low"
+                );
+
+
+            const riskLower =
+                risk.toLowerCase();
+
+
+            let badge =
+                "low";
+
+
+            if (
+                riskLower.includes("high")
+            ) {
+
+                badge = "high";
+
+            }
+            else if (
+                riskLower.includes("medium")
+            ) {
+
+                badge = "medium";
+
+            }
+            else if (
+                riskLower.includes("low") ||
+                riskLower.includes("safe")
+            ) {
+
+                badge = "low";
 
             }
 
 
+            /*
+             * IMPORTANT:
+             *
+             * AI Score field mapping
+             *
+             * Backend may use any of these.
+             */
 
-            data.threats.forEach(t=>{
+            let aiScore =
+                tx.fraud_probability;
 
 
-                feed.innerHTML += `
+            if (
+                aiScore === undefined ||
+                aiScore === null ||
+                aiScore === ""
+            ) {
 
+                aiScore =
+                    tx.fraud_probability_score;
 
-                <div class="activity danger">
+            }
 
 
-                    <div class="dot red"></div>
+            if (
+                aiScore === undefined ||
+                aiScore === null ||
+                aiScore === ""
+            ) {
 
+                aiScore =
+                    tx.fraud_score;
 
-                    <div>
+            }
 
 
-                    <strong>
-                    ${t.merchant}
-                    </strong>
+            if (
+                aiScore === undefined ||
+                aiScore === null ||
+                aiScore === ""
+            ) {
 
+                aiScore =
+                    tx.fraud_score_percent;
 
-                    <p>
-                    ₹${t.amount} 
-                    - ${t.risk} Risk
-                    </p>
+            }
 
 
-                    <small>
-                    ${t.time}
-                    </small>
+            if (
+                aiScore === undefined ||
+                aiScore === null ||
+                aiScore === ""
+            ) {
 
+                aiScore =
+                    tx.probability;
 
-                    </div>
+            }
 
 
-                </div>
+            if (
+                aiScore === undefined ||
+                aiScore === null ||
+                aiScore === ""
+            ) {
 
+                aiScore =
+                    tx.risk_score;
 
-                `;
+            }
 
 
-            });
+            aiScore =
+                safeNumber(
+                    aiScore
+                );
 
 
-        }
-
-
-
-
-
-        /* =============================
-           RECENT TRANSACTIONS
-        ============================= */
-
-
-        loadRecentTransactions();
-
-
-
-    }
-
-
-    catch(error){
-
-
-        console.log(
-            "Live Dashboard Error:",
-            error
-        );
-
-
-    }
-
-
-}
-
-
-
-
-
-async function loadRecentTransactions(){
-
-
-    const tbody =
-    document.getElementById(
-        "recentTransactionsBody"
-    );
-
-
-    if(!tbody) return;
-
-
-
-    try{
-
-
-        const response =
-        await fetch(
-            "/api/recent-transactions"
-        );
-
-
-        const transactions =
-        await response.json();
-
-
-
-        tbody.innerHTML="";
-
-
-
-        transactions.forEach(tx=>{
-
-
-           let badge="safe";
-
-
-if(tx.risk_level==="High")
-    badge="high";
-
-
-else if(tx.risk_level==="Medium")
-    badge="medium";
-
-
-else if(tx.risk_level==="Low")
-    badge="low";
-
+            const prediction =
+                escapeHTML(
+                    tx.prediction ||
+                    (
+                        riskLower.includes("high")
+                            ? "Fraud"
+                            : "Safe"
+                    )
+                );
 
 
             tbody.innerHTML += `
 
+                <tr>
 
-            <tr>
+                    <td>
+                        ${transactionId}
+                    </td>
 
+                    <td>
+                        ${merchant}
+                    </td>
 
-            <td>
-            ${tx.transaction_id}
-            </td>
+                    <td>
+                        ₹${formatNumber(amount)}
+                    </td>
 
+                    <td>
 
-            <td>
-            ${tx.merchant}
-            </td>
+                        <span
+                            class="badge ${badge}"
+                        >
 
+                            ${escapeHTML(risk)}
 
-            <td>
-            ₹${tx.amount}
-            </td>
+                        </span>
 
+                    </td>
 
-            <td>
+                    <td>
+                        ${prediction}
+                    </td>
 
-            <span class="badge ${badge}">
+                    <td>
+                        ${aiScore.toFixed(1)}%
+                    </td>
 
-            ${tx.risk_level}
-
-            </span>
-
-            </td>
-
-
-            <td>
-            ${tx.prediction}
-            </td>
-
-
-            <td>
-            ${tx.fraud_probability}%
-            </td>
-
-
-            </tr>
-
+                </tr>
 
             `;
 
-
-
         });
 
 
     }
+    catch (error) {
 
-    catch(error){
-
-        console.log(
-            "Recent Transaction Error:",
+        console.error(
+            "Recent Transactions Error:",
             error
         );
 
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+                    Unable to load transactions.
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================================
+   POTENTIAL FRAUD DETECTION
+   ========================================================== */
+
+async function loadPotentialFraud() {
+
+    const container =
+        getElement(
+            "potentialFraudList"
+        );
+
+
+    if (!container) return;
+
+
+    try {
+
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .fraudEndpoint,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        console.log(
+            "Potential Fraud API:",
+            data
+        );
+
+
+        let transactions = [];
+
+
+        if (
+            Array.isArray(data.alerts)
+        ) {
+
+            transactions =
+                data.alerts;
+
+        }
+        else if (
+            Array.isArray(data.transactions)
+        ) {
+
+            transactions =
+                data.transactions;
+
+        }
+        else if (
+            Array.isArray(data)
+        ) {
+
+            transactions =
+                data;
+
+        }
+
+
+        if (!transactions.length) {
+
+            container.innerHTML = `
+
+                <div class="fraud-empty">
+
+                    <i
+                        class="fa-solid fa-shield-check"
+                    ></i>
+
+                    <div>
+
+                        <strong>
+                            System Secure
+                        </strong>
+
+                        <p>
+                            No suspicious
+                            transactions detected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            transactions.map(
+                transaction =>
+                    renderFraudItem(
+                        transaction
+                    )
+            ).join("");
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Potential Fraud Error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="fraud-empty">
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                ></i>
+
+                <div>
+
+                    <strong>
+                        Fraud Intelligence
+                        Unavailable
+                    </strong>
+
+                    <p>
+                        Unable to load
+                        transaction risk data.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ==========================================================
+   RENDER FRAUD ITEM
+   ========================================================== */
+
+function renderFraudItem(transaction) {
+
+    const transactionId =
+        String(
+            transaction.transaction_id ||
+            transaction.id ||
+            "Unknown"
+        );
+
+
+    const merchant =
+        escapeHTML(
+            transaction.merchant ||
+            transaction.merchant_name ||
+            "Unknown Merchant"
+        );
+
+
+    const amount =
+        safeNumber(
+            transaction.amount
+        );
+
+
+    const riskLevel =
+        String(
+            transaction.risk_level ||
+            transaction.risk ||
+            "Medium"
+        );
+
+
+    const riskClass =
+        riskLevel
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+
+
+    /*
+     * Risk Score
+     */
+
+    let riskScore =
+        transaction.risk_score;
+
+
+    if (
+        riskScore === undefined ||
+        riskScore === null ||
+        riskScore === ""
+    ) {
+
+        riskScore =
+            transaction.riskScore;
+
     }
 
 
+    if (
+        riskScore === undefined ||
+        riskScore === null ||
+        riskScore === ""
+    ) {
+
+        riskScore =
+            transaction.score;
+
+    }
+
+
+    /*
+     * Fraud Probability
+     */
+
+    let fraudProbability =
+        transaction.fraud_probability;
+
+
+    if (
+        fraudProbability === undefined ||
+        fraudProbability === null ||
+        fraudProbability === ""
+    ) {
+
+        fraudProbability =
+            transaction.fraudProbability;
+
+    }
+
+
+    if (
+        fraudProbability === undefined ||
+        fraudProbability === null ||
+        fraudProbability === ""
+    ) {
+
+        fraudProbability =
+            transaction.fraud_probability_score;
+
+    }
+
+
+    if (
+        fraudProbability === undefined ||
+        fraudProbability === null ||
+        fraudProbability === ""
+    ) {
+
+        fraudProbability =
+            transaction.fraud_score;
+
+    }
+
+
+    if (
+        fraudProbability === undefined ||
+        fraudProbability === null ||
+        fraudProbability === ""
+    ) {
+
+        fraudProbability =
+            transaction.probability;
+
+    }
+
+
+    riskScore =
+        safeNumber(
+            riskScore,
+            safeNumber(
+                fraudProbability
+            )
+        );
+
+
+    fraudProbability =
+        safeNumber(
+            fraudProbability,
+            riskScore
+        );
+
+
+    return `
+
+        <div class="fraud-item">
+
+            <div class="fraud-transaction">
+
+                <strong>
+                    ${escapeHTML(transactionId)}
+                </strong>
+
+                <small>
+                    ${merchant}
+                </small>
+
+            </div>
+
+
+            <div class="fraud-value">
+
+                ₹${formatNumber(amount)}
+
+            </div>
+
+
+            <div>
+
+                <span
+                    class="fraud-risk ${riskClass}"
+                >
+
+                    ${escapeHTML(riskLevel)}
+
+                </span>
+
+            </div>
+
+
+            <div class="fraud-value">
+
+                Score:
+                ${riskScore.toFixed(1)}
+
+            </div>
+
+
+            <div class="fraud-probability">
+
+                ${fraudProbability.toFixed(1)}%
+
+            </div>
+
+
+            <button
+                class="fraud-action"
+                type="button"
+                data-transaction-id="${escapeHTML(transactionId)}"
+            >
+
+                Investigate
+
+            </button>
+
+        </div>
+
+    `;
+
 }
 
-const accuracy =
-document.getElementById("aiAccuracy");
-
-if (accuracy) {
-    accuracy.innerText = "Live";
-}
-const scan =
-document.getElementById("aiLastScan");
-
-if (scan) {
-    scan.innerText = "Live";
-}
 
 /* ==========================================================
-   LIVE 3D AI SECURITY CORE
-   STEP 4 — THREE.JS
+   FRAUD INVESTIGATION
    ========================================================== */
 
-function initAI3D() {
+function inspectFraud(transactionId) {
 
-    const container = document.getElementById("ai3DScene");
-
-    if (!container || typeof THREE === "undefined") {
-        console.log("3D Scene unavailable");
+    if (!transactionId) {
+        showToast(
+            "Transaction ID missing.",
+            "error"
+        );
         return;
     }
 
-    /* =========================
-       SCENE
-       ========================= */
+    const id = String(transactionId).trim();
 
-    const scene = new THREE.Scene();
-
-    scene.fog = new THREE.FogExp2(0x070B14, 0.0018);
-
-
-    /* =========================
-       CAMERA
-       ========================= */
-
-    const camera = new THREE.PerspectiveCamera(
-        45,
-        container.clientWidth / container.clientHeight,
-        0.1,
-        1000
-    );
-
-    camera.position.set(0, 0, 8);
-
-
-    /* =========================
-       RENDERER
-       ========================= */
-
-    const renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
-    });
-
-    renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 2)
-    );
-
-    renderer.setSize(
-        container.clientWidth,
-        container.clientHeight
-    );
-
-    renderer.outputEncoding = THREE.sRGBEncoding;
-
-    container.appendChild(renderer.domElement);
-
-
-    /* =========================
-       MAIN AI CORE
-       ========================= */
-
-    const coreGroup = new THREE.Group();
-
-    scene.add(coreGroup);
-
-
-    /* =========================
-       GLOWING CORE
-       ========================= */
-
-    const coreGeometry =
-        new THREE.IcosahedronGeometry(1.15, 3);
-
-    const coreMaterial =
-        new THREE.MeshBasicMaterial({
-            color: 0x00D4FF,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.8
-        });
-
-    const core =
-        new THREE.Mesh(
-            coreGeometry,
-            coreMaterial
+    if (!id) {
+        showToast(
+            "Invalid transaction ID.",
+            "error"
         );
+        return;
+    }
 
-    coreGroup.add(core);
+    console.log(
+        "Opening transaction investigation:",
+        id
+    );
+
+    /*
+     * Directly open the investigation page.
+     * Do not call /transactions/{id} first.
+     */
+
+    window.location.href =
+        `/transaction/${encodeURIComponent(id)}`;
+}
+/* ==========================================================
+   INVESTIGATION BUTTON EVENTS
+   ========================================================== */
+
+function initFraudButtons() {
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    ".fraud-action"
+                );
 
 
-    /* =========================
-       INNER CORE
-       ========================= */
-
-    const innerGeometry =
-        new THREE.IcosahedronGeometry(.65, 2);
-
-    const innerMaterial =
-        new THREE.MeshBasicMaterial({
-            color: 0x2563EB,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.9
-        });
-
-    const innerCore =
-        new THREE.Mesh(
-            innerGeometry,
-            innerMaterial
-        );
-
-    coreGroup.add(innerCore);
+            if (!button) return;
 
 
-    /* =========================
-       ORBIT RINGS
-       ========================= */
+            const transactionId =
+                button.dataset
+                    .transactionId;
 
-    const rings = [];
 
-    const ringData = [
-        {
-            radius: 1.65,
-            rotation: [0.4, 0.2, 0]
-        },
-        {
-            radius: 1.95,
-            rotation: [1.2, 0.5, 0.4]
-        },
-        {
-            radius: 2.25,
-            rotation: [0.3, 1.2, 0.8]
+            inspectFraud(
+                transactionId
+            );
+
         }
+    );
+
+}
+
+
+/* ==========================================================
+   TOAST
+   ========================================================== */
+
+function showToast(
+    message,
+    type = "info"
+) {
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+
+    toast.className =
+        `toast ${type}`;
+
+
+    toast.innerHTML = `
+
+        <i
+            class="fa-solid fa-bell"
+        ></i>
+
+        <span>
+            ${escapeHTML(message)}
+        </span>
+
+    `;
+
+
+    document.body.appendChild(
+        toast
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.add(
+                "show"
+            );
+
+        },
+        100
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+
+            setTimeout(
+                () => toast.remove(),
+                400
+            );
+
+        },
+        4000
+    );
+
+}
+
+
+/* ==========================================================
+   OPTIONAL LIVE SYSTEM TOASTS
+   ========================================================== */
+
+function startLiveToasts() {
+
+    const alerts = [
+
+        "🟢 AI Model Updated Successfully",
+
+        "🔍 Suspicious Merchant Found",
+
+        "💳 New Transaction Received",
+
+        "🧠 AI Fraud Scan Completed",
+
+        "✅ System Running Normally"
+
     ];
 
 
-    ringData.forEach((data, incex) => {
+    setInterval(
+        () => {
 
-        const geometry =
-            new THREE.TorusGeometry(
-                data.radius,
-                0.012,
-                16,
-                120
+            const message =
+                alerts[
+                    Math.floor(
+                        Math.random() *
+                        alerts.length
+                    )
+                ];
+
+
+            showToast(
+                message,
+                "info"
             );
 
-        const material =
-            new THREE.MeshBasicMaterial({
-                color:
-                    index === 1
-                        ? 0x00D4FF
-                        : 0x4F8CFF,
+        },
+        DASHBOARD_CONFIG.toastInterval
+    );
 
-                transparent: true,
+}
 
-                opacity: .65
-            });
 
-        const ring =
-            new THREE.Mesh(
-                geometry,
-                material
-            );
+/* ==========================================================
+   3D AI SECURITY CORE
+   ========================================================== */
 
-        ring.rotation.set(
-            data.rotation[0],
-            data.rotation[1],
-            data.rotation[2]
+let ai3DInitialized = false;
+
+
+function initAI3D() {
+
+    const container =
+        getElement(
+            "ai3DScene"
         );
 
-        coreGroup.add(ring);
 
-        rings.push(ring);
+    if (!container) {
 
-    });
-
-
-    /* =========================
-       PARTICLES
-       ========================= */
-
-    const particleCount = 700;
-
-    const particleGeometry =
-        new THREE.BufferGeometry();
-
-    const positions =
-        new Float32Array(
-            particleCount * 3
+        console.log(
+            "3D container not found."
         );
 
-    for (
-        let i = 0;
-        i < particleCount;
-        i++
-    ) {
-
-        const radius =
-            2.2 + Math.random() * 2.8;
-
-        const theta =
-            Math.random() * Math.PI * 2;
-
-        const phi =
-            Math.acos(
-                2 * Math.random() - 1
-            );
-
-        positions[i * 3] =
-            radius *
-            Math.sin(phi) *
-            Math.cos(theta);
-
-        positions[i * 3 + 1] =
-            radius *
-            Math.sin(phi) *
-            Math.sin(theta);
-
-        positions[i * 3 + 2] =
-            radius *
-            Math.cos(phi);
+        return;
 
     }
 
-    particleGeometry.setAttribute(
-        "position",
-        new THREE.BufferAttribute(
-            positions,
-            3
+
+    if (
+        typeof THREE === "undefined"
+    ) {
+
+        console.warn(
+            "Three.js is not loaded."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Prevent duplicate renderer.
+     */
+
+    if (ai3DInitialized) {
+
+        return;
+
+    }
+
+
+    ai3DInitialized = true;
+
+
+    console.log(
+        "Starting FinGuard 3D Core..."
+    );
+
+
+    const width =
+        container.clientWidth || 500;
+
+
+    const height =
+        container.clientHeight || 400;
+
+
+    /* ======================================================
+       SCENE
+       ====================================================== */
+
+    const scene =
+        new THREE.Scene();
+
+
+    scene.background =
+        new THREE.Color(
+            0x06111f
+        );
+
+
+    scene.fog =
+        new THREE.FogExp2(
+            0x06111f,
+            0.0018
+        );
+
+
+    /* ======================================================
+       CAMERA
+       ====================================================== */
+
+    const camera =
+        new THREE.PerspectiveCamera(
+            45,
+            width / height,
+            0.1,
+            100
+        );
+
+
+    camera.position.set(
+        0,
+        0,
+        6
+    );
+
+
+    /* ======================================================
+       RENDERER
+       ====================================================== */
+
+    const renderer =
+        new THREE.WebGLRenderer({
+
+            antialias: true,
+
+            alpha: true
+
+        });
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            2
         )
     );
 
 
-    const particleMaterial =
-        new THREE.PointsMaterial({
-
-            color: 0x00D4FF,
-
-            size: .025,
-
-            transparent: true,
-
-            opacity: .7,
-
-            sizeAttenuation: true
-
-        });
-
-
-    const particles =
-        new THREE.Points(
-            particleGeometry,
-            particleMaterial
-        );
-
-    scene.add(particles);
-
-
-    /* =========================
-       MOUSE PARALLAX
-       ========================= */
-
-    let mouseX = 0;
-    let mouseY = 0;
-
-    container.addEventListener(
-        "mousemove",
-        (event) => {
-
-            const rect =
-                container.getBoundingClientRect();
-
-            mouseX =
-                ((event.clientX - rect.left)
-                    / rect.width - .5);
-
-            mouseY =
-                ((event.clientY - rect.top)
-                    / rect.height - .5);
-
-        }
-    );
-
-
-    /* =========================
-       ANIMATION
-       ========================= */
-
-    const clock =
-        new THREE.Clock();
-
-
-    function animate() {
-
-        requestAnimationFrame(
-            animate
-        );
-
-        const time =
-            clock.getElapsedTime();
-
-
-        /* Core rotation */
-
-        core.rotation.x =
-            time * .22;
-
-        core.rotation.y =
-            time * .35;
-
-
-        innerCore.rotation.x =
-            -time * .4;
-
-        innerCore.rotation.y =
-            -time * .25;
-
-
-        /* Orbit rings */
-
-        rings[0].rotation.z =
-            time * .45;
-
-        rings[1].rotation.x =
-            time * .35;
-
-        rings[1].rotation.z =
-            -time * .25;
-
-        rings[2].rotation.y =
-            time * .3;
-
-        rings[2].rotation.z =
-            time * .18;
-
-
-        /* Particle rotation */
-
-        particles.rotation.y =
-            time * .035;
-
-        particles.rotation.x =
-            time * .015;
-
-
-        /* Floating effect */
-
-        coreGroup.position.y =
-            Math.sin(time * 1.2) * .08;
-
-
-        /* Mouse movement */
-
-        coreGroup.rotation.y +=
-            (mouseX * .35 -
-             coreGroup.rotation.y) * .015;
-
-        coreGroup.rotation.x +=
-            (-mouseY * .25 -
-             coreGroup.rotation.x) * .015;
-
-
-        renderer.render(
-            scene,
-            camera
-        );
-
-    }
-
-
-    animate();
-
-
-    /* =========================
-       RESPONSIVE
-       ========================= */
-
-    function resize3D() {
-
-        const width =
-            container.clientWidth;
-
-        const height =
-            container.clientHeight;
-
-        if (!width || !height) return;
-
-        camera.aspect =
-            width / height;
-
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(
-            width,
-            height
-        );
-
-    }
-
-
-    window.addEventListener(
-        "resize",
-        resize3D
-    );
-
-
-    resize3D();
-
-
-    console.log(
-        "3D AI Security Core Loaded"
-    );
-}
-
-
-/* Start 3D */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        initAI3D();
-
-    }
-);
-/* ==========================================================
-   FIN GUARD AI - 3D SECURITY CORE
-   ========================================================== */
-
-function initAI3D() {
-
-    const container = document.getElementById("ai3DScene");
-
-    if (!container) {
-        console.log("3D container not found");
-        return;
-    }
-
-    if (typeof THREE === "undefined") {
-        console.error("Three.js is not loaded");
-        return;
-    }
-
-    console.log("Starting FinGuard 3D Core...");
-
-
-    /* ======================================================
-       SCENE
-    ====================================================== */
-
-    const scene = new THREE.Scene();
-
-    scene.background = new THREE.Color(0x06111f);
-
-
-    /* ======================================================
-       CAMERA
-    ====================================================== */
-
-    const camera = new THREE.PerspectiveCamera(
-        45,
-        container.clientWidth / container.clientHeight,
-        0.1,
-        100
-    );
-
-    camera.position.set(0, 0, 6);
-
-
-    /* ======================================================
-       RENDERER
-    ====================================================== */
-
-    const renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
-    });
-
-    renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio, 2)
-    );
-
     renderer.setSize(
-        container.clientWidth,
-        container.clientHeight
+        width,
+        height
     );
 
-    renderer.outputColorSpace =
-        THREE.SRGBColorSpace;
+
+    /*
+     * Compatibility with different Three.js versions.
+     */
+
+    if (
+        "outputColorSpace" in renderer &&
+        THREE.SRGBColorSpace
+    ) {
+
+        renderer.outputColorSpace =
+            THREE.SRGBColorSpace;
+
+    }
+    else if (
+        "outputEncoding" in renderer &&
+        THREE.sRGBEncoding
+    ) {
+
+        renderer.outputEncoding =
+            THREE.sRGBEncoding;
+
+    }
+
 
     container.innerHTML = "";
+
 
     container.appendChild(
         renderer.domElement
@@ -1961,7 +2807,10 @@ function initAI3D() {
             1.5
         );
 
-    scene.add(ambientLight);
+
+    scene.add(
+        ambientLight
+    );
 
 
     const pointLight =
@@ -1971,17 +2820,34 @@ function initAI3D() {
             10
         );
 
+
     pointLight.position.set(
         0,
         2,
         3
     );
 
-    scene.add(pointLight);
+
+    scene.add(
+        pointLight
+    );
 
 
     /* ======================================================
-       MAIN AI CORE
+       CORE GROUP
+       ====================================================== */
+
+    const coreGroup =
+        new THREE.Group();
+
+
+    scene.add(
+        coreGroup
+    );
+
+
+    /* ======================================================
+       MAIN CORE
        ====================================================== */
 
     const coreGeometry =
@@ -1989,6 +2855,7 @@ function initAI3D() {
             1.25,
             2
         );
+
 
     const coreMaterial =
         new THREE.MeshStandardMaterial({
@@ -2007,13 +2874,17 @@ function initAI3D() {
 
         });
 
+
     const core =
         new THREE.Mesh(
             coreGeometry,
             coreMaterial
         );
 
-    scene.add(core);
+
+    coreGroup.add(
+        core
+    );
 
 
     /* ======================================================
@@ -2025,6 +2896,7 @@ function initAI3D() {
             0.75,
             2
         );
+
 
     const innerMaterial =
         new THREE.MeshStandardMaterial({
@@ -2041,26 +2913,37 @@ function initAI3D() {
 
         });
 
+
     const innerCore =
         new THREE.Mesh(
             innerGeometry,
             innerMaterial
         );
 
-    scene.add(innerCore);
+
+    coreGroup.add(
+        innerCore
+    );
 
 
     /* ======================================================
-       ROTATING RINGS
+       RINGS
        ====================================================== */
 
     const ringGroup =
         new THREE.Group();
 
-    scene.add(ringGroup);
+
+    coreGroup.add(
+        ringGroup
+    );
 
 
-    for (let i = 0; i < 3; i++) {
+    for (
+        let i = 0;
+        i < 3;
+        i++
+    ) {
 
         const ringGeometry =
             new THREE.TorusGeometry(
@@ -2070,12 +2953,21 @@ function initAI3D() {
                 100
             );
 
+
         const ringMaterial =
             new THREE.MeshBasicMaterial({
-                color: 0x00d4ff,
+
+                color:
+                    i === 1
+                        ? 0x00d4ff
+                        : 0x4f8cff,
+
                 transparent: true,
+
                 opacity: 0.75
+
             });
+
 
         const ring =
             new THREE.Mesh(
@@ -2083,13 +2975,19 @@ function initAI3D() {
                 ringMaterial
             );
 
+
         ring.rotation.x =
             Math.PI / 2;
+
 
         ring.rotation.z =
             i * 0.8;
 
-        ringGroup.add(ring);
+
+        ringGroup.add(
+            ring
+        );
+
     }
 
 
@@ -2097,12 +2995,15 @@ function initAI3D() {
        PARTICLES
        ====================================================== */
 
-    const particleCount = 700;
+    const particleCount =
+        700;
+
 
     const positions =
         new Float32Array(
             particleCount * 3
         );
+
 
     for (
         let i = 0;
@@ -2111,34 +3012,46 @@ function initAI3D() {
     ) {
 
         const radius =
-            2.2 + Math.random() * 2.5;
+            2.2 +
+            Math.random() * 2.5;
+
 
         const theta =
-            Math.random() * Math.PI * 2;
+            Math.random() *
+            Math.PI *
+            2;
+
 
         const phi =
             Math.acos(
-                2 * Math.random() - 1
+                2 *
+                Math.random() -
+                1
             );
+
 
         positions[i * 3] =
             radius *
             Math.sin(phi) *
             Math.cos(theta);
 
+
         positions[i * 3 + 1] =
             radius *
             Math.sin(phi) *
             Math.sin(theta);
 
+
         positions[i * 3 + 2] =
             radius *
             Math.cos(phi);
+
     }
 
 
     const particleGeometry =
         new THREE.BufferGeometry();
+
 
     particleGeometry.setAttribute(
         "position",
@@ -2158,7 +3071,9 @@ function initAI3D() {
 
             transparent: true,
 
-            opacity: 0.8
+            opacity: 0.8,
+
+            sizeAttenuation: true
 
         });
 
@@ -2169,22 +3084,29 @@ function initAI3D() {
             particleMaterial
         );
 
-    scene.add(particles);
+
+    scene.add(
+        particles
+    );
 
 
     /* ======================================================
-       MOUSE INTERACTION
+       MOUSE
        ====================================================== */
 
     let mouseX = 0;
+
     let mouseY = 0;
+
 
     container.addEventListener(
         "mousemove",
-        (event) => {
+        event => {
 
             const rect =
-                container.getBoundingClientRect();
+                container
+                    .getBoundingClientRect();
+
 
             mouseX =
                 (
@@ -2193,6 +3115,7 @@ function initAI3D() {
                 ) /
                 rect.width -
                 0.5;
+
 
             mouseY =
                 (
@@ -2220,63 +3143,91 @@ function initAI3D() {
             animate
         );
 
+
         const time =
             clock.getElapsedTime();
 
 
-        /* Main core */
+        /*
+         * Core
+         */
 
         core.rotation.x =
             time * 0.25;
 
+
         core.rotation.y =
-            time * 0.4;
+            time * 0.40;
 
 
-        /* Inner core */
+        /*
+         * Inner Core
+         */
 
         innerCore.rotation.x =
-            -time * 0.3;
+            -time * 0.30;
+
 
         innerCore.rotation.y =
-            -time * 0.5;
+            -time * 0.50;
 
 
-        /* Rings */
+        /*
+         * Rings
+         */
 
         ringGroup.rotation.y =
             time * 0.35;
 
+
         ringGroup.rotation.x =
-            Math.sin(time * 0.4) * 0.3;
+            Math.sin(
+                time * 0.4
+            ) * 0.3;
 
 
-        /* Particles */
+        /*
+         * Particles
+         */
 
         particles.rotation.y =
             time * 0.04;
+
 
         particles.rotation.x =
             time * 0.02;
 
 
-        /* Floating effect */
+        /*
+         * Floating
+         */
 
-        const float =
-            Math.sin(time * 1.5) * 0.08;
-
-        core.position.y = float;
-
-        innerCore.position.y = float;
+        const floating =
+            Math.sin(
+                time * 1.5
+            ) * 0.08;
 
 
-        /* Mouse movement */
+        coreGroup.position.y =
+            floating;
 
-        core.rotation.y +=
-            mouseX * 0.01;
 
-        core.rotation.x +=
-            mouseY * 0.01;
+        /*
+         * Mouse Parallax
+         */
+
+        coreGroup.rotation.y +=
+            (
+                mouseX * 0.35 -
+                coreGroup.rotation.y
+            ) * 0.015;
+
+
+        coreGroup.rotation.x +=
+            (
+                -mouseY * 0.25 -
+                coreGroup.rotation.x
+            ) * 0.015;
 
 
         renderer.render(
@@ -2286,6 +3237,7 @@ function initAI3D() {
 
     }
 
+
     animate();
 
 
@@ -2293,1396 +3245,75 @@ function initAI3D() {
        RESIZE
        ====================================================== */
 
+    function resize3D() {
+
+        const newWidth =
+            container.clientWidth;
+
+
+        const newHeight =
+            container.clientHeight;
+
+
+        if (
+            !newWidth ||
+            !newHeight
+        ) {
+
+            return;
+
+        }
+
+
+        camera.aspect =
+            newWidth /
+            newHeight;
+
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+            newWidth,
+            newHeight
+        );
+
+    }
+
+
     window.addEventListener(
         "resize",
-        () => {
-
-            const width =
-                container.clientWidth;
-
-            const height =
-                container.clientHeight;
-
-            if (
-                width === 0 ||
-                height === 0
-            ) return;
-
-
-            camera.aspect =
-                width / height;
-
-            camera.updateProjectionMatrix();
-
-
-            renderer.setSize(
-                width,
-                height
-            );
-
-        }
+        resize3D
     );
+
+
+    resize3D();
 
 
     console.log(
-        "FinGuard 3D Core Started"
-    );
-}
-// ==========================================
-// AI RISK INTELLIGENCE CHART
-// ==========================================
-
-function initAIRiskChart(){
-
-    const canvas = document.getElementById(
-        "aiRiskChart"
+        "FinGuard 3D Core Started."
     );
 
-    if(!canvas) return;
-
-
-    new Chart(canvas,{
-
-        type:"line",
-
-        data:{
-
-            labels:[
-                "10 AM",
-                "11 AM",
-                "12 PM",
-                "1 PM",
-                "2 PM",
-                "3 PM"
-            ],
-
-
-            datasets:[{
-
-
-                label:"AI Risk Score",
-
-
-                data:[
-                    22,
-                    35,
-                    28,
-                    65,
-                    45,
-                    30
-                ],
-
-
-                borderColor:"#00D4FF",
-
-                backgroundColor:
-                "rgba(0,212,255,0.15)",
-
-
-                borderWidth:3,
-
-
-                fill:true,
-
-
-                tension:0.45,
-
-
-                pointRadius:5,
-
-
-                pointBackgroundColor:"#00D4FF"
-
-
-            }]
-
-        },
-
-
-        options:{
-
-
-            responsive:true,
-
-
-            maintainAspectRatio:false,
-
-
-            plugins:{
-
-
-                legend:{
-
-
-                    labels:{
-
-
-                        color:"#94A3B8"
-
-
-                    }
-
-
-                }
-
-
-            },
-
-
-            scales:{
-
-
-                x:{
-
-
-                    ticks:{
-
-
-                        color:"#64748B"
-
-
-                    },
-
-
-                    grid:{
-
-
-                        display:false
-
-
-                    }
-
-
-                },
-
-
-                y:{
-
-
-                    beginAtZero:true,
-
-
-                    max:100,
-
-
-                    ticks:{
-
-
-                        color:"#64748B"
-
-
-                    },
-
-
-                    grid:{
-
-
-                        color:"rgba(255,255,255,.05)"
-
-
-                    }
-
-
-                }
-
-
-            }
-
-
-        }
-
-
-    });
-
-
-}
-// =====================================================
-// POTENTIAL FRAUD DETECTION
-// =====================================================
-
-// =====================================================
-// POTENTIAL FRAUD DETECTION
-// =====================================================
-
-async function loadPotentialFraud() {
-
-    const container =
-        document.getElementById("potentialFraudList");
-
-    if (!container) return;
-
-    try {
-
-        const response = await fetch(
-            "/dashboard/fraud-detection"
-        );
-
-        if (!response.ok) {
-            throw new Error("Fraud API failed");
-        }
-
-        const data = await response.json();
-
-        console.log("Potential Fraud API:", data);
-
-        const transactions = data.alerts || [];
-
-        if (!transactions.length) {
-
-            container.innerHTML = `
-                <div class="fraud-empty">
-
-                    <i class="fa-solid fa-shield-check"></i>
-
-                    No suspicious transactions detected.
-
-                </div>
-            `;
-
-            return;
-        }
-
-        container.innerHTML = transactions.map(transaction => {
-
-            const risk =
-                transaction.risk_level || "Medium";
-
-            const score =
-                Number(transaction.risk_score ?? 0);
-
-            const probability =
-                Number(transaction.fraud_probability ?? 0);
-
-            const amount =
-                Number(transaction.amount ?? 0);
-
-            const riskClass =
-                risk.toLowerCase();
-
-            return `
-
-                <div class="fraud-item">
-
-                    <div class="fraud-transaction">
-
-                        <strong>
-                            ${transaction.transaction_id}
-                        </strong>
-
-                        <small>
-                            ${transaction.merchant || "Unknown Merchant"}
-                        </small>
-
-                    </div>
-
-
-                    <div class="fraud-value">
-
-                        ₹${amount.toLocaleString("en-IN")}
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="fraud-risk ${riskClass}">
-
-                            ${risk}
-
-                        </span>
-
-                    </div>
-
-
-                    <div class="fraud-value">
-
-                        Score:
-                        ${score.toFixed(1)}
-
-                    </div>
-
-
-                    <div class="fraud-probability">
-
-                        ${probability.toFixed(1)}%
-
-                    </div>
-
-
-                    <button
-                        class="fraud-action"
-                        onclick="inspectFraud('${transaction.transaction_id}')">
-
-                        Investigate
-
-                    </button>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-    }
-    catch (error) {
-
-        console.error(
-            "Potential fraud error:",
-            error
-        );
-
-        container.innerHTML = `
-            <div class="fraud-empty">
-
-                Unable to load fraud intelligence.
-
-            </div>
-        `;
-
-    }
-
-}
-// =====================================================
-// INVESTIGATE FRAUD
-// =====================================================
-
-// =====================================================
-// INVESTIGATE FRAUD
-// =====================================================
-
-async function inspectFraud(transactionId) {
-
-    console.log(
-        "Investigating transaction:",
-        transactionId
-    );
-
-    if (!transactionId) {
-        console.error("Transaction ID missing");
-        return;
-    }
-
-    try {
-
-        /*
-         * Backend transaction detail endpoint
-         * integer ID expect karta hai.
-         *
-         * TXN2001 ko directly integer me convert
-         * nahi karna hai agar backend me transaction
-         * ID database integer hai.
-         */
-
-        const numericId =
-            parseInt(
-                String(transactionId).replace(/\D/g, ""),
-                10
-            );
-
-        if (Number.isNaN(numericId)) {
-
-            console.error(
-                "Invalid transaction ID:",
-                transactionId
-            );
-
-            return;
-        }
-
-        console.log(
-            "Numeric transaction ID:",
-            numericId
-        );
-
-        /*
-         * IMPORTANT:
-         * Yahan apne existing investigation/detail
-         * endpoint ko use karo.
-         *
-         * Agar tumhara endpoint:
-         * /transactions/{transaction_id}
-         * hai to ye use hoga.
-         */
-
-        const response = await fetch(
-            `/transactions/${numericId}`
-        );
-
-        if (!response.ok) {
-
-            throw new Error(
-                `Investigation API failed: ${response.status}`
-            );
-
-        }
-
-        const data =
-            await response.json();
-
-        console.log(
-            "Investigation Data:",
-            data
-        );
-
-
-        /*
-         * Agar transaction detail page available hai
-         * to us page par bhejo.
-         */
-
-        window.location.href =
-            `/transaction/${numericId}`;
-
-    }
-    catch (error) {
-
-        console.error(
-            "Investigation Error:",
-            error
-        );
-
-        showToast(
-            "Unable to open transaction investigation.",
-            "error"
-        );
-
-    }
-
-}
-
-// =====================================================
-// POTENTIAL FRAUD DETECTION
-// =====================================================
-
-async function loadPotentialFraud() {
-
-    const container =
-        document.getElementById("potentialFraudList");
-
-    if (!container) {
-        console.log("Potential fraud container not found");
-        return;
-    }
-
-    try {
-
-        console.log("Loading Potential Fraud...");
-
-        let transactions = [];
-
-
-        // =================================================
-        // 1. FIRST TRY: DEDICATED FRAUD API
-        // =================================================
-
-        try {
-
-            const response = await fetch(
-                "/dashboard/fraud-detection"
-            );
-
-            if (response.ok) {
-
-                const data = await response.json();
-
-                console.log(
-                    "Potential Fraud API:",
-                    data
-                );
-
-
-                // Supports:
-                // { alerts: [...] }
-
-                if (Array.isArray(data.alerts)) {
-
-                    transactions = data.alerts;
-
-                }
-
-                // Also supports:
-                // { transactions: [...] }
-
-                else if (
-                    Array.isArray(data.transactions)
-                ) {
-
-                    transactions = data.transactions;
-
-                }
-
-                // Also supports direct array
-
-                else if (Array.isArray(data)) {
-
-                    transactions = data;
-
-                }
-
-            }
-
-        }
-        catch (error) {
-
-            console.log(
-                "Potential Fraud API unavailable:",
-                error
-            );
-
-        }
-
-
-        // =================================================
-        // 2. FALLBACK: RECENT TRANSACTIONS API
-        // =================================================
-
-        if (!transactions.length) {
-
-            console.log(
-                "Trying recent transactions fallback..."
-            );
-
-
-            const response =
-                await fetch(
-                    "/api/recent-transactions"
-                );
-
-
-            if (response.ok) {
-
-                const recentData =
-                    await response.json();
-
-
-                console.log(
-                    "Recent Transactions:",
-                    recentData
-                );
-
-
-                const recentTransactions =
-                    Array.isArray(recentData)
-                        ? recentData
-                        : (
-                            recentData.transactions ||
-                            recentData.data ||
-                            []
-                        );
-
-
-                // =========================================
-                // FILTER POTENTIAL FRAUD
-                // =========================================
-
-                transactions =
-                    recentTransactions.filter(tx => {
-
-                        const risk =
-                            String(
-                                tx.risk_level ||
-                                tx.risk ||
-                                ""
-                            ).toLowerCase();
-
-
-                        const probability =
-                            Number(
-                                tx.fraud_probability ||
-                                tx.fraud_probability_score ||
-                                tx.fraud_score ||
-                                0
-                            );
-
-
-                        return (
-                            risk.includes("high") ||
-                            risk.includes("medium") ||
-                            probability >= 50
-                        );
-
-                    });
-
-            }
-
-        }
-
-
-        // =================================================
-        // 3. NO FRAUD FOUND
-        // =================================================
-
-        if (!transactions.length) {
-
-            container.innerHTML = `
-
-                <div class="fraud-empty">
-
-                    <i class="fa-solid fa-shield-check"></i>
-
-                    <div>
-
-                        <strong>
-                            System Secure
-                        </strong>
-
-                        <p>
-                            No suspicious transactions detected.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            console.log(
-                "No potential fraud transactions found."
-            );
-
-            return;
-        }
-
-
-        // =================================================
-        // 4. DISPLAY FRAUD TRANSACTIONS
-        // =================================================
-
-        container.innerHTML =
-            transactions.map(transaction => {
-
-
-                const risk =
-                    String(
-                        transaction.risk_level ||
-                        transaction.risk ||
-                        "Medium"
-                    );
-
-
-                const riskClass =
-                    risk.toLowerCase();
-
-
-                const probability = Number(
-                    transaction.fraud_probability ??
-                    transaction.fraudProbability ??
-                    transaction.fraud_probability_score ??
-                    transaction.fraud_score ??
-                    transaction.probability ??
-                    transaction.fraud_score_percent ??
-                     0
-                  );
-
-                const riskScore = Number(
-                    transaction.risk_score ??
-                    transaction.riskScore ??
-                    transaction.score ??
-                    transaction.risk ??
-                    probability ??
-                    0
-                    );
-
-                const transactionId =
-                    transaction.transaction_id ||
-                    transaction.id ||
-                    "Unknown";
-
-
-                const merchant =
-                    transaction.merchant ||
-                    transaction.merchant_name ||
-                    "Unknown Merchant";
-
-
-                const amount =
-                    Number(
-                        transaction.amount || 0
-                    );
-
-
-                return `
-
-                    <div class="fraud-item">
-
-
-                        <!-- TRANSACTION -->
-
-                        <div class="fraud-transaction">
-
-                            <strong>
-                                ${transactionId}
-                            </strong>
-
-                            <small>
-                                ${merchant}
-                            </small>
-
-                        </div>
-
-
-                        <!-- AMOUNT -->
-
-                        <div class="fraud-value">
-
-                            ₹${amount.toLocaleString("en-IN")}
-
-                        </div>
-
-
-                        <!-- RISK -->
-
-                        <div>
-
-                            <span
-                                class="fraud-risk ${riskClass}"
-                            >
-
-                                ${risk}
-
-                            </span>
-
-                        </div>
-
-
-                        <!-- RISK SCORE -->
-
-                        <div class="fraud-value">
-
-                            Score:
-                            ${riskScore.toFixed(1)}
-
-                        </div>
-
-
-                        <!-- FRAUD PROBABILITY -->
-
-                        <div class="fraud-probability">
-
-                            ${probability.toFixed(1)}%
-
-                        </div>
-
-
-                        <!-- ACTION -->
-
-                        <button
-                            class="fraud-action"
-                            onclick="inspectFraud('${transactionId}')"
-                        >
-
-                            Investigate
-
-                        </button>
-
-
-                    </div>
-
-                `;
-
-            }).join("");
-
-
-        console.log(
-            "Potential Fraud Loaded:",
-            transactions.length
-        );
-
-    }
-    catch (error) {
-
-        console.error(
-            "Potential Fraud Error:",
-            error
-        );
-
-
-        container.innerHTML = `
-
-            <div class="fraud-empty">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-                <div>
-
-                    <strong>
-                        Fraud Intelligence Unavailable
-                    </strong>
-
-                    <p>
-                        Unable to load transaction risk data.
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-}
-// =====================================================
-// ADD-ON: LIVE POTENTIAL FRAUD DETECTION
-// Existing code ko delete/change nahi karna hai
-// =====================================================
-
-async function loadFraudDetectionAddOn() {
-
-    const container =
-        document.getElementById("potentialFraudList");
-
-    if (!container) {
-        console.log("Potential Fraud container not found");
-        return;
-    }
-
-    try {
-
-        const response =
-            await fetch("/dashboard/fraud-detection");
-
-        if (!response.ok) {
-            throw new Error(
-                "Fraud Detection API Error: " +
-                response.status
-            );
-        }
-
-        const data =
-            await response.json();
-
-        console.log(
-            "Potential Fraud API:",
-            data
-        );
-
-        const alerts =
-            data.alerts || [];
-
-
-        // No fraud
-        if (!alerts.length) {
-
-            container.innerHTML = `
-                <div class="fraud-empty">
-
-                    <i class="fa-solid fa-shield-check"></i>
-
-                    <span>
-                        No suspicious transactions detected.
-                    </span>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-        // Render API data
-        container.innerHTML =
-            alerts.map(transaction => {
-
-                const riskLevel =
-                    transaction.risk_level || "Medium";
-
-                const riskClass =
-                    riskLevel
-                        .toLowerCase()
-                        .replace(/\s+/g, "-");
-
-
-                const amount =
-                    Number(
-                        transaction.amount || 0
-                    ).toLocaleString("en-IN");
-
-
-                const riskScore =
-                    Number(
-                        transaction.risk_score || 0
-                    ).toFixed(1);
-
-
-                const fraudProbability =
-                    Number(
-                        transaction.fraud_probability || 0
-                    ).toFixed(1);
-
-
-                return `
-
-                    <div class="fraud-item">
-
-                        <!-- Transaction -->
-
-                        <div class="fraud-transaction">
-
-                            <strong>
-                                ${transaction.transaction_id}
-                            </strong>
-
-                            <small>
-                                ${transaction.merchant || "Unknown Merchant"}
-                            </small>
-
-                        </div>
-
-
-                        <!-- Amount -->
-
-                        <div class="fraud-value">
-
-                            ₹${amount}
-
-                        </div>
-
-
-                        <!-- Risk -->
-
-                        <div>
-
-                            <span
-                                class="fraud-risk ${riskClass}"
-                            >
-
-                                ${riskLevel}
-
-                            </span>
-
-                        </div>
-
-
-                        <!-- Risk Score -->
-
-                        <div class="fraud-value">
-
-                            Score:
-                            ${riskScore}
-
-                        </div>
-
-
-                        <!-- Fraud Probability -->
-
-                        <div class="fraud-probability">
-
-                            ${fraudProbability}%
-
-                        </div>
-
-
-                        <!-- Investigate -->
-
-                        <button
-                            class="fraud-action"
-                            type="button"
-                            onclick="inspectFraudAddOn(
-                                '${transaction.transaction_id}'
-                            )"
-                        >
-
-                            Investigate
-
-                        </button>
-
-                    </div>
-
-                `;
-
-            }).join("");
-
-
-    }
-    catch (error) {
-
-        console.error(
-            "Potential Fraud Add-On Error:",
-            error
-        );
-
-    }
-
 }
 
 
-// =====================================================
-// ADD-ON: INVESTIGATE BUTTON
-// =====================================================
-
-function inspectFraudAddOn(transactionId) {
-
-    console.log(
-        "Investigating Fraud Transaction:",
-        transactionId
-    );
-
-    // Existing investigation system ko touch nahi kar rahe.
-}
-
-
-// =====================================================
-// START ADD-ON
-// =====================================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        loadPotentialFraud();
-
-    }
-);
-// =====================================================
-// FINAL FIX - POTENTIAL FRAUD DATA
-// DO NOT DELETE OR MODIFY EXISTING CODE
-// =====================================================
-
-async function loadPotentialFraudFinal() {
-
-    const container =
-        document.getElementById("potentialFraudList");
-
-    if (!container) {
-        console.log("Potential Fraud container not found");
-        return;
-    }
-
-    try {
-
-        console.log(
-            "FINAL: Loading /dashboard/fraud-detection..."
-        );
-
-        const response = await fetch(
-            "/dashboard/fraud-detection",
-            {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json"
-                },
-                cache: "no-store"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Fraud Detection API Error: " +
-                response.status
-            );
-        }
-
-        const data = await response.json();
-
-        console.log(
-            "FINAL Fraud API Response:",
-            data
-        );
-
-        const alerts =
-            Array.isArray(data.alerts)
-                ? data.alerts
-                : [];
-
-        if (!alerts.length) {
-
-            container.innerHTML = `
-                <div class="fraud-empty">
-
-                    <i class="fa-solid fa-shield-check"></i>
-
-                    <div>
-                        <strong>
-                            System Secure
-                        </strong>
-
-                        <p>
-                            No suspicious transactions detected.
-                        </p>
-                    </div>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-        container.innerHTML =
-            alerts.map(transaction => {
-
-                // ==============================
-                // TRANSACTION
-                // ==============================
-
-                const transactionId =
-                    transaction.transaction_id ||
-                    transaction.id ||
-                    "Unknown";
-
-                const merchant =
-                    transaction.merchant ||
-                    transaction.merchant_name ||
-                    "Unknown Merchant";
-
-
-                // ==============================
-                // AMOUNT
-                // ==============================
-
-                const amount =
-                    Number(
-                        transaction.amount ?? 0
-                    );
-
-
-                // ==============================
-                // RISK
-                // ==============================
-
-                const riskLevel =
-                    transaction.risk_level ||
-                    transaction.risk ||
-                    "Medium";
-
-                const riskClass =
-                    String(riskLevel)
-                        .toLowerCase()
-                        .replace(/\s+/g, "-");
-
-
-                // ==============================
-                // RISK SCORE
-                // ==============================
-
-                let riskScore =
-                    transaction.risk_score;
-
-                if (
-                    riskScore === undefined ||
-                    riskScore === null ||
-                    riskScore === ""
-                ) {
-
-                    riskScore =
-                        transaction.score;
-
-                }
-
-
-                // ==============================
-                // FRAUD PROBABILITY
-                // ==============================
-
-                let fraudProbability =
-                    transaction.fraud_probability;
-
-                if (
-                    fraudProbability === undefined ||
-                    fraudProbability === null ||
-                    fraudProbability === ""
-                ) {
-
-                    fraudProbability =
-                        transaction.fraud_probability_score;
-
-                }
-
-                if (
-                    fraudProbability === undefined ||
-                    fraudProbability === null ||
-                    fraudProbability === ""
-                ) {
-
-                    fraudProbability =
-                        transaction.fraud_score;
-
-                }
-
-
-                // Convert correctly
-
-                riskScore =
-                    Number(riskScore);
-
-                fraudProbability =
-                    Number(fraudProbability);
-
-
-                // ==============================
-                // DEBUG
-                // ==============================
-
-                console.log(
-                    "Fraud Transaction:",
-                    transactionId,
-                    {
-                        riskScore,
-                        fraudProbability,
-                        rawRiskScore:
-                            transaction.risk_score,
-                        rawProbability:
-                            transaction.fraud_probability
-                    }
-                );
-
-
-                // ==============================
-                // HTML
-                // ==============================
-
-                return `
-
-                    <div class="fraud-item">
-
-
-                        <!-- TRANSACTION -->
-
-                        <div class="fraud-transaction">
-
-                            <strong>
-                                ${transactionId}
-                            </strong>
-
-                            <small>
-                                ${merchant}
-                            </small>
-
-                        </div>
-
-
-                        <!-- AMOUNT -->
-
-                        <div class="fraud-value">
-
-                            ₹${amount.toLocaleString("en-IN")}
-
-                        </div>
-
-
-                        <!-- RISK -->
-
-                        <div>
-
-                            <span
-                                class="fraud-risk ${riskClass}"
-                            >
-
-                                ${riskLevel}
-
-                            </span>
-
-                        </div>
-
-
-                        <!-- RISK SCORE -->
-
-                        <div class="fraud-value">
-
-                            Score:
-                            ${riskScore.toFixed(1)}
-
-                        </div>
-
-
-                        <!-- FRAUD PROBABILITY -->
-
-                        <div class="fraud-probability">
-
-                            ${fraudProbability.toFixed(1)}%
-
-                        </div>
-
-
-                        <!-- INVESTIGATE -->
-
-                        <button
-                            class="fraud-action"
-                            type="button"
-                            onclick="inspectFraud('${transactionId}')"
-                        >
-
-                            Investigate
-
-                        </button>
-
-
-                    </div>
-
-                `;
-
-            }).join("");
-
-
-        console.log(
-            "FINAL Potential Fraud Loaded:",
-            alerts.length
-        );
-
-    }
-    catch (error) {
-
-        console.error(
-            "FINAL Potential Fraud Error:",
-            error
-        );
-
-    }
-
-}
-
-
-// =====================================================
-// START FINAL POTENTIAL FRAUD
-// =====================================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        loadPotentialFraudFinal();
-
-    }
-);
-// =====================================================
-// SYNC AI SECURITY CORE WITH FRAUD DETECTION API
-// ADD ONLY - DO NOT DELETE EXISTING CODE
-// =====================================================
+/* ==========================================================
+   SYNC AI SECURITY CORE WITH FRAUD API
+   ========================================================== */
 
 async function updateAISecurityCoreData() {
 
     try {
 
-        const response = await fetch(
-            "/dashboard/fraud-detection",
-            {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json"
-                },
-                cache: "no-store"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Fraud Detection API failed: " +
-                response.status
+        const data =
+            await fetchJSON(
+                DASHBOARD_CONFIG
+                    .fraudEndpoint,
+                {
+                    cache: "no-store"
+                }
             );
-        }
 
-        const data = await response.json();
-
-        console.log(
-            "CORE FRAUD DATA:",
-            data
-        );
-
-
-        // ==========================================
-        // CALCULATE CORE VALUES
-        // ==========================================
 
         const alerts =
             Array.isArray(data.alerts)
@@ -3691,155 +3322,78 @@ async function updateAISecurityCoreData() {
 
 
         const totalTransactions =
-            Number(data.total_transactions || 0);
+            safeNumber(
+                data.total_transactions
+            );
 
 
         const fraudsDetected =
-            Number(
+            safeNumber(
                 data.fraud_transactions ||
                 data.high_risk_transactions ||
-                0
+                alerts.length
             );
 
 
-        const averageRiskScore =
-            Number(
-                data.average_risk_score ||
-                data.average_fraud_probability ||
-                0
-            );
+        /*
+         * IMPORTANT:
+         *
+         * coreAccuracy should represent model/detection
+         * accuracy, NOT average risk score.
+         */
+
+        if (
+            data.accuracy !== undefined
+        ) {
+
+            let accuracy =
+                safeNumber(
+                    data.accuracy
+                );
 
 
-        // ==========================================
-        // CORE ELEMENTS
-        // ==========================================
+            if (
+                accuracy > 0 &&
+                accuracy <= 1
+            ) {
 
-        const coreAccuracy =
-            document.getElementById(
-                "coreAccuracy"
-            );
+                accuracy *= 100;
 
-        const coreThreats =
-            document.getElementById(
-                "coreThreats"
-            );
-
-        const coreTransactions =
-            document.getElementById(
-                "coreTransactions"
-            );
-
-
-        // ==========================================
-        // UPDATE CORE
-        // ==========================================
-
-        if (coreAccuracy) {
-
-            coreAccuracy.innerText =
-                averageRiskScore.toFixed(1) + "%";
-
-        }
-
-
-        if (coreThreats) {
-
-            coreThreats.innerText =
-                fraudsDetected;
-
-        }
-
-
-        if (coreTransactions) {
-
-            coreTransactions.innerText =
-                totalTransactions;
-
-        }
-
-
-        console.log(
-            "AI CORE UPDATED:",
-            {
-                accuracy: averageRiskScore,
-                threats: fraudsDetected,
-                transactions: totalTransactions
             }
-        );
-
-    }
-    catch (error) {
-
-        console.error(
-            "AI CORE DATA ERROR:",
-            error
-        );
-
-    }
-
-}
 
 
-// ==========================================
-// LOAD AFTER DOM
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        updateAISecurityCoreData();
-
-    }
-);
-
-async function loadModelPerformance() {
-
-    try {
-
-        const response =
-            await fetch("/api/model-performance");
-
-        if (!response.ok) {
-            throw new Error("Model performance API failed");
-        }
-
-        const data =
-            await response.json();
-
-        const accuracy =
-            (Number(data.accuracy) * 100).toFixed(2);
-
-        // Dashboard Accuracy
-        const dashboardAccuracy =
-            document.getElementById("dashboardAccuracy");
-
-        if (dashboardAccuracy) {
-            dashboardAccuracy.innerText =
-                accuracy + "%";
-        }
-
-        // AI Performance Accuracy
-        const performanceItems =
-            document.querySelectorAll(
-                ".performance-item h2"
+            setText(
+                "coreAccuracy",
+                formatPercentage(
+                    accuracy,
+                    2
+                )
             );
 
-        if (performanceItems.length >= 1) {
-            performanceItems[0].innerText =
-                accuracy + "%";
         }
 
-        console.log(
-            "ML Model Accuracy:",
-            accuracy + "%"
+
+        setText(
+            "coreThreats",
+            formatNumber(
+                fraudsDetected
+            )
         );
+
+
+        setText(
+            "coreTransactions",
+            formatNumber(
+                totalTransactions
+            )
+        );
+
 
     }
     catch (error) {
 
         console.error(
-            "Model performance error:",
+            "AI Security Core Data Error:",
             error
         );
 
@@ -3847,4 +3401,317 @@ async function loadModelPerformance() {
 
 }
 
-loadModelPerformance();
+
+/* ==========================================================
+   LIVE DATA REFRESH
+   ========================================================== */
+
+async function refreshDashboard() {
+
+    await Promise.allSettled([
+
+        loadDashboard(),
+
+        loadDashboardLive(),
+
+        loadRecentTransactions(),
+
+        loadPotentialFraud(),
+
+        loadAIInsights(),
+
+        initRiskChart(),
+
+        initTrendChart()
+
+    ]);
+
+}
+
+
+/* ==========================================================
+   RUN AI ANALYSIS BUTTON
+   ========================================================== */
+
+function initAnalysisButton() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".run-ai-analysis, #runAIAnalysis"
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                async () => {
+
+                    button.disabled =
+                        true;
+
+
+                    const originalText =
+                        button.innerText;
+
+
+                    button.innerText =
+                        "Analyzing...";
+
+
+                    try {
+
+                        await loadAIInsights();
+
+                        await loadPotentialFraud();
+
+                        await loadRecentTransactions();
+
+                        showToast(
+                            "AI fraud analysis completed.",
+                            "success"
+                        );
+
+                    }
+                    catch (error) {
+
+                        console.error(
+                            "AI Analysis Error:",
+                            error
+                        );
+
+
+                        showToast(
+                            "AI analysis failed.",
+                            "error"
+                        );
+
+                    }
+                    finally {
+
+                        button.disabled =
+                            false;
+
+
+                        button.innerText =
+                            originalText;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* ==========================================================
+   INITIALIZE DASHBOARD
+   ========================================================== */
+
+let dashboardInitialized =
+    false;
+
+
+async function initializeDashboard() {
+
+    if (
+        dashboardInitialized
+    ) {
+
+        return;
+
+    }
+
+
+    dashboardInitialized =
+        true;
+
+
+    console.log(
+        "FinGuard Dashboard Initializing..."
+    );
+
+
+    /*
+     * Basic UI
+     */
+
+    initClock();
+
+    initSidebar();
+
+    initTheme();
+
+    initRippleEffect();
+
+    initFadeAnimation();
+
+    initFraudButtons();
+
+    initAnalysisButton();
+
+
+    /*
+     * AI status
+     */
+
+    startAIStatus();
+
+
+    /*
+     * 3D
+     */
+
+    initAI3D();
+
+
+    /*
+     * Static chart
+     */
+
+    initAIRiskChart();
+
+
+    /*
+     * Load dashboard APIs
+     */
+
+    await Promise.allSettled([
+
+        loadDashboard(),
+
+        loadDashboardLive(),
+
+        loadAIInsights(),
+
+        loadPotentialFraud(),
+
+        loadRecentTransactions(),
+
+        loadModelPerformance(),
+
+        updateAISecurityCoreData(),
+
+        initRiskChart(),
+
+        initTrendChart()
+
+    ]);
+
+
+    /*
+     * Periodic refresh
+     */
+
+    setInterval(
+        async () => {
+
+            await Promise.allSettled([
+
+                loadDashboard(),
+
+                loadDashboardLive(),
+
+                loadPotentialFraud(),
+
+                loadRecentTransactions(),
+
+                initRiskChart(),
+
+                initTrendChart()
+
+            ]);
+
+        },
+        DASHBOARD_CONFIG
+            .liveRefreshInterval
+    );
+
+
+    console.log(
+        "FinGuard Dashboard Ready."
+    );
+
+}
+
+
+/* ==========================================================
+   DOM READY
+   ========================================================== */
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeDashboard,
+        {
+            once: true
+        }
+    );
+
+}
+else {
+
+    initializeDashboard();
+
+}
+
+
+/* ==========================================================
+   GLOBAL FUNCTIONS
+   ========================================================== */
+
+window.inspectFraud =
+    inspectFraud;
+
+
+window.showToast =
+    showToast;
+
+
+window.loadDashboard =
+    loadDashboard;
+
+
+window.loadDashboardLive =
+    loadDashboardLive;
+
+
+window.loadRecentTransactions =
+    loadRecentTransactions;
+
+
+window.loadPotentialFraud =
+    loadPotentialFraud;
+
+
+window.loadAIInsights =
+    loadAIInsights;
+
+
+window.initAI3D =
+    initAI3D;
+
+
+window.initRiskChart =
+    initRiskChart;
+
+
+window.initTrendChart =
+    initTrendChart;
+
+
+window.initAIRiskChart =
+    initAIRiskChart;
+
+
+console.log(
+    "FinGuard AI Dashboard JS Loaded."
+);

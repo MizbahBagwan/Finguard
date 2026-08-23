@@ -810,11 +810,13 @@ function createReportRow(report) {
 
 
                     <!-- DELETE -->
+                    <!-- DELETE -->
                     <button
-                        type="button"
+                       type="button"
                         class="report-delete-btn"
                         data-id="${escapeHTML(reportId)}"
-                        title="Delete Report">
+                        title="Delete Report"
+                        onclick="deleteReport(this.dataset.id); return false;">
 
                         <i class="fas fa-trash"></i>
 
@@ -1864,6 +1866,32 @@ function viewAllReports() {
     }
 
 }
+/* =====================================================
+   DELETE BUTTON
+===================================================== */
+
+document
+    .querySelectorAll(".delete-action")
+    .forEach(
+        function (button) {
+
+            button.onclick =
+                function () {
+
+                    const reportId =
+                        this.dataset.reportId;
+
+                    console.log(
+                        "DELETE BUTTON CLICK:",
+                        reportId
+                    );
+
+                    deleteReport(reportId);
+
+                };
+
+        }
+    );
 
 
 /* =========================================================
@@ -2289,3 +2317,29 @@ window.loadReports =
 
 window.loadReportsDashboard =
     loadReportsDashboard;
+document.addEventListener("click", function (event) {
+
+    const button = event.target.closest(".report-delete-btn");
+
+    if (!button) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const row = button.closest("tr");
+
+    const id =
+        button.dataset.id ||
+        row?.dataset.reportId;
+
+    console.log("DELETE BUTTON CLICK:", id);
+
+    if (!id) {
+        alert("Report ID not found");
+        return;
+    }
+
+    deleteReport(id);
+});

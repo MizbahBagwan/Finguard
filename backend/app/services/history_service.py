@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.transaction_history import TransactionHistory
+from backend.app.models.transaction_history import TransactionHistory
 
 
 def create_history(

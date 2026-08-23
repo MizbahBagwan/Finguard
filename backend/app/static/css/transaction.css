@@ -1,5247 +1,1720 @@
-/* ==========================================================
-   FinGuard AI - Transactions CSS (Part 1)
-   Root + Layout + Cards + Header
-========================================================== */
-
-:root{
-
-    --bg:#07111f;
-    --surface:#0f1c31;
-    --surface-2:#16253f;
-    --card:#14223a;
-
-    --primary:#5B7CFF;
-    --primary-dark:#4A67E6;
-    --secondary:#7B61FF;
-
-    --cyan:#00D4FF;
-    --green:#1ED760;
-    --orange:#FFB020;
-    --red:#FF4D6D;
-
-    --text:#ffffff;
-    --text-light:#c8d2e4;
-    --muted:#8ea0bd;
-
-    --border:rgba(255,255,255,.08);
-
-    --radius:22px;
-
-    --shadow:
-    0 20px 50px rgba(0,0,0,.35);
-
-    --glass:
-    rgba(255,255,255,.04);
-
-    --transition:.35s ease;
-
-    --sidebar:280px;
-
-}
-
-/* ====================== */
-
-*{
-
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-
-}
-
-html{
-
-    scroll-behavior:smooth;
-
-}
-
-body{
-
-    font-family:"Inter",sans-serif;
-
-    background:
-    radial-gradient(circle at top left,#1a2b52 0%,transparent 45%),
-    radial-gradient(circle at top right,#231d49 0%,transparent 35%),
-    var(--bg);
-
-    color:var(--text);
-
-}
-
-/* ====================== */
-
-.transactions-page{
-
-    width:100%;
-
-    padding:35px;
-
-    animation:fade .5s;
-
-}
-
-/* ====================== */
-
-@keyframes fade{
-
-    from{
-
-        opacity:0;
-        transform:translateY(20px);
-
-    }
-
-    to{
-
-        opacity:1;
-        transform:none;
-
-    }
-
-}
-
-/* ==========================================================
-HEADER
-========================================================== */
-
-.page-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:40px;
-
-    padding:28px;
-
-    border-radius:28px;
-
-    background:
-
-    linear-gradient(
-    145deg,
-    rgba(91,124,255,.15),
-    rgba(255,255,255,.04));
-
-    border:1px solid var(--border);
-
-    backdrop-filter:blur(18px);
-
-    box-shadow:var(--shadow);
-
-    margin-bottom:35px;
-
-}
-
-/* LEFT */
-
-.header-left{
-
-    flex:1;
-
-}
-
-.page-badge{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:10px 18px;
-
-    border-radius:50px;
-
-    background:
-
-    rgba(91,124,255,.18);
-
-    color:#8cb8ff;
-
-    font-size:.9rem;
-
-    margin-bottom:16px;
-
-}
-
-.page-header h1{
-
-    font-size:3rem;
-
-    font-weight:800;
-
-    margin-bottom:14px;
-
-}
-
-.page-header p{
-
-    color:var(--text-light);
-
-    max-width:600px;
-
-    line-height:1.7;
-
-    font-size:1rem;
-
-}
-
-/* RIGHT */
-
-.header-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    flex-wrap:wrap;
-
-}
-
-/* SEARCH */
-
-.search-box{
-
-    width:360px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    background:#182846;
-
-    border:1px solid rgba(255,255,255,.06);
-
-    border-radius:18px;
-
-    padding:16px 18px;
-
-    transition:.3s;
-
-}
-
-.search-box:focus-within{
-
-    border-color:var(--primary);
-
-    box-shadow:
-
-    0 0 0 4px rgba(91,124,255,.15);
-
-}
-
-.search-box input{
-
-    flex:1;
-
-    background:none;
-
-    border:none;
-
-    outline:none;
-
-    color:white;
-
-    font-size:.95rem;
-
-}
-
-.search-box input::placeholder{
-
-    color:#8ea0bd;
-
-}
-
-.search-box i{
-
-    color:#8ea0bd;
-
-}
-
-/* ICON BUTTON */
-
-.icon-btn{
-
-    width:52px;
-
-    height:52px;
-
-    border:none;
-
-    cursor:pointer;
-
-    border-radius:16px;
-
-    background:#182846;
-
-    color:white;
-
-    transition:.35s;
-
-}
-
-.icon-btn:hover{
-
-    background:var(--primary);
-
-    transform:translateY(-4px);
-
-}
-
-/* PRIMARY BUTTON */
-
-.btn-primary{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    border:none;
-
-    cursor:pointer;
-
-    border-radius:18px;
-
-    padding:16px 28px;
-
-    font-size:1rem;
-
-    font-weight:700;
-
-    color:white;
-
-    text-decoration:none;
-
-    background:
-
-    linear-gradient(
-    135deg,
-    var(--primary),
-    var(--secondary));
-
-    transition:.35s;
-
-    box-shadow:
-    0 15px 35px
-    rgba(91,124,255,.35);
-
-}
-
-.btn-primary:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-
-    0 20px 45px
-
-    rgba(91,124,255,.45);
-
-}
-
-/* ==========================================================
-SUMMARY GRID
-========================================================== */
-
-.summary-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
-
-    gap:22px;
-
-    margin-bottom:35px;
-
-}
-
-.summary-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-    border-radius:24px;
-
-    padding:28px;
-
-    background:
-
-    linear-gradient(
-    160deg,
-    rgba(255,255,255,.05),
-    rgba(255,255,255,.02));
-
-    border:1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(16px);
-
-    transition:.35s;
-
-}
-
-.summary-card:hover{
-
-    transform:translateY(-8px);
-
-    box-shadow:
-
-    0 25px 55px
-
-    rgba(0,0,0,.35);
-
-}
-
-/* TOP */
-
-.card-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:22px;
-
-}
-
-.summary-card .icon{
-
-    width:65px;
-
-    height:65px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:18px;
-
-    font-size:1.5rem;
-
-    color:white;
-
-}
-
-.blue .icon{
-
-    background:linear-gradient(135deg,#3b82f6,#5b7cff);
-
-}
-
-.green .icon{
-
-    background:linear-gradient(135deg,#00c853,#00e676);
-
-}
-
-.red .icon{
-
-    background:linear-gradient(135deg,#ff416c,#ff4b2b);
-
-}
-
-.purple .icon{
-
-    background:linear-gradient(135deg,#7b61ff,#8f5cff);
-
-}
-
-/* NUMBERS */
-
-.summary-card h2{
-
-    font-size:3rem;
-
-    font-weight:800;
-
-    margin-bottom:10px;
-
-}
-
-.summary-card h4{
-
-    color:white;
-
-    margin-bottom:18px;
-
-    font-weight:600;
-
-}
-
-.summary-card small{
-
-    color:#aab7cf;
-
-}
-
-/* TREND */
-
-.trend{
-
-    padding:8px 14px;
-
-    border-radius:50px;
-
-    font-size:.82rem;
-
-    font-weight:700;
-
-}
-
-.positive{
-
-    background:rgba(0,255,140,.14);
-
-    color:#00e676;
-
-}
-
-.negative{
-
-    background:rgba(255,0,76,.12);
-
-    color:#ff4d6d;
-
-}
-
-.warning{
-
-    background:rgba(255,176,32,.15);
-
-    color:#ffb020;
-
-}
-
-/* PROGRESS */
-
-.mini-progress{
-
-    width:100%;
-
-    height:8px;
-
-    background:#233552;
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-    margin:18px 0;
-
-}
-
-.mini-fill{
-
-    height:100%;
-
-    border-radius:20px;
-
-}
-
-.mini-fill.blue{
-
-    background:linear-gradient(90deg,#4d7cff,#74b3ff);
-
-}
-
-.mini-fill.green{
-
-    background:linear-gradient(90deg,#00d26a,#1ed760);
-
-}
-
-.mini-fill.red{
-
-    background:linear-gradient(90deg,#ff4d6d,#ff7b54);
-
-}
-
-.mini-fill.purple{
-
-    background:linear-gradient(90deg,#7b61ff,#a855f7);
-
-}
-/* ==========================================================
-   PART 2
-   FILTER BAR + TABLE + BADGES + BUTTONS
-==========================================================*/
-
-/* ================= FILTER BAR ================= */
-
-.filter-bar{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    flex-wrap:wrap;
-
-    background:rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(18px);
-
-    padding:22px;
-    border-radius:22px;
-
-    margin-bottom:28px;
-
-}
-
-.filter-group{
-
-    display:flex;
-    gap:18px;
-    flex-wrap:wrap;
-
-}
-
-.filter-item{
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    background:#182846;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    padding:14px 18px;
-
-    border-radius:16px;
-
-}
-
-.filter-item i{
-
-    color:#7aa6ff;
-
-}
-
-.filter-item select,
-.filter-item input{
-
-    background:none;
-
-    border:none;
-
-    outline:none;
-
-    color:white;
-
-    font-size:.95rem;
-
-}
-
-.filter-item option{
-
-    background:#14223a;
-
-}
-
-.filter-buttons{
-
-    display:flex;
-
-    gap:14px;
-
-}
-
-.btn-outline{
-
-    border:1px solid rgba(255,255,255,.12);
-
-    background:transparent;
-
-    color:white;
-
-    padding:14px 24px;
-
-    border-radius:15px;
-
-    cursor:pointer;
-
-    transition:.3s;
-
-}
-
-.btn-outline:hover{
-
-    background:#233552;
-
-}
-
-/* ================= TABLE CARD ================= */
-
-.table-card{
-
-    background:
-
-    linear-gradient(
-        180deg,
-        rgba(255,255,255,.04),
-        rgba(255,255,255,.02));
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:25px;
-
-    overflow:hidden;
-
-    margin-bottom:20px;
-
-    box-shadow:
-    0 15px 45px rgba(0,0,0,.25);
-
-}
-
-/* ================= TABLE ================= */
-
-.transaction-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-}
-
-.transaction-table thead{
-
-    background:#172640;
-
-}
-
-.transaction-table th{
-
-    color:#8fb4ff;
-
-    font-size:.9rem;
-
-    font-weight:700;
-
-    text-transform:uppercase;
-
-    letter-spacing:.6px;
-
-    padding:22px 18px;
-
-    text-align:left;
-
-}
-
-.transaction-table td{
-
-    padding:22px 18px;
-
-    border-top:1px solid rgba(255,255,255,.05);
-
-    color:white;
-
-    transition:.3s;
-
-}
-
-.transaction-table tbody tr{
-
-    transition:.35s;
-
-}
-
-.transaction-table tbody tr:hover{
-
-    background:rgba(91,124,255,.08);
-
-}
-
-/* ================= MERCHANT ================= */
-
-.merchant-info{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-}
-
-.merchant-avatar{
-
-    width:46px;
-
-    height:46px;
-
-    border-radius:14px;
-
-    background:
-
-    linear-gradient(135deg,#5B7CFF,#7B61FF);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-weight:700;
-
-    color:white;
-
-    font-size:18px;
-
-}
-
-.merchant-info strong{
-
-    display:block;
-
-}
-
-.merchant-info small{
-
-    color:#9cb0d0;
-
-}
-
-/* ================= AMOUNT ================= */
-
-.amount{
-
-    font-size:17px;
-
-    font-weight:700;
-
-    color:#49f08f;
-
-}
-
-/* ================= LOCATION ================= */
-
-.location{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    color:#b9c9e4;
-
-}
-
-/* ================= CARD ================= */
-
-.card-chip{
-
-    padding:8px 14px;
-
-    border-radius:30px;
-
-    background:#223656;
-
-    color:#7db2ff;
-
-    font-size:13px;
-
-}
-
-/* ================= RISK ================= */
-
-.risk-circle{
-
-    position:relative;
-
-    width:65px;
-
-    height:65px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-
-    conic-gradient(
-
-        #5B7CFF calc(var(--value)*1%),
-
-        #223656 0
-
-    );
-
-}
-
-.risk-circle::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:52px;
-
-    height:52px;
-
-    border-radius:50%;
-
-    background:#13233c;
-
-}
-
-.risk-circle span{
-
-    position:relative;
-
-    z-index:2;
-
-    font-size:12px;
-
-    font-weight:700;
-
-}
-
-/* ================= BADGES ================= */
-
-.badge{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:8px 14px;
-
-    border-radius:30px;
-
-    font-size:13px;
-
-    font-weight:700;
-
-}
-
-.badge.success{
-
-    background:rgba(0,230,118,.15);
-
-    color:#1ED760;
-
-}
-
-.badge.warning{
-
-    background:rgba(255,176,32,.15);
-
-    color:#FFB020;
-
-}
-
-.badge.danger{
-
-    background:rgba(255,77,109,.15);
-
-    color:#FF4D6D;
-
-}
-
-/* ================= PREDICTION ================= */
-
-.prediction{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    font-weight:600;
-
-    margin-bottom:8px;
-
-}
-
-.prediction.safe{
-
-    color:#1ED760;
-
-}
-
-.prediction.fraud{
-
-    color:#FF4D6D;
-
-}
-
-.progress{
-
-    width:100%;
-
-    height:8px;
-
-    background:#24395c;
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-}
-
-.progress-fill{
-
-    height:100%;
-
-    border-radius:20px;
-
-    background:
-
-    linear-gradient(90deg,#5B7CFF,#7B61FF);
-
-}
-
-/* ================= ACTION ================= */
-
-.action-buttons{
-
-    display:flex;
-
-    gap:10px;
-
-}
-
-.view-btn,
-.menu-btn{
-
-    width:42px;
-
-    height:42px;
-
-    border:none;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    text-decoration:none;
-
-    color:white;
-
-    transition:.3s;
-
-}
-
-.view-btn{
-
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-
-}
-
-.menu-btn{
-
-    background:#24395c;
-
-}
-
-.view-btn:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:0 10px 25px rgba(91,124,255,.35);
-
-}
-
-.menu-btn:hover{
-
-    background:#304b76;
-
-}
-
-/* ================= EMPTY ================= */
-
-.empty-state{
-
-    padding:70px 20px;
-
-    text-align:center;
-
-}
-
-.empty-state i{
-
-    font-size:70px;
-
-    color:#5B7CFF;
-
-    margin-bottom:20px;
-
-}
-
-.empty-state h2{
-
-    margin-bottom:12px;
-
-}
-
-.empty-state p{
-
-    color:#a5b6d4;
-
-    margin-bottom:25px;
-
-}
-/* ==========================================================
-   PART 3
-   AI ANALYTICS + CHARTS + QUICK ACTIONS + FOOTER
-==========================================================*/
-
-/* ================= ANALYTICS ================= */
-
-.analytics-grid{
-
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:24px;
-    margin:35px 0;
-
-}
-
-.analytics-card{
-
-    background:linear-gradient(180deg,#182744,#111d34);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:22px;
-    padding:28px;
-    transition:.35s;
-
-}
-
-.analytics-card:hover{
-
-    transform:translateY(-6px);
-    box-shadow:0 18px 40px rgba(0,0,0,.30);
-
-}
-
-.analytics-header{
-
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-bottom:22px;
-
-}
-
-.analytics-header i{
-
-    width:52px;
-    height:52px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:16px;
-
-    font-size:20px;
-
-    color:#fff;
-
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-
-}
-
-.analytics-header h3{
-
-    color:#fff;
-    font-size:20px;
-
-}
-
-.analytics-body p{
-
-    color:#9fb4d8;
-    line-height:1.7;
-    margin-top:14px;
-
-}
-
-.progress-large{
-
-    width:100%;
-    height:12px;
-
-    background:#24395d;
-
-    border-radius:40px;
-    overflow:hidden;
-
-    margin-bottom:18px;
-
-}
-
-.progress-large-fill{
-
-    height:100%;
-    border-radius:40px;
-
-    background:linear-gradient(90deg,#5B7CFF,#7B61FF);
-
-}
-
-.security-status{
-
-    display:inline-flex;
-
-    align-items:center;
-    gap:10px;
-
-    padding:12px 18px;
-
-    border-radius:30px;
-
-    font-weight:600;
-
-}
-
-.security-status.safe{
-
-    background:rgba(0,230,118,.12);
-    color:#2EEA84;
-
-}
-
-/* ================= CHARTS ================= */
-
-.charts-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
-
-    gap:24px;
-
-    margin:40px 0;
-
-}
-
-.chart-card{
-
-    background:linear-gradient(180deg,#182744,#101b31);
-
-    border-radius:22px;
-
-    padding:26px;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    transition:.35s;
-
-}
-
-.chart-card:hover{
-
-    transform:translateY(-6px);
-
-}
-
-.chart-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:22px;
-
-}
-
-.chart-header h3{
-
-    color:white;
-
-    font-size:20px;
-
-}
-
-.chart-header span{
-
-    color:#89a9df;
-
-    font-size:14px;
-
-}
-
-.chart-card canvas{
-
-    width:100%!important;
-
-    height:320px!important;
-
-}
-
-/* ================= QUICK ACTIONS ================= */
-
-.quick-actions{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-
-    gap:20px;
-
-    margin:40px 0;
-
-}
-
-.action-card{
-
-    background:linear-gradient(180deg,#182744,#13213b);
-
-    border-radius:20px;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    padding:26px;
-
-    text-decoration:none;
-
-    color:white;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:16px;
-
-    transition:.35s;
-
-}
-
-.action-card:hover{
-
-    transform:translateY(-8px);
-
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-
-}
-
-.action-card i{
-
-    font-size:30px;
-
-}
-
-.action-card span{
-
-    font-size:17px;
-
-    font-weight:600;
-
-}
-
-/* ================= FOOTER ================= */
-
-.footer-banner{
-
-    margin:45px 0;
-
-    padding:28px 34px;
-
-    border-radius:24px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    flex-wrap:wrap;
-
-    gap:20px;
-
-    background:linear-gradient(135deg,#1A2C4A,#243F72);
-
-    border:1px solid rgba(255,255,255,.08);
-
-}
-
-.footer-left{
-
-    display:flex;
-
-    gap:18px;
-
-    align-items:center;
-
-}
-
-.footer-left i{
-
-    width:65px;
-
-    height:65px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:18px;
-
-    font-size:28px;
-
-    color:white;
-
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-
-}
-
-.footer-left h3{
-
-    color:white;
-
-    margin-bottom:6px;
-
-}
-
-.footer-left p{
-
-    color:#AFC5EA;
-
-}
-
-.footer-right .btn-primary{
-
-    min-width:180px;
-
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:992px){
-
-    .charts-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-}
-
-@media(max-width:768px){
-
-    .footer-banner{
-
-        flex-direction:column;
-        text-align:center;
-
-    }
-
-    .footer-left{
-
-        flex-direction:column;
-
-    }
-
-    .quick-actions{
-
-        grid-template-columns:1fr 1fr;
-
-    }
-
-}
-
-@media(max-width:520px){
-
-    .quick-actions{
-
-        grid-template-columns:1fr;
-
-    }
-
-}
-/* ==========================================================
-   PART 4
-   PREMIUM FINISHING + ANIMATIONS + SCROLLBAR
-==========================================================*/
-
-/* ========= Smooth Animation ========= */
-
-.summary-card,
-.analytics-card,
-.chart-card,
-.action-card,
-.table-card,
-.filter-bar,
-.page-header,
-.footer-banner{
-
-    transition:
-        transform .35s ease,
-        box-shadow .35s ease,
-        border-color .35s ease,
-        background .35s ease;
-
-}
-
-/* ========= Hover Glow ========= */
-
-.summary-card:hover,
-.analytics-card:hover,
-.chart-card:hover{
-
-    border-color:rgba(91,124,255,.35);
-
-    box-shadow:
-        0 18px 45px rgba(91,124,255,.18),
-        0 10px 25px rgba(0,0,0,.35);
-
-}
-
-/* ========= Floating Icons ========= */
-
-.summary-card .icon{
-
-    transition:.35s;
-
-}
-
-.summary-card:hover .icon{
-
-    transform:rotate(-8deg) scale(1.1);
-
-}
-
-/* ========= Counter ========= */
-
-.counter{
-
-    font-variant-numeric:tabular-nums;
-
-}
-
-/* ========= Table ========= */
-
-.transaction-table tbody tr{
-
-    position:relative;
-
-}
-
-.transaction-table tbody tr::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    height:1px;
-
-    background:rgba(255,255,255,.05);
-
-}
-
-/* ========= View Button ========= */
-
-.view-btn{
-
-    overflow:hidden;
-
-    position:relative;
-
-}
-
-.view-btn::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:-100%;
-
-    width:100%;
-    height:100%;
-
-    background:
-
-    linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,.35),
-        transparent);
-
-    transition:.6s;
-
-}
-
-.view-btn:hover::before{
-
-    left:100%;
-
-}
-
-/* ========= Buttons ========= */
-
-.btn-primary,
-.btn-outline,
-.icon-btn{
-
-    transition:.3s;
-
-}
-
-.btn-primary:active,
-.btn-outline:active,
-.icon-btn:active{
-
-    transform:scale(.96);
-
-}
-
-/* ========= Inputs ========= */
-
-input,
-select{
-
-    transition:.3s;
-
-}
-
-input:focus,
-select:focus{
-
-    outline:none;
-
-}
-
-/* ========= Cards ========= */
-
-.analytics-card::before,
-.summary-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:3px;
-
-    background:
-
-    linear-gradient(
-        90deg,
-        #5B7CFF,
-        #00D4FF,
-        #7B61FF);
-
-}
-
-/* ========= Glass ========= */
-
-.chart-card,
-.analytics-card,
-.summary-card{
-
-    backdrop-filter:blur(20px);
-
-}
-
-/* ========= Scrollbar ========= */
-
-::-webkit-scrollbar{
-
-    width:10px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:#101c32;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:#5B7CFF;
-
-    border-radius:50px;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-    background:#7B61FF;
-
-}
-
-/* ========= Selection ========= */
-
-::selection{
-
-    background:#5B7CFF;
-
-    color:white;
-
-}
-
-/* ========= Fade ========= */
-
-@keyframes slideUp{
-
-    from{
-
-        opacity:0;
-        transform:translateY(30px);
-
-    }
-
-    to{
-
-        opacity:1;
-        transform:none;
-
-    }
-
-}
-
-.page-header{
-
-    animation:slideUp .5s ease;
-
-}
-
-.summary-card{
-
-    animation:slideUp .6s ease;
-
-}
-
-.table-card{
-
-    animation:slideUp .7s ease;
-
-}
-
-.analytics-card{
-
-    animation:slideUp .8s ease;
-
-}
-
-.chart-card{
-
-    animation:slideUp .9s ease;
-
-}
-
-.quick-actions{
-
-    animation:slideUp 1s ease;
-
-}
-
-.footer-banner{
-
-    animation:slideUp 1.1s ease;
-
-}
-
-/* ========= Responsive ========= */
-
-@media(max-width:1200px){
-
-    .page-header{
-
-        flex-direction:column;
-        align-items:flex-start;
-
-    }
-
-    .header-right{
-
-        width:100%;
-        justify-content:flex-start;
-
-    }
-
-}
-
-@media(max-width:768px){
-
-    .transactions-page{
-
-        padding:18px;
-
-    }
-
-    .summary-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .search-box{
-
-        width:100%;
-
-    }
-
-    .filter-group{
-
-        width:100%;
-
-    }
-
-    .filter-item{
-
-        flex:1;
-
-    }
-
-    .transaction-table{
-
-        display:block;
-        overflow-x:auto;
-
-    }
-
-}
-
-@media(max-width:500px){
-
-    .page-header h1{
-
-        font-size:34px;
-
-    }
-
-    .summary-card h2{
-
-        font-size:34px;
-
-    }
-
-    .btn-primary{
-
-        width:100%;
-        justify-content:center;
-
-    }
-
-}
-.sidebar nav a{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 18px;
-    margin:8px 14px;
-    border-radius:14px;
-    color:#AFC5EA;
-    text-decoration:none;
-    transition:.3s;
-}
-
-.sidebar nav a:hover{
-    background:#1B2C4F;
-    color:#fff;
-}
-
-.sidebar nav a.active{
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-    color:#fff;
-    box-shadow:0 8px 20px rgba(91,124,255,.35);
-}
-.sidebar nav a.active{
-    background:linear-gradient(135deg,#4F7CFF,#7B61FF);
-    color:#fff;
-    border-left:4px solid #00D4FF;
-}
-/* ===========================
-   PREMIUM TRANSACTION TABLE
-=========================== */
-
-.table-card{
-    background:rgba(18,26,46,.85);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 20px 40px rgba(0,0,0,.35);
-    backdrop-filter:blur(18px);
-    margin-top:15px;
-}
-
-.transaction-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.transaction-table thead{
-    background:linear-gradient(90deg,#23395d,#16233c);
-}
-
-.transaction-table thead th{
-    color:#fff;
-    padding:18px;
-    text-align:left;
-    font-size:14px;
-    font-weight:600;
-    letter-spacing:.5px;
-    position:sticky;
-    top:0;
-    z-index:5;
-}
-
-.transaction-table tbody tr{
-    transition:.3s;
-    border-bottom:1px solid rgba(255,255,255,.05);
-}
-
-.transaction-table tbody tr:hover{
-    background:rgba(91,124,255,.08);
-    transform:scale(1.005);
-}
-
-.transaction-table td{
-    padding:18px;
-    color:#dbe7ff;
-    vertical-align:middle;
-}
-
-/* Merchant */
-
-.merchant-cell{
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
-
-.merchant-avatar{
-    width:48px;
-    height:48px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    color:#fff;
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-    box-shadow:0 10px 20px rgba(91,124,255,.35);
-}
-
-.merchant-cell h4{
-    margin:0;
-    color:#fff;
-    font-size:15px;
-}
-
-.merchant-cell p{
-    margin:4px 0 0;
-    color:#8ca6d8;
-    font-size:12px;
-}
-
-/* Amount */
-
-.amount{
-    color:#00E676;
-    font-size:16px;
-    font-weight:700;
-}
-
-/* Card */
-
-.card-chip{
-    display:inline-block;
-    padding:8px 14px;
-    border-radius:999px;
-    background:#24385c;
-    color:#dce8ff;
-    font-size:12px;
-}
-
-/* Risk */
-
-.risk-wrapper{
-    min-width:120px;
-}
-
-.risk-progress{
-    height:8px;
-    background:#1d2d49;
-    border-radius:999px;
-    overflow:hidden;
-    margin-bottom:8px;
-}
-
-.risk-fill{
-    height:100%;
-    border-radius:999px;
-    background:linear-gradient(90deg,#00D4FF,#5B7CFF,#FF5A6E);
-}
-
-/* Status */
-
-.status{
-    padding:7px 14px;
-    border-radius:999px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.status.success{
-    background:#163b28;
-    color:#45ff8d;
-}
-
-.status.warning{
-    background:#4d3d15;
-    color:#ffd54f;
-}
-
-.status.danger{
-    background:#4d1f25;
-    color:#ff6b81;
-}
-
-/* Prediction */
-
-.prediction{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 14px;
-    border-radius:999px;
-    font-size:12px;
-    font-weight:600;
-}
-
-.prediction.safe{
-    background:#163b28;
-    color:#45ff8d;
-}
-
-.prediction.fraud{
-    background:#4d1f25;
-    color:#ff6b81;
-}
-
-/* View Button */
-
-.view-btn{
-    width:42px;
-    height:42px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:12px;
-    color:#fff;
-    text-decoration:none;
-    background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-    transition:.3s;
-}
-
-.view-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 25px rgba(91,124,255,.4);
-}
-/* ===========================
-   AI INSIGHTS
-=========================== */
-
-.ai-insights-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:24px;
-    margin:35px 0;
-}
-
-.insight-card{
-    background:rgba(18,26,46,.85);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    padding:25px;
-    text-align:center;
-    transition:.3s;
-}
-
-.insight-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 20px 40px rgba(0,0,0,.35);
-}
-
-.insight-icon{
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 auto 18px;
-    font-size:26px;
-    color:#fff;
-}
-
-.insight-icon.blue{
-    background:linear-gradient(135deg,#5B7CFF,#00D4FF);
-}
-
-.insight-icon.green{
-    background:linear-gradient(135deg,#22C55E,#16A34A);
-}
-
-.insight-icon.red{
-    background:linear-gradient(135deg,#EF4444,#DC2626);
-}
-
-.insight-card h2{
-    color:#fff;
-    margin:10px 0;
-    font-size:30px;
-}
-
-.insight-card h3{
-    color:#AFC5EA;
-    margin:0;
-}
-
-.insight-card p{
-    color:#8EA5D0;
-    margin-top:10px;
-    line-height:1.6;
-}
-
-@media(max-width:992px){
-    .ai-insights-grid{
-        grid-template-columns:1fr;
-    }
-}
-/* ===========================
-   ENTERPRISE CHARTS
-=========================== */
-
-.charts-grid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:25px;
-
-margin:35px 0;
-
-}
-
-.chart-card{
-
-background:rgba(18,26,46,.88);
-
-border:1px solid rgba(255,255,255,.08);
-
-border-radius:22px;
-
-padding:25px;
-
-box-shadow:0 20px 45px rgba(0,0,0,.35);
-
-backdrop-filter:blur(18px);
-
-}
-
-.chart-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:20px;
-
-}
-
-.chart-header h3{
-
-color:white;
-
-font-size:20px;
-
-margin-bottom:5px;
-
-}
-
-.chart-header span{
-
-color:#8EA5D0;
-
-font-size:14px;
-
-}
-
-.chart-header i{
-
-font-size:30px;
-
-color:#5B7CFF;
-
-}
-
-.chart-card canvas{
-
-width:100%!important;
-
-height:320px!important;
-
-}
-
-@media(max-width:992px){
-
-.charts-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-/* ===========================
-   LIVE AI MONITORING
-=========================== */
-
-.monitor-grid{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:24px;
-    margin:35px 0;
-}
-
-.monitor-card{
-    background:rgba(18,26,46,.88);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    padding:24px;
-}
-
-.monitor-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-
-.monitor-header h3{
-    color:#fff;
-}
-
-.live-badge{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:#22C55E;
-    font-weight:600;
-}
-
-.live-dot{
-    width:10px;
-    height:10px;
-    background:#22C55E;
-    border-radius:50%;
-    animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-    0%{opacity:1;transform:scale(1);}
-    50%{opacity:.5;transform:scale(1.5);}
-    100%{opacity:1;transform:scale(1);}
-}
-
-.activity-item{
-    display:flex;
-    gap:16px;
-    padding:12px 0;
-    border-bottom:1px solid rgba(255,255,255,.06);
-    color:#DCE8FF;
-}
-
-.activity-item .time{
-    color:#5B7CFF;
-    font-weight:700;
-    min-width:55px;
-}
-
-.health-item{
-    margin:20px 0;
-}
-
-.health-item span,
-.health-item strong{
-    color:#fff;
-}
-
-.health-bar{
-    height:8px;
-    background:#22314f;
-    border-radius:999px;
-    margin:10px 0;
-    overflow:hidden;
-}
-
-.health-fill{
-    height:100%;
-    background:linear-gradient(90deg,#22C55E,#00D4FF);
-    border-radius:999px;
-}
-
-@media(max-width:992px){
-    .monitor-grid{
-        grid-template-columns:1fr;
-    }
-}
-/* ===========================
-   QUICK ACTION CENTER
-=========================== */
-
-.action-center{
-    margin:40px 0;
-}
-
-.section-title{
-    margin-bottom:20px;
-}
-
-.section-title h2{
-    color:#fff;
-    font-size:28px;
-}
-
-.section-title p{
-    color:#9BB2D9;
-}
-
-.action-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:22px;
-}
-
-.action-box{
-    background:rgba(18,26,46,.88);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    padding:30px;
-    text-align:center;
-    text-decoration:none;
-    color:#fff;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.action-box:hover{
-    transform:translateY(-8px);
-    box-shadow:0 18px 35px rgba(91,124,255,.25);
-    border-color:#5B7CFF;
-}
-
-.action-box i{
-    font-size:36px;
-    margin-bottom:18px;
-    color:#5B7CFF;
-}
-
-.action-box h4{
-    margin-bottom:10px;
-}
-
-.action-box p{
-    color:#9BB2D9;
-    font-size:14px;
-}
-
-@media(max-width:992px){
-    .action-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:576px){
-    .action-grid{
-        grid-template-columns:1fr;
-    }
-}
-/* ===========================
-   FLOATING AI BUTTON
-=========================== */
-
-.floating-ai{
-
-position:fixed;
-
-bottom:30px;
-
-right:30px;
-
-z-index:999;
-
-}
-
-.ai-fab{
-
-width:70px;
-
-height:70px;
-
-border:none;
-
-border-radius:50%;
-
-cursor:pointer;
-
-color:white;
-
-font-size:28px;
-
-background:linear-gradient(135deg,#5B7CFF,#7B61FF);
-
-box-shadow:0 15px 35px rgba(91,124,255,.45);
-
-transition:.3s;
-
-animation:floatAI 3s infinite ease-in-out;
-
-}
-
-.ai-fab:hover{
-
-transform:scale(1.08);
-
-}
-
-@keyframes floatAI{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(-10px);
-
-}
-
-}
-/* Dashboard summary cards - 4 in one row */
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+/* =========================================================
+   FIN GUARD AI — TRANSACTIONS
+   Compact / Clean / Modern
+========================================================= */
+
+:root {
+    --navy: #10182b;
+    --navy-2: #17213a;
+    --blue: #2563eb;
+    --cyan: #38bdf8;
+    --green: #16c784;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --purple: #8b5cf6;
+    --text: #172033;
+    --muted: #7b8497;
+    --border: #e7ebf2;
+    --bg: #f6f8fc;
+    --white: #fff;
+    --shadow: 0 8px 25px rgba(15, 23, 42, .07);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.transactions-page {
     width: 100%;
-    margin-bottom: 30px;
+    max-width: 1400px;
+    margin: auto;
+    padding: 22px 28px 40px;
+    color: var(--text);
+    font-family: Inter, Arial, sans-serif;
 }
 
-.summary-card {
-    min-height: 260px;
-    padding: 28px;
-    border-radius: 22px;
+button,
+select,
+input {
+    font: inherit;
 }
 
+/* =========================================================
+   HERO
+========================================================= */
 
-/* Responsive */
-@media(max-width:1200px){
-    .summary-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(max-width:700px){
-    .summary-grid {
-        grid-template-columns: 1fr;
-    }
-}
-.summary-grid {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 20px !important;
-}
-
-.summary-card {
-    flex: 1 !important;
-}
-.summary-card{
-    min-height:180px !important;
-    padding:22px !important;
+.transaction-hero-new {
+    min-height: 285px;
+    display: grid;
+    grid-template-columns: 1.35fr .75fr;
+    gap: 30px;
+    padding: 38px 42px;
+    margin-bottom: 22px;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    color: white;
+    background:
+        radial-gradient(circle at 90% 15%, rgba(99,102,241,.28), transparent 30%),
+        linear-gradient(135deg, #111a30, #192642);
+    box-shadow: 0 16px 45px rgba(16,24,43,.15);
 }
 
-.summary-card h2{
-    font-size:42px !important;
-    margin:15px 0 5px;
+.transaction-hero-new::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(37,99,235,.10);
+    top: -100px;
+    left: 25%;
 }
 
-.summary-card h4{
-    font-size:16px;
+.transaction-hero-content,
+.transaction-ai-panel {
+    position: relative;
+    z-index: 1;
 }
 
-.summary-card p{
-    margin-top:18px;
-    font-size:14px;
+.transaction-badge {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid rgba(96,165,250,.35);
+    border-radius: 30px;
+    background: rgba(37,99,235,.12);
+    color: #b9d9ff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .7px;
 }
-.filter-card {
-    transition: all 0.3s ease;
+
+.badge-dot,
+.ai-online-dot,
+.live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #20d48a;
+    box-shadow: 0 0 8px #20d48a;
+}
+
+.transaction-hero-content h1 {
+    margin: 20px 0 10px;
+    max-width: 620px;
+    font-family: Georgia, serif;
+    font-size: clamp(38px, 4vw, 58px);
+    line-height: .98;
+    letter-spacing: -2px;
+}
+
+.transaction-hero-content h1 span {
+    display: block;
+    color: #5daeff;
+}
+
+.transaction-hero-content p {
+    max-width: 570px;
+    margin: 0 0 22px;
+    color: #aebbd0;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.transaction-hero-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.transaction-primary-action,
+.transaction-secondary-action {
+    min-width: 205px;
+    padding: 11px 13px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 13px;
+    text-decoration: none;
+    color: white;
     cursor: pointer;
+    text-align: left;
 }
 
-.filter-card:hover {
-    border-color: #6366f1;
-    box-shadow: 0 0 25px rgba(99,102,241,0.35);
+.transaction-primary-action {
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    border: 1px solid rgba(96,165,250,.5);
+}
+
+.transaction-secondary-action {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.transaction-primary-action:hover,
+.transaction-secondary-action:hover {
     transform: translateY(-2px);
 }
 
-.filter-card:active {
-    transform: scale(0.98);
-}
-.filter-wrapper {
-    padding: 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    background: rgba(20,35,70,0.7);
-    border: 1px solid rgba(99,102,241,0.2);
-}
-
-.filter-wrapper:hover {
-    background: rgba(50,60,120,0.8);
-    border: 1px solid #6366f1;
-}
-.filter-card {
-  cursor: pointer;
-  position: relative;
-  z-index: 10;
-}
-
-.filter-card:hover {
-  border: 1px solid #6366f1;
-}
-/* =========================================
-FIX LARGE SPACE ABOVE TABLE
-========================================= */
-
-
-
-
-.transaction-table{
-    margin-top: 0 !important;
-}
-
-.pagination-section{
-    margin-top: 20px !important;
-}
-
-tbody tr{
-    height: auto !important;
-}
-/* Remove extra gap between filter and table */
-
-.filter-bar{
-    margin-bottom: 12px !important;
-}
-
-
-.transaction-table{
-    margin-top: 0 !important;
-}
-
-.transaction-table tbody{
-    margin-top: 0 !important;
-}
-/* Final table-card spacing fix */
-.table-card{
-    margin-top:15px !important;
-    margin-bottom:10px !important;
-    padding-top:0 !important;
-}
-.pagination-section{
-    margin-top:5px !important;
-}
-/* =====================================================
-   FINGUARD TRANSACTION PAGE
-   REMOVE SIDE SPACE + DASHBOARD STYLE LAYOUT
-===================================================== */
-
-/* Main content ko available width properly use karvao */
-.main-content {
-    margin-left: 220px !important;
-    width: calc(100% - 220px) !important;
-    max-width: none !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    box-sizing: border-box;
-}
-
-
-/* Agar content wrapper/container hai */
-.content-wrapper,
-.page-content,
-.dashboard-content,
-.transaction-page,
-.transactions-page {
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box;
-}
-
-
-/* =====================================================
-   TRANSACTION HERO
-   SAME ROW AS DASHBOARD
-===================================================== */
-
-.transaction-hero {
-    width: 100% !important;
-    max-width: none !important;
-
-    margin: 0 0 20px 0 !important;
-
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 390px !important;
-
-    gap: 22px !important;
-
-    box-sizing: border-box;
-}
-
-
-/* LEFT HERO */
-
-.transaction-hero .hero-left {
-    width: 100% !important;
-    min-width: 0;
-}
-
-
-/* RIGHT AI STATUS */
-
-.transaction-hero .hero-right {
-    width: 100% !important;
-    min-width: 0;
-}
-
-
-/* STATUS CARD */
-
-.transaction-hero .status-card {
-    width: 100% !important;
-    height: 100% !important;
-    min-height: 300px;
-
-    box-sizing: border-box;
-}
-
-
-/* =====================================================
-   SEARCH BAR
-===================================================== */
-
-.transaction-toolbar {
-    width: 100% !important;
-    max-width: none !important;
-
-    margin: 0 0 22px 0 !important;
-
-    display: flex !important;
-    align-items: center !important;
-
-    gap: 12px !important;
-
-    box-sizing: border-box;
-}
-
-
-/* Search should take available space */
-
-.transaction-search {
-    flex: 1 !important;
-    width: auto !important;
-}
-
-
-/* =====================================================
-   KPI SECTION
-===================================================== */
-
-.transaction-kpis {
-    width: 100% !important;
-    max-width: none !important;
-
-    display: grid !important;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr)) !important;
-
-    gap: 18px !important;
-
-    margin: 0 0 22px 0 !important;
-}
-
-
-/* =====================================================
-   TRANSACTION TABLE
-===================================================== */
-
-.transaction-panel {
-    width: 100% !important;
-    max-width: none !important;
-
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-
-    box-sizing: border-box;
-}
-
-
-/* =====================================================
-   CHARTS
-===================================================== */
-
-.analytics-grid {
-    width: 100% !important;
-    max-width: none !important;
-
-    display: grid !important;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr)) !important;
-
-    gap: 20px !important;
-}
-
-
-/* =====================================================
-   MONITORING
-===================================================== */
-
-.monitoring-grid {
-    width: 100% !important;
-    max-width: none !important;
-
-    display: grid !important;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr)) !important;
-
-    gap: 20px !important;
-}
-
-
-/* =====================================================
-   AI INSIGHTS
-===================================================== */
-
-.ai-insights-grid {
-    width: 100% !important;
-    max-width: none !important;
-
-    display: grid !important;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr)) !important;
-
-    gap: 18px !important;
-}
-
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width: 1100px) {
-
-    .transaction-hero {
-        grid-template-columns: 1fr !important;
-    }
-
-    .transaction-kpis {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    .analytics-grid {
-        grid-template-columns: 1fr !important;
-    }
-
-    .ai-insights-grid {
-        grid-template-columns:
-            1fr 1fr !important;
-    }
-
-}
-
-
-@media (max-width: 700px) {
-
-    .main-content {
-        margin-left: 0 !important;
-        width: 100% !important;
-        padding: 15px !important;
-    }
-
-    .transaction-kpis {
-        grid-template-columns: 1fr !important;
-    }
-
-    .ai-insights-grid {
-        grid-template-columns: 1fr !important;
-    }
-
-    .monitoring-grid {
-        grid-template-columns: 1fr !important;
-    }
-
-    .transaction-toolbar {
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
-
-}
-/* =====================================================
-   FIN GUARD - REMOVE INNER CONTENT SPACE
-   ===================================================== */
-
-main {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-}
-
-
-/* Main page wrapper */
-main > div,
-main .content,
-main .page-content,
-main .main-content,
-main .content-wrapper,
-main .dashboard-content,
-main .dashboard-container,
-main .transaction-container,
-main .transactions-container {
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box !important;
-}
-
-
-/* Remove horizontal padding creating the gap */
-main .content,
-main .page-content,
-main .main-content,
-main .content-wrapper,
-main .dashboard-content,
-main .dashboard-container,
-main .transaction-container,
-main .transactions-container {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-
-/* Transaction hero */
-.transaction-hero {
-    width: 100% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-
-/* Toolbar */
-.transaction-toolbar {
-    width: 100% !important;
-    max-width: none !important;
-}
-
-
-/* KPI */
-.transaction-kpis {
-    width: 100% !important;
-    max-width: none !important;
-}
-
-
-/* Table */
-.transaction-panel {
-    width: 100% !important;
-    max-width: none !important;
-}
-
-
-/* Charts */
-.analytics-grid,
-.ai-insights-grid,
-.monitoring-grid {
-    width: 100% !important;
-    max-width: none !important;
-}
-.sidebar {
-    width: 270px;
-    min-width: 270px;
-}
-
-/* Sidebar ke andar content properly align rahe */
-.sidebar-menu,
-.sidebar-nav {
-    width: 100%;
-}
-
-/* Main content sidebar ke according adjust ho */
-.main-content {
-    margin-left: 270px;
-}
-/* =====================================================
-   PART 2 — PREMIUM KPI CARDS
-===================================================== */
-
-.transaction-kpis {
-
+.action-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
     display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 18px;
-
-    width: 100%;
-
-    margin: 0 0 24px;
-
+    place-items: center;
+    border-radius: 9px;
+    background: rgba(255,255,255,.13);
 }
 
-
-/* ===============================
-   MAIN CARD
-================================ */
-
-.transaction-kpi-card {
-
-    position: relative;
-
-    min-height: 205px;
-
-    padding: 22px;
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, .92),
-            rgba(2, 8, 23, .96)
-        );
-
-    border: 1px solid
-        rgba(0, 212, 255, .16);
-
-    box-shadow:
-
-        0 15px 40px
-        rgba(0, 0, 0, .25),
-
-        inset 0 0 25px
-        rgba(0, 212, 255, .025);
-
-    overflow: hidden;
-
-    transition:
-        transform .3s ease,
-        border-color .3s ease,
-        box-shadow .3s ease;
-
+.transaction-hero-actions strong {
+    display: block;
+    font-size: 12px;
 }
 
-
-/* TOP GLOW LINE */
-
-.transaction-kpi-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00d4ff,
-            #3b82f6,
-            transparent
-        );
-
-    opacity: .85;
-
-}
-
-
-/* BACKGROUND GLOW */
-
-.transaction-kpi-card::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 120px;
-    height: 120px;
-
-    right: -55px;
-    bottom: -65px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(0, 212, 255, .07);
-
-    filter: blur(25px);
-
-    pointer-events: none;
-
-}
-
-
-/* HOVER */
-
-.transaction-kpi-card:hover {
-
-    transform: translateY(-5px);
-
-    border-color:
-        rgba(0, 212, 255, .42);
-
-    box-shadow:
-
-        0 20px 45px
-        rgba(0, 0, 0, .35),
-
-        0 0 25px
-        rgba(0, 212, 255, .08),
-
-        inset 0 0 30px
-        rgba(0, 212, 255, .04);
-
-}
-
-
-/* ===============================
-   TOP
-================================ */
-
-.kpi-card-top {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 18px;
-
-}
-
-
-/* ===============================
-   ICON
-================================ */
-
-.kpi-icon {
-
-    width: 48px;
-    height: 48px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 14px;
-
-    font-size: 20px;
-
-    color: white;
-
-    box-shadow:
-        0 8px 22px rgba(0,0,0,.25);
-
-}
-
-
-/* ICON COLORS */
-
-.kpi-icon.blue {
-
-    background:
-        linear-gradient(
-            135deg,
-            #0ea5e9,
-            #2563eb
-        );
-
-}
-
-.kpi-icon.green {
-
-    background:
-        linear-gradient(
-            135deg,
-            #22c55e,
-            #10b981
-        );
-
-}
-
-.kpi-icon.red {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ef4444,
-            #f43f5e
-        );
-
-}
-
-.kpi-icon.purple {
-
-    background:
-        linear-gradient(
-            135deg,
-            #8b5cf6,
-            #6366f1
-        );
-
-}
-
-
-/* ===============================
-   BADGES
-================================ */
-
-.kpi-live-badge {
-
-    padding: 6px 11px;
-
-    border-radius: 999px;
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: .8px;
-
-    border: 1px solid;
-
-}
-
-
-.blue-badge {
-
-    color: #38bdf8;
-
-    background:
-        rgba(14,165,233,.10);
-
-    border-color:
-        rgba(14,165,233,.25);
-
-}
-
-
-.green-badge {
-
-    color: #22c55e;
-
-    background:
-        rgba(34,197,94,.10);
-
-    border-color:
-        rgba(34,197,94,.25);
-
-}
-
-
-.red-badge {
-
-    color: #fb7185;
-
-    background:
-        rgba(244,63,94,.10);
-
-    border-color:
-        rgba(244,63,94,.25);
-
-}
-
-
-.purple-badge {
-
-    color: #a78bfa;
-
-    background:
-        rgba(139,92,246,.10);
-
-    border-color:
-        rgba(139,92,246,.25);
-
-}
-
-
-/* ===============================
-   CONTENT
-================================ */
-
-.kpi-content {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-}
-
-
-.kpi-label {
-
-    color: #94a3b8;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-}
-
-
-.kpi-value {
-
+.transaction-hero-actions small {
+    display: block;
     margin-top: 2px;
-
-    color: #f8fafc;
-
-    font-size: 32px;
-
-    line-height: 1.1;
-
-    font-weight: 800;
-
-    letter-spacing: -.5px;
-
-    text-shadow:
-        0 0 18px
-        rgba(0,212,255,.12);
-
+    color: #aebbd0;
+    font-size: 9px;
 }
 
-
-.kpi-description {
-
-    color: #64748b;
-
-    font-size: 11px;
-
-    margin-top: 3px;
-
+.action-arrow {
+    margin-left: auto;
 }
 
-
-/* ===============================
-   BOTTOM
-================================ */
-
-.kpi-bottom {
-
-    position: absolute;
-
-    left: 22px;
-    right: 22px;
-    bottom: 17px;
-
-    padding-top: 12px;
-
-    border-top:
-        1px solid
-        rgba(148,163,184,.10);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-}
-
-
-.kpi-status {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    color: #64748b;
-
-    font-size: 10px;
-
-}
-
-
-.kpi-bottom > i {
-
-    color: #38bdf8;
-
-    font-size: 13px;
-
-}
-
-
-.danger-status {
-
-    color: #94a3b8;
-
-}
-
-
-/* ===============================
-   MINI STATUS DOT
-================================ */
-
-.status-mini-dot {
-
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    display: inline-block;
-
-    box-shadow: 0 0 8px currentColor;
-
-}
-
-
-.status-mini-dot.blue {
-
-    background: #38bdf8;
-    color: #38bdf8;
-
-}
-
-
-.status-mini-dot.green {
-
-    background: #22c55e;
-    color: #22c55e;
-
-}
-
-
-.status-mini-dot.red {
-
-    background: #ef4444;
-    color: #ef4444;
-
-}
-
-
-.status-mini-dot.purple {
-
-    background: #a78bfa;
-    color: #a78bfa;
-
-}
-
-
-/* ===============================
-   RESPONSIVE
-================================ */
-
-@media (max-width: 1100px) {
-
-    .transaction-kpis {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    .transaction-kpis {
-
-        grid-template-columns: 1fr;
-
-    }
-
-}
 /* =========================================================
-   PREMIUM SUMMARY CARDS
-   FinGuard AI
+   AI PANEL
+========================================================= */
+
+.transaction-ai-panel {
+    align-self: center;
+    padding: 20px;
+    border: 1px solid rgba(148,163,184,.22);
+    border-radius: 20px;
+    background: rgba(255,255,255,.055);
+    backdrop-filter: blur(10px);
+}
+
+.ai-panel-header,
+.ai-status,
+.ai-main-status,
+.ai-metrics,
+.ai-metric {
+    display: flex;
+    align-items: center;
+}
+
+.ai-panel-header {
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.ai-status {
+    gap: 9px;
+}
+
+.ai-status strong {
+    display: block;
+    font-size: 14px;
+}
+
+.ai-status small {
+    color: #8fa1ba;
+    font-size: 9px;
+}
+
+.ai-online-dot {
+    width: 9px;
+    height: 9px;
+}
+
+.ai-live,
+.live-badge {
+    padding: 4px 8px;
+    border-radius: 20px;
+    color: #4ade80;
+    background: rgba(34,197,94,.10);
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.ai-main-status {
+    gap: 14px;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,.10);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+.ai-main-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #6dafff;
+    border-radius: 12px;
+    color: #62a8ff;
+}
+
+.ai-label {
+    color: #75b8ff;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .6px;
+}
+
+.ai-main-content h3 {
+    margin: 4px 0;
+    font-size: 16px;
+}
+
+.ai-main-content p {
+    margin: 0;
+    color: #8fa1ba;
+    font-size: 9px;
+}
+
+.ai-metrics {
+    gap: 9px;
+    margin-top: 14px;
+}
+
+.ai-metric {
+    flex: 1;
+    gap: 8px;
+    padding: 9px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.05);
+}
+
+.metric-icon {
+    width: 27px;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    font-size: 11px;
+    background: rgba(37,99,235,.15);
+}
+
+.metric-icon.green {
+    color: #36d399;
+}
+
+.metric-icon.blue {
+    color: #60a5fa;
+}
+
+.ai-metric small,
+.ai-metric strong {
+    display: block;
+}
+
+.ai-metric small {
+    color: #8fa1ba;
+    font-size: 7px;
+}
+
+.ai-metric strong {
+    font-size: 8px;
+}
+
+/* =========================================================
+   SUMMARY CARDS
 ========================================================= */
 
 .summary-grid {
-
-    position: relative;
-
     display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 18px;
-
-    width: 100%;
-
-    margin-top: 22px;
-
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
 }
-
-
-/* =========================================================
-   CARD
-========================================================= */
 
 .summary-card {
-
     position: relative;
-
-    min-height: 215px;
-
-    padding: 22px;
-
-    border-radius: 22px;
-
     overflow: hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, .94),
-            rgba(3, 8, 23, .98)
-        ) !important;
-
-    border:
-        1px solid
-        rgba(56, 189, 248, .14) !important;
-
-    box-shadow:
-
-        0 15px 35px
-        rgba(0, 0, 0, .28),
-
-        inset 0 1px 0
-        rgba(255,255,255,.035),
-
-        inset 0 0 35px
-        rgba(0, 212, 255, .025);
-
-    transition:
-        transform .3s ease,
-        border-color .3s ease,
-        box-shadow .3s ease;
-
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: white;
+    box-shadow: var(--shadow);
 }
 
-
-/* TOP ENERGY LINE */
-
-.summary-card::before {
-
+.summary-card::after {
     content: "";
-
     position: absolute;
-
-    top: 0;
-    left: 12%;
-
-    width: 76%;
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00d4ff,
-            #3b82f6,
-            transparent
-        );
-
-    opacity: .9;
-
-}
-
-
-/* SOFT INTERNAL GLOW */
-
-.card-glow {
-
-    position: absolute;
-
-    width: 150px;
-    height: 150px;
-
-    right: -70px;
-    bottom: -80px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(0, 212, 255, .10);
-
-    filter: blur(35px);
-
+    inset: 0;
     pointer-events: none;
-
+    opacity: .07;
 }
 
+.summary-card.blue::after { background: #2563eb; }
+.summary-card.green::after { background: #16c784; }
+.summary-card.red::after { background: #ef4444; }
+.summary-card.purple::after { background: #8b5cf6; }
 
-/* =========================================================
-   HOVER
-========================================================= */
-
-.summary-card:hover {
-
-    transform: translateY(-6px);
-
-    border-color:
-        rgba(0, 212, 255, .42) !important;
-
-    box-shadow:
-
-        0 22px 45px
-        rgba(0, 0, 0, .38),
-
-        0 0 28px
-        rgba(0, 212, 255, .08),
-
-        inset 0 0 35px
-        rgba(0, 212, 255, .045);
-
-}
-
-
-/* =========================================================
-   TOP AREA
-========================================================= */
-
-.summary-card .card-top {
-
-    position: relative;
-    z-index: 2;
-
+.card-top,
+.card-label-row,
+.card-footer,
+.pagination-section,
+.chart-header,
+.monitor-header,
+.health-item {
     display: flex;
-
     align-items: center;
+}
 
+.card-top,
+.card-footer,
+.pagination-section,
+.chart-header,
+.monitor-header {
     justify-content: space-between;
-
-    margin-bottom: 14px;
-
 }
 
-
-/* =========================================================
-   ICON
-========================================================= */
-
-.summary-card .icon {
-
-    width: 48px;
-    height: 48px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 14px;
-
-    color: #fff;
-
-    font-size: 19px;
-
-    box-shadow:
-        0 8px 22px
-        rgba(0,0,0,.28);
-
+.card-top .icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    font-size: 15px;
 }
-
-
-/* Blue */
 
 .summary-card.blue .icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #06b6d4,
-            #2563eb
-        );
-
+    color: #2563eb;
+    background: #eaf2ff;
 }
-
-
-/* Green */
 
 .summary-card.green .icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #22c55e,
-            #059669
-        );
-
+    color: #16a36d;
+    background: #e9fbf3;
 }
-
-
-/* Red */
 
 .summary-card.red .icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ef4444,
-            #e11d48
-        );
-
+    color: #ef4444;
+    background: #fff0f0;
 }
-
-
-/* Purple */
 
 .summary-card.purple .icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #8b5cf6,
-            #6366f1
-        );
-
+    color: #8b5cf6;
+    background: #f3efff;
 }
 
-
-/* =========================================================
-   TREND BADGES
-========================================================= */
-
-.summary-card .trend {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    padding: 7px 11px;
-
-    border-radius: 999px;
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: .5px;
-
-    background:
-        rgba(255,255,255,.045);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
+.trend {
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
 }
 
+.trend.positive {
+    color: #0c9b68;
+    background: #eafaf3;
+}
 
-/* =========================================================
-   CATEGORY ROW
-========================================================= */
+.trend.negative {
+    color: #dc2626;
+    background: #fff0f0;
+}
+
+.trend.warning {
+    color: #7c3aed;
+    background: #f2edff;
+}
 
 .card-label-row {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 10px;
-
-    margin-bottom: 6px;
-
+    gap: 8px;
+    margin-top: 15px;
 }
-
 
 .card-category {
-
-    color: #475569;
-
+    margin-left: auto;
+    color: #9aa3b3;
     font-size: 8px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
+    font-weight: 700;
+    letter-spacing: .4px;
 }
-
-
-/* =========================================================
-   LIVE INDICATOR
-========================================================= */
 
 .live-indicator {
-
-    display: inline-flex;
-
+    display: flex;
     align-items: center;
-
-    gap: 6px;
-
-    color: #38bdf8;
-
-    font-size: 9px;
-
+    gap: 5px;
+    color: #2563eb;
+    font-size: 8px;
     font-weight: 800;
-
-    letter-spacing: .7px;
-
 }
 
-
-.live-indicator > span {
-
-    width: 6px;
-    height: 6px;
-
+.live-indicator span {
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-
-    background: #38bdf8;
-
-    box-shadow:
-        0 0 10px #38bdf8;
-
-    animation:
-        summaryPulse 1.7s infinite;
-
+    background: currentColor;
 }
 
-
-.green-live {
-
-    color: #22c55e;
-
-}
-
-
-.green-live > span {
-
-    background: #22c55e;
-
-    box-shadow:
-        0 0 10px #22c55e;
-
-}
-
-
-.red-live {
-
-    color: #fb7185;
-
-}
-
-
-.red-live > span {
-
-    background: #fb7185;
-
-    box-shadow:
-        0 0 10px #fb7185;
-
-}
-
-
-.purple-live {
-
-    color: #a78bfa;
-
-}
-
-
-.purple-live > span {
-
-    background: #a78bfa;
-
-    box-shadow:
-        0 0 10px #a78bfa;
-
-}
-
-
-/* =========================================================
-   NUMBER
-========================================================= */
+.green-live { color: #16a36d; }
+.red-live { color: #ef4444; }
+.purple-live { color: #8b5cf6; }
 
 .summary-card h2 {
-
-    position: relative;
-
-    z-index: 2;
-
-    margin: 4px 0 2px;
-
-    color: #f8fafc;
-
-    font-size: 34px;
-
-    line-height: 1.1;
-
-    font-weight: 800;
-
-    letter-spacing: -.7px;
-
-    text-shadow:
-        0 0 18px
-        rgba(56,189,248,.12);
-
+    margin: 8px 0 1px;
+    font-size: 29px;
+    letter-spacing: -.8px;
 }
-
-
-/* TITLE */
 
 .summary-card h4 {
-
-    position: relative;
-
-    z-index: 2;
-
-    margin: 0;
-
-    color: #cbd5e1;
-
-    font-size: 13px;
-
+    margin: 0 0 12px;
+    color: #667085;
+    font-size: 11px;
     font-weight: 600;
-
 }
 
+.mini-progress,
+.risk-progress,
+.health-bar {
+    overflow: hidden;
+    height: 5px;
+    border-radius: 10px;
+    background: #edf0f5;
+}
+
+.mini-fill,
+.risk-fill,
+.health-fill {
+    height: 100%;
+    border-radius: inherit;
+}
+
+.mini-fill.blue { background: #2563eb; }
+.mini-fill.green { background: #16c784; }
+.mini-fill.red { background: #ef4444; }
+.mini-fill.purple { background: #8b5cf6; }
+
+.card-footer {
+    margin-top: 13px;
+}
+
+.card-footer small {
+    color: #8b94a5;
+    font-size: 8px;
+}
+
+.card-arrow {
+    color: #a2aaba;
+    font-size: 10px;
+}
 
 /* =========================================================
-   PROGRESS
+   FILTER
 ========================================================= */
 
-.summary-card .mini-progress {
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: white;
+    box-shadow: var(--shadow);
+}
 
+.filter-group,
+.filter-buttons {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 11px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: #697386;
+    background: #fafbfc;
+}
+
+.filter-item i {
+    font-size: 11px;
+}
+
+.filter-item select,
+.filter-item input {
+    border: 0;
+    outline: 0;
+    color: #344054;
+    background: transparent;
+    font-size: 11px;
+}
+
+.btn-primary,
+.btn-outline {
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.btn-primary {
+    border: 0;
+    color: white;
+    background: #2563eb;
+}
+
+.btn-outline {
+    border: 1px solid var(--border);
+    color: #475467;
+    background: white;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-card {
     position: relative;
+    overflow-x: auto;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: white;
+    box-shadow: var(--shadow);
+}
 
-    z-index: 2;
+.transaction-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
 
-    height: 4px;
+.transaction-table th {
+    padding: 13px 14px;
+    color: #8992a3;
+    background: #fafbfc;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
 
-    margin-top: 15px;
+.transaction-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 11px;
+}
 
+.transaction-row:hover {
+    background: #f8faff;
+}
+
+.txn-id {
+    color: #7c8798;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.merchant-cell {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.merchant-avatar {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 9px;
+    color: #2563eb;
+    background: #eaf2ff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.merchant-cell h4,
+.merchant-cell p {
+    margin: 0;
+}
+
+.merchant-cell h4 {
+    font-size: 11px;
+}
+
+.merchant-cell p {
+    margin-top: 2px;
+    color: #9aa2b1;
+    font-size: 8px;
+}
+
+.amount {
+    font-weight: 800;
+}
+
+.location {
+    color: #667085;
+    white-space: nowrap;
+}
+
+.location i {
+    color: #2563eb;
+    margin-right: 4px;
+}
+
+.card-chip {
+    padding: 4px 7px;
+    border-radius: 6px;
+    color: #667085;
+    background: #f1f3f7;
+    font-size: 8px;
+}
+
+.risk-wrapper {
+    min-width: 90px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.risk-progress {
+    width: 55px;
+}
+
+.risk-fill {
+    background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444);
+}
+
+.risk-wrapper span {
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 8px;
     border-radius: 20px;
+    font-size: 8px;
+    font-weight: 800;
+}
 
+.status.success {
+    color: #0b9463;
+    background: #e9fbf3;
+}
+
+.status.warning {
+    color: #b77900;
+    background: #fff7df;
+}
+
+.status.danger {
+    color: #dc2626;
+    background: #fff0f0;
+}
+
+.view-btn {
+    width: 29px;
+    height: 29px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    color: #2563eb;
+    background: #edf4ff;
+    text-decoration: none;
+}
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.pagination-section {
+    margin: 13px 0 25px;
+}
+
+.pagination-info {
+    color: #8a93a3;
+    font-size: 10px;
+}
+
+.pagination-info strong {
+    color: #344054;
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+}
+
+.page-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: white;
+    color: #667085;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.page-btn.active {
+    border-color: #2563eb;
+    color: white;
+    background: #2563eb;
+}
+
+/* =========================================================
+   INSIGHTS / CHARTS
+========================================================= */
+
+.ai-insights-grid,
+.charts-grid,
+.monitor-grid,
+.analytics-grid,
+.action-grid,
+.quick-actions {
+    display: grid;
+    gap: 15px;
+}
+
+.ai-insights-grid {
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 18px;
+}
+
+.insight-card,
+.chart-card,
+.monitor-card,
+.analytics-card {
+    padding: 17px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: white;
+    box-shadow: var(--shadow);
+}
+
+.insight-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    margin-bottom: 11px;
+}
+
+.insight-icon.blue {
+    color: #2563eb;
+    background: #eaf2ff;
+}
+
+.insight-icon.green {
+    color: #16a36d;
+    background: #e9fbf3;
+}
+
+.insight-icon.red {
+    color: #ef4444;
+    background: #fff0f0;
+}
+
+.insight-card h3 {
+    margin: 0;
+    color: #667085;
+    font-size: 11px;
+}
+
+.insight-card h2 {
+    margin: 5px 0;
+    font-size: 23px;
+}
+
+.insight-card p {
+    margin: 0;
+    color: #929aaa;
+    font-size: 9px;
+}
+
+.charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 18px;
+}
+
+.chart-header {
+    margin-bottom: 12px;
+}
+
+.chart-header h3 {
+    margin: 0;
+    font-size: 13px;
+}
+
+.chart-header span {
+    color: #9aa2b1;
+    font-size: 9px;
+}
+
+.chart-header > i {
+    color: #2563eb;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 220px !important;
+}
+
+/* =========================================================
+   MONITOR
+========================================================= */
+
+.monitor-grid {
+    grid-template-columns: 1.2fr 1fr;
+    margin-bottom: 18px;
+}
+
+.monitor-header {
+    margin-bottom: 14px;
+}
+
+.monitor-header h3 {
+    margin: 0;
+    font-size: 13px;
+}
+
+.monitor-header h3 i {
+    color: #2563eb;
+    margin-right: 6px;
+}
+
+.activity-list {
+    display: grid;
+    gap: 7px;
+}
+
+.activity-item {
+    display: flex;
+    gap: 12px;
+    padding: 9px;
+    border-radius: 8px;
+    color: #667085;
+    background: #f8faff;
+    font-size: 10px;
+}
+
+.activity-item .time {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.health-item {
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 10px;
+}
+
+.health-item > span {
+    width: 65px;
+}
+
+.health-bar {
+    flex: 1;
+}
+
+.health-fill {
+    background: #2563eb;
+}
+
+.health-item strong {
+    width: 30px;
+    text-align: right;
+    font-size: 9px;
+}
+
+/* =========================================================
+   ACTION CENTER
+========================================================= */
+
+.action-center {
+    margin-bottom: 18px;
+}
+
+.section-title {
+    margin-bottom: 12px;
+}
+
+.section-title h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.section-title p {
+    margin: 3px 0 0;
+    color: #929aaa;
+    font-size: 10px;
+}
+
+.action-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.action-box {
+    padding: 17px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: white;
+    color: var(--text);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: .2s ease;
+}
+
+.action-box:hover {
+    transform: translateY(-3px);
+    border-color: #bfd5ff;
+}
+
+.action-box > i {
+    color: #2563eb;
+    font-size: 17px;
+}
+
+.action-box h4 {
+    margin: 11px 0 3px;
+    font-size: 11px;
+}
+
+.action-box p {
+    margin: 0;
+    color: #929aaa;
+    font-size: 9px;
+}
+
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+.analytics-grid {
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 18px;
+}
+
+.analytics-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.analytics-header i {
+    color: #2563eb;
+}
+
+.analytics-header h3 {
+    margin: 0;
+    font-size: 13px;
+}
+
+.analytics-body {
+    margin-top: 18px;
+}
+
+.progress-large {
+    height: 7px;
     overflow: hidden;
-
-    background:
-        rgba(148,163,184,.10);
-
+    border-radius: 10px;
+    background: #edf0f5;
 }
 
-
-.summary-card .mini-fill {
-
+.progress-large-fill {
     height: 100%;
-
     border-radius: inherit;
-
-    position: relative;
-
+    background: linear-gradient(90deg, #2563eb, #8b5cf6);
 }
 
-
-.summary-card .mini-fill::after {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    right: 0;
-
-    width: 35px;
-    height: 100%;
-
-    background:
-        rgba(255,255,255,.45);
-
-    filter: blur(5px);
-
+.analytics-body h2 {
+    margin: 10px 0 4px;
+    font-size: 25px;
 }
 
+.analytics-body p {
+    margin: 0;
+    color: #929aaa;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.security-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 13px;
+    color: #0b9463;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   QUICK LINKS
+========================================================= */
+
+.quick-actions {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 18px;
+}
+
+.action-card {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: white;
+    color: #344054;
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    font-size: 10px;
+}
+
+.action-card i {
+    color: #2563eb;
+}
 
 /* =========================================================
    FOOTER
 ========================================================= */
 
-.card-footer {
-
-    position: absolute;
-
-    left: 22px;
-    right: 22px;
-    bottom: 16px;
-
+.footer-banner {
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
-    padding-top: 11px;
-
-    border-top:
-        1px solid
-        rgba(148,163,184,.09);
-
+    gap: 20px;
+    padding: 18px 20px;
+    border-radius: 15px;
+    color: white;
+    background: linear-gradient(135deg, #111a30, #1c2946);
 }
 
-
-.card-footer small {
-
+.footer-left {
     display: flex;
-
     align-items: center;
-
-    gap: 7px;
-
-    color: #64748b;
-
-    font-size: 10px;
-
+    gap: 12px;
 }
 
-
-.card-footer small i {
-
-    color: #38bdf8;
-
+.footer-left > i {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: #60a5fa;
+    background: rgba(37,99,235,.15);
 }
 
-
-.card-arrow {
-
-    color: #475569;
-
-    font-size: 11px;
-
-    transition:
-        transform .25s ease,
-        color .25s ease;
-
+.footer-left h3 {
+    margin: 0 0 3px;
+    font-size: 13px;
 }
 
-
-.summary-card:hover .card-arrow {
-
-    color: #38bdf8;
-
-    transform: translateX(4px);
-
+.footer-left p {
+    margin: 0;
+    color: #9baac0;
+    font-size: 9px;
 }
-
 
 /* =========================================================
-   PULSE
+   EMPTY STATE
 ========================================================= */
 
-@keyframes summaryPulse {
-
-    0% {
-
-        opacity: 1;
-
-        transform: scale(1);
-
-    }
-
-    50% {
-
-        opacity: .45;
-
-        transform: scale(.75);
-
-    }
-
-    100% {
-
-        opacity: 1;
-
-        transform: scale(1);
-
-    }
-
+.empty-state {
+    padding: 50px 20px;
+    text-align: center;
 }
 
+.empty-state > i {
+    color: #aab3c2;
+    font-size: 30px;
+}
+
+.empty-state h2 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.empty-state p {
+    margin: 0 0 15px;
+    color: #929aaa;
+    font-size: 10px;
+}
+
+/* =========================================================
+   FLOATING AI
+========================================================= */
+
+.floating-ai {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 50;
+}
+
+.ai-fab {
+    width: 46px;
+    height: 46px;
+    border: 0;
+    border-radius: 50%;
+    color: white;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    box-shadow: 0 8px 25px rgba(37,99,235,.35);
+    cursor: pointer;
+}
+
+.ai-fab:hover {
+    transform: translateY(-3px) scale(1.04);
+}
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
 
 @media (max-width: 1100px) {
-
-    .summary-grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    .summary-grid {
-
+    .transaction-hero-new {
         grid-template-columns: 1fr;
-
     }
 
-}
-/* =========================================================
-   FINGUARD AI — PREMIUM TRANSACTION THEME
-   ONLY VISUAL UPGRADE — NO HTML/JS CHANGE
-========================================================= */
+    .transaction-ai-panel {
+        max-width: 500px;
+    }
 
-/* Main transaction area */
-.transaction-section,
-.table-card,
-.transactions-card,
-.transaction-table-wrapper {
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, 0.94),
-            rgba(2, 8, 23, 0.97)
-        ) !important;
-
-    border: 1px solid rgba(0, 212, 255, 0.16) !important;
-
-    border-radius: 20px !important;
-
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.32),
-        inset 0 1px 0 rgba(255,255,255,0.035) !important;
-
+    .action-grid,
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
+@media (max-width: 760px) {
+    .transactions-page {
+        padding: 15px;
+    }
 
-/* Search / filter area */
+    .transaction-hero-new {
+        padding: 25px 20px;
+        border-radius: 18px;
+    }
 
-.filter-bar,
-.filters,
-.transaction-filters {
+    .transaction-hero-content h1 {
+        font-size: 40px;
+    }
 
-    background:
-        rgba(15, 23, 42, 0.70) !important;
+    .transaction-hero-actions {
+        flex-direction: column;
+    }
 
-    border: 1px solid rgba(0, 212, 255, 0.10) !important;
+    .transaction-primary-action,
+    .transaction-secondary-action {
+        width: 100%;
+    }
 
-    border-radius: 14px !important;
+    .summary-grid,
+    .ai-insights-grid,
+    .charts-grid,
+    .monitor-grid,
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
 
-    box-shadow:
-        inset 0 0 25px rgba(0, 212, 255, 0.025) !important;
+    .filter-bar {
+        align-items: stretch;
+        flex-direction: column;
+    }
 
+    .filter-group,
+    .filter-buttons {
+        width: 100%;
+    }
+
+    .filter-item {
+        flex: 1;
+    }
+
+    .action-grid,
+    .quick-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-banner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }
 
+@media (max-width: 480px) {
+    .transaction-hero-content h1 {
+        font-size: 34px;
+    }
 
-/* Search input */
+    .summary-grid,
+    .action-grid,
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
 
-#searchInput {
+    .filter-group,
+    .filter-buttons {
+        flex-direction: column;
+    }
 
-    background:
-        rgba(2, 8, 23, 0.72) !important;
-
-    color: #e2f3ff !important;
-
-    border: 1px solid rgba(0, 212, 255, 0.14) !important;
-
-    border-radius: 10px !important;
-
+    .filter-item,
+    .btn-primary,
+    .btn-outline {
+        width: 100%;
+    }
 }
-
-
-#searchInput:focus {
-
-    border-color:
-        rgba(0, 212, 255, 0.50) !important;
-
-    box-shadow:
-        0 0 18px rgba(0, 212, 255, 0.10) !important;
-
-}
-
-
-/* Selects */
-
-#riskFilter,
-#dateFilter {
-
-    background:
-        rgba(2, 8, 23, 0.78) !important;
-
-    color: #cbd5e1 !important;
-
-    border: 1px solid rgba(0, 212, 255, 0.12) !important;
-
-}
-
-
-/* Apply filter */
-
-#applyFilter {
-
-    background:
-        linear-gradient(
-            135deg,
-            #0891b2,
-            #2563eb
-        ) !important;
-
-    border: 1px solid rgba(56, 189, 248, 0.35) !important;
-
-    box-shadow:
-        0 7px 22px rgba(0, 150, 255, 0.16) !important;
-
-}
-
-
-/* Reset */
-
-#resetFilter {
-
-    background:
-        rgba(15, 23, 42, 0.75) !important;
-
-    color: #94a3b8 !important;
-
-    border: 1px solid rgba(148, 163, 184, 0.12) !important;
-
-}
-
-
-/* Table */
-
-.transaction-table {
-
-    background: transparent !important;
-
-    border-collapse: separate !important;
-
-    border-spacing: 0 !important;
-
-}
-
-
-/* Table header */
-
-.transaction-table thead {
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(15, 23, 42, 0.96),
-            rgba(8, 15, 30, 0.90)
-        ) !important;
-
-}
-
-
-.transaction-table th {
-
-    color: #64748b !important;
-
-    background: transparent !important;
-
-    border-bottom:
-        1px solid rgba(0, 212, 255, 0.10) !important;
-
-    font-size: 10px !important;
-
-    letter-spacing: .7px;
-
-}
-
-
-/* Rows */
-
-.transaction-table tbody tr {
-
-    background:
-        rgba(15, 23, 42, 0.32) !important;
-
-    transition:
-        all .25s ease !important;
-
-}
-
-
-/* Premium hover */
-
-.transaction-table tbody tr:hover {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 212, 255, 0.055),
-            rgba(37, 99, 235, 0.035)
-        ) !important;
-
-    box-shadow:
-        inset 3px 0 0 #00d4ff !important;
-
-}
-
-
-/* Cells */
-
-.transaction-table td {
-
-    border-bottom:
-        1px solid rgba(148, 163, 184, 0.055) !important;
-
-    color: #cbd5e1 !important;
-
-}
-
-
-/* Transaction ID */
-
-.transaction-table td:first-child {
-
-    color: #38bdf8 !important;
-
-    font-weight: 700;
-
-}
-
-
-/* Amount */
-
-.transaction-table td:nth-child(3) {
-
-    color: #f8fafc !important;
-
-    font-weight: 700;
-
-}
-
-
-/* Risk score */
-
-.transaction-table td {
-
-    position: relative;
-
-}
-
-
-/* Premium status badges */
-
-.transaction-table .badge,
-.transaction-table .status,
-.transaction-table .risk-badge {
-
-    border-radius: 999px !important;
-
-    backdrop-filter: blur(10px);
-
-}
-
-
-/* High risk */
-
-.transaction-table .high,
-.transaction-table .risk-high {
-
-    background:
-        rgba(239, 68, 68, 0.08) !important;
-
-    border:
-        1px solid rgba(239, 68, 68, 0.20) !important;
-
-    color: #fb7185 !important;
-
-}
-
-
-/* Medium risk */
-
-.transaction-table .medium,
-.transaction-table .risk-medium {
-
-    background:
-        rgba(245, 158, 11, 0.08) !important;
-
-    border:
-        1px solid rgba(245, 158, 11, 0.20) !important;
-
-    color: #fbbf24 !important;
-
-}
-
-
-/* Low risk */
-
-.transaction-table .low,
-.transaction-table .risk-low {
-
-    background:
-        rgba(34, 197, 94, 0.08) !important;
-
-    border:
-        1px solid rgba(34, 197, 94, 0.20) !important;
-
-    color: #4ade80 !important;
-
-}
-
-
-/* Scrollbar */
-
-.transaction-table-wrapper::-webkit-scrollbar {
-
-    height: 5px;
-
-}
-
-
-.transaction-table-wrapper::-webkit-scrollbar-track {
-
-    background:
-        rgba(2, 8, 23, 0.7);
-
-}
-
-
-.transaction-table-wrapper::-webkit-scrollbar-thumb {
-
-    background:
-        linear-gradient(
-            90deg,
-            #0891b2,
-            #2563eb
-        );
-
-    border-radius: 10px;
-
-}
-
-
-/* Premium subtle top glow */
-
-.transaction-section::before,
-.table-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-
-    left: 10%;
-
-    width: 80%;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(0,212,255,.65),
-            transparent
-        );
-
-    pointer-events: none;
-
-}
-/* =========================================================
-   FINGUARD AI — PREMIUM 3D CHART SECTION
-   CSS ONLY — NO HTML / JS CHANGE
-========================================================= */
-
-.chart-card {
-
-    position: relative;
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, 0.96),
-            rgba(2, 8, 23, 0.98)
-        ) !important;
-
-    border: 1px solid
-        rgba(0, 212, 255, 0.16) !important;
-
-    border-radius: 22px !important;
-
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.38),
-        0 5px 15px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255,255,255,0.045),
-        inset 0 0 35px rgba(0,212,255,0.025) !important;
-
-    transition:
-        transform 0.35s ease,
-        box-shadow 0.35s ease,
-        border-color 0.35s ease !important;
-
-}
-
-
-/* =========================================================
-   3D HOVER
-========================================================= */
-
-.chart-card:hover {
-
-    transform:
-        translateY(-6px)
-        perspective(900px)
-        rotateX(1deg);
-
-    border-color:
-        rgba(0, 212, 255, 0.32) !important;
-
-    box-shadow:
-        0 28px 60px rgba(0,0,0,0.50),
-        0 0 28px rgba(0,212,255,0.08),
-        inset 0 1px 0 rgba(255,255,255,0.06) !important;
-
-}
-
-
-/* =========================================================
-   TOP CYAN LIGHT
-========================================================= */
-
-.chart-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 8%;
-
-    width: 84%;
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00d4ff,
-            #3b82f6,
-            transparent
-        );
-
-    box-shadow:
-        0 0 12px rgba(0,212,255,0.45);
-
-}
-
-
-/* =========================================================
-   AMBIENT 3D GLOW
-========================================================= */
-
-.chart-card::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 220px;
-    height: 220px;
-
-    right: -110px;
-    bottom: -110px;
-
+.score-circle {
+    width: 145px;
+    height: 145px;
+    flex-shrink: 0;
     border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0,212,255,0.10),
-            transparent 70%
-        );
-
-    pointer-events: none;
-
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.chart-header {
-
-    position: relative;
-    z-index: 2;
-
     display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-}
-
-
-.chart-header h3 {
-
-    color: #e2f3ff !important;
-
-    font-size: 15px !important;
-
-    font-weight: 700 !important;
-
-    letter-spacing: 0.2px;
-
-}
-
-
-.chart-header span {
-
-    color: #64748b !important;
-
-    font-size: 10px !important;
-
-}
-
-
-/* =========================================================
-   CHART ICON
-========================================================= */
-
-.chart-header > i {
-
-    width: 40px;
-    height: 40px;
-
-    display: flex;
-
     align-items: center;
     justify-content: center;
-
-    border-radius: 12px;
-
-    color: #38bdf8 !important;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(14,165,233,0.14),
-            rgba(37,99,235,0.08)
-        ) !important;
-
-    border:
-        1px solid rgba(56,189,248,0.18);
-
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.28),
-        inset 0 1px 0 rgba(255,255,255,0.05);
-
-    transition: 0.3s ease;
-
-}
-
-
-.chart-card:hover .chart-header > i {
-
-    transform:
-        translateY(-2px)
-        scale(1.05);
-
-    box-shadow:
-        0 0 22px rgba(0,212,255,0.15);
-
-}
-
-
-/* =========================================================
-   CHART
-========================================================= */
-
-.chart-card canvas {
-
     position: relative;
 
-    z-index: 2;
+    background: conic-gradient(
+        #20252e var(--risk-score, 0%),
+        #eceff2 0
+    );
+}
+/* ============================================================
+   TRANSACTION HERO — SAME SOLID NAVY AS REPORTS
+   NO GRADIENT • NO SHADE
+   ============================================================ */
 
-    filter:
-        drop-shadow(
-            0 8px 12px rgba(0,0,0,0.22)
-        );
+.transactions-page .transaction-hero-new {
+    background: #071a33 !important;
+    background-image: none !important;
 
+    border: 1px solid #071a33 !important;
+
+    box-shadow: 0 8px 24px rgba(5, 20, 45, 0.15) !important;
+}
+
+/* Remove any existing overlay / glow */
+.transactions-page .transaction-hero-new::before,
+.transactions-page .transaction-hero-new::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    box-shadow: none !important;
 }
 
 
-/* =========================================================
-   PREMIUM CHART AREA
-========================================================= */
+/* ============================================================
+   HERO TEXT
+   ============================================================ */
 
-.chart-card canvas {
+.transactions-page .transaction-hero-new h1 {
+    color: #ffffff !important;
+}
 
-    padding: 5px;
+.transactions-page .transaction-hero-new h1 span {
+    color: #ffffff !important;
+}
 
+.transactions-page .transaction-hero-new p {
+    color: #d7e2ef !important;
 }
 
 
-/* =========================================================
-   DARK CHART BACKGROUND DEPTH
-========================================================= */
+/* ============================================================
+   BADGE
+   ============================================================ */
 
-.chart-card {
+.transactions-page .transaction-hero-new .transaction-badge {
+    color: #ffffff !important;
+}
 
-    isolation: isolate;
-
+.transactions-page .transaction-hero-new .badge-dot {
+    background: #ffffff !important;
+    box-shadow: none !important;
 }
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* ============================================================
+   HERO ACTIONS
+   ============================================================ */
 
-@media (max-width: 768px) {
-
-    .chart-card {
-
-        border-radius: 18px !important;
-
-        padding: 18px !important;
-
-    }
-
-    .chart-header > i {
-
-        width: 36px;
-        height: 36px;
-
-    }
-
-}
-/* =========================================
-   COMPACT TRANSACTION LAYOUT
-   ========================================= */
-
-.summary-grid {
-    gap: 12px !important;
-    margin-top: 14px !important;
-    margin-bottom: 18px !important;
+.transactions-page .transaction-hero-new
+.transaction-primary-action {
+    background: #ffffff !important;
+    color: #071a33 !important;
+    border-color: #ffffff !important;
 }
 
-.summary-card {
-    margin: 0 !important;
+.transactions-page .transaction-hero-new
+.transaction-primary-action strong,
+.transactions-page .transaction-hero-new
+.transaction-primary-action small {
+    color: #071a33 !important;
 }
 
-.charts-grid {
-    gap: 12px !important;
-    margin-top: 14px !important;
-    margin-bottom: 14px !important;
+
+.transactions-page .transaction-hero-new
+.transaction-secondary-action {
+    background: rgba(255,255,255,0.08) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.22) !important;
 }
 
-.chart-card {
-    margin: 0 !important;
-    padding: 18px !important;
-    min-height: 300px !important;
+.transactions-page .transaction-hero-new
+.transaction-secondary-action strong {
+    color: #ffffff !important;
 }
 
-/* Remove extra spacing from sections */
-.hero-left,
-.hero-right {
-    margin-bottom: 0 !important;
-}
-
-.transaction-search {
-    margin-bottom: 10px !important;
-}
-
-/* Chart canvas */
-.chart-card canvas {
-    margin: 0 !important;
-}
-
-/* Header */
-.chart-header {
-    margin-bottom: 10px !important;
-}
-
-/* No unwanted bottom space */
-.chart-card:last-child {
-    margin-bottom: 0 !important;
+.transactions-page .transaction-hero-new
+.transaction-secondary-action small {
+    color: #c7d6e8 !important;
 }
 /* =========================================================
-   FIN GUARD TRANSACTIONS - FINAL COMPACT LAYOUT
+   FINGUARD AI — FINAL COMMON THEME OVERRIDE
    ========================================================= */
 
-/* Transaction page par dashboard ke generic spacing ko override */
-body:has(.hero-left) .main-content,
-body:has(.hero-left) .content,
-body:has(.hero-left) .page-content,
-body:has(.hero-left) main {
-    box-sizing: border-box !important;
-    max-width: none !important;
-}
-
-/* Hero ko screen ki available width use karne do */
-body:has(.hero-left) .hero-left {
-    box-sizing: border-box !important;
-    min-width: 0 !important;
-}
-
-body:has(.hero-left) .hero-right {
-    box-sizing: border-box !important;
-    min-width: 0 !important;
-}
-
-/* Hero ke cards ke beech ka gap */
-body:has(.hero-left) .hero-left + .hero-right {
-    margin-left: 0 !important;
-}
-
-/* Hero ke neeche ka gap */
-body:has(.hero-left) .hero-left,
-body:has(.hero-left) .hero-right {
-    margin-bottom: 0 !important;
-}
-
-/* Search ko hero ke close lao */
-body:has(.hero-left) .transaction-search {
-    margin-top: 8px !important;
-}
-
-/* Search/filter row */
-body:has(.hero-left) .transaction-search + button {
-    margin-top: 8px !important;
-}
-
-/* Summary cards */
-body:has(.hero-left) .summary-grid {
-    margin-top: 10px !important;
-}
-/* =========================================
-   TRANSACTION PAGE - BASE CONTENT OVERRIDE
-========================================= */
-
-.page-content {
-    padding-top: 12px !important;
-    padding-right: 24px !important;
-    padding-bottom: 24px !important;
-    padding-left: 24px !important;
-
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-
-    min-height: auto !important;
-    height: auto !important;
-
-    box-sizing: border-box !important;
-}
-/* FINAL SMALL GAP FIX */
-
-.page-content {
-    padding-top: 5px !important;
-}
-
-.transaction-page {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
-
-.transaction-page .transaction-hero {
-    margin-top: 0 !important;
-}
-
-.transaction-page .transaction-search {
-    margin-top: 6px !important;
-}
-/* =========================================
-   FIN GUARD - DARK CYAN TRANSACTION THEME
-   ========================================= */
-
-body {
-    background:
-        radial-gradient(circle at 75% 35%, rgba(0, 220, 255, 0.10), transparent 35%),
-        radial-gradient(circle at 20% 80%, rgba(0, 150, 255, 0.07), transparent 30%),
-        #06101d !important;
-}
-
-/* Main transaction content */
-.transactions-page,
-.transaction-container,
-.main-content {
-    background: transparent !important;
+:root {
+    --finguard-navy: #071a33;
+    --finguard-navy-2: #0b2a52;
+    --finguard-white: #ffffff;
+    --finguard-bg: #f5f8fc;
+    --finguard-border: #dce4ee;
 }
 
 
-/* =========================================
-   ALL DASHBOARD / ANALYTICS CARDS
-   ========================================= */
+/* ---------- GLOBAL FONT ---------- */
 
+html,
+body,
+body * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+
+/* ---------- MAIN TEXT ---------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #071a33 !important;
+}
+
+
+/* ---------- MAIN NAVY ---------- */
+
+.landing-navbar,
+.navbar,
+.top-navbar,
+.main-navbar {
+    background: #ffffff !important;
+}
+
+
+/* ---------- NAVY BUTTONS ---------- */
+
+button,
+.login-btn,
+.hero-primary-btn,
+.nav-start,
+.cta-primary,
+.primary-btn,
+.primary-button,
+.btn-primary {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    border-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- BUTTON HOVER ---------- */
+
+button:hover,
+.login-btn:hover,
+.hero-primary-btn:hover,
+.nav-start:hover,
+.cta-primary:hover,
+.primary-btn:hover,
+.primary-button:hover,
+.btn-primary:hover {
+    background: #0b2a52 !important;
+    background-color: #0b2a52 !important;
+    border-color: #0b2a52 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- SECONDARY BUTTON ---------- */
+
+.hero-secondary-btn,
+.cta-secondary,
+.secondary-btn,
+.secondary-button {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #071a33 !important;
+    border: 1px solid #071a33 !important;
+}
+
+
+/* ---------- LOGO / ICON BOX ---------- */
+
+.logo,
+.logo-icon,
+.landing-logo-icon,
+.brand-icon,
+.mini-shield {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- GENERAL CARDS ---------- */
+
+.card,
+.login-card,
+.feature-card,
+.dashboard-card,
 .stat-card,
-.ai-confidence-card,
-.threat-card,
-.highest-risk-card,
-.chart-card,
-.analytics-card,
-.transaction-chart-card,
-.risk-distribution-card {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(14, 27, 48, 0.96),
-            rgba(7, 20, 35, 0.98)
-        ) !important;
-
-    border: 1px solid rgba(0, 210, 255, 0.22) !important;
-
-    box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.035),
-        0 0 25px rgba(0, 210, 255, 0.035) !important;
-
-    border-radius: 22px !important;
-
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease;
+.kpi-card,
+.panel,
+.analytics-card {
+    background: #ffffff !important;
+    border-color: #dce4ee !important;
 }
 
 
-/* Hover */
-.stat-card:hover,
-.ai-confidence-card:hover,
-.threat-card:hover,
-.highest-risk-card:hover,
-.chart-card:hover,
-.analytics-card:hover,
-.transaction-chart-card:hover,
-.risk-distribution-card:hover {
+/* ---------- INPUTS ---------- */
 
-    transform: translateY(-3px);
-
-    border-color: rgba(0, 220, 255, 0.55) !important;
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.45),
-        0 0 28px rgba(0, 210, 255, 0.12) !important;
+input,
+textarea,
+select {
+    background: #ffffff !important;
+    color: #071a33 !important;
+    border-color: #dce4ee !important;
 }
 
 
-/* =========================================
-   CYAN ICON CIRCLE
-   ========================================= */
-
-.stat-card .icon,
-.ai-confidence-card .icon,
-.threat-card .icon,
-.highest-risk-card .icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #00c6ff,
-            #008cff
-        ) !important;
-
-    box-shadow:
-        0 0 22px rgba(0, 198, 255, 0.35) !important;
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #071a33 !important;
+    box-shadow: 0 0 0 3px rgba(7, 26, 51, 0.10) !important;
 }
 
 
-/* =========================================
-   CARD TITLES
-   ========================================= */
+/* ---------- LINKS ---------- */
 
-.stat-card h3,
-.stat-card h4,
-.ai-confidence-card h3,
-.threat-card h3,
-.highest-risk-card h3,
-.chart-card h3,
-.analytics-card h3 {
-
-    color: #c9d9ee !important;
+a {
+    color: #071a33 !important;
 }
 
 
-/* =========================================
-   IMPORTANT NUMBERS
-   ========================================= */
+/* ---------- BLUE TEXT ---------- */
 
-.stat-card .value,
-.stat-card .number,
-.ai-confidence-card .value,
-.threat-card .value,
-.highest-risk-card .value {
-
-    color: #f4f9ff !important;
-
-    text-shadow:
-        0 0 18px rgba(0, 210, 255, 0.12);
+.blue-text,
+.primary-text,
+.brand-text {
+    color: #071a33 !important;
 }
 
 
-/* =========================================
-   CYAN ACCENT LINE
-   ========================================= */
+/* ---------- ACTIVE ---------- */
 
-.chart-card::before,
-.analytics-card::before,
-.transaction-chart-card::before,
-.risk-distribution-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 30px;
-    right: 30px;
-
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00d9ff,
-            #38bdf8,
-            transparent
-        );
-
-    opacity: 0.8;
+.active,
+.active-link,
+.nav-link.active,
+.sidebar-link.active {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    color: #ffffff !important;
 }
 
 
-/* =========================================
-   CHART HEADER ICON
-   ========================================= */
+/* ---------- ICONS ---------- */
 
-.chart-card .chart-icon,
-.analytics-card .chart-icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #00d9ff,
-            #1677ff
-        ) !important;
-
-    color: white !important;
-
-    box-shadow:
-        0 0 20px rgba(0, 217, 255, 0.30);
+.fa,
+.fas,
+.far,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
+    /* DO NOT change Font Awesome font */
 }
 
 
-/* =========================================
-   CHART CARD
-   ========================================= */
+/* ---------- CHECK ICON ---------- */
 
-.chart-card,
-.analytics-card,
-.transaction-chart-card,
-.risk-distribution-card {
-
-    position: relative;
-
-    overflow: hidden;
+.check-icon {
+    background: #071a33 !important;
+    color: #ffffff !important;
 }
 
 
-/* =========================================
-   TABLE CONTAINER
-   ========================================= */
+/* ---------- WHITE TEXT ON NAVY ---------- */
 
-.table-card,
-.transactions-table,
-.transaction-list {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(10, 23, 41, 0.97),
-            rgba(5, 16, 29, 0.99)
-        ) !important;
-
-    border: 1px solid rgba(0, 210, 255, 0.18) !important;
-
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.35) !important;
+.nav-start,
+.login-btn,
+.hero-primary-btn,
+.cta-primary {
+    color: #ffffff !important;
 }
 
 
-/* Table header */
-.table-card thead,
-.transactions-table thead {
+/* ---------- BORDER ---------- */
 
-    background:
-        rgba(0, 180, 220, 0.07) !important;
+hr {
+    border-color: #dce4ee !important;
 }
 
 
-/* Table row */
-.table-card tbody tr,
-.transactions-table tbody tr {
+/* ---------- SCROLLBAR ---------- */
 
-    border-bottom:
-        1px solid rgba(255,255,255,0.045) !important;
+::-webkit-scrollbar-thumb {
+    background: #071a33 !important;
+}
 
-    transition: background 0.2s ease;
+::-webkit-scrollbar-track {
+    background: #eef2f7 !important;
 }
 
 
-.table-card tbody tr:hover,
-.transactions-table tbody tr:hover {
+/* ---------- TEXT SELECTION ---------- */
 
-    background:
-        rgba(0, 210, 255, 0.045) !important;
+::selection {
+    background: #071a33 !important;
+    color: #ffffff !important;
+}
+/* =========================================================
+   TRANSACTION HERO — COMPACT & DASHBOARD STYLE
+========================================================= */
+
+.transaction-hero-content h1 {
+    font-family: "Times New Roman", Times, serif !important;
+    font-size: 38px !important;
+    line-height: 1.12 !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    letter-spacing: -0.5px !important;
+}
+
+/* Dashboard-style light blue highlight */
+.transaction-hero-content h1 span {
+    color: #8ed8ff !important;
+    font-weight: 700 !important;
 }
 
 
-/* =========================================
-   PAGINATION
-   ========================================= */
-
-.pagination-section {
-
-    background: transparent !important;
+/* Description smaller and cleaner */
+.transaction-hero-content > p {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+    max-width: 620px !important;
+    color: #d1e3f2 !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
 }
 
 
-.pagination-section button {
-
-    background:
-        rgba(1, 9, 19, 0.95) !important;
-
-    border:
-        1px solid rgba(0, 210, 255, 0.20) !important;
-
-    color: #c9d9ee !important;
+/* Badge smaller */
+.transaction-badge {
+    font-size: 11px !important;
+    padding: 7px 12px !important;
+    border-radius: 8px !important;
+    letter-spacing: 0.5px !important;
 }
 
 
-.pagination-section button:hover,
-.pagination-section button.active {
-
-    background:
-        linear-gradient(
-            135deg,
-            #00c6ff,
-            #1677ff
-        ) !important;
-
-    color: white !important;
-
-    box-shadow:
-        0 0 15px rgba(4, 39, 49, 0.25);
+/* Buttons slightly smaller */
+.transaction-hero-actions {
+    gap: 12px !important;
 }
-/* =========================================
-   QUICK ACTION CENTER
-   ========================================= */
 
-.quick-action-center {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(10, 24, 42, 0.98),
-            rgba(5, 16, 30, 0.99)
-        ) !important;
+.transaction-primary-action,
+.transaction-secondary-action {
+    padding: 11px 14px !important;
+    min-height: 58px !important;
+}
 
-    border: 1px solid rgba(0, 210, 255, 0.25) !important;
+.transaction-primary-action strong,
+.transaction-secondary-action strong {
+    font-size: 14px !important;
+}
 
-    border-radius: 22px !important;
-
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.40),
-        0 0 25px rgba(0, 210, 255, 0.05) !important;
-
-    position: relative;
-    overflow: hidden;
+.transaction-primary-action small,
+.transaction-secondary-action small {
+    font-size: 11px !important;
 }
 
 
-/* Cyan top glow */
-.quick-action-center::before {
-    content: "";
+/* =========================================================
+   AI PANEL — COMPACT
+========================================================= */
 
-    position: absolute;
-
-    top: 0;
-    left: 30px;
-    right: 30px;
-
-    height: 2px;
-
-    background: linear-gradient(
-        90deg,
-        transparent,
-        #00d9ff,
-        #38bdf8,
-        transparent
-    );
-
-    box-shadow:
-        0 0 12px rgba(0, 217, 255, 0.5);
+.transaction-ai-panel {
+    padding: 18px !important;
 }
 
-
-/* Heading */
-.quick-action-center h2,
-.quick-action-center h3,
-.quick-action-center .section-title {
-    color: #d7e9f7 !important;
+.ai-panel-header {
+    margin-bottom: 16px !important;
 }
 
-
-/* Action buttons */
-.quick-action-center button,
-.quick-action,
-.action-card {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 35, 58, 0.95),
-            rgba(8, 23, 40, 0.98)
-        ) !important;
-
-    border: 1px solid rgba(0, 210, 255, 0.18) !important;
-
-    color: #dbeafe !important;
-
-    border-radius: 16px !important;
-
-    transition: all 0.25s ease;
+.ai-main-status {
+    margin-bottom: 15px !important;
 }
 
-
-/* Hover */
-.quick-action-center button:hover,
-.quick-action:hover,
-.action-card:hover {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0, 180, 230, 0.15),
-            rgba(20, 55, 85, 0.95)
-        ) !important;
-
-    border-color:
-        rgba(0, 220, 255, 0.60) !important;
-
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 0 22px rgba(0, 210, 255, 0.14);
+.ai-main-icon {
+    width: 48px !important;
+    height: 48px !important;
 }
 
-
-/* Action icons */
-.quick-action-center .icon,
-.quick-action .icon,
-.action-card .icon {
-
-    background:
-        linear-gradient(
-            135deg,
-            #00d9ff,
-            #1677ff
-        ) !important;
-
-    color: white !important;
-
-    box-shadow:
-        0 0 18px rgba(0, 217, 255, 0.30);
+.ai-main-content h3 {
+    font-size: 18px !important;
+    margin: 3px 0 !important;
 }
 
-
-/* Action title */
-.quick-action-center .action-title,
-.quick-action .action-title,
-.action-card h4 {
-
-    color: #e6f7ff !important;
+.ai-main-content p {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
 }
 
+.ai-metrics {
+    gap: 10px !important;
+}
 
-/* Action description */
-.quick-action-center p,
-.quick-action .description,
-.action-card p {
+.ai-metric {
+    padding: 10px !important;
+}
 
-    color: #8faec8 !important;
+.ai-metric small {
+    font-size: 10px !important;
+}
+
+.ai-metric strong {
+    font-size: 11px !important;
 }

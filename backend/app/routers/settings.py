@@ -24,9 +24,9 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import Column, Integer, Text, DateTime
 from sqlalchemy.orm import Session
 
-from app.database.connection import Base, engine, get_db
-from app.models.user import User
-from app.services.security import verify_password, hash_password
+from backend.app.database.connection import Base, engine, get_db
+from backend.app.models.user import User
+from backend.app.services.security import verify_password, hash_password
 
 
 router = APIRouter()

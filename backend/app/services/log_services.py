@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.transaction_log import TransactionLog
+from backend.app.models.transaction_log import TransactionLog
 
 
 def create_transaction_log(

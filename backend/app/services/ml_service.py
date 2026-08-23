@@ -1,3 +1,4 @@
+import shap
 import json
 import joblib
 import pandas as pd
@@ -36,6 +37,11 @@ try:
         "FinGuard ML model loaded successfully."
     )
 
+    print(
+        "Model type:",
+        type(MODEL)
+    )
+
 except Exception as e:
 
     MODEL = None
@@ -44,7 +50,9 @@ except Exception as e:
         "========== MODEL LOAD ERROR =========="
     )
 
-    print(str(e))
+    print(
+        str(e)
+    )
 
     print(
         "======================================"
@@ -161,7 +169,159 @@ REQUIRED_FEATURES = [
 
 
 # ==========================================================
-# FEATURE CREATION
+# SHAP EXPLAINER
+# ==========================================================
+
+SHAP_EXPLAINER = None
+
+
+def get_shap_explainer():
+
+    """
+    Creates and caches a SHAP TreeExplainer
+    for the RandomForest classifier inside
+    the sklearn Pipeline.
+    """
+
+    global SHAP_EXPLAINER
+
+    try:
+
+        if SHAP_EXPLAINER is not None:
+
+            return SHAP_EXPLAINER
+
+
+        if MODEL is None:
+
+            return None
+
+
+        # --------------------------------------------------
+        # Get RandomForest classifier from Pipeline
+        # --------------------------------------------------
+
+        if hasattr(
+            MODEL,
+            "named_steps"
+        ):
+
+            classifier = (
+                MODEL
+                .named_steps
+                .get("classifier")
+            )
+
+        else:
+
+            classifier = MODEL
+
+
+        if classifier is None:
+
+            print(
+                "SHAP: classifier not found."
+            )
+
+            return None
+
+
+        # --------------------------------------------------
+        # Create TreeExplainer
+        # --------------------------------------------------
+
+        SHAP_EXPLAINER = shap.TreeExplainer(
+            classifier
+        )
+
+
+        print(
+            "SHAP TreeExplainer initialized successfully."
+        )
+
+
+        return SHAP_EXPLAINER
+
+
+    except Exception as e:
+
+        print(
+            "SHAP explainer initialization error:",
+            str(e)
+        )
+
+        SHAP_EXPLAINER = None
+
+        return None
+
+
+# ==========================================================
+# GET TRANSFORMED FEATURE NAMES
+# ==========================================================
+
+def get_transformed_feature_names():
+
+    """
+    Gets feature names after ColumnTransformer
+    preprocessing.
+
+    Example:
+
+    numeric__amount
+    numeric__large_transaction
+    categorical__merchant_category_Electronics
+    """
+
+    try:
+
+        if MODEL is None:
+
+            return []
+
+
+        if not hasattr(
+            MODEL,
+            "named_steps"
+        ):
+
+            return []
+
+
+        preprocessor = (
+            MODEL
+            .named_steps
+            .get("preprocessor")
+        )
+
+
+        if preprocessor is None:
+
+            return []
+
+
+        feature_names = (
+            preprocessor
+            .get_feature_names_out()
+        )
+
+
+        return list(
+            feature_names
+        )
+
+
+    except Exception as e:
+
+        print(
+            "Feature name extraction error:",
+            str(e)
+        )
+
+        return []
+
+
+# ==========================================================
+# CREATE ML FEATURES
 # ==========================================================
 
 def create_ml_features(transaction: dict):
@@ -171,18 +331,18 @@ def create_ml_features(transaction: dict):
     used during model training.
     """
 
-    # ==========================================
+    # ------------------------------------------------------
     # CREATE DATAFRAME
-    # ==========================================
+    # ------------------------------------------------------
 
     df = pd.DataFrame(
         [transaction]
     )
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # NUMERIC FEATURES
-    # ==========================================
+    # ------------------------------------------------------
 
     numeric_columns = [
 
@@ -213,38 +373,49 @@ def create_ml_features(transaction: dict):
         )
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # FILL NUMERIC MISSING VALUES
-    # ==========================================
+    # ------------------------------------------------------
 
-    df["amount"] = df["amount"].fillna(0)
+    df["amount"] = (
+        df["amount"]
+        .fillna(0)
+    )
 
-    df["hour"] = df["hour"].fillna(12)
+    df["hour"] = (
+        df["hour"]
+        .fillna(12)
+    )
 
     df["location_risk"] = (
-        df["location_risk"].fillna(0)
+        df["location_risk"]
+        .fillna(0)
     )
 
     df["device_trusted"] = (
-        df["device_trusted"].fillna(1)
+        df["device_trusted"]
+        .fillna(1)
     )
 
     df["failed_attempts"] = (
-        df["failed_attempts"].fillna(0)
+        df["failed_attempts"]
+        .fillna(0)
     )
 
     df["is_international"] = (
-        df["is_international"].fillna(0)
+        df["is_international"]
+        .fillna(0)
     )
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # CATEGORICAL FEATURES
-    # ==========================================
+    # ------------------------------------------------------
 
     if "transaction_type" not in df.columns:
 
         df["transaction_type"] = "Unknown"
+
 
     if "merchant_category" not in df.columns:
 
@@ -265,29 +436,32 @@ def create_ml_features(transaction: dict):
     )
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # ABSOLUTE AMOUNT
-    # ==========================================
+    # ------------------------------------------------------
 
     df["abs_amount"] = (
-        df["amount"].abs()
+        df["amount"]
+        .abs()
     )
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # LARGE TRANSACTION
-    # ==========================================
+    # ------------------------------------------------------
 
     df["large_transaction"] = (
+
         df["amount"]
         >
         AMOUNT_95_PERCENTILE
+
     ).astype(int)
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # MERCHANT CATEGORY FREQUENCY
-    # ==========================================
+    # ------------------------------------------------------
 
     df["merchant_category_frequency"] = (
 
@@ -298,14 +472,16 @@ def create_ml_features(transaction: dict):
     )
 
 
-    # ==========================================
+    # ------------------------------------------------------
     # RISK INDICATOR
-    # ==========================================
+    # ------------------------------------------------------
 
     df["risk_indicator"] = (
 
         df["location_risk"]
+
         +
+
         (
             df["failed_attempts"]
             * 10
@@ -318,6 +494,375 @@ def create_ml_features(transaction: dict):
 
 
 # ==========================================================
+# SHAP EXPLANATION
+# ==========================================================
+
+def explain_prediction(df):
+
+    """
+    Calculates SHAP explanation for one transaction.
+
+    The sklearn Pipeline contains:
+
+        ColumnTransformer
+              |
+              v
+        RandomForestClassifier
+
+    SHAP must therefore receive the transformed
+    dataframe, not the original dataframe.
+    """
+
+    try:
+
+        if MODEL is None:
+
+            return []
+
+
+        if not hasattr(
+            MODEL,
+            "named_steps"
+        ):
+
+            return []
+
+
+        # --------------------------------------------------
+        # Get preprocessor
+        # --------------------------------------------------
+
+        preprocessor = (
+            MODEL
+            .named_steps
+            .get("preprocessor")
+        )
+
+
+        # --------------------------------------------------
+        # Get classifier
+        # --------------------------------------------------
+
+        classifier = (
+            MODEL
+            .named_steps
+            .get("classifier")
+        )
+
+
+        if preprocessor is None:
+
+            print(
+                "SHAP: preprocessor not found."
+            )
+
+            return []
+
+
+        if classifier is None:
+
+            print(
+                "SHAP: classifier not found."
+            )
+
+            return []
+
+
+        # --------------------------------------------------
+        # Transform original dataframe
+        # --------------------------------------------------
+
+        transformed = (
+            preprocessor
+            .transform(df)
+        )
+
+
+        # --------------------------------------------------
+        # Convert sparse matrix if required
+        # --------------------------------------------------
+
+        if hasattr(
+            transformed,
+            "toarray"
+        ):
+
+            transformed_for_shap = (
+                transformed.toarray()
+            )
+
+        else:
+
+            transformed_for_shap = transformed
+
+
+        # --------------------------------------------------
+        # SHAP explainer
+        # --------------------------------------------------
+
+        explainer = (
+            get_shap_explainer()
+        )
+
+
+        if explainer is None:
+
+            return []
+
+
+        # --------------------------------------------------
+        # Calculate SHAP values
+        # --------------------------------------------------
+
+        shap_values = (
+            explainer(
+                transformed_for_shap
+            )
+        )
+
+
+        # --------------------------------------------------
+        # Feature names
+        # --------------------------------------------------
+
+        feature_names = (
+            get_transformed_feature_names()
+        )
+
+
+        # --------------------------------------------------
+        # Get SHAP array
+        # --------------------------------------------------
+
+        values = shap_values.values
+
+
+        print(
+            "========== SHAP DEBUG =========="
+        )
+
+        print(
+            "SHAP shape:",
+            values.shape
+        )
+
+        print(
+            "Feature count:",
+            len(feature_names)
+        )
+
+        print(
+            "================================"
+        )
+
+
+        # --------------------------------------------------
+        # SHAP newer format:
+        #
+        # (samples, features, classes)
+        #
+        # We need class 1 = fraud.
+        # --------------------------------------------------
+
+        if values.ndim == 3:
+
+            # Fraud class index
+            classifier_classes = (
+                list(
+                    classifier.classes_
+                )
+                if hasattr(
+                    classifier,
+                    "classes_"
+                )
+                else []
+            )
+
+
+            if 1 in classifier_classes:
+
+                fraud_class_index = (
+                    classifier_classes.index(1)
+                )
+
+            else:
+
+                fraud_class_index = 0
+
+
+            shap_row = (
+                values[
+                    0,
+                    :,
+                    fraud_class_index
+                ]
+            )
+
+
+        # --------------------------------------------------
+        # SHAP older format:
+        #
+        # (samples, features)
+        # --------------------------------------------------
+
+        elif values.ndim == 2:
+
+            shap_row = (
+                values[0, :]
+            )
+
+
+        else:
+
+            print(
+                "Unsupported SHAP shape:",
+                values.shape
+            )
+
+            return []
+
+
+        # --------------------------------------------------
+        # Make sure lengths match
+        # --------------------------------------------------
+
+        count = min(
+            len(
+                shap_row
+            ),
+            len(
+                feature_names
+            )
+        )
+
+
+        explanations = []
+
+
+        for index in range(count):
+
+            feature_name = (
+                feature_names[index]
+            )
+
+            shap_value = float(
+                shap_row[index]
+            )
+
+
+            # Ignore extremely tiny values
+            if abs(
+                shap_value
+            ) < 0.0001:
+
+                continue
+
+
+            if shap_value > 0:
+
+                direction = (
+                    "increases_fraud_risk"
+                )
+
+            else:
+
+                direction = (
+                    "decreases_fraud_risk"
+                )
+
+
+            explanations.append({
+
+                "feature":
+                    feature_name,
+
+                "shap_value":
+                    round(
+                        shap_value,
+                        4
+                    ),
+
+                "direction":
+                    direction
+
+            })
+
+
+        # --------------------------------------------------
+        # Sort by absolute impact
+        # --------------------------------------------------
+
+        explanations.sort(
+
+            key=lambda x:
+                abs(
+                    x["shap_value"]
+                ),
+
+            reverse=True
+
+        )
+
+
+        # --------------------------------------------------
+        # Top 10 reasons
+        # --------------------------------------------------
+
+        explanations = (
+            explanations[:10]
+        )
+
+
+        print(
+            "========== TOP SHAP REASONS =========="
+        )
+
+
+        for item in explanations:
+
+            print(
+
+                f"{item['feature']}: "
+                f"{item['direction']} "
+                f"(SHAP={item['shap_value']})"
+
+            )
+
+
+        print(
+            "======================================"
+        )
+
+
+        return explanations
+
+
+    except Exception as e:
+
+        print(
+            "========== SHAP ERROR =========="
+        )
+
+        print(
+            str(e)
+        )
+
+        import traceback
+
+        traceback.print_exc()
+
+        print(
+            "================================"
+        )
+
+        # IMPORTANT:
+        # SHAP failure should NOT break
+        # fraud prediction.
+
+        return []
+
+
+# ==========================================================
 # PREDICT TRANSACTION
 # ==========================================================
 
@@ -325,15 +870,16 @@ def predict_transaction(transaction: dict):
 
     try:
 
-        # ==========================================
+        # ==================================================
         # MODEL AVAILABILITY
-        # ==========================================
+        # ==================================================
 
         if MODEL is None:
 
             return {
 
-                "success": False,
+                "success":
+                    False,
 
                 "message":
                     "ML model is not loaded."
@@ -341,9 +887,9 @@ def predict_transaction(transaction: dict):
             }
 
 
-        # ==========================================
+        # ==================================================
         # INPUT VALIDATION
-        # ==========================================
+        # ==================================================
 
         if not isinstance(
             transaction,
@@ -352,7 +898,8 @@ def predict_transaction(transaction: dict):
 
             return {
 
-                "success": False,
+                "success":
+                    False,
 
                 "message":
                     "Transaction must be a dictionary."
@@ -375,7 +922,8 @@ def predict_transaction(transaction: dict):
 
             return {
 
-                "success": False,
+                "success":
+                    False,
 
                 "message":
                     (
@@ -389,18 +937,18 @@ def predict_transaction(transaction: dict):
             }
 
 
-        # ==========================================
+        # ==================================================
         # CREATE ML FEATURES
-        # ==========================================
+        # ==================================================
 
         df = create_ml_features(
             transaction
         )
 
 
-        # ==========================================
-        # DEBUG FEATURES
-        # ==========================================
+        # ==================================================
+        # DEBUG INPUT
+        # ==================================================
 
         print(
             "========== ML INPUT =========="
@@ -417,34 +965,27 @@ def predict_transaction(transaction: dict):
         )
 
 
-        # ==========================================
+        # ==================================================
         # ML PREDICTION
-        # ==========================================
+        # ==================================================
 
         prediction_value = (
             MODEL.predict(df)[0]
         )
 
 
-        # ==========================================
+        # ==================================================
         # FRAUD PROBABILITY
-        # ==========================================
+        # ==================================================
 
         probabilities = (
             MODEL.predict_proba(df)[0]
         )
 
 
-        # ==========================================
+        # ==================================================
         # MODEL CLASSES
-        # ==========================================
-
-        print(
-            "========== MODEL CLASSES =========="
-        )
-
-        # New pipeline:
-        # classifier is inside Pipeline
+        # ==================================================
 
         if hasattr(
             MODEL,
@@ -457,34 +998,37 @@ def predict_transaction(transaction: dict):
                 .get("classifier")
             )
 
-            if classifier is not None:
-
-                model_classes = (
-                    classifier.classes_
-                )
-
-            else:
-
-                model_classes = (
-                    MODEL.classes_
-                    if hasattr(
-                        MODEL,
-                        "classes_"
-                    )
-                    else []
-                )
-
         else:
+
+            classifier = MODEL
+
+
+        if classifier is not None and hasattr(
+            classifier,
+            "classes_"
+        ):
+
+            model_classes = (
+                classifier.classes_
+            )
+
+        elif hasattr(
+            MODEL,
+            "classes_"
+        ):
 
             model_classes = (
                 MODEL.classes_
-                if hasattr(
-                    MODEL,
-                    "classes_"
-                )
-                else []
             )
 
+        else:
+
+            model_classes = []
+
+
+        print(
+            "========== MODEL CLASSES =========="
+        )
 
         print(
             "Classes:",
@@ -501,9 +1045,9 @@ def predict_transaction(transaction: dict):
         )
 
 
-        # ==========================================
+        # ==================================================
         # FIND FRAUD PROBABILITY
-        # ==========================================
+        # ==================================================
 
         if 1 in model_classes:
 
@@ -511,11 +1055,17 @@ def predict_transaction(transaction: dict):
                 model_classes
             ).index(1)
 
+
             fraud_probability = (
+
                 probabilities[
                     fraud_index
                 ]
-                * 100
+
+                *
+
+                100
+
             )
 
         else:
@@ -524,25 +1074,39 @@ def predict_transaction(transaction: dict):
 
 
         fraud_probability = round(
+
             float(
                 fraud_probability
             ),
+
             2
+
         )
 
 
-        # ==========================================
+        # ==================================================
         # RISK SCORE
-        # ==========================================
+        # ==================================================
 
         risk_score = (
             fraud_probability
         )
 
 
-        # ==========================================
+        risk_score = round(
+
+            float(
+                risk_score
+            ),
+
+            2
+
+        )
+
+
+        # ==================================================
         # RISK LEVEL
-        # ==========================================
+        # ==================================================
 
         if risk_score >= 80:
 
@@ -561,9 +1125,9 @@ def predict_transaction(transaction: dict):
             risk_level = "Low"
 
 
-        # ==========================================
+        # ==================================================
         # PREDICTION LABEL
-        # ==========================================
+        # ==================================================
 
         prediction = (
 
@@ -580,9 +1144,18 @@ def predict_transaction(transaction: dict):
         )
 
 
-        # ==========================================
+        # ==================================================
+        # SHAP EXPLANATION
+        # ==================================================
+
+        shap_reasons = (
+            explain_prediction(df)
+        )
+
+
+        # ==================================================
         # DEBUG RESULT
-        # ==========================================
+        # ==================================================
 
         print(
             "========== ML RESULT =========="
@@ -609,13 +1182,20 @@ def predict_transaction(transaction: dict):
         )
 
         print(
+            "SHAP Reasons:",
+            len(
+                shap_reasons
+            )
+        )
+
+        print(
             "==============================="
         )
 
 
-        # ==========================================
+        # ==================================================
         # RETURN RESULT
-        # ==========================================
+        # ==================================================
 
         return {
 
@@ -632,7 +1212,13 @@ def predict_transaction(transaction: dict):
                 risk_score,
 
             "risk_level":
-                risk_level
+                risk_level,
+
+            "explanations":
+                shap_reasons,
+
+            "shap_reasons":
+                shap_reasons
 
         }
 

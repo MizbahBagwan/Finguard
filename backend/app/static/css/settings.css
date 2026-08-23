@@ -1784,3 +1784,1567 @@ select{
 .settings-top{
     margin-bottom: 12px !important;
 }
+/* ============================================================
+   FINAL SETTINGS THEME OVERRIDE
+   ============================================================ */
+
+/* PAGE FONT + TEXT */
+.settings-page,
+.settings-page * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+/* ============================================================
+   WHITE CARDS / SECTIONS
+   ============================================================ */
+
+.settings-page .hero-left,
+.settings-page .hero-right,
+.settings-page .status-card,
+.settings-page .glass-card,
+.settings-page .profile-section,
+.settings-page .info-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #d6d6d6 !important;
+}
+
+/* ============================================================
+   REMOVE ANY NAVY HEADING STRIPS
+   ============================================================ */
+
+.settings-page .card-header,
+.settings-page .card-header h3,
+.settings-page .hero-left h2,
+.settings-page .hero-tag,
+.settings-page .profile-info h2,
+.settings-page .status-card h2 {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ============================================================
+   ALL HEADINGS BLACK
+   ============================================================ */
+
+.settings-page h1,
+.settings-page h2,
+.settings-page h3,
+.settings-page h4,
+.settings-page h5,
+.settings-page h6,
+.settings-page strong {
+    color: #000000 !important;
+    background: transparent !important;
+    font-weight: 700 !important;
+}
+
+/* ============================================================
+   SECTION HEADING ICONS BLACK
+   ============================================================ */
+
+.settings-page .card-header i,
+.settings-page .hero-tag i,
+.settings-page .profile-info i,
+.settings-page .avatar-circle i,
+.settings-page .status-top i {
+    color: #000000 !important;
+    background: transparent !important;
+}
+
+/* ============================================================
+   NORMAL TEXT BLACK
+   ============================================================ */
+
+.settings-page p,
+.settings-page span,
+.settings-page label,
+.settings-page .setting-info,
+.settings-page .setting-info h4,
+.settings-page .setting-info p,
+.settings-page .status-top,
+.settings-page .status-card p,
+.settings-page .status-footer,
+.settings-page .profile-info .email {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+
+/* Secondary description text */
+.settings-page .setting-info p,
+.settings-page .hero-left p,
+.settings-page .status-card p {
+    color: #333333 !important;
+}
+
+/* ============================================================
+   SETTING ROWS
+   ============================================================ */
+
+.settings-page .setting-item {
+    background: #ffffff !important;
+    border-bottom: 1px solid #dddddd !important;
+}
+
+/* ============================================================
+   INFO CARDS
+   ============================================================ */
+
+.settings-page .info-card {
+    background: #f8f8f8 !important;
+    border: 1px solid #dddddd !important;
+}
+
+.settings-page .info-card span {
+    color: #555555 !important;
+}
+
+.settings-page .info-card strong {
+    color: #000000 !important;
+}
+
+/* ============================================================
+   NAVY BUTTONS
+   ============================================================ */
+
+.settings-page button.primary-btn,
+.settings-page button.save-btn,
+.settings-page button.secondary-btn {
+    background: #0b1f3a !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 1px solid #0b1f3a !important;
+    box-shadow: none !important;
+}
+
+.settings-page button.primary-btn *,
+.settings-page button.save-btn *,
+.settings-page button.secondary-btn * {
+    color: #ffffff !important;
+}
+
+.settings-page button.primary-btn:hover,
+.settings-page button.save-btn:hover,
+.settings-page button.secondary-btn:hover {
+    background: #132f55 !important;
+    color: #ffffff !important;
+}
+
+/* ============================================================
+   DANGER BUTTONS
+   ============================================================ */
+
+.settings-page button.danger-btn {
+    background: #b91c1c !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 1px solid #b91c1c !important;
+}
+
+.settings-page button.danger-btn *,
+.settings-page button.danger-btn i {
+    color: #ffffff !important;
+}
+
+.settings-page button.danger-btn:hover {
+    background: #991b1b !important;
+}
+
+/* ============================================================
+   DANGER ZONE HEADING
+   ============================================================ */
+
+.settings-page .danger-card .card-header h3,
+.settings-page .danger-card .card-header h3 i {
+    color: #b91c1c !important;
+}
+
+/* ============================================================
+   DROPDOWNS
+   ============================================================ */
+
+.settings-page select,
+.settings-page .setting-item select {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #999999 !important;
+}
+
+.settings-page select option,
+.settings-page .setting-item select option {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* ============================================================
+   TOGGLES
+   ============================================================ */
+
+.settings-page .toggle span {
+    background: #bfc5cc !important;
+}
+
+.settings-page .toggle span::after {
+    background: #ffffff !important;
+}
+
+.settings-page .toggle input:checked + span {
+    background: #0b1f3a !important;
+}
+
+/* ============================================================
+   RANGE VALUE
+   ============================================================ */
+
+.settings-page .range-box span {
+    color: #000000 !important;
+}
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+.settings-page .status-footer {
+    border-top: 1px solid #dddddd !important;
+}
+
+.settings-page .text-success {
+    color: #15803d !important;
+}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+
+.modal .modal-content {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #cccccc !important;
+}
+
+.modal .modal-content * {
+    color: #000000;
+}
+
+.modal .modal-header h2 {
+    color: #000000 !important;
+}
+
+.modal .close-modal {
+    color: #000000 !important;
+}
+
+.modal .form-group label {
+    color: #000000 !important;
+}
+
+.modal .form-group input {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #999999 !important;
+}
+
+.modal .primary-btn {
+    background: #0b1f3a !important;
+    color: #ffffff !important;
+}
+
+.modal .primary-btn i {
+    color: #ffffff !important;
+}
+
+/* ============================================================
+   BUTTON DISABLED
+   ============================================================ */
+
+.settings-page button:disabled {
+    color: #ffffff !important;
+    background: #64748b !important;
+}/* ============================================================
+   FINGUARD AI - SETTINGS FINAL UI
+   NAVY SIDEBAR + PURE WHITE MAIN CONTENT
+   Paste this at the VERY END of settings CSS
+============================================================ */
+
+/* ------------------------------------------------------------
+   PAGE BACKGROUND
+------------------------------------------------------------ */
+
+html,
+body {
+    background: #ffffff !important;
+}
+
+.settings-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff !important;
+    color: #172033 !important;
+    padding-bottom: 40px;
+}
+
+
+/* ------------------------------------------------------------
+   MAIN CONTENT AREA
+------------------------------------------------------------ */
+
+.main-content,
+.content,
+.dashboard-content,
+.page-content,
+main {
+    background: #ffffff !important;
+}
+
+
+/* ------------------------------------------------------------
+   SETTINGS PAGE FONT
+------------------------------------------------------------ */
+
+.settings-page,
+.settings-page * {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+}
+
+
+/* ------------------------------------------------------------
+   HERO
+------------------------------------------------------------ */
+
+.settings-page .hero-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
+    gap: 22px;
+    margin-bottom: 24px;
+}
+
+.settings-page .hero-left,
+.settings-page .status-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06) !important;
+}
+
+
+/* Hero left */
+
+.settings-page .hero-left {
+    padding: 30px !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.settings-page .hero-left::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: #0b2a4a;
+}
+
+.settings-page .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #17365d !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 12px;
+}
+
+.settings-page .hero-tag i {
+    color: #17365d !important;
+}
+
+.settings-page .hero-left h2 {
+    margin: 0 0 10px !important;
+    font-size: 30px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    color: #0b2a4a !important;
+}
+
+.settings-page .hero-left p {
+    max-width: 800px;
+    margin: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    font-weight: 500 !important;
+    color: #64748b !important;
+}
+
+
+/* ------------------------------------------------------------
+   HERO BUTTONS
+------------------------------------------------------------ */
+
+.settings-page .hero-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.settings-page .primary-btn,
+.settings-page .save-btn,
+.settings-page .secondary-btn,
+.settings-page .danger-btn {
+    min-height: 42px !important;
+    padding: 10px 18px !important;
+    border-radius: 9px !important;
+    border: 1px solid transparent !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.settings-page .primary-btn,
+.settings-page .save-btn {
+    background: #0b2a4a !important;
+    color: #ffffff !important;
+    border-color: #0b2a4a !important;
+}
+
+.settings-page .secondary-btn {
+    background: #17365d !important;
+    color: #ffffff !important;
+    border-color: #17365d !important;
+}
+
+.settings-page .danger-btn {
+    background: #991b1b !important;
+    color: #ffffff !important;
+    border-color: #991b1b !important;
+}
+
+.settings-page .primary-btn:hover,
+.settings-page .save-btn:hover,
+.settings-page .secondary-btn:hover {
+    background: #071d35 !important;
+    border-color: #071d35 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(11, 42, 74, 0.18);
+}
+
+.settings-page .danger-btn:hover {
+    background: #7f1d1d !important;
+    border-color: #7f1d1d !important;
+    transform: translateY(-2px);
+}
+
+.settings-page button i {
+    display: inline-block !important;
+    color: #ffffff !important;
+}
+
+
+/* ------------------------------------------------------------
+   STATUS CARD
+------------------------------------------------------------ */
+
+.settings-page .status-card {
+    padding: 28px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.settings-page .status-top {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.settings-page .online-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e !important;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+.settings-page .status-card h2 {
+    margin: 16px 0 7px !important;
+    font-size: 27px !important;
+    font-weight: 800 !important;
+    color: #15803d !important;
+}
+
+.settings-page .status-card p {
+    margin: 0 !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    line-height: 1.6;
+    font-weight: 500 !important;
+}
+
+.settings-page .status-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 24px;
+    padding-top: 17px;
+    border-top: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+}
+
+.settings-page .status-footer strong {
+    color: #0b2a4a !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROFILE
+------------------------------------------------------------ */
+
+.settings-page .profile-section {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    padding: 25px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05) !important;
+}
+
+.settings-page .profile-top {
+    margin-bottom: 22px !important;
+}
+
+.settings-page .profile-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.settings-page .avatar-circle {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    border-radius: 50% !important;
+    background: #eef4fb !important;
+    border: 1px solid #d6e2ef !important;
+    color: #0b2a4a !important;
+    box-shadow: inset 0 0 0 5px #ffffff;
+}
+
+.settings-page #profileInitials {
+    color: #0b2a4a !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+}
+
+.settings-page .profile-info h2 {
+    margin: 0 0 5px !important;
+    color: #0b2a4a !important;
+    font-size: 21px !important;
+    font-weight: 800 !important;
+}
+
+.settings-page .profile-info .email {
+    margin: 0 !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.settings-page .profile-info .email i {
+    color: #17365d !important;
+    margin-right: 5px;
+}
+
+
+/* Profile info cards */
+
+.settings-page .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 13px;
+}
+
+.settings-page .info-card {
+    padding: 17px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e5eaf1 !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease;
+}
+
+.settings-page .info-card:hover {
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px);
+}
+
+.settings-page .info-card span {
+    display: block;
+    margin-bottom: 7px !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.settings-page .info-card strong {
+    color: #0b2a4a !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+}
+
+.settings-page .text-success {
+    color: #15803d !important;
+}
+
+
+/* ------------------------------------------------------------
+   SETTINGS CARDS
+------------------------------------------------------------ */
+
+.settings-page .glass-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    padding: 0 !important;
+    margin-bottom: 24px !important;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05) !important;
+}
+
+
+/* ------------------------------------------------------------
+   CARD HEADER
+------------------------------------------------------------ */
+
+.settings-page .card-header {
+    margin: 0 !important;
+    padding: 20px 24px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #edf1f5 !important;
+}
+
+.settings-page .card-header h3 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+
+    color: #0b2a4a !important;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+}
+
+.settings-page .card-header h3 i {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 9px;
+
+    background: #eef4fb !important;
+    color: #17365d !important;
+
+    font-size: 15px !important;
+}
+
+
+/* ------------------------------------------------------------
+   SETTINGS LIST
+------------------------------------------------------------ */
+
+.settings-page .settings-list {
+    background: #ffffff !important;
+    padding: 0 24px;
+}
+
+.settings-page .setting-item {
+    min-height: 72px;
+    padding: 18px 0 !important;
+
+    background: #ffffff !important;
+
+    border-bottom: 1px solid #edf1f5 !important;
+}
+
+.settings-page .setting-item:last-child {
+    border-bottom: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   SETTING TEXT
+------------------------------------------------------------ */
+
+.settings-page .setting-info {
+    padding-right: 20px;
+}
+
+.settings-page .setting-info h4 {
+    margin: 0 0 5px !important;
+    color: #172033 !important;
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+    font-weight: 750 !important;
+}
+
+.settings-page .setting-info p {
+    margin: 0 !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+    font-weight: 500 !important;
+}
+
+
+/* ------------------------------------------------------------
+   SELECT
+------------------------------------------------------------ */
+
+.settings-page select {
+    min-width: 190px;
+    height: 42px;
+
+    padding: 0 36px 0 13px !important;
+
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 9px !important;
+
+    background-color: #ffffff !important;
+    color: #172033 !important;
+
+    font-size: 13px !important;
+    font-weight: 650 !important;
+
+    outline: none !important;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.settings-page select:hover {
+    border-color: #94a3b8 !important;
+}
+
+.settings-page select:focus {
+    border-color: #17365d !important;
+    box-shadow: 0 0 0 3px rgba(23, 54, 93, 0.09) !important;
+}
+
+.settings-page select option {
+    background: #ffffff !important;
+    color: #172033 !important;
+    font-size: 14px !important;
+}
+
+
+/* ------------------------------------------------------------
+   TOGGLES
+------------------------------------------------------------ */
+
+.settings-page .toggle {
+    position: relative;
+    display: block;
+
+    width: 50px;
+    height: 28px;
+
+    min-width: 50px;
+
+    cursor: pointer;
+}
+
+.settings-page .toggle input {
+    display: none !important;
+}
+
+.settings-page .toggle span {
+    position: absolute;
+    inset: 0;
+
+    background: #cbd5e1 !important;
+
+    border-radius: 999px;
+
+    transition: all 0.25s ease;
+}
+
+.settings-page .toggle span::after {
+    content: "";
+
+    position: absolute;
+
+    width: 22px;
+    height: 22px;
+
+    left: 3px;
+    top: 3px;
+
+    border-radius: 50%;
+
+    background: #ffffff !important;
+
+    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.2);
+
+    transition: all 0.25s ease;
+}
+
+.settings-page .toggle input:checked + span {
+    background: #17365d !important;
+}
+
+.settings-page .toggle input:checked + span::after {
+    transform: translateX(22px);
+}
+
+
+/* ------------------------------------------------------------
+   RANGE
+------------------------------------------------------------ */
+
+.settings-page .range-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 230px;
+}
+
+.settings-page .range-box input[type="range"] {
+    width: 150px;
+    accent-color: #17365d;
+    cursor: pointer;
+}
+
+.settings-page .range-box span {
+    min-width: 48px;
+    padding: 6px 8px;
+
+    text-align: center;
+
+    border-radius: 7px;
+
+    background: #eef4fb !important;
+    color: #17365d !important;
+
+    font-size: 13px !important;
+    font-weight: 800 !important;
+}
+
+
+/* ------------------------------------------------------------
+   DANGER ZONE
+------------------------------------------------------------ */
+
+.settings-page .danger-card {
+    border-color: #fecaca !important;
+}
+
+.settings-page .danger-card .card-header {
+    background: #fffafa !important;
+    border-bottom-color: #fee2e2 !important;
+}
+
+.settings-page .danger-card .card-header h3 {
+    color: #991b1b !important;
+}
+
+.settings-page .danger-card .card-header h3 i {
+    background: #fef2f2 !important;
+    color: #991b1b !important;
+}
+
+
+/* ------------------------------------------------------------
+   MODALS
+------------------------------------------------------------ */
+
+.settings-page ~ .modal,
+.modal {
+    background: rgba(15, 23, 42, 0.58) !important;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 25px 70px rgba(15, 23, 42, 0.22) !important;
+    padding: 26px !important;
+}
+
+.modal-header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.modal-header h2 {
+    color: #0b2a4a !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+}
+
+.close-modal {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px !important;
+
+    color: #64748b !important;
+    background: #f8fafc !important;
+
+    font-size: 22px !important;
+}
+
+.close-modal:hover {
+    background: #eef4fb !important;
+    color: #0b2a4a !important;
+}
+
+.form-group label {
+    color: #172033 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+
+    height: 43px;
+
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 9px !important;
+
+    background: #ffffff !important;
+    color: #172033 !important;
+
+    padding: 0 12px !important;
+
+    font-size: 14px !important;
+    font-weight: 500 !important;
+
+    outline: none !important;
+}
+
+.form-group input:focus {
+    border-color: #17365d !important;
+    box-shadow: 0 0 0 3px rgba(23, 54, 93, 0.09) !important;
+}
+
+
+/* ------------------------------------------------------------
+   ACTIVE DEVICES
+------------------------------------------------------------ */
+
+#devicesList > div {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease;
+}
+
+#devicesList > div:hover {
+    border-color: #cbd5e1 !important;
+    transform: translateY(-1px);
+}
+
+#devicesList strong {
+    color: #0b2a4a !important;
+}
+
+
+/* ------------------------------------------------------------
+   DISABLED BUTTON
+------------------------------------------------------------ */
+
+.settings-page button:disabled {
+    opacity: 0.55 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   SCROLLBAR
+------------------------------------------------------------ */
+
+.settings-page::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar {
+    width: 7px;
+}
+
+.settings-page::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.settings-page::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE - TABLET
+------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+
+    .settings-page .hero-section {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-page .profile-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE - MOBILE
+------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+
+    .settings-page {
+        padding-bottom: 25px;
+    }
+
+    .settings-page .hero-section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .settings-page .hero-left,
+    .settings-page .status-card,
+    .settings-page .profile-section {
+        padding: 20px !important;
+    }
+
+    .settings-page .hero-left h2 {
+        font-size: 25px !important;
+    }
+
+    .settings-page .profile-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .settings-page .profile-top .primary-btn {
+        width: 100%;
+    }
+
+    .settings-page .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-page .settings-list {
+        padding: 0 18px;
+    }
+
+    .settings-page .setting-item {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 14px;
+    }
+
+    .settings-page .setting-info {
+        padding-right: 0;
+    }
+
+    .settings-page .setting-item select,
+    .settings-page .range-box {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .settings-page .range-box input[type="range"] {
+        flex: 1;
+        width: auto;
+    }
+
+    .settings-page .setting-item .primary-btn,
+    .settings-page .setting-item .secondary-btn,
+    .settings-page .setting-item .danger-btn {
+        width: 100%;
+    }
+
+    .settings-page .hero-buttons {
+        width: 100%;
+    }
+
+    .settings-page .hero-buttons button {
+        flex: 1;
+    }
+}
+
+
+/* ------------------------------------------------------------
+   SMALL MOBILE
+------------------------------------------------------------ */
+
+@media (max-width: 450px) {
+
+    .settings-page .hero-buttons {
+        flex-direction: column;
+    }
+
+    .settings-page .hero-buttons button {
+        width: 100%;
+    }
+
+    .settings-page .card-header {
+        padding: 17px 18px !important;
+    }
+
+    .settings-page .card-header h3 {
+        font-size: 16px !important;
+    }
+
+    .settings-page .card-header h3 i {
+        width: 30px;
+        height: 30px;
+        font-size: 13px !important;
+    }
+
+    .settings-page .profile-left {
+        align-items: flex-start;
+    }
+
+    .settings-page .avatar-circle {
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+    }
+
+    .settings-page #profileInitials {
+        font-size: 19px !important;
+    }
+}
+/* ============================================================
+   FINAL SETTINGS HEADER FIX
+   Remove unwanted square/icon + make header clean white
+   ============================================================ */
+
+/* ---------- TOP HEADER / SEARCH AREA ---------- */
+
+.settings-page .topbar,
+.settings-page .top-header,
+.settings-page .header,
+.settings-page .page-header {
+    background: #ffffff !important;
+    color: #17365d !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #e5eaf0 !important;
+}
+
+/* Search box white */
+.settings-page input[type="search"],
+.settings-page .search-box,
+.settings-page .search-container,
+.settings-page .header-search {
+    background: #ffffff !important;
+    color: #17365d !important;
+    border: 1px solid #dbe3ec !important;
+    box-shadow: none !important;
+}
+
+/* Search icon */
+.settings-page .search-box i,
+.settings-page .search-container i,
+.settings-page .header-search i {
+    color: #64748b !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+/* ============================================================
+   SYSTEM CONFIGURATION — REMOVE LEFT SQUARE
+   ============================================================ */
+
+.settings-page .hero-tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+
+    background: #eef4fb !important;
+    color: #17365d !important;
+
+    border: 1px solid #d7e3ef !important;
+    border-radius: 9px !important;
+
+    padding: 8px 14px !important;
+    margin-left: 0 !important;
+
+    box-shadow: none !important;
+}
+
+/* Hide every possible icon/container inside hero tag */
+.settings-page .hero-tag > i,
+.settings-page .hero-tag > svg,
+.settings-page .hero-tag > span:first-child,
+.settings-page .hero-tag .icon,
+.settings-page .hero-tag .icon-box,
+.settings-page .hero-tag .fa,
+.settings-page .hero-tag .fas,
+.settings-page .hero-tag .far,
+.settings-page .hero-tag .fab {
+    display: none !important;
+}
+
+
+/* Remove pseudo-element square */
+.settings-page .hero-tag::before,
+.settings-page .hero-tag::after {
+    content: none !important;
+    display: none !important;
+}
+
+
+/* ============================================================
+   EMAIL — REMOVE LEFT SQUARE
+   ============================================================ */
+
+.settings-page .profile-info .email {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    color: #475569 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+
+/* Hide email icon */
+.settings-page .profile-info .email > i,
+.settings-page .profile-info .email > svg,
+.settings-page .profile-info .email .icon,
+.settings-page .profile-info .email .icon-box,
+.settings-page .profile-info .email .fa,
+.settings-page .profile-info .email .fas,
+.settings-page .profile-info .email .far,
+.settings-page .profile-info .email .fab {
+    display: none !important;
+}
+
+
+/* Remove pseudo-element square before email */
+.settings-page .profile-info .email::before,
+.settings-page .profile-info .email::after {
+    content: none !important;
+    display: none !important;
+}
+
+
+/* ============================================================
+   PROFILE AREA
+   ============================================================ */
+
+.settings-page .profile-info {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+/* Avatar stays clean */
+.settings-page .avatar-circle {
+    background: #eef4fb !important;
+    border: 1px solid #d7e3ef !important;
+    box-shadow: none !important;
+}
+
+.settings-page #profileInitials {
+    color: #17365d !important;
+    font-weight: 700 !important;
+}
+
+
+/* ============================================================
+   REMOVE SQUARES CREATED BY FONT AWESOME
+   ============================================================ */
+
+.settings-page i {
+    text-shadow: none !important;
+}
+
+
+/* ============================================================
+   PREVENT ICON BOXES / EMPTY SPANS
+   ============================================================ */
+
+.settings-page .hero-tag span:empty,
+.settings-page .profile-info span:empty,
+.settings-page .email span:empty {
+    display: none !important;
+}
+
+
+/* ============================================================
+   FINAL CLEAN LOOK
+   ============================================================ */
+
+.settings-page .hero-tag,
+.settings-page .profile-info,
+.settings-page .profile-info .email {
+    font-family: "Times New Roman", Times, serif !important;
+}
+/* =========================================================
+   FINGUARD AI — FINAL COMMON THEME OVERRIDE
+   ========================================================= */
+
+:root {
+    --finguard-navy: #071a33;
+    --finguard-navy-2: #0b2a52;
+    --finguard-white: #ffffff;
+    --finguard-bg: #f5f8fc;
+    --finguard-border: #dce4ee;
+}
+
+
+/* ---------- GLOBAL FONT ---------- */
+
+html,
+body,
+body * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+
+/* ---------- MAIN TEXT ---------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #071a33 !important;
+}
+
+
+/* ---------- MAIN NAVY ---------- */
+
+.landing-navbar,
+.navbar,
+.top-navbar,
+.main-navbar {
+    background: #ffffff !important;
+}
+
+
+/* ---------- NAVY BUTTONS ---------- */
+
+button,
+.login-btn,
+.hero-primary-btn,
+.nav-start,
+.cta-primary,
+.primary-btn,
+.primary-button,
+.btn-primary {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    border-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- BUTTON HOVER ---------- */
+
+button:hover,
+.login-btn:hover,
+.hero-primary-btn:hover,
+.nav-start:hover,
+.cta-primary:hover,
+.primary-btn:hover,
+.primary-button:hover,
+.btn-primary:hover {
+    background: #0b2a52 !important;
+    background-color: #0b2a52 !important;
+    border-color: #0b2a52 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- SECONDARY BUTTON ---------- */
+
+.hero-secondary-btn,
+.cta-secondary,
+.secondary-btn,
+.secondary-button {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #071a33 !important;
+    border: 1px solid #071a33 !important;
+}
+
+
+/* ---------- LOGO / ICON BOX ---------- */
+
+.logo,
+.logo-icon,
+.landing-logo-icon,
+.brand-icon,
+.mini-shield {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- GENERAL CARDS ---------- */
+
+.card,
+.login-card,
+.feature-card,
+.dashboard-card,
+.stat-card,
+.kpi-card,
+.panel,
+.analytics-card {
+    background: #ffffff !important;
+    border-color: #dce4ee !important;
+}
+
+
+/* ---------- INPUTS ---------- */
+
+input,
+textarea,
+select {
+    background: #ffffff !important;
+    color: #071a33 !important;
+    border-color: #dce4ee !important;
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #071a33 !important;
+    box-shadow: 0 0 0 3px rgba(7, 26, 51, 0.10) !important;
+}
+
+
+/* ---------- LINKS ---------- */
+
+a {
+    color: #071a33 !important;
+}
+
+
+/* ---------- BLUE TEXT ---------- */
+
+.blue-text,
+.primary-text,
+.brand-text {
+    color: #071a33 !important;
+}
+
+
+/* ---------- ACTIVE ---------- */
+
+.active,
+.active-link,
+.nav-link.active,
+.sidebar-link.active {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- ICONS ---------- */
+
+.fa,
+.fas,
+.far,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
+    /* DO NOT change Font Awesome font */
+}
+
+
+/* ---------- CHECK ICON ---------- */
+
+.check-icon {
+    background: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- WHITE TEXT ON NAVY ---------- */
+
+.nav-start,
+.login-btn,
+.hero-primary-btn,
+.cta-primary {
+    color: #ffffff !important;
+}
+
+
+/* ---------- BORDER ---------- */
+
+hr {
+    border-color: #dce4ee !important;
+}
+
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar-thumb {
+    background: #071a33 !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #eef2f7 !important;
+}
+
+
+/* ---------- TEXT SELECTION ---------- */
+
+::selection {
+    background: #071a33 !important;
+    color: #ffffff !important;
+}

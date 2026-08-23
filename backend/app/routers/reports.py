@@ -3,9 +3,9 @@ from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 
-from app.database.connection import get_db
-from app.models.reports import ReportDB
-from app.models.transaction import TransactionDB
+from backend.app.database.connection import get_db
+from backend.app.models.reports import ReportDB
+from backend.app.models.transaction import TransactionDB
 
 from datetime import datetime
 from reportlab.lib.pagesizes import A4
@@ -28,7 +28,7 @@ router = APIRouter()
 # ============================================================
 
 templates = Jinja2Templates(
-    directory="app/templates"
+    directory="backend/app/templates"
 )
 
 
@@ -137,12 +137,13 @@ def find_report(
     # --------------------------------------------
 
     report = (
-        db.query(ReportDB)
-        .filter(
-            ReportDB.report_id == report_id
-        )
-        .first()
+    db.query(ReportDB)
+    .filter(
+        ((ReportDB.report_id == report_id) | (ReportDB.id == int(report_id) if report_id.isdigit() else False)) |
+        (ReportDB.id == int(report_id) if report_id.isdigit() else False)
     )
+    .first()
+)
 
     if report:
         return report
@@ -1042,7 +1043,7 @@ async def download_report(
         report = (
             db.query(ReportDB)
             .filter(
-                ReportDB.report_id == report_id
+                (ReportDB.report_id == report_id) | (ReportDB.id == int(report_id) if report_id.isdigit() else False)
             )
             .first()
         )
@@ -1435,7 +1436,7 @@ async def delete_report(
     report = (
         db.query(ReportDB)
         .filter(
-            ReportDB.report_id == report_id
+            (ReportDB.report_id == report_id) | (ReportDB.id == int(report_id) if report_id.isdigit() else False)
         )
         .first()
     )
@@ -1519,7 +1520,7 @@ async def download_report(
         report = (
             db.query(ReportDB)
             .filter(
-                ReportDB.report_id == report_id
+                (ReportDB.report_id == report_id) | (ReportDB.id == int(report_id) if report_id.isdigit() else False)
             )
             .first()
         )
@@ -1780,7 +1781,7 @@ async def download_report(
         report = (
             db.query(ReportDB)
             .filter(
-                ReportDB.report_id == report_id
+                (ReportDB.report_id == report_id) | (ReportDB.id == int(report_id) if report_id.isdigit() else False)
             )
             .first()
         )

@@ -1,1191 +1,2962 @@
 {% extends "base.html" %}
 
-{% block title %}
-Add Transaction | FinGuard AI
+{% block title %}Add Transaction | FinGuard AI{% endblock %}
+
+{% block page_title %}Add Transaction{% endblock %}
+
+{% block page_subtitle %}
+Create and secure a new financial transaction
 {% endblock %}
-
-
-{% block extra_css %}
-
-<link rel="stylesheet"
-      href="{{ url_for('static', path='css/add_transaction.css') }}">
-
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-{% endblock %}
-
-
 
 {% block content %}
+<!-- FinGuard AI Global Theme -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/theme.css') }}"
+>
+
+<style>
+
+/* =========================================================
+   FINGUARD AI
+   ADD TRANSACTION — WHITE FINTECH UI
+========================================================= */
+
+.add-transaction-page {
+
+    --black: #15181d;
+    --dark: #252a31;
+    --text: #303640;
+    --muted: #737b86;
+    --light: #f7f8fa;
+    --border: #e4e7eb;
+    --green: #16a34a;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    color: var(--text);
+
+    padding: 32px 38px 80px;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
 
 
-<div class="transaction-page">
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.at-breadcrumb {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 27px;
+
+    color: #9aa1aa;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.at-breadcrumb i {
+
+    font-size: 9px;
+
+    color: #c5cad0;
+}
+
+.at-breadcrumb strong {
+
+    color: #414852;
+
+    font-weight: 800;
+}
 
 
-<!-- =====================================================
-     HERO SECTION
-===================================================== -->
+/* =========================================================
+   HERO
+========================================================= */
+
+.at-hero {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 40px;
+
+    padding: 38px 42px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 24px;
+
+    margin-bottom: 28px;
+
+    box-shadow:
+        0 10px 35px rgba(20, 25, 32, .045);
+}
 
 
-<section class="hero-section">
+.at-hero-left {
+
+    max-width: 850px;
+}
 
 
-    <div class="hero-left">
+.at-label {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    border-radius: 999px;
+
+    background: #f5f6f7;
+
+    border: 1px solid #e5e7ea;
+
+    color: #4d555f;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: .7px;
+
+    text-transform: uppercase;
+}
 
 
-        <span class="hero-tag">
+.at-label-dot {
 
-            <i class="fa-solid fa-shield-halved"></i>
+    width: 7px;
 
-            FinGuard AI • AI Powered Protection
+    height: 7px;
 
-        </span>
+    background: #22c55e;
+
+    border-radius: 50%;
+}
+
+
+.at-hero h1 {
+
+    margin: 20px 0 12px;
+
+    color: #15181d;
+
+    font-size: clamp(38px, 4vw, 56px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    font-weight: 950;
+}
+
+
+.at-hero h1 span {
+
+    color: #777f89;
+}
+
+
+.at-hero-description {
+
+    max-width: 780px;
+
+    margin: 0;
+
+    color: #707883;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    font-weight: 500;
+}
+
+
+/* HERO RIGHT */
+
+.at-hero-status {
+
+    min-width: 230px;
+
+    padding: 23px;
+
+    background: #fafbfc;
+
+    border: 1px solid #e5e7ea;
+
+    border-radius: 18px;
+}
+
+
+.at-hero-status-label {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #999fa8;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+
+.at-hero-status-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #22272e;
+
+    font-size: 18px;
+
+    font-weight: 900;
+}
+
+
+.at-status-green {
+
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 0 5px rgba(34,197,94,.10);
+}
+
+
+.at-hero-status-text {
+
+    margin: 8px 0 0;
+
+    color: #858d97;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.at-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        350px;
+
+    gap: 25px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   WHITE SECTION CARD
+========================================================= */
+
+.at-card {
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 21px;
+
+    padding: 31px;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 8px 28px rgba(20, 25, 32, .035);
+}
+
+
+.at-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 22px;
+
+    margin-bottom: 26px;
+
+    border-bottom: 1px solid #eef0f2;
+}
+
+
+.at-card-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.at-number {
+
+    width: 43px;
+
+    height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #181c22;
+
+    color: #ffffff;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+
+    font-weight: 950;
+}
+
+
+.at-card-heading small {
+
+    display: block;
+
+    color: #a0a6ae;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 4px;
+}
+
+
+.at-card-heading h2 {
+
+    margin: 0;
+
+    color: #1c2128;
+
+    font-size: 22px;
+
+    font-weight: 950;
+
+    letter-spacing: -.5px;
+}
+
+
+.at-card-header > i {
+
+    color: #a1a8b0;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.at-form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 23px;
+}
+
+
+.at-field {
+
+    min-width: 0;
+}
+
+
+.at-field.full {
+
+    grid-column: 1 / -1;
+}
+
+
+.at-field label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #343b45;
+
+    font-size: 13px;
+
+    font-weight: 900;
+}
+
+
+.at-required {
+
+    color: #dc2626;
+}
+
+
+.at-input-wrap {
+
+    position: relative;
+}
+
+
+.at-input-wrap > i {
+
+    position: absolute;
+
+    left: 17px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #8c949e;
+
+    font-size: 15px;
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.at-input,
+.at-select,
+.at-textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background: #fafbfc;
+
+    border: 1px solid #dfe3e8;
+
+    border-radius: 13px;
+
+    color: #242a32;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    outline: none;
+
+    transition:
+        .2s ease;
+}
+
+
+.at-input,
+.at-select {
+
+    height: 55px;
+
+    padding: 0 17px;
+}
+
+
+.at-input-wrap .at-input {
+
+    padding-left: 48px;
+}
+
+
+.at-input::placeholder {
+
+    color: #a5acb5;
+
+    font-weight: 500;
+}
+
+
+.at-input:hover,
+.at-select:hover,
+.at-textarea:hover {
+
+    background: #ffffff;
+
+    border-color: #c8cdd4;
+}
+
+
+.at-input:focus,
+.at-select:focus,
+.at-textarea:focus {
+
+    background: #ffffff;
+
+    border-color: #7b838d;
+
+    box-shadow:
+        0 0 0 4px rgba(20,25,32,.055);
+}
+
+
+.at-textarea {
+
+    min-height: 145px;
+
+    padding: 16px 17px;
+
+    resize: vertical;
+
+    line-height: 1.7;
+}
+
+
+.at-helper {
+
+    margin-top: 7px;
+
+    color: #9ba2ab;
+
+    font-size: 11px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   SECURITY OPTIONS
+========================================================= */
+
+.at-security-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+
+.at-security-option {
+
+    position: relative;
+}
+
+
+.at-security-option input {
+
+    position: absolute;
+
+    opacity: 0;
+}
+
+
+.at-security-option label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 70px;
+
+    padding: 13px 15px;
+
+    box-sizing: border-box;
+
+    background: #fafbfc;
+
+    border: 1px solid #e1e4e8;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+
+.at-security-option label:hover {
+
+    background: #ffffff;
+
+    border-color: #c8cdd3;
+}
+
+
+.at-checkbox {
+
+    width: 25px;
+
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #cdd2d8;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: transparent;
+}
+
+
+.at-security-option input:checked + label {
+
+    background: #f7f8f9;
+
+    border-color: #9da4ad;
+}
+
+
+.at-security-option input:checked + label .at-checkbox {
+
+    background: #181c22;
+
+    border-color: #181c22;
+
+    color: #ffffff;
+}
+
+
+.at-security-text strong {
+
+    display: block;
+
+    color: #343b45;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    margin-bottom: 4px;
+}
+
+
+.at-security-text span {
+
+    display: block;
+
+    color: #9098a2;
+
+    font-size: 10px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.at-sidebar {
+
+    position: sticky;
+
+    top: 22px;
+}
+
+
+/* =========================================================
+   AI CARD — WHITE
+========================================================= */
+
+.at-info-card {
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 21px;
+
+    padding: 26px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 8px 28px rgba(20,25,32,.04);
+}
+
+
+.at-info-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #eef0f2;
+}
+
+
+.at-info-icon {
+
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f4f5f7;
+
+    border-radius: 12px;
+
+    color: #303640;
+
+    font-size: 17px;
+}
+
+
+.at-info-header small {
+
+    display: block;
+
+    color: #a0a6af;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 3px;
+}
+
+
+.at-info-header h3 {
+
+    margin: 0;
+
+    color: #20252c;
+
+    font-size: 19px;
+
+    font-weight: 950;
+}
+
+
+.at-info-description {
+
+    margin: 18px 0;
+
+    color: #7e8690;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   AI ITEMS
+========================================================= */
+
+.at-info-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eff1f3;
+}
+
+
+.at-info-item:last-child {
+
+    border-bottom: none;
+
+    padding-bottom: 0;
+}
+
+
+.at-info-item-icon {
+
+    width: 37px;
+
+    height: 37px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f7f8fa;
+
+    border: 1px solid #ebedf0;
+
+    border-radius: 10px;
+
+    color: #636b76;
+
+    font-size: 12px;
+}
+
+
+.at-info-item strong {
+
+    display: block;
+
+    color: #353c46;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    margin-bottom: 3px;
+}
+
+
+.at-info-item span {
+
+    color: #969da6;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ACTIVE BADGE
+========================================================= */
+
+.at-active {
+
+    margin-left: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    background: #f0fdf4;
+
+    border: 1px solid #dcfce7;
+
+    border-radius: 999px;
+
+    color: #16a34a;
+
+    font-size: 8px;
+
+    font-weight: 900;
+}
+
+
+.at-active-dot {
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+.at-submit {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 22px 24px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(20,25,32,.035);
+}
+
+
+.at-submit-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.at-submit-icon {
+
+    width: 43px;
+
+    height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f0fdf4;
+
+    color: #16a34a;
+
+    border-radius: 11px;
+}
+
+
+.at-submit-info strong {
+
+    display: block;
+
+    color: #343b45;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    margin-bottom: 4px;
+}
+
+
+.at-submit-info span {
+
+    color: #969da6;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.at-buttons {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+.at-btn {
+
+    height: 48px;
+
+    padding: 0 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+
+.at-btn-secondary {
+
+    background: #ffffff;
+
+    color: #444b55;
+
+    border: 1px solid #dfe3e7;
+}
+
+
+.at-btn-secondary:hover {
+
+    background: #f7f8fa;
+
+    transform: translateY(-2px);
+}
+
+
+.at-btn-primary {
+
+    background: #181c22;
+
+    color: #ffffff;
+
+    border: 1px solid #181c22;
+}
+
+
+.at-btn-primary:hover {
+
+    background: #30353d;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px rgba(20,25,32,.15);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1150px) {
+
+    .at-layout {
+
+        grid-template-columns: 1fr;
+    }
+
+    .at-sidebar {
+
+        position: static;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 20px;
+    }
+
+    .at-info-card {
+
+        margin-bottom: 0;
+    }
+}
+
+
+@media(max-width:850px) {
+
+    .add-transaction-page {
+
+        padding: 25px 18px 60px;
+    }
+
+    .at-hero {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 30px 25px;
+    }
+
+    .at-hero-status {
+
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+    .at-form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .at-field.full {
+
+        grid-column: auto;
+    }
+
+    .at-security-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .at-sidebar {
+
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media(max-width:600px) {
+
+    .at-card {
+
+        padding: 22px 18px;
+    }
+
+    .at-card-heading h2 {
+
+        font-size: 18px;
+    }
+
+    .at-hero h1 {
+
+        font-size: 38px;
+    }
+
+    .at-submit {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .at-buttons {
+
+        flex-direction: column;
+    }
+
+    .at-btn {
+
+        width: 100%;
+    }
+}
+/* =========================================================
+   TEXT VISIBILITY FIX
+   WHITE PAGE + DARK BOLD TEXT
+========================================================= */
+
+.add-transaction-page {
+    background: #ffffff !important;
+    color: #20242a !important;
+}
+
+
+/* Main headings */
+
+.add-transaction-page h1,
+.add-transaction-page h2,
+.add-transaction-page h3,
+.add-transaction-page h4 {
+    color: #15181d !important;
+    font-weight: 900 !important;
+}
+
+
+/* Hero */
+
+.add-transaction-page .at-hero h1 {
+    color: #111418 !important;
+    font-size: 52px !important;
+    font-weight: 950 !important;
+}
+
+.add-transaction-page .at-hero h1 span {
+    color: #555c65 !important;
+}
+
+.add-transaction-page .at-hero-description {
+    color: #626a74 !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+}
+
+
+/* Labels */
+
+.add-transaction-page label {
+    color: #252a31 !important;
+    font-weight: 850 !important;
+    font-size: 14px !important;
+}
+
+
+/* Input text */
+
+.add-transaction-page input,
+.add-transaction-page select,
+.add-transaction-page textarea {
+    color: #20252b !important;
+    background: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+}
+
+
+/* Placeholder */
+
+.add-transaction-page input::placeholder,
+.add-transaction-page textarea::placeholder {
+    color: #9299a2 !important;
+    opacity: 1 !important;
+}
+
+
+/* Select options */
+
+.add-transaction-page select option {
+    color: #20252b !important;
+    background: #ffffff !important;
+}
+
+
+/* Card headings */
+
+.add-transaction-page .at-card-heading small,
+.add-transaction-page .at-info-header small {
+    color: #858c95 !important;
+    font-weight: 900 !important;
+}
+
+
+.add-transaction-page .at-card-heading h2,
+.add-transaction-page .at-info-header h3 {
+    color: #171b20 !important;
+    font-weight: 950 !important;
+}
+
+
+/* Card description */
+
+.add-transaction-page .at-info-description {
+    color: #666e78 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+
+/* AI / Security item */
+
+.add-transaction-page .at-info-item strong {
+    color: #272d35 !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-info-item span {
+    color: #7d858f !important;
+    font-size: 10px !important;
+}
+
+
+/* Security option */
+
+.add-transaction-page .at-security-text strong {
+    color: #252b33 !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-security-text span {
+    color: #7d858f !important;
+}
+
+
+/* Breadcrumb */
+
+.add-transaction-page .at-breadcrumb {
+    color: #7c848e !important;
+    font-weight: 700 !important;
+}
+
+.add-transaction-page .at-breadcrumb strong {
+    color: #252a31 !important;
+}
+
+
+/* Status */
+
+.add-transaction-page .at-hero-status-label {
+    color: #8b929b !important;
+}
+
+.add-transaction-page .at-hero-status-title {
+    color: #20252b !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-hero-status-text {
+    color: #747c86 !important;
+}
+
+
+/* Buttons */
+
+.add-transaction-page .at-btn-primary {
+    color: #ffffff !important;
+    background: #171b20 !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-btn-secondary {
+    color: #343a42 !important;
+    background: #ffffff !important;
+    font-weight: 900 !important;
+}
+
+
+/* Submit text */
+
+.add-transaction-page .at-submit-info strong {
+    color: #292f36 !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-submit-info span {
+    color: #7e8690 !important;
+}
+
+
+/* Active badge */
+
+.add-transaction-page .at-active {
+    color: #16a34a !important;
+}
+
+
+/* Helper text */
+
+.add-transaction-page .at-helper {
+    color: #858d97 !important;
+}
+/* =========================================================
+   FINGUARD — DARK NAVY TYPOGRAPHY
+========================================================= */
+
+.add-transaction-page {
+    background: #ffffff !important;
+    color: #0f2747 !important;
+}
+
+
+/* Main headings */
+
+.add-transaction-page h1,
+.add-transaction-page h2,
+.add-transaction-page h3,
+.add-transaction-page h4 {
+    color: #0b2342 !important;
+    font-weight: 900 !important;
+}
+
+
+/* Hero */
+
+.add-transaction-page .at-hero h1 {
+    color: #071f3d !important;
+    font-size: 52px !important;
+    font-weight: 950 !important;
+}
+
+.add-transaction-page .at-hero h1 span {
+    color: #173d68 !important;
+}
+
+.add-transaction-page .at-hero-description {
+    color: #536b84 !important;
+}
+
+
+/* Breadcrumb */
+
+.add-transaction-page .at-breadcrumb {
+    color: #6b8095 !important;
+}
+
+.add-transaction-page .at-breadcrumb strong {
+    color: #12365d !important;
+}
+
+
+/* Card headings */
+
+.add-transaction-page .at-card-heading h2,
+.add-transaction-page .at-info-header h3 {
+    color: #0b294b !important;
+    font-weight: 950 !important;
+}
+
+
+/* Small headings */
+
+.add-transaction-page .at-card-heading small,
+.add-transaction-page .at-info-header small {
+    color: #68819b !important;
+    font-weight: 900 !important;
+}
+
+
+/* Form labels */
+
+.add-transaction-page label {
+    color: #173653 !important;
+    font-weight: 900 !important;
+    font-size: 14px !important;
+}
+
+
+/* Inputs */
+
+.add-transaction-page input,
+.add-transaction-page select,
+.add-transaction-page textarea {
+    color: #102f50 !important;
+    background: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+}
+
+
+/* Placeholder */
+
+.add-transaction-page input::placeholder,
+.add-transaction-page textarea::placeholder {
+    color: #8ca0b3 !important;
+}
+
+
+/* Select options */
+
+.add-transaction-page select option {
+    color: #102f50 !important;
+    background: #ffffff !important;
+}
+
+
+/* Helper text */
+
+.add-transaction-page .at-helper {
+    color: #71879c !important;
+}
+
+
+/* AI description */
+
+.add-transaction-page .at-info-description {
+    color: #61788f !important;
+}
+
+
+/* AI / Security items */
+
+.add-transaction-page .at-info-item strong {
+    color: #123455 !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-info-item span {
+    color: #71879c !important;
+}
+
+
+/* Security option */
+
+.add-transaction-page .at-security-text strong {
+    color: #153a5f !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-security-text span {
+    color: #71879c !important;
+}
+
+
+/* Hero status */
+
+.add-transaction-page .at-hero-status-label {
+    color: #71879c !important;
+}
+
+.add-transaction-page .at-hero-status-title {
+    color: #0c2b4c !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-hero-status-text {
+    color: #71879c !important;
+}
+
+
+/* Submit section */
+
+.add-transaction-page .at-submit-info strong {
+    color: #123455 !important;
+    font-weight: 900 !important;
+}
+
+.add-transaction-page .at-submit-info span {
+    color: #71879c !important;
+}
+
+
+/* Buttons */
+
+.add-transaction-page .at-btn-primary {
+    background: #0b294b !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    border-color: #0b294b !important;
+}
+
+.add-transaction-page .at-btn-primary:hover {
+    background: #123b65 !important;
+}
+
+.add-transaction-page .at-btn-secondary {
+    background: #ffffff !important;
+    color: #123455 !important;
+    font-weight: 900 !important;
+    border-color: #ccd6e0 !important;
+}
+
+
+/* Active */
+
+.add-transaction-page .at-active {
+    color: #15803d !important;
+}
+
+
+/* Icons */
+
+.add-transaction-page .at-info-icon,
+.add-transaction-page .at-card-header > i,
+.add-transaction-page .at-info-item-icon {
+    color: #244b70 !important;
+}
+
+
+/* Required star */
+
+.add-transaction-page .at-required {
+    color: #dc2626 !important;
+}
+/* =========================================================
+   FINGUARD AI — DARK NAVY HERO SECTION
+   Only Hero Section
+========================================================= */
+
+.add-transaction-page .at-hero {
+    background: linear-gradient(
+        135deg,
+        #071f3d 0%,
+        #0b294b 55%,
+        #123b65 100%
+    ) !important;
+
+    border: 1px solid #163f68 !important;
+
+    box-shadow:
+        0 14px 35px rgba(7, 31, 61, 0.16) !important;
+}
+
+
+/* Secure Entry Badge */
+
+.add-transaction-page .at-hero .at-label {
+    background: rgba(255, 255, 255, 0.10) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+
+    color: #dbeafe !important;
+}
+
+.add-transaction-page .at-hero .at-label-dot {
+    background: #22c55e !important;
+
+    box-shadow:
+        0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+
+/* Hero Main Heading */
+
+.add-transaction-page .at-hero h1 {
+    color: #ffffff !important;
+
+    font-weight: 950 !important;
+}
+
+.add-transaction-page .at-hero h1 span {
+    color: #9fc5eb !important;
+}
+
+
+/* Hero Description */
+
+.add-transaction-page .at-hero .at-hero-description {
+    color: #c5d7e9 !important;
+}
+
+
+/* =========================================================
+   SYSTEM STATUS — DARK NAVY GLASS CARD
+========================================================= */
+
+.add-transaction-page .at-hero-status {
+    background: rgba(255, 255, 255, 0.08) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 8px 25px rgba(0, 0, 0, 0.10) !important;
+}
+
+
+/* System Status Label */
+
+.add-transaction-page .at-hero-status-label {
+    color: #8eabc7 !important;
+}
+
+
+/* Ready to Create */
+
+.add-transaction-page .at-hero-status-title {
+    color: #ffffff !important;
+
+    font-weight: 900 !important;
+}
+
+
+/* Green Status Dot */
+
+.add-transaction-page .at-status-green {
+    background: #22c55e !important;
+
+    box-shadow:
+        0 0 0 5px rgba(34, 197, 94, 0.14),
+        0 0 12px rgba(34, 197, 94, 0.35);
+}
+
+
+/* Status Description */
+
+.add-transaction-page .at-hero-status-text {
+    color: #b3c8dc !important;
+}
+/* =========================================================
+   ADD TRANSACTION — REPORT STYLE DARK NAVY HERO
+========================================================= */
+
+.add-transaction-page .at-hero {
+    background: #0b294b !important;
+    border: 1px solid #0b294b !important;
+    box-shadow: 0 12px 30px rgba(11, 41, 75, 0.16) !important;
+}
+
+/* Secure Entry */
+
+.add-transaction-page .at-hero .at-label {
+    background: rgba(255, 255, 255, 0.10) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+}
+
+.add-transaction-page .at-hero .at-label-dot {
+    background: #22c55e !important;
+}
+
+
+/* Main Heading */
+
+.add-transaction-page .at-hero h1 {
+    color: #ffffff !important;
+}
+
+.add-transaction-page .at-hero h1 span {
+    color: #b9d2ea !important;
+}
+
+
+/* Description */
+
+.add-transaction-page .at-hero-description {
+    color: #d1dfed !important;
+}
+
+
+/* System Status */
+
+.add-transaction-page .at-hero-status {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.add-transaction-page .at-hero-status-label {
+    color: #9fb8d0 !important;
+}
+
+.add-transaction-page .at-hero-status-title {
+    color: #ffffff !important;
+}
+
+.add-transaction-page .at-hero-status-text {
+    color: #c3d4e5 !important;
+}
+
+.add-transaction-page .at-status-green {
+    background: #22c55e !important;
+    box-shadow: 0 0 0 5px rgba(34,197,94,.12) !important;
+}
+/* =========================================================
+   ADD TRANSACTION — DARK NAVY HERO
+========================================================= */
+
+.add-transaction-page .at-hero {
+    background: #061a2f !important;
+    border: 1px solid #061a2f !important;
+    box-shadow: 0 14px 35px rgba(3, 18, 33, 0.22) !important;
+}
+
+/* Secure Entry Badge */
+.add-transaction-page .at-hero .at-label {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+}
+
+.add-transaction-page .at-hero .at-label-dot {
+    background: #22c55e !important;
+}
+
+/* Hero Heading */
+.add-transaction-page .at-hero h1 {
+    color: #ffffff !important;
+}
+
+.add-transaction-page .at-hero h1 span {
+    color: #9db8d2 !important;
+}
+
+/* Hero Description */
+.add-transaction-page .at-hero-description {
+    color: #b8c9da !important;
+}
+
+/* System Status Box */
+.add-transaction-page .at-hero-status {
+    background: #0a223b !important;
+    border: 1px solid #173652 !important;
+    box-shadow: none !important;
+}
+
+/* Status Text */
+.add-transaction-page .at-hero-status-label {
+    color: #7894ae !important;
+}
+
+.add-transaction-page .at-hero-status-title {
+    color: #ffffff !important;
+}
+
+.add-transaction-page .at-hero-status-text {
+    color: #a9bfd3 !important;
+}
+
+/* Green Status Dot */
+.add-transaction-page .at-status-green {
+    background: #22c55e !important;
+    box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.10) !important;
+}
+
+</style>
+
+
+<div class="add-transaction-page">
+
+
+    <!-- =====================================================
+         BREADCRUMB
+    ====================================================== -->
+
+    <div class="at-breadcrumb">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>Dashboard</span>
+
+        <i class="fa-solid fa-chevron-right"></i>
+
+        <span>Transactions</span>
+
+        <i class="fa-solid fa-chevron-right"></i>
+
+        <strong>Add Transaction</strong>
+
+    </div>
 
 
 
-        <h1>
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
-            Add New
+    <section class="at-hero">
 
-            <span>
-                Transaction
+        <div class="at-hero-left">
+
+            <div class="at-label">
+
+                <span class="at-label-dot"></span>
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                FinGuard Secure Entry
+
+            </div>
+
+
+            <h1>
+
+                Add New
+                <span>Transaction</span>
+
+            </h1>
+
+
+            <p class="at-hero-description">
+
+                Enter complete transaction information to create
+                a secure financial record and prepare it for
+                AI-powered fraud detection.
+
+            </p>
+
+        </div>
+
+
+        <div class="at-hero-status">
+
+            <span class="at-hero-status-label">
+                SYSTEM STATUS
             </span>
 
-        </h1>
+            <div class="at-hero-status-title">
 
+                <span class="at-status-green"></span>
 
+                Ready to Create
 
-        <p>
+            </div>
 
-            Secure every financial transaction using
-            FinGuard AI intelligent fraud detection engine.
-            Predict fraud probability before approval
-            with real-time AI analysis.
+            <p class="at-hero-status-text">
 
-        </p>
+                All transaction security services
+                are currently active.
 
-
-
-        <div class="hero-buttons">
-
-
-           <button 
-type="button"
-class="btn-primary"
-id="aiDetectBtn">
-
-<i class="fa-solid fa-brain"></i>
-
-Run AI Detection
-
-</button>
-
-
-
-
-
-            <button 
-            type="button"
-            class="hero-btn"
-            onclick="showRealtimeStatus()">
-
-
-
-                <i class="fa-solid fa-bolt"></i>
-
-                Real-Time Analysis
-
-
-            </button>
-
+            </p>
 
         </div>
 
+    </section>
 
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <div class="at-layout">
+
+
+        <!-- =================================================
+             LEFT FORM
+        ================================================== -->
+
+        <main>
+
+            <form
+                action="/add-transaction"
+                method="POST"
+            >
+
+
+                <!-- =================================================
+                     TRANSACTION INFORMATION
+                ================================================== -->
+
+                <section class="at-card">
+
+                    <div class="at-card-header">
+
+                        <div class="at-card-heading">
+
+                            <div class="at-number">
+                                01
+                            </div>
+
+                            <div>
+
+                                <small>
+                                    CORE INFORMATION
+                                </small>
+
+                                <h2>
+                                    Transaction Details
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    </div>
+
+
+                    <div class="at-form-grid">
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Transaction ID
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <div class="at-input-wrap">
+
+                                <i class="fa-solid fa-hashtag"></i>
+
+                                <input
+                                    type="text"
+                                    name="transaction_id"
+                                    class="at-input"
+                                    placeholder="TXN005"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Account ID
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <div class="at-input-wrap">
+
+                                <i class="fa-solid fa-user"></i>
+
+                                <input
+                                    type="text"
+                                    name="account_id"
+                                    class="at-input"
+                                    placeholder="ACC1005"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Transaction Amount
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <div class="at-input-wrap">
+
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    class="at-input"
+                                    placeholder="50000"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="at-helper">
+                                Enter the transaction amount in INR.
+                            </div>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Transaction Time
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <input
+                                type="datetime-local"
+                                name="time"
+                                class="at-input"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Transaction Type
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <select
+                                name="transaction_type"
+                                class="at-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select transaction type
+                                </option>
+
+                                <option value="Transfer">
+                                    Transfer
+                                </option>
+
+                                <option value="Payment">
+                                    Payment
+                                </option>
+
+                                <option value="Purchase">
+                                    Purchase
+                                </option>
+
+                                <option value="Withdrawal">
+                                    Withdrawal
+                                </option>
+
+                                <option value="Deposit">
+                                    Deposit
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Transaction Status
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <select
+                                name="status"
+                                class="at-select"
+                                required
+                            >
+
+                                <option value="Completed">
+                                    Completed
+                                </option>
+
+                                <option value="Pending">
+                                    Pending
+                                </option>
+
+                                <option value="Failed">
+                                    Failed
+                                </option>
+
+                                <option value="Blocked">
+                                    Blocked
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     MERCHANT
+                ================================================== -->
+
+                <section class="at-card">
+
+                    <div class="at-card-header">
+
+                        <div class="at-card-heading">
+
+                            <div class="at-number">
+                                02
+                            </div>
+
+                            <div>
+
+                                <small>
+                                    PAYMENT INFORMATION
+                                </small>
+
+                                <h2>
+                                    Merchant & Payment
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                    </div>
+
+
+                    <div class="at-form-grid">
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Merchant
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <div class="at-input-wrap">
+
+                                <i class="fa-solid fa-store"></i>
+
+                                <input
+                                    type="text"
+                                    name="merchant"
+                                    class="at-input"
+                                    placeholder="Amazon"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Merchant Category
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <select
+                                name="merchant_category"
+                                class="at-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Food">
+                                    Food
+                                </option>
+
+                                <option value="Shopping">
+                                    Shopping
+                                </option>
+
+                                <option value="Travel">
+                                    Travel
+                                </option>
+
+                                <option value="Entertainment">
+                                    Entertainment
+                                </option>
+
+                                <option value="Healthcare">
+                                    Healthcare
+                                </option>
+
+                                <option value="Utilities">
+                                    Utilities
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Card Type
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <select
+                                name="card_type"
+                                class="at-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select card type
+                                </option>
+
+                                <option value="Debit Card">
+                                    Debit Card
+                                </option>
+
+                                <option value="Credit Card">
+                                    Credit Card
+                                </option>
+
+                                <option value="Prepaid Card">
+                                    Prepaid Card
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Location
+                                <span class="at-required">*</span>
+                            </label>
+
+                            <div class="at-input-wrap">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                <input
+                                    type="text"
+                                    name="location"
+                                    class="at-input"
+                                    placeholder="Mumbai"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SECURITY
+                ================================================== -->
+
+                <section class="at-card">
+
+                    <div class="at-card-header">
+
+                        <div class="at-card-heading">
+
+                            <div class="at-number">
+                                03
+                            </div>
+
+                            <div>
+
+                                <small>
+                                    SECURITY SIGNALS
+                                </small>
+
+                                <h2>
+                                    Security Information
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                    </div>
+
+
+                    <div class="at-form-grid">
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Failed Attempts
+                            </label>
+
+                            <input
+                                type="number"
+                                name="failed_attempts"
+                                class="at-input"
+                                value="0"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="at-field">
+
+                            <label>
+                                Location Risk
+                            </label>
+
+                            <select
+                                name="location_risk"
+                                class="at-select"
+                            >
+
+                                <option value="10">
+                                    Low Risk
+                                </option>
+
+                                <option value="50">
+                                    Medium Risk
+                                </option>
+
+                                <option value="90">
+                                    High Risk
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="at-field full">
+
+                            <label>
+                                Security Flags
+                            </label>
+
+
+                            <div class="at-security-grid">
+
+
+                                <div class="at-security-option">
+
+                                    <input
+                                        type="checkbox"
+                                        id="deviceTrusted"
+                                        name="device_trusted"
+                                        value="true"
+                                    >
+
+                                    <label for="deviceTrusted">
+
+                                        <div class="at-checkbox">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                        </div>
+
+                                        <div class="at-security-text">
+
+                                            <strong>
+                                                Trusted Device
+                                            </strong>
+
+                                            <span>
+                                                Device is recognized by the account.
+                                            </span>
+
+                                        </div>
+
+                                    </label>
+
+                                </div>
+
+
+                                <div class="at-security-option">
+
+                                    <input
+                                        type="checkbox"
+                                        id="international"
+                                        name="is_international"
+                                        value="true"
+                                    >
+
+                                    <label for="international">
+
+                                        <div class="at-checkbox">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                        </div>
+
+                                        <div class="at-security-text">
+
+                                            <strong>
+                                                International Transaction
+                                            </strong>
+
+                                            <span>
+                                                Transaction occurred internationally.
+                                            </span>
+
+                                        </div>
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     NOTES
+                ================================================== -->
+
+                <section class="at-card">
+
+                    <div class="at-card-header">
+
+                        <div class="at-card-heading">
+
+                            <div class="at-number">
+                                04
+                            </div>
+
+                            <div>
+
+                                <small>
+                                    CASE MANAGEMENT
+                                </small>
+
+                                <h2>
+                                    Investigation Notes
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <i class="fa-solid fa-clipboard-list"></i>
+
+                    </div>
+
+
+                    <div class="at-field">
+
+                        <label>
+                            Additional Notes
+                        </label>
+
+                        <textarea
+                            name="investigator_notes"
+                            class="at-textarea"
+                            placeholder="Enter any additional transaction information, observations or investigation context..."
+                        ></textarea>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SUBMIT
+                ================================================== -->
+
+                <div class="at-submit">
+
+                    <div class="at-submit-info">
+
+                        <div class="at-submit-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Secure Transaction Creation
+                            </strong>
+
+                            <span>
+                                Your transaction will be saved securely.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="at-buttons">
+
+                        <a
+                            href="/transactions"
+                            class="at-btn at-btn-secondary"
+                        >
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="at-btn at-btn-primary"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Create Transaction
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </main>
+
+
+
+        <!-- =================================================
+             RIGHT SIDE
+        ================================================== -->
+
+        <aside class="at-sidebar">
+
+
+            <!-- =================================================
+                 AI INTELLIGENCE
+            ================================================== -->
+
+            <div class="at-info-card">
+
+                <div class="at-info-header">
+
+                    <div class="at-info-icon">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                    </div>
+
+                    <div>
+
+                        <small>
+                            ARTIFICIAL INTELLIGENCE
+                        </small>
+
+                        <h3>
+                            Intelligent Analysis
+                        </h3>
+
+                    </div>
+
+                    <div class="at-active">
+
+                        <span class="at-active-dot"></span>
+
+                        ACTIVE
+
+                    </div>
+
+                </div>
+
+
+                <p class="at-info-description">
+
+                    FinGuard AI evaluates transaction signals
+                    and identifies patterns associated with
+                    potentially fraudulent activity.
+
+                </p>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-database"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Transaction Data
+                        </strong>
+
+                        <span>
+                            Amount, merchant and payment details
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-location-crosshairs"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Risk Signals
+                        </strong>
+
+                        <span>
+                            Location, device and security activity
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Risk Score
+                        </strong>
+
+                        <span>
+                            AI calculates the fraud probability
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Investigation
+                        </strong>
+
+                        <span>
+                            Results are available in the report
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SECURITY STATUS
+            ================================================== -->
+
+            <div class="at-info-card">
+
+                <div class="at-info-header">
+
+                    <div class="at-info-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+                    <div>
+
+                        <small>
+                            SECURITY
+                        </small>
+
+                        <h3>
+                            Security Status
+                        </h3>
+
+                    </div>
+
+                    <div class="at-active">
+
+                        <span class="at-active-dot"></span>
+
+                        ACTIVE
+
+                    </div>
+
+                </div>
+
+
+                <p class="at-info-description">
+
+                    Security services are active and ready
+                    to protect this transaction.
+
+                </p>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Secure Data Entry
+                        </strong>
+
+                        <span>
+                            Transaction information is protected
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-database"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Transaction Storage
+                        </strong>
+
+                        <span>
+                            Records are securely stored
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-robot"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            AI Monitoring
+                        </strong>
+
+                        <span>
+                            Fraud detection engine is ready
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="at-info-item">
+
+                    <div class="at-info-item-icon">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Continuous Protection
+                        </strong>
+
+                        <span>
+                            Security signals are monitored
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </aside>
 
     </div>
 
-
-
-
-
-    <div class="hero-right">
-
-
-        <div class="hero-circle">
-
-
-            <i class="fa-solid fa-shield-virus"></i>
-
-
-        </div>
-
-
-    </div>
-
-
-
-</section>
-
-
-
-
-
-
-<!-- =====================================================
-     SECURITY STATISTICS
-===================================================== -->
-
-
-<section class="top-cards">
-
-
-
-<div class="top-card">
-
-
-<i class="fa-solid fa-chart-line"></i>
-
-
-<h2>
-99.8%
-</h2>
-
-
-<span>
-Detection Accuracy
-</span>
-
-
 </div>
-
-
-
-
-
-<div class="top-card">
-
-
-<i class="fa-solid fa-bolt"></i>
-
-
-<h2>
-0.2 Sec
-</h2>
-
-
-<span>
-AI Prediction
-</span>
-
-
-</div>
-
-
-
-
-
-
-<div class="top-card">
-
-
-<i class="fa-solid fa-lock"></i>
-
-
-<h2>
-256-bit
-</h2>
-
-
-<span>
-Encryption
-</span>
-
-
-</div>
-
-
-
-
-
-
-<div class="top-card">
-
-
-<i class="fa-solid fa-user-shield"></i>
-
-
-<h2>
-24/7
-</h2>
-
-
-<span>
-Monitoring
-</span>
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-<!-- =====================================================
-     MAIN FORM CARD
-===================================================== -->
-
-
-<div class="form-card">
-
-
-
-<div class="card-header">
-
-
-<div>
-
-
-<h2>
-
-<i class="fa-solid fa-credit-card"></i>
-
-Add New Transaction
-
-</h2>
-
-
-
-<p>
-
-Fill transaction information for AI-powered fraud detection.
-
-</p>
-
-
-
-</div>
-
-
-
-<div class="security-status">
-
-
-<i class="fa-solid fa-circle-check"></i>
-
-System Secure
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<form 
-action="/add-transaction"
-method="POST"
-id="transactionForm">
-
-
-
-<!-- =====================================================
-     TRANSACTION INFORMATION
-===================================================== -->
-
-
-<h3 class="section-title">
-
-
-<i class="fa-solid fa-receipt"></i>
-
-
-Transaction Information
-
-
-</h3>
-
-
-
-<div class="grid-4">
-
-
-
-<div class="form-group">
-
-
-<label>
-Transaction ID
-</label>
-
-
-<input
-
-type="text"
-
-name="transaction_id"
-
-placeholder="TXN458965"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Account ID
-</label>
-
-
-<input
-
-type="text"
-
-name="account_id"
-
-placeholder="ACC258963"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Amount
-</label>
-
-
-<input
-
-type="number"
-
-step="0.01"
-
-name="amount"
-
-id="amount"
-
-placeholder="25000"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Merchant
-</label>
-
-
-<input
-
-type="text"
-
-name="merchant"
-
-placeholder="Amazon India"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Location
-</label>
-
-
-<input
-
-type="text"
-
-name="location"
-
-id="location"
-
-placeholder="Mumbai"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Transaction Time
-</label>
-
-
-<input
-
-type="time"
-
-name="time"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Card Type
-</label>
-
-
-<select
-
-name="card_type"
-
-id="card">
-
-
-<option>
-Credit Card
-</option>
-
-
-<option>
-Debit Card
-</option>
-
-
-<option>
-UPI
-</option>
-
-
-<option>
-Net Banking
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Transaction Type
-</label>
-
-
-<select
-
-name="transaction_type">
-
-
-<option>
-Purchase
-</option>
-
-
-<option>
-Transfer
-</option>
-
-
-<option>
-Withdrawal
-</option>
-
-
-<option>
-Payment
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-<div class="form-group full">
-
-
-<label>
-Merchant Category
-</label>
-
-
-<select
-
-name="merchant_category">
-
-
-<option>
-Shopping
-</option>
-
-
-<option>
-Food
-</option>
-
-
-<option>
-Electronics
-</option>
-
-
-<option>
-Healthcare
-</option>
-
-
-<option>
-Travel
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-</div>
-<!-- =====================================================
-        RISK INDICATORS
-===================================================== -->
-
-
-<h3 class="section-title">
-
-<i class="fa-solid fa-triangle-exclamation"></i>
-
-Risk Indicators
-
-</h3>
-
-
-
-
-<div class="grid-4">
-
-
-
-<div class="form-group">
-
-
-<label>
-Hour
-</label>
-
-
-<input
-
-type="number"
-
-min="0"
-
-max="23"
-
-name="hour"
-
-placeholder="14"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Location Risk
-</label>
-
-
-<input
-
-type="number"
-
-min="0"
-
-max="100"
-
-name="location_risk"
-
-id="locationRisk"
-
-placeholder="30"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Failed Attempts
-</label>
-
-
-<input
-
-type="number"
-
-min="0"
-
-name="failed_attempts"
-
-id="failedAttempts"
-
-placeholder="0"
-
-required>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-Trusted Device
-</label>
-
-
-<select
-
-name="device_trusted"
-
-id="device">
-
-
-<option value="1">
-Trusted
-</option>
-
-
-<option value="0">
-Unknown
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-<div class="form-group">
-
-
-<label>
-International Transaction
-</label>
-
-
-<select
-
-name="is_international"
-
-id="international">
-
-
-<option value="0">
-No
-</option>
-
-
-<option value="1">
-Yes
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-
-
-
-<div class="form-group full">
-
-
-<label>
-Additional Notes
-</label>
-
-
-
-<textarea
-
-name="notes"
-
-rows="4"
-
-placeholder="Write any additional information here..."></textarea>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-<!-- =====================================================
-        AI RISK PREVIEW
-===================================================== -->
-
-
-
-<div class="ai-risk-card">
-
-
-
-<div class="risk-header">
-
-
-<div>
-
-
-<h3>
-
-
-<i class="fa-solid fa-robot"></i>
-
-
-AI Risk Preview
-
-
-</h3>
-
-
-
-<p>
-
-Live fraud probability based on entered transaction data.
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-<div 
-class="risk-badge safe"
-id="riskLevel">
-
-SAFE
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- RISK BAR -->
-
-
-<div class="risk-progress">
-
-
-<div 
-class="risk-fill"
-id="riskBar">
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="risk-score">
-
-<span id="riskScore">
-12%
-</span>
-
-<small>
-AI Fraud Risk Score
-</small>
-
-</div>
-
-<!-- LIVE PREVIEW GRID -->
-
-
-<div class="risk-grid">
-
-
-
-
-
-<div class="risk-item">
-
-
-<i class="fa-solid fa-wallet"></i>
-
-
-
-<div>
-
-
-<h4 id="previewAmount">
-
-₹0
-
-</h4>
-
-
-
-<span>
-
-Transaction Amount
-
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="risk-item">
-
-
-<i class="fa-solid fa-location-dot"></i>
-
-
-
-<div>
-
-
-<h4 id="previewLocation">
-
-Unknown
-
-</h4>
-
-
-
-<span>
-
-Location
-
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="risk-item">
-
-
-<i class="fa-solid fa-credit-card"></i>
-
-
-
-<div>
-
-
-<h4 id="previewCard">
-
-Credit Card
-
-</h4>
-
-
-
-<span>
-
-Payment Method
-
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="risk-item">
-
-
-<i class="fa-solid fa-user-shield"></i>
-
-
-
-<div>
-
-
-<h4 id="previewDevice">
-
-Trusted
-
-</h4>
-
-
-
-<span>
-
-Device Status
-
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- =====================================================
-        AI SECURITY MESSAGE
-===================================================== -->
-
-
-<div class="ai-message-box">
-
-
-<i class="fa-solid fa-circle-info"></i>
-
-
-<div>
-
-
-<h4>
-FinGuard AI Recommendation
-</h4>
-
-
-<p id="aiRecommendation">
-
-Transaction appears safe.
-AI monitoring will update automatically.
-
-</p>
-
-
-</div>
-
-
-</div>
-<!-- =====================================================
-        ACTION BUTTONS
-===================================================== -->
-
-
-<div class="button-group">
-
-
-
-<button
-
-type="reset"
-
-class="btn-secondary"
-
-id="resetBtn">
-
-
-<i class="fa-solid fa-rotate-left"></i>
-
-
-Reset Form
-
-
-</button>
-
-
-
-
-
-
-<button
-
-type="submit"
-
-class="btn-primary"
-
-id="saveBtn">
-
-
-<i class="fa-solid fa-shield-halved"></i>
-
-
-<span>
-
-Save & Analyze
-
-</span>
-
-
-</button>
-
-
-
-
-</div>
-
-
-
-</form>
-
-
-</div>
-
-
-</div>
-
 
 
 {% endblock %}
-
-
-
 
 
 {% block extra_js %}
 
-<script src="{{ url_for('static', path='js/add_transaction.js') }}">
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form =
+        document.querySelector(
+            '.add-transaction-page form'
+        );
+
+    if (!form) return;
+
+
+    form.addEventListener("submit", function () {
+
+        const button =
+            form.querySelector(
+                '.at-btn-primary'
+            );
+
+        if (!button) return;
+
+        button.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Creating...';
+
+        button.style.pointerEvents = "none";
+
+        button.style.opacity = "0.75";
+
+    });
+
+});
+
 </script>
 
 {% endblock %}

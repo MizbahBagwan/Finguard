@@ -5,7 +5,7 @@ import re
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-from app.config import GEMINI_MODEL
+from backend.app.config import GEMINI_MODEL
 
 
 # ============================================================

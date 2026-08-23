@@ -1,4 +1,4 @@
-from app.database.graph import get_session
+from backend.app.database.graph import get_session
 
 with get_session() as session:
     result = session.run(

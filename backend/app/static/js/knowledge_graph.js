@@ -5,9 +5,6 @@
      * ============================================================
      * FinGuard AI - Knowledge Graph
      * ============================================================
-     * Only controls the Knowledge Graph.
-     * Does NOT modify the dashboard's global theme.
-     * ============================================================
      */
 
     const API_URL = "/dashboard/knowledge-graph";
@@ -32,11 +29,12 @@
     let width = 1000;
     let height = 650;
 
-    /*
-     * ------------------------------------------------------------
-     * DOM HELPERS
-     * ------------------------------------------------------------
-     */
+    let resizeTimer = null;
+
+
+    /* ============================================================
+       DOM HELPERS
+       ============================================================ */
 
     function findElement(selectors) {
         for (const selector of selectors) {
@@ -50,8 +48,10 @@
         return null;
     }
 
+
     function getGraphContainer() {
         return findElement([
+            "#graph",
             "#knowledgeGraph",
             "#knowledge-graph",
             "#knowledgeGraphContainer",
@@ -65,53 +65,52 @@
         ]);
     }
 
+
     function getSearchInput() {
         return findElement([
+            "#nodeSearch",
             "#graphSearch",
             "#knowledgeGraphSearch",
             "#knowledge-graph-search",
-            "#nodeSearch",
             "input[placeholder*='Search transaction']",
             "input[placeholder*='Search Transaction']",
-            "input[placeholder*='Search node']",
-            "input[placeholder*='search transaction']"
+            "input[placeholder*='Search node']"
         ]);
     }
 
+
     function getTypeSelect() {
         return findElement([
-            "#graphNodeType",
             "#nodeType",
+            "#graphNodeType",
             "#knowledgeGraphType",
-            "#knowledge-graph-type",
-            "select"
+            "#knowledge-graph-type"
         ]);
     }
+
 
     function getRefreshButton() {
         return findElement([
             "#refreshGraph",
             "#refreshNetwork",
             "#refresh-graph",
-            "#refresh-network",
-            "button[data-action='refresh-graph']"
+            "#refresh-network"
         ]);
     }
+
 
     function getResetButton() {
         return findElement([
             "#resetGraph",
             "#resetView",
-            "#reset-view",
-            "button[data-action='reset-graph']"
+            "#reset-view"
         ]);
     }
 
-    /*
-     * ------------------------------------------------------------
-     * REMOVE OLD LOADING / INITIALIZING UI
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       LOADING UI
+       ============================================================ */
 
     function removeInitializingOverlay() {
         const selectors = [
@@ -122,7 +121,6 @@
             ".knowledge-graph-loader",
             ".graph-loading",
             ".knowledge-graph-loading",
-            ".initializing-ai-network",
             "[data-graph-loader]"
         ];
 
@@ -132,49 +130,43 @@
             });
         });
 
-        /*
-         * Hide only elements whose visible text specifically contains
-         * "Initializing AI Network" or "Loading relationship intelligence".
-         *
-         * We intentionally do NOT modify the rest of the dashboard.
-         */
-
         document.querySelectorAll("body *").forEach((element) => {
-            if (!element.children.length) {
-                const text = (element.textContent || "").trim().toLowerCase();
+
+            if (element.children.length) {
+                return;
+            }
+
+            const text = (
+                element.textContent || ""
+            )
+                .trim()
+                .toLowerCase();
+
+            if (
+                text.includes("initializing ai network") ||
+                text.includes("loading relationship intelligence")
+            ) {
+                const parent = element.parentElement;
 
                 if (
-                    text.includes("initializing ai network") ||
-                    text.includes("loading relationship intelligence")
+                    parent &&
+                    parent !== document.body
                 ) {
-                    const parent = element.parentElement;
-
-                    if (
-                        parent &&
-                        parent !== document.body &&
-                        (
-                            parent.children.length <= 3 ||
-                            parent.classList.contains("loader") ||
-                            parent.classList.contains("loading") ||
-                            parent.classList.contains("overlay")
-                        )
-                    ) {
-                        parent.style.display = "none";
-                    } else {
-                        element.style.display = "none";
-                    }
+                    parent.style.display = "none";
+                } else {
+                    element.style.display = "none";
                 }
             }
         });
     }
 
-    /*
-     * ------------------------------------------------------------
-     * LOAD D3
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       LOAD D3
+       ============================================================ */
 
     function loadD3() {
+
         if (window.d3) {
             return Promise.resolve(window.d3);
         }
@@ -184,41 +176,68 @@
         }
 
         d3ReadyPromise = new Promise((resolve, reject) => {
+
             const existing = document.querySelector(
                 "script[src*='d3.min.js'], script[src*='d3.v']"
             );
 
             if (existing) {
-                existing.addEventListener("load", () => {
-                    if (window.d3) {
-                        resolve(window.d3);
-                    } else {
-                        reject(new Error("D3 loaded but window.d3 is unavailable."));
-                    }
-                });
 
-                existing.addEventListener("error", () => {
-                    reject(new Error("Unable to load D3."));
-                });
+                existing.addEventListener(
+                    "load",
+                    () => {
+                        if (window.d3) {
+                            resolve(window.d3);
+                        } else {
+                            reject(
+                                new Error(
+                                    "D3 loaded but window.d3 is unavailable."
+                                )
+                            );
+                        }
+                    },
+                    { once: true }
+                );
+
+                existing.addEventListener(
+                    "error",
+                    () => {
+                        reject(
+                            new Error("Unable to load D3.")
+                        );
+                    },
+                    { once: true }
+                );
 
                 return;
             }
 
             const script = document.createElement("script");
 
-            script.src = "https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js";
+            script.src =
+                "https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js";
+
             script.async = true;
 
             script.onload = () => {
+
                 if (window.d3) {
                     resolve(window.d3);
                 } else {
-                    reject(new Error("D3 loaded but window.d3 is unavailable."));
+                    reject(
+                        new Error(
+                            "D3 loaded but window.d3 is unavailable."
+                        )
+                    );
                 }
             };
 
             script.onerror = () => {
-                reject(new Error("Unable to load D3 from CDN."));
+                reject(
+                    new Error(
+                        "Unable to load D3 from CDN."
+                    )
+                );
             };
 
             document.head.appendChild(script);
@@ -227,13 +246,13 @@
         return d3ReadyPromise;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * NORMALIZE NODE TYPE
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       NORMALIZE TYPE
+       ============================================================ */
 
     function normalizeType(type) {
+
         if (!type) {
             return "Unknown";
         }
@@ -287,37 +306,37 @@
         return value;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * NODE COLORS
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       NODE COLOR
+       ============================================================ */
 
     function getNodeColor(type) {
+
         const normalized = normalizeType(type);
 
         const colors = {
-            "Transaction": "#22d3ee",
-            "Account": "#818cf8",
-            "Merchant": "#a78bfa",
-            "Device": "#22c55e",
-            "Card": "#f59e0b",
+            Transaction: "#22d3ee",
+            Account: "#818cf8",
+            Merchant: "#a78bfa",
+            Device: "#22c55e",
+            Card: "#f59e0b",
             "Fraud Alert": "#ef4444",
-            "User": "#38bdf8",
-            "Location": "#22d3ee",
-            "Unknown": "#64748b"
+            User: "#38bdf8",
+            Location: "#22d3ee",
+            Unknown: "#64748b"
         };
 
         return colors[normalized] || colors.Unknown;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * LABEL
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       NODE LABEL
+       ============================================================ */
 
     function getNodeLabel(node) {
+
         if (!node) {
             return "Unknown";
         }
@@ -333,10 +352,12 @@
             properties.card_id,
             properties.device_id,
             properties.user_id,
-            properties.id
+            properties.id,
+            node.id
         ];
 
         for (const value of candidates) {
+
             if (
                 value !== undefined &&
                 value !== null &&
@@ -346,16 +367,12 @@
             }
         }
 
-        return String(node.id || "Unknown");
+        return "Unknown";
     }
 
-    /*
-     * ------------------------------------------------------------
-     * SHORT LABEL
-     * ------------------------------------------------------------
-     */
 
     function shortLabel(value, maxLength = 24) {
+
         const text = String(value || "");
 
         if (text.length <= maxLength) {
@@ -365,25 +382,61 @@
         return `${text.substring(0, maxLength - 1)}…`;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * FETCH GRAPH
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       RELATIONSHIP ID
+       ============================================================ */
+
+    function getEndpointId(endpoint) {
+
+        if (
+            endpoint === null ||
+            endpoint === undefined
+        ) {
+            return null;
+        }
+
+        if (
+            typeof endpoint === "object"
+        ) {
+
+            return String(
+                endpoint.id ??
+                endpoint.elementId ??
+                endpoint.identity ??
+                ""
+            );
+        }
+
+        return String(endpoint);
+    }
+
+
+    /* ============================================================
+       FETCH GRAPH
+       ============================================================ */
 
     async function fetchGraph() {
-        console.log("KNOWLEDGE GRAPH: Connecting to Neo4j...");
+
+        console.log(
+            "KNOWLEDGE GRAPH: Connecting to Neo4j..."
+        );
 
         try {
-            const response = await fetch(API_URL, {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json"
-                },
-                cache: "no-store"
-            });
+
+            const response = await fetch(
+                API_URL,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    cache: "no-store"
+                }
+            );
 
             if (!response.ok) {
+
                 throw new Error(
                     `Knowledge Graph API failed: ${response.status}`
                 );
@@ -391,29 +444,35 @@
 
             const data = await response.json();
 
-            if (!data || typeof data !== "object") {
-                throw new Error("Invalid Knowledge Graph response.");
+            if (
+                !data ||
+                typeof data !== "object"
+            ) {
+                throw new Error(
+                    "Invalid Knowledge Graph response."
+                );
             }
 
             const nodes = Array.isArray(data.nodes)
                 ? data.nodes
                 : [];
 
-            const relationships = Array.isArray(data.relationships)
-                ? data.relationships
-                : [];
-
-            currentData = {
-                nodes,
-                relationships
-            };
+            const relationships =
+                Array.isArray(data.relationships)
+                    ? data.relationships
+                    : [];
 
             console.log(
                 `KNOWLEDGE GRAPH: ${nodes.length} nodes, ${relationships.length} relationships`
             );
 
-            return currentData;
+            return {
+                nodes,
+                relationships
+            };
+
         } catch (error) {
+
             console.error(
                 "KNOWLEDGE GRAPH ERROR:",
                 error
@@ -421,7 +480,8 @@
 
             showGraphMessage(
                 "Unable to load Knowledge Graph",
-                error.message || "Neo4j connection failed."
+                error.message ||
+                "Neo4j connection failed."
             );
 
             return {
@@ -431,1008 +491,2009 @@
         }
     }
 
-    /*
-     * ------------------------------------------------------------
-     * PREPARE GRAPH DATA
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       PREPARE DATA
+
+       IMPORTANT:
+       This function returns the prepared data.
+       loadAndRender() assigns it to currentData.
+       ============================================================ */
 
     function prepareData(data) {
-        const nodes = Array.isArray(data.nodes)
-            ? data.nodes
-                .filter(Boolean)
-                .map((node, index) => {
-                    const id = String(
-                        node.id ??
-                        node.elementId ??
-                        `node-${index}`
-                    );
 
-                    return {
+        const nodes = (
+            Array.isArray(data.nodes)
+                ? data.nodes
+                : []
+        )
+            .filter(Boolean)
+            .map((node, index) => {
+
+                const id = String(
+                    node.id ??
+                    node.elementId ??
+                    node.identity ??
+                    `node-${index}`
+                );
+
+                return {
+                    ...node,
+                    id,
+                    graphType: normalizeType(
+                        node.type ??
+                        node.label ??
+                        node.labels?.[0]
+                    ),
+                    graphLabel: getNodeLabel({
                         ...node,
-                        id,
-                        graphType: normalizeType(node.type),
-                        graphLabel: getNodeLabel(node),
-                        properties: node.properties || {}
-                    };
-                })
-            : [];
+                        id
+                    }),
+                    properties:
+                        node.properties || {}
+                };
+            });
+
 
         const nodeIds = new Set(
             nodes.map((node) => String(node.id))
         );
 
-        const links = Array.isArray(data.relationships)
-            ? data.relationships
-                .filter((relationship) => {
-                    if (!relationship) {
-                        return false;
-                    }
 
-                    if (
-                        relationship.source === null ||
-                        relationship.target === null ||
-                        relationship.source === undefined ||
-                        relationship.target === undefined
-                    ) {
-                        return false;
-                    }
+        const links = (
+            Array.isArray(data.relationships)
+                ? data.relationships
+                : []
+        )
+            .filter(Boolean)
+            .map((relationship) => {
 
-                    return (
-                        nodeIds.has(String(relationship.source)) &&
-                        nodeIds.has(String(relationship.target))
+                const source =
+                    getEndpointId(
+                        relationship.source ??
+                        relationship.start ??
+                        relationship.from ??
+                        relationship.startNode
                     );
-                })
-                .map((relationship) => ({
-                    source: String(relationship.source),
-                    target: String(relationship.target),
+
+                const target =
+                    getEndpointId(
+                        relationship.target ??
+                        relationship.end ??
+                        relationship.to ??
+                        relationship.endNode
+                    );
+
+                return {
+                    source,
+                    target,
                     type: String(
                         relationship.type ||
+                        relationship.label ||
                         "RELATED"
                     )
-                }))
-            : [];
-
-        return {
-            nodes,
-            links
-        };
-    }
-
-    /*
-     * ------------------------------------------------------------
-     * FILTER DATA
-     * ------------------------------------------------------------
-     */
-
-    function getFilteredData() {
-        const search = currentSearch.trim().toLowerCase();
-        const type = currentType.toLowerCase();
-
-        let nodes = currentData.nodes
-            .map((node, index) => ({
-                ...node,
-                id: String(
-                    node.id ??
-                    node.elementId ??
-                    `node-${index}`
-                ),
-                graphType: normalizeType(node.type),
-                graphLabel: getNodeLabel(node)
-            }));
-
-        if (type !== "all") {
-            nodes = nodes.filter((node) => {
-                return normalizeType(node.type).toLowerCase() === type;
-            });
-        }
-
-        if (search) {
-            nodes = nodes.filter((node) => {
-                const searchable = [
-                    node.graphLabel,
-                    node.id,
-                    node.graphType,
-                    JSON.stringify(node.properties || {})
-                ]
-                    .join(" ")
-                    .toLowerCase();
-
-                return searchable.includes(search);
-            });
-        }
-
-        const allowedIds = new Set(
-            nodes.map((node) => String(node.id))
-        );
-
-        const links = currentData.relationships
-            .filter((link) => {
-                if (!link) {
-                    return false;
-                }
-
-                const source = String(link.source);
-                const target = String(link.target);
+                };
+            })
+            .filter((relationship) => {
 
                 return (
-                    allowedIds.has(source) &&
-                    allowedIds.has(target)
+                    relationship.source &&
+                    relationship.target &&
+                    nodeIds.has(
+                        String(relationship.source)
+                    ) &&
+                    nodeIds.has(
+                        String(relationship.target)
+                    ) &&
+                    relationship.source !==
+                        relationship.target
                 );
-            })
-            .map((link) => ({
-                source: String(link.source),
-                target: String(link.target),
-                type: String(link.type || "RELATED")
-            }));
+            });
+
 
         return {
             nodes,
-            links
+            relationships: links
         };
     }
 
-    /*
-     * ------------------------------------------------------------
-     * GRAPH SIZE
-     * ------------------------------------------------------------
-     */
 
-    function calculateGraphSize(container) {
-        const rect = container.getBoundingClientRect();
+    /* ============================================================
+       FILTER DATA
+       ============================================================ */
 
-        width = Math.max(
-            700,
-            Math.floor(rect.width || 1000)
+    function getFilteredData() {
+
+        const search =
+            currentSearch
+                .trim()
+                .toLowerCase();
+
+        const type =
+            currentType
+                .trim()
+                .toLowerCase();
+
+
+        let nodes = currentData.nodes.map(
+            (node) => ({
+                ...node,
+                id: String(node.id),
+                graphType:
+                    node.graphType ||
+                    normalizeType(node.type),
+                graphLabel:
+                    node.graphLabel ||
+                    getNodeLabel(node)
+            })
         );
 
-        /*
-         * Large height gives the graph the same spacious feeling
-         * as the first screenshot.
-         */
 
-        const calculatedHeight = Math.max(
-            600,
-            Math.floor(
-                Math.min(
-                    Math.max(window.innerHeight * 0.72, 600),
-                    850
-                )
+        if (type !== "all") {
+
+            nodes = nodes.filter(
+                (node) => {
+
+                    return (
+                        normalizeType(
+                            node.graphType
+                        ).toLowerCase() === type
+                    );
+                }
+            );
+        }
+
+
+        if (search) {
+
+            nodes = nodes.filter(
+                (node) => {
+
+                    const searchable = [
+                        node.graphLabel,
+                        node.id,
+                        node.graphType,
+                        JSON.stringify(
+                            node.properties || {}
+                        )
+                    ]
+                        .join(" ")
+                        .toLowerCase();
+
+                    return searchable.includes(
+                        search
+                    );
+                }
+            );
+        }
+
+
+        const allowedIds = new Set(
+            nodes.map(
+                (node) => String(node.id)
             )
         );
 
-        height = calculatedHeight;
+
+        const links =
+            currentData.relationships
+                .filter((relationship) => {
+
+                    const source =
+                        getEndpointId(
+                            relationship.source
+                        );
+
+                    const target =
+                        getEndpointId(
+                            relationship.target
+                        );
+
+                    return (
+                        allowedIds.has(source) &&
+                        allowedIds.has(target)
+                    );
+                })
+                .map((relationship) => ({
+                    source:
+                        getEndpointId(
+                            relationship.source
+                        ),
+                    target:
+                        getEndpointId(
+                            relationship.target
+                        ),
+                    type:
+                        String(
+                            relationship.type ||
+                            "RELATED"
+                        )
+                }));
+
+
+        return {
+            nodes,
+            links
+        };
     }
 
-    /*
-     * ------------------------------------------------------------
-     * CREATE SVG
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       GRAPH SIZE
+       ============================================================ */
+
+    function calculateGraphSize(container) {
+
+        const rect =
+            container.getBoundingClientRect();
+
+        width = Math.max(
+            700,
+            Math.floor(
+                rect.width || 1000
+            )
+        );
+
+
+        height = Math.max(
+            560,
+            Math.min(
+                760,
+                Math.floor(
+                    window.innerHeight * 0.68
+                )
+            )
+        );
+    }
+
+
+    /* ============================================================
+       CREATE SVG
+       ============================================================ */
 
     function createSVG(container) {
+
         const d3 = window.d3;
 
         calculateGraphSize(container);
 
-        /*
-         * Remove only the old graph SVG.
-         */
+
+        if (simulation) {
+            simulation.stop();
+            simulation = null;
+        }
+
 
         container
-            .querySelectorAll("svg.finguard-knowledge-graph")
-            .forEach((element) => element.remove());
+            .querySelectorAll(
+                "svg.finguard-knowledge-graph"
+            )
+            .forEach(
+                (element) =>
+                    element.remove()
+            );
+
+
+        container
+            .querySelectorAll(
+                ".fg-graph-message"
+            )
+            .forEach(
+                (element) =>
+                    element.remove()
+            );
+
 
         const svgElement = d3
             .select(container)
             .append("svg")
-            .attr("class", "finguard-knowledge-graph")
-            .attr("width", "100%")
-            .attr("height", height)
-            .attr("viewBox", `0 0 ${width} ${height}`)
-            .attr("preserveAspectRatio", "xMidYMid meet")
-            .style("display", "block")
-            .style("width", "100%")
-            .style("height", `${height}px`)
-            .style("cursor", "grab")
-            .style("overflow", "hidden");
+            .attr(
+                "class",
+                "finguard-knowledge-graph"
+            )
+            .attr(
+                "width",
+                "100%"
+            )
+            .attr(
+                "height",
+                height
+            )
+            .attr(
+                "viewBox",
+                `0 0 ${width} ${height}`
+            )
+            .attr(
+                "preserveAspectRatio",
+                "xMidYMid meet"
+            )
+            .style(
+                "display",
+                "block"
+            )
+            .style(
+                "width",
+                "100%"
+            )
+            .style(
+                "height",
+                `${height}px`
+            )
+            .style(
+                "cursor",
+                "grab"
+            );
+
 
         svg = svgElement;
 
-        /*
-         * Definitions
-         */
 
-        const defs = svg.append("defs");
+        /* --------------------------------------------------------
+           DEFINITIONS
+           -------------------------------------------------------- */
 
-        /*
-         * Background grid
-         */
+        const defs =
+            svg.append("defs");
 
-        const pattern = defs
-            .append("pattern")
-            .attr("id", "fg-grid-pattern")
-            .attr("width", 40)
-            .attr("height", 40)
-            .attr("patternUnits", "userSpaceOnUse");
+
+        /* Grid */
+
+        const pattern =
+            defs
+                .append("pattern")
+                .attr(
+                    "id",
+                    "fg-grid-pattern"
+                )
+                .attr(
+                    "width",
+                    40
+                )
+                .attr(
+                    "height",
+                    40
+                )
+                .attr(
+                    "patternUnits",
+                    "userSpaceOnUse"
+                );
+
 
         pattern
             .append("path")
-            .attr("d", "M 40 0 L 0 0 0 40")
-            .attr("fill", "none")
-            .attr("stroke", "#172033")
-            .attr("stroke-width", 0.7)
-            .attr("opacity", 0.45);
+            .attr(
+                "d",
+                "M 40 0 L 0 0 0 40"
+            )
+            .attr(
+                "fill",
+                "none"
+            )
+            .attr(
+                "stroke",
+                "#172033"
+            )
+            .attr(
+                "stroke-width",
+                0.7
+            )
+            .attr(
+                "opacity",
+                0.45
+            );
 
-        /*
-         * Arrow
-         */
+
+        /* Arrow */
 
         defs
             .append("marker")
-            .attr("id", "fg-arrow")
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 13)
-            .attr("refY", 0)
-            .attr("markerWidth", 7)
-            .attr("markerHeight", 7)
-            .attr("orient", "auto")
+            .attr(
+                "id",
+                "fg-arrow"
+            )
+            .attr(
+                "viewBox",
+                "0 -5 10 10"
+            )
+            .attr(
+                "refX",
+                14
+            )
+            .attr(
+                "refY",
+                0
+            )
+            .attr(
+                "markerWidth",
+                7
+            )
+            .attr(
+                "markerHeight",
+                7
+            )
+            .attr(
+                "orient",
+                "auto"
+            )
             .append("path")
-            .attr("d", "M0,-5L10,0L0,5")
-            .attr("fill", "#64748b")
-            .attr("opacity", 0.85);
+            .attr(
+                "d",
+                "M0,-5L10,0L0,5"
+            )
+            .attr(
+                "fill",
+                "#64748b"
+            )
+            .attr(
+                "opacity",
+                0.8
+            );
 
-        /*
-         * Glow filters
-         */
 
-        const glow = defs
-            .append("filter")
-            .attr("id", "fg-node-glow")
-            .attr("x", "-100%")
-            .attr("y", "-100%")
-            .attr("width", "300%")
-            .attr("height", "300%");
+        /* Node glow */
+
+        const glow =
+            defs
+                .append("filter")
+                .attr(
+                    "id",
+                    "fg-node-glow"
+                )
+                .attr(
+                    "x",
+                    "-100%"
+                )
+                .attr(
+                    "y",
+                    "-100%"
+                )
+                .attr(
+                    "width",
+                    "300%"
+                )
+                .attr(
+                    "height",
+                    "300%"
+                );
+
 
         glow
             .append("feGaussianBlur")
-            .attr("stdDeviation", 5)
-            .attr("result", "blur");
+            .attr(
+                "stdDeviation",
+                4
+            )
+            .attr(
+                "result",
+                "blur"
+            );
 
-        const merge = glow
-            .append("feMerge");
 
-        merge.append("feMergeNode")
-            .attr("in", "blur");
+        const merge =
+            glow.append("feMerge");
 
-        merge.append("feMergeNode")
-            .attr("in", "SourceGraphic");
 
-        /*
-         * Background
-         */
+        merge
+            .append("feMergeNode")
+            .attr(
+                "in",
+                "blur"
+            );
+
+
+        merge
+            .append("feMergeNode")
+            .attr(
+                "in",
+                "SourceGraphic"
+            );
+
+
+        /* --------------------------------------------------------
+           BACKGROUND
+           -------------------------------------------------------- */
 
         svg
             .append("rect")
-            .attr("class", "fg-graph-background")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", width)
-            .attr("height", height)
-            .attr("fill", "#030916");
+            .attr(
+                "class",
+                "fg-graph-background"
+            )
+            .attr(
+                "width",
+                width
+            )
+            .attr(
+                "height",
+                height
+            )
+            .attr(
+                "fill",
+                "#030916"
+            );
+
 
         svg
             .append("rect")
-            .attr("class", "fg-graph-grid")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", width)
-            .attr("height", height)
-            .attr("fill", "url(#fg-grid-pattern)")
-            .attr("opacity", 0.65);
+            .attr(
+                "class",
+                "fg-graph-grid"
+            )
+            .attr(
+                "width",
+                width
+            )
+            .attr(
+                "height",
+                height
+            )
+            .attr(
+                "fill",
+                "url(#fg-grid-pattern)"
+            )
+            .attr(
+                "opacity",
+                0.55
+            );
 
-        /*
-         * Main zoom group
-         */
 
-        graphRoot = svg
-            .append("g")
-            .attr("class", "fg-graph-root");
+        /* --------------------------------------------------------
+           ROOT
+           -------------------------------------------------------- */
 
-        /*
-         * Zoom
-         */
-
-        zoomBehavior = d3
-            .zoom()
-            .scaleExtent([0.25, 4])
-            .on("start", () => {
-                svg.style("cursor", "grabbing");
-            })
-            .on("zoom", (event) => {
-                graphRoot.attr(
-                    "transform",
-                    event.transform
+        graphRoot =
+            svg
+                .append("g")
+                .attr(
+                    "class",
+                    "fg-graph-root"
                 );
-            })
-            .on("end", () => {
-                svg.style("cursor", "grab");
-            });
 
-        svg.call(zoomBehavior);
 
-        /*
-         * Initial zoom.
-         */
+        /* --------------------------------------------------------
+           ZOOM
+           -------------------------------------------------------- */
+
+        zoomBehavior =
+            d3
+                .zoom()
+                .scaleExtent([
+                    0.25,
+                    4
+                ])
+                .on(
+                    "start",
+                    () => {
+                        svg.style(
+                            "cursor",
+                            "grabbing"
+                        );
+                    }
+                )
+                .on(
+                    "zoom",
+                    (event) => {
+
+                        graphRoot.attr(
+                            "transform",
+                            event.transform
+                        );
+                    }
+                )
+                .on(
+                    "end",
+                    () => {
+                        svg.style(
+                            "cursor",
+                            "grab"
+                        );
+                    }
+                );
+
 
         svg.call(
-            zoomBehavior.transform,
-            d3.zoomIdentity
+            zoomBehavior
         );
 
-        /*
-         * Prevent browser selection while dragging.
-         */
 
-        svg.on("dblclick.zoom", null);
+        svg.on(
+            "dblclick.zoom",
+            null
+        );
+
 
         return svg;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * CREATE GRAPH CONTROLS
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       GRAPH CONTROLS
+       ============================================================ */
 
     function createGraphControls(container) {
-        const oldControls = container.querySelector(
-            ".fg-graph-controls"
-        );
 
-        if (oldControls) {
-            oldControls.remove();
-        }
+        container
+            .querySelectorAll(
+                ".fg-graph-controls"
+            )
+            .forEach(
+                (element) =>
+                    element.remove()
+            );
 
-        const controls = document.createElement("div");
 
-        controls.className = "fg-graph-controls";
+        const controls =
+            document.createElement(
+                "div"
+            );
+
+
+        controls.className =
+            "fg-graph-controls";
+
 
         controls.innerHTML = `
-            <button type="button"
-                    class="fg-graph-control-btn"
-                    data-fg-action="zoom-in"
-                    title="Zoom in">+</button>
+            <button
+                type="button"
+                data-fg-action="zoom-in"
+                title="Zoom in">
+                +
+            </button>
 
-            <button type="button"
-                    class="fg-graph-control-btn"
-                    data-fg-action="zoom-out"
-                    title="Zoom out">−</button>
+            <button
+                type="button"
+                data-fg-action="zoom-out"
+                title="Zoom out">
+                −
+            </button>
 
-            <button type="button"
-                    class="fg-graph-control-btn fg-reset-btn"
-                    data-fg-action="reset"
-                    title="Reset graph">Reset</button>
+            <button
+                type="button"
+                data-fg-action="reset"
+                title="Reset graph">
+                Reset
+            </button>
         `;
 
-        container.appendChild(controls);
 
-        /*
-         * Minimal local styling.
-         * Does not change dashboard theme.
-         */
+        container.appendChild(
+            controls
+        );
 
-        if (!document.getElementById("fg-graph-local-style")) {
-            const style = document.createElement("style");
-
-            style.id = "fg-graph-local-style";
-
-            style.textContent = `
-                .fg-graph-controls {
-                    position: absolute;
-                    top: 16px;
-                    right: 16px;
-                    z-index: 30;
-                    display: flex;
-                    gap: 8px;
-                    align-items: center;
-                    pointer-events: auto;
-                }
-
-                .fg-graph-control-btn {
-                    min-width: 38px;
-                    height: 36px;
-                    padding: 0 12px;
-                    border: 1px solid #263550;
-                    border-radius: 8px;
-                    background: #0d1729;
-                    color: #e7edf7;
-                    font-size: 15px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    box-shadow: 0 8px 20px rgba(0,0,0,.25);
-                    transition:
-                        background .15s ease,
-                        border-color .15s ease,
-                        transform .15s ease;
-                }
-
-                .fg-graph-control-btn:hover {
-                    background: #14223a;
-                    border-color: #3b82f6;
-                    transform: translateY(-1px);
-                }
-
-                .fg-reset-btn {
-                    min-width: 54px;
-                    font-size: 13px;
-                }
-
-                .fg-graph-host {
-                    position: relative;
-                    overflow: hidden;
-                }
-
-                .fg-graph-node-label {
-                    pointer-events: none;
-                    user-select: none;
-                    font-family:
-                        Inter,
-                        ui-sans-serif,
-                        system-ui,
-                        -apple-system,
-                        BlinkMacSystemFont,
-                        "Segoe UI",
-                        sans-serif;
-                }
-
-                .fg-graph-link-label {
-                    pointer-events: none;
-                    user-select: none;
-                    font-family:
-                        Inter,
-                        ui-sans-serif,
-                        system-ui,
-                        -apple-system,
-                        BlinkMacSystemFont,
-                        "Segoe UI",
-                        sans-serif;
-                }
-
-                .fg-node {
-                    cursor: pointer;
-                }
-
-                .fg-node:hover circle {
-                    stroke-width: 3px;
-                }
-            `;
-
-            document.head.appendChild(style);
-        }
-
-        /*
-         * Ensure container is positioned.
-         */
-
-        const computed = window.getComputedStyle(container);
-
-        if (computed.position === "static") {
-            container.style.position = "relative";
-        }
 
         controls
-            .querySelectorAll("[data-fg-action]")
-            .forEach((button) => {
-                button.addEventListener("click", () => {
-                    const action = button.dataset.fgAction;
+            .querySelectorAll(
+                "[data-fg-action]"
+            )
+            .forEach(
+                (button) => {
 
-                    if (!svg || !zoomBehavior) {
-                        return;
-                    }
+                    button.addEventListener(
+                        "click",
+                        () => {
 
-                    if (action === "zoom-in") {
-                        svg
-                            .transition()
-                            .duration(250)
-                            .call(
-                                zoomBehavior.scaleBy,
-                                1.3
-                            );
-                    }
+                            if (
+                                !svg ||
+                                !zoomBehavior
+                            ) {
+                                return;
+                            }
 
-                    if (action === "zoom-out") {
-                        svg
-                            .transition()
-                            .duration(250)
-                            .call(
-                                zoomBehavior.scaleBy,
-                                0.77
-                            );
-                    }
 
-                    if (action === "reset") {
-                        resetGraphView();
-                    }
-                });
-            });
+                            const action =
+                                button.dataset
+                                    .fgAction;
+
+
+                            if (
+                                action ===
+                                "zoom-in"
+                            ) {
+
+                                svg
+                                    .transition()
+                                    .duration(250)
+                                    .call(
+                                        zoomBehavior
+                                            .scaleBy,
+                                        1.3
+                                    );
+                            }
+
+
+                            if (
+                                action ===
+                                "zoom-out"
+                            ) {
+
+                                svg
+                                    .transition()
+                                    .duration(250)
+                                    .call(
+                                        zoomBehavior
+                                            .scaleBy,
+                                        0.77
+                                    );
+                            }
+
+
+                            if (
+                                action ===
+                                "reset"
+                            ) {
+                                resetGraphView();
+                            }
+                        }
+                    );
+                }
+            );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * RESET VIEW
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       RESET
+       ============================================================ */
 
     function resetGraphView() {
-        if (!svg || !zoomBehavior) {
+
+        if (
+            !svg ||
+            !zoomBehavior
+        ) {
             return;
         }
 
+
         svg
             .transition()
-            .duration(500)
+            .duration(450)
             .call(
                 zoomBehavior.transform,
                 window.d3.zoomIdentity
             );
 
+
         if (simulation) {
-            simulation.alpha(0.5).restart();
+
+            simulation
+                .alpha(0.5)
+                .restart();
         }
     }
 
-    /*
-     * ------------------------------------------------------------
-     * RENDER GRAPH
-     * ------------------------------------------------------------
-     */
 
-    function renderGraph(container) {
-        const d3 = window.d3;
+    /* ============================================================
+       RENDER GRAPH
+       ============================================================ */
 
-        if (!d3) {
-            throw new Error("D3 is not available.");
+    function renderGraph() {
+    const container = document.getElementById("graph");
+
+    if (!container) {
+        console.error("Knowledge Graph: #graph not found");
+        return;
+    }
+
+    if (!window.d3) {
+        console.error("Knowledge Graph: D3 not loaded");
+        return;
+    }
+
+    const d3 = window.d3;
+
+    // ------------------------------------------------------------
+    // USE THE DATA ALREADY PREPARED BY YOUR EXISTING CODE
+    // ------------------------------------------------------------
+
+    const sourceNodes = Array.isArray(currentData?.nodes)
+        ? currentData.nodes
+        : [];
+
+    const sourceRelationships = Array.isArray(currentData?.relationships)
+        ? currentData.relationships
+        : [];
+
+    console.log(
+        "GRAPH RENDER:",
+        sourceNodes.length,
+        "nodes,",
+        sourceRelationships.length,
+        "relationships"
+    );
+
+    // ------------------------------------------------------------
+    // FILTER
+    // ------------------------------------------------------------
+
+    const searchInput = document.getElementById("nodeSearch");
+    const typeSelect = document.getElementById("nodeType");
+
+    const searchValue = (
+        searchInput?.value || ""
+    ).trim().toLowerCase();
+
+    const selectedType = (
+        typeSelect?.value || "all"
+    ).trim().toLowerCase();
+
+    let nodes = sourceNodes.map((node) => ({
+        ...node,
+        id: String(node.id),
+        type: node.type || node.graphType || "Unknown",
+        label: node.label || node.graphLabel || node.id,
+        properties: node.properties || {}
+    }));
+
+    // Filter node type
+    if (selectedType !== "all") {
+        nodes = nodes.filter((node) => {
+            const nodeType = String(
+                node.type ||
+                node.graphType ||
+                ""
+            ).toLowerCase();
+
+            return nodeType === selectedType;
+        });
+    }
+
+    // Search
+    if (searchValue) {
+        nodes = nodes.filter((node) => {
+            const searchable = [
+                node.id,
+                node.label,
+                node.type,
+                JSON.stringify(node.properties || {})
+            ]
+                .join(" ")
+                .toLowerCase();
+
+            return searchable.includes(searchValue);
+        });
+    }
+
+    // ------------------------------------------------------------
+    // IMPORTANT:
+    // ONLY KEEP REAL RELATIONSHIPS
+    // ------------------------------------------------------------
+
+    const nodeIds = new Set(
+        nodes.map(node => String(node.id))
+    );
+
+    function endpointId(endpoint) {
+        if (
+            endpoint === null ||
+            endpoint === undefined
+        ) {
+            return null;
         }
 
-        const filtered = getFilteredData();
-
-        currentNodes = filtered.nodes;
-        currentLinks = filtered.links;
-
-        createSVG(container);
-        createGraphControls(container);
-
-        if (!currentNodes.length) {
-            showGraphMessage(
-                "No graph data found",
-                "Try another search or node type."
+        if (typeof endpoint === "object") {
+            return String(
+                endpoint.id ??
+                endpoint.elementId ??
+                endpoint.identity ??
+                ""
             );
-
-            return;
         }
 
-        const linkLayer = graphRoot
-            .append("g")
-            .attr("class", "fg-links");
+        return String(endpoint);
+    }
 
-        const linkLabelLayer = graphRoot
-            .append("g")
-            .attr("class", "fg-link-labels");
+    const links = sourceRelationships
+        .map((relationship) => ({
+            source: endpointId(
+                relationship.source ??
+                relationship.start ??
+                relationship.from
+            ),
 
-        const nodeLayer = graphRoot
-            .append("g")
-            .attr("class", "fg-nodes");
+            target: endpointId(
+                relationship.target ??
+                relationship.end ??
+                relationship.to
+            ),
 
-        /*
-         * --------------------------------------------------------
-         * LINKS
-         * --------------------------------------------------------
-         */
-
-        const link = linkLayer
-            .selectAll("line")
-            .data(
-                currentLinks,
-                (d) =>
-                    `${d.source}->${d.target}:${d.type}`
-            )
-            .join("line")
-            .attr("class", "fg-link")
-            .attr("stroke", "#33445f")
-            .attr("stroke-width", 1.25)
-            .attr("stroke-opacity", 0.72)
-            .attr(
-                "marker-end",
-                "url(#fg-arrow)"
+            type: relationship.type ||
+                relationship.label ||
+                "RELATED"
+        }))
+        .filter((link) => {
+            return (
+                link.source &&
+                link.target &&
+                nodeIds.has(link.source) &&
+                nodeIds.has(link.target)
             );
+        });
 
-        /*
-         * --------------------------------------------------------
-         * LINK LABELS
-         * --------------------------------------------------------
-         */
+    console.log(
+        "GRAPH FILTERED:",
+        nodes.length,
+        "nodes,",
+        links.length,
+        "real relationships"
+    );
 
-        const linkLabel = linkLabelLayer
-            .selectAll("text")
-            .data(
-                currentLinks,
-                (d) =>
-                    `${d.source}->${d.target}:${d.type}`
+    // ------------------------------------------------------------
+    // EMPTY
+    // ------------------------------------------------------------
+
+    const empty = document.getElementById("graphEmpty");
+
+    if (empty) {
+        empty.style.display =
+            nodes.length === 0
+                ? "flex"
+                : "none";
+    }
+
+    if (!nodes.length) {
+        return;
+    }
+
+    // ------------------------------------------------------------
+    // CLEAR ONLY SVG
+    // ------------------------------------------------------------
+
+    d3.select(container)
+        .selectAll("svg")
+        .remove();
+
+    // Remove old graph controls if your previous render created them
+    d3.select(container)
+        .selectAll(".kg-graph-controls")
+        .remove();
+
+    // ------------------------------------------------------------
+    // SIZE
+    // ------------------------------------------------------------
+
+    const rect = container.getBoundingClientRect();
+
+    const width = Math.max(
+        800,
+        Math.floor(rect.width || 1000)
+    );
+
+    const height = Math.max(
+        560,
+        Math.floor(
+            Math.min(
+                720,
+                window.innerHeight * 0.68
             )
-            .join("text")
-            .attr("class", "fg-graph-link-label")
-            .attr("fill", "#7d8ca5")
-            .attr("font-size", 9)
-            .attr("font-weight", 500)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .style("paint-order", "stroke")
-            .style("stroke", "#030916")
-            .style("stroke-width", "4px")
-            .style("stroke-linejoin", "round")
-            .text((d) => {
-                return shortLabel(
-                    String(d.type || "RELATED")
-                        .replace(/_/g, " "),
-                    18
-                ).toUpperCase();
-            });
+        )
+    );
 
-        /*
-         * --------------------------------------------------------
-         * NODES
-         * --------------------------------------------------------
-         */
+    // ------------------------------------------------------------
+    // SVG
+    // ------------------------------------------------------------
 
-        const node = nodeLayer
-            .selectAll("g.fg-node")
-            .data(
-                currentNodes,
-                (d) => d.id
-            )
-            .join("g")
-            .attr("class", "fg-node")
-            .call(
-                d3.drag()
-                    .on("start", dragStarted)
-                    .on("drag", dragged)
-                    .on("end", dragEnded)
+    const svg = d3
+        .select(container)
+        .append("svg")
+        .attr("class", "kg-real-graph")
+        .attr("width", "100%")
+        .attr("height", height)
+        .attr(
+            "viewBox",
+            `0 0 ${width} ${height}`
+        )
+        .style("display", "block");
+
+    // ------------------------------------------------------------
+    // DEFS
+    // ------------------------------------------------------------
+
+    const defs = svg.append("defs");
+
+    defs.append("marker")
+        .attr("id", "kg-arrow")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 18)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill", "#52627a");
+
+    // ------------------------------------------------------------
+    // ZOOM ROOT
+    // ------------------------------------------------------------
+
+    const root = svg
+        .append("g")
+        .attr("class", "kg-graph-root");
+
+    const zoom = d3
+        .zoom()
+        .scaleExtent([0.25, 4])
+        .on("zoom", (event) => {
+            root.attr(
+                "transform",
+                event.transform
             );
+        });
 
-        /*
-         * Outer glow.
-         */
+    svg.call(zoom);
 
-        node
-            .append("circle")
-            .attr("class", "fg-node-glow")
-            .attr("r", (d) => {
-                return d.graphType === "Fraud Alert"
-                    ? 17
-                    : 14;
-            })
-            .attr("fill", (d) => getNodeColor(d.graphType))
-            .attr("opacity", 0.20)
-            .attr("filter", "url(#fg-node-glow)");
+    // ------------------------------------------------------------
+    // LINK LAYER
+    // ------------------------------------------------------------
 
-       /*
- * Main node - slightly larger
- */
+    const linkLayer = root
+        .append("g")
+        .attr("class", "kg-links");
 
-        node
-        .append("circle")
-        .attr("class", "fg-node-circle")
-        .attr("r", (d) => {
-            if (d.graphType === "Transaction") {
-            return 13;
+    const link = linkLayer
+        .selectAll("line")
+        .data(
+            links,
+            d =>
+                `${d.source}-${d.target}-${d.type}`
+        )
+        .join("line")
+        .attr("stroke", "#43536d")
+        .attr("stroke-width", 1.4)
+        .attr("stroke-opacity", 0.72)
+        .attr(
+            "marker-end",
+            "url(#kg-arrow)"
+        );
+
+    // ------------------------------------------------------------
+    // LINK LABEL
+    // ------------------------------------------------------------
+
+    const linkLabels = root
+        .append("g")
+        .attr("class", "kg-link-labels")
+        .selectAll("text")
+        .data(
+            links,
+            d =>
+                `${d.source}-${d.target}-${d.type}`
+        )
+        .join("text")
+        .attr("fill", "#73839b")
+        .attr("font-size", 8)
+        .attr("text-anchor", "middle")
+        .style("pointer-events", "none")
+        .style("paint-order", "stroke")
+        .style("stroke", "#050b15")
+        .style("stroke-width", "4px")
+        .text(d =>
+            String(d.type)
+                .replace(/_/g, " ")
+                .toUpperCase()
+        );
+
+    // ------------------------------------------------------------
+    // NODE LAYER
+    // ------------------------------------------------------------
+
+    const nodeLayer = root
+        .append("g")
+        .attr("class", "kg-nodes");
+
+    const node = nodeLayer
+        .selectAll("g")
+        .data(
+            nodes,
+            d => String(d.id)
+        )
+        .join("g")
+        .attr("class", "kg-node")
+        .style("cursor", "pointer");
+
+    // ------------------------------------------------------------
+    // COLORS
+    // ------------------------------------------------------------
+
+    function nodeColor(type) {
+
+        const normalized = String(
+            type || ""
+        )
+            .toLowerCase()
+            .replace(/\s+/g, "");
+
+        if (normalized === "transaction") {
+            return "#22d3ee";
+        }
+
+        if (normalized === "account") {
+            return "#818cf8";
+        }
+
+        if (normalized === "merchant") {
+            return "#a78bfa";
+        }
+
+        if (normalized === "device") {
+            return "#22c55e";
+        }
+
+        if (normalized === "card") {
+            return "#f59e0b";
+        }
+
+        if (
+            normalized === "fraudalert" ||
+            normalized === "fraud-alert"
+        ) {
+            return "#ef4444";
+        }
+
+        if (normalized === "fraudring") {
+            return "#fb7185";
+        }
+
+        if (normalized === "user") {
+            return "#38bdf8";
+        }
+
+        if (
+            normalized === "location" ||
+            normalized === "ipaddress"
+        ) {
+            return "#06b6d4";
+        }
+
+        return "#64748b";
+    }
+
+    // ------------------------------------------------------------
+    // NODE CIRCLE
+    // ------------------------------------------------------------
+
+    node.append("circle")
+        .attr("r", d => {
+
+            const type = String(
+                d.type || ""
+            ).toLowerCase();
+
+            if (
+                type === "transaction"
+            ) {
+                return 14;
             }
 
-            if (d.graphType === "Fraud Alert") {
-            return 13;
+            if (
+                type === "fraudalert" ||
+                type === "fraud alert"
+            ) {
+                return 14;
             }
 
             return 11;
         })
-            .attr("fill", (d) => getNodeColor(d.graphType))
-            .attr("stroke", "#dce8ff")
-            .attr("stroke-width", 1.2)
-            .attr("stroke-opacity", 0.9)
-            .attr("filter", "url(#fg-node-glow)");
+        .attr(
+            "fill",
+            d => nodeColor(d.type)
+        )
+        .attr(
+            "stroke",
+            "#e2e8f0"
+        )
+        .attr(
+            "stroke-width",
+            1.2
+        );
 
-        /*
-         * Node label.
-         */
+    // ------------------------------------------------------------
+    // NODE LABEL
+    // ------------------------------------------------------------
 
-        node
-            .append("text")
-            .attr("class", "fg-graph-node-label")
-            .attr("x", 13)
-            .attr("y", 4)
-            .attr("fill", "#e5edf9")
-            .attr("font-size", 10.5)
-            .attr("font-weight", 500)
-            .style("paint-order", "stroke")
-            .style("stroke", "#030916")
-            .style("stroke-width", "4px")
-            .style("stroke-linejoin", "round")
-            .text((d) => shortLabel(d.graphLabel, 28));
+    node.append("text")
+        .attr("x", 16)
+        .attr("y", 4)
+        .attr("fill", "#e7eef9")
+        .attr("font-size", 10)
+        .attr("font-weight", 600)
+        .style("pointer-events", "none")
+        .style("paint-order", "stroke")
+        .style("stroke", "#050b15")
+        .style("stroke-width", "4px")
+        .text(d => {
 
-        /*
-         * Node type under label.
-         */
+            const label =
+                d.label ||
+                d.properties?.name ||
+                d.id;
 
-        node
-            .append("text")
-            .attr("class", "fg-node-type")
-            .attr("x", 13)
-            .attr("y", 17)
-            .attr("fill", "#64748b")
-            .attr("font-size", 8.5)
-            .style("paint-order", "stroke")
-            .style("stroke", "#030916")
-            .style("stroke-width", "3px")
-            .text((d) => d.graphType);
+            const text =
+                String(label);
 
-        /*
-         * Tooltip.
-         */
+            return text.length > 28
+                ? text.substring(0, 27) + "…"
+                : text;
+        });
 
-        node
-            .append("title")
-            .text((d) => {
-                const properties = d.properties || {};
+    // ------------------------------------------------------------
+    // NODE TYPE
+    // ------------------------------------------------------------
 
-                const propertyText = Object.entries(
-                    properties
+    node.append("text")
+        .attr("x", 16)
+        .attr("y", 17)
+        .attr("fill", "#64748b")
+        .attr("font-size", 8)
+        .style("pointer-events", "none")
+        .text(d =>
+            String(d.type)
+        );
+
+    // ------------------------------------------------------------
+    // TOOLTIP
+    // ------------------------------------------------------------
+
+    node.append("title")
+        .text(d => {
+
+            const properties =
+                Object.entries(
+                    d.properties || {}
                 )
                     .slice(0, 8)
-                    .map(([key, value]) => {
-                        return `${key}: ${value}`;
-                    })
+                    .map(
+                        ([key, value]) =>
+                            `${key}: ${value}`
+                    )
                     .join("\n");
 
-                return [
-                    d.graphLabel,
-                    `Type: ${d.graphType}`,
-                    propertyText
-                ]
-                    .filter(Boolean)
-                    .join("\n");
-            });
-
-        /*
-         * Node click.
-         */
-
-        node.on("click", (event, selectedNode) => {
-            event.stopPropagation();
-
-            highlightNode(
-                selectedNode,
-                node,
-                link,
-                linkLabel
-            );
+            return [
+                d.label,
+                `Type: ${d.type}`,
+                properties
+            ]
+                .filter(Boolean)
+                .join("\n");
         });
 
-        /*
-         * Click empty graph = clear selection.
-         */
+    // ------------------------------------------------------------
+    // NODE CLICK
+    // ------------------------------------------------------------
 
-        svg.on("click", () => {
-            clearHighlight(
-                node,
-                link,
-                linkLabel
-            );
-        });
+    // ------------------------------------------------------------
+// NODE CLICK / SELECTION
+// ------------------------------------------------------------
 
-        /*
-         * --------------------------------------------------------
-         * FORCE SIMULATION
-         * --------------------------------------------------------
-         *
-         * This is the important part that makes the graph flexible
-         * and prevents the nodes from staying in one small cluster.
-         */
+let selectedNodeId = null;
+let dragMoved = false;
 
-        simulation = d3
-            .forceSimulation(currentNodes)
 
-            /*
-             * Relationship distance.
-             */
+// Highlight selected node and its neighbours
+function selectNode(selectedNode) {
 
-            .force(
-                "link",
-                d3
-                    .forceLink(currentLinks)
-                    .id((d) => d.id)
-                    .distance((d) => {
-                        const sourceType =
-                            d.source?.graphType;
-
-                        const targetType =
-                            d.target?.graphType;
-
-                        if (
-                            sourceType === "Transaction" ||
-                            targetType === "Transaction"
-                        ) {
-                            return 155;
-                        }
-
-                        return 135;
-                    })
-                    .strength(0.45)
-            )
-
-            /*
-             * Main repulsion.
-             */
-
-            .force(
-                "charge",
-                d3
-                    .forceManyBody()
-                    .strength(-520)
-                    .distanceMin(40)
-                    .distanceMax(900)
-            )
-
-            /*
-             * Center.
-             */
-
-            .force(
-                "center",
-                d3.forceCenter(
-                    width / 2,
-                    height / 2
-                )
-            )
-
-            /*
-             * Horizontal spreading.
-             */
-
-            .force(
-                "x",
-                d3
-                    .forceX(width / 2)
-                    .strength(0.045)
-            )
-
-            /*
-             * Vertical spreading.
-             */
-
-            .force(
-                "y",
-                d3
-                    .forceY(height / 2)
-                    .strength(0.045)
-            )
-
-            /*
-             * Collision.
-             */
-
-            .force(
-               "collision",
-            d3
-            .forceCollide()
-            .radius((d) => {
-              return d.graphType === "Fraud Alert"
-                ? 48
-                : 42;
-            })
-            .strength(0.95)
-            )
-
-            .alpha(1)
-            .alphaDecay(0.025)
-            .velocityDecay(0.38)
-
-            .on("tick", () => {
-                updatePositions(
-                    link,
-                    linkLabel,
-                    node
-                );
-            });
-
-        /*
-         * Give simulation a little time to settle.
-         */
-
-        simulation
-            .alpha(1)
-            .restart();
-
-        /*
-         * Initial position spreading.
-         */
-
-        spreadInitialPositions(
-            currentNodes
-        );
+    if (!selectedNode) {
+        return;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * INITIAL NODE POSITIONS
-     * ------------------------------------------------------------
-     */
+    const selectedId =
+        String(selectedNode.id);
 
-    function spreadInitialPositions(nodes) {
-        const d3 = window.d3;
+    selectedNodeId = selectedId;
 
-        const centerX = width / 2;
-        const centerY = height / 2;
+    const connected = new Set([
+        selectedId
+    ]);
 
-        const radius = Math.min(
-            width,
-            height
-        ) * 0.27;
 
-        nodes.forEach((node, index) => {
+    // Find connected nodes
+    links.forEach((linkData) => {
+
+        const source =
+            endpointId(linkData.source);
+
+        const target =
+            endpointId(linkData.target);
+
+
+        if (source === selectedId) {
+            connected.add(target);
+        }
+
+        if (target === selectedId) {
+            connected.add(source);
+        }
+    });
+
+
+    // --------------------------------------------------------
+    // NODE OPACITY
+    // --------------------------------------------------------
+
+    node
+        .interrupt()
+        .transition()
+        .duration(150)
+        .style(
+            "opacity",
+            (d) => {
+
+                return connected.has(
+                    String(d.id)
+                )
+                    ? 1
+                    : 0.15;
+            }
+        );
+
+
+    // --------------------------------------------------------
+    // LINKS
+    // --------------------------------------------------------
+
+    link
+        .interrupt()
+        .attr(
+            "stroke",
+            (d) => {
+
+                const source =
+                    endpointId(d.source);
+
+                const target =
+                    endpointId(d.target);
+
+
+                return (
+                    source === selectedId ||
+                    target === selectedId
+                )
+                    ? "#22d3ee"
+                    : "#334155";
+            }
+        )
+        .attr(
+            "stroke-width",
+            (d) => {
+
+                const source =
+                    endpointId(d.source);
+
+                const target =
+                    endpointId(d.target);
+
+
+                return (
+                    source === selectedId ||
+                    target === selectedId
+                )
+                    ? 2.8
+                    : 1;
+            }
+        )
+        .attr(
+            "stroke-opacity",
+            (d) => {
+
+                const source =
+                    endpointId(d.source);
+
+                const target =
+                    endpointId(d.target);
+
+
+                return (
+                    source === selectedId ||
+                    target === selectedId
+                )
+                    ? 1
+                    : 0.25;
+            }
+        );
+
+
+    // --------------------------------------------------------
+    // LINK LABELS
+    // --------------------------------------------------------
+
+    linkLabels
+        .style(
+            "opacity",
+            (d) => {
+
+                const source =
+                    endpointId(d.source);
+
+                const target =
+                    endpointId(d.target);
+
+
+                return (
+                    source === selectedId ||
+                    target === selectedId
+                )
+                    ? 1
+                    : 0.1;
+            }
+        );
+
+
+    // --------------------------------------------------------
+    // SELECTED NODE VISUAL
+    // --------------------------------------------------------
+
+    node
+        .select("circle")
+        .attr(
+            "stroke",
+            (d) =>
+                String(d.id) === selectedId
+                    ? "#ffffff"
+                    : "#e2e8f0"
+        )
+        .attr(
+            "stroke-width",
+            (d) =>
+                String(d.id) === selectedId
+                    ? 3
+                    : 1.2
+        );
+
+
+    // --------------------------------------------------------
+    // DETAILS PANEL
+    // --------------------------------------------------------
+
+    showNodeDetails(selectedNode);
+}
+
+
+// ------------------------------------------------------------
+// DIRECT NODE CLICK
+// ------------------------------------------------------------
+
+node.on(
+    "click",
+    function(event, selectedNode) {
+
+        // IMPORTANT:
+        // Stop event from reaching SVG background.
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        // Ignore click generated after dragging.
+        if (dragMoved) {
+            dragMoved = false;
+            return;
+        }
+
+
+        console.log(
+            "KNOWLEDGE GRAPH NODE CLICK:",
+            selectedNode
+        );
+
+
+        selectNode(selectedNode);
+    }
+);
+
+
+// ------------------------------------------------------------
+// ALSO MAKE CIRCLE DIRECTLY CLICKABLE
+// ------------------------------------------------------------
+
+node
+    .select("circle")
+    .style(
+        "pointer-events",
+        "all"
+    )
+    .style(
+        "cursor",
+        "pointer"
+    )
+    .on(
+        "click",
+        function(event, selectedNode) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            if (dragMoved) {
+                dragMoved = false;
+                return;
+            }
+
+
+            console.log(
+                "NODE CIRCLE CLICK:",
+                selectedNode.id
+            );
+
+
+            selectNode(selectedNode);
+        }
+    );
+
+
+// ------------------------------------------------------------
+// CLEAR SELECTION
+// ------------------------------------------------------------
+
+svg.on(
+    "click",
+    function(event) {
+
+        // Only clear when the actual SVG/background
+        // was clicked.
+        if (
+            event.target !==
+            this
+        ) {
+            return;
+        }
+
+
+        selectedNodeId = null;
+
+
+        node
+            .interrupt()
+            .transition()
+            .duration(150)
+            .style(
+                "opacity",
+                1
+            );
+
+
+        link
+            .attr(
+                "stroke",
+                "#43536d"
+            )
+            .attr(
+                "stroke-width",
+                1.4
+            )
+            .attr(
+                "stroke-opacity",
+                0.72
+            );
+
+
+        linkLabels
+            .style(
+                "opacity",
+                1
+            );
+
+
+        node
+            .select("circle")
+            .attr(
+                "stroke",
+                "#e2e8f0"
+            )
+            .attr(
+                "stroke-width",
+                1.2
+            );
+    }
+);
+
+    // ------------------------------------------------------------
+    // FORCE SIMULATION
+    // ------------------------------------------------------------
+
+    simulation = d3
+        .forceSimulation(nodes)
+
+        // REAL relationships ONLY
+        .force(
+            "link",
+            d3.forceLink(links)
+                .id(d => String(d.id))
+                .distance(105)
+                .strength(0.85)
+        )
+
+        // Keep nodes close enough to form ONE graph
+        .force(
+            "charge",
+            d3.forceManyBody()
+                .strength(-115)
+                .distanceMin(20)
+                .distanceMax(350)
+        )
+
+        // Center
+        .force(
+            "center",
+            d3.forceCenter(
+                width / 2,
+                height / 2
+            )
+        )
+
+        // Gentle center pull
+        .force(
+            "x",
+            d3.forceX(
+                width / 2
+            ).strength(0.045)
+        )
+
+        .force(
+            "y",
+            d3.forceY(
+                height / 2
+            ).strength(0.045)
+        )
+
+        // Prevent overlap
+        .force(
+            "collision",
+            d3.forceCollide()
+                .radius(25)
+                .strength(0.8)
+        )
+
+        .alpha(1)
+        .alphaDecay(0.025)
+        .velocityDecay(0.48)
+
+        .on(
+            "tick",
+            () => {
+
+                link
+                    .attr(
+                        "x1",
+                        d => d.source.x
+                    )
+                    .attr(
+                        "y1",
+                        d => d.source.y
+                    )
+                    .attr(
+                        "x2",
+                        d => d.target.x
+                    )
+                    .attr(
+                        "y2",
+                        d => d.target.y
+                    );
+
+                linkLabels
+                    .attr(
+                        "x",
+                        d =>
+                            (
+                                d.source.x +
+                                d.target.x
+                            ) / 2
+                    )
+                    .attr(
+                        "y",
+                        d =>
+                            (
+                                d.source.y +
+                                d.target.y
+                            ) / 2 - 5
+                    );
+
+                node.attr(
+                    "transform",
+                    d =>
+                        `translate(${d.x},${d.y})`
+                );
+            }
+        );
+
+    // ------------------------------------------------------------
+    // DRAG
+    // ------------------------------------------------------------
+
+    // ------------------------------------------------------------
+// DRAG
+// ------------------------------------------------------------
+
+const dragBehavior =
+    d3
+        .drag()
+
+        .on(
+            "start",
+            function(event, d) {
+
+                dragMoved = false;
+
+
+                if (
+                    !event.active &&
+                    simulation
+                ) {
+                    simulation
+                        .alphaTarget(0.25)
+                        .restart();
+                }
+
+
+                d.fx = d.x;
+                d.fy = d.y;
+
+
+                console.log(
+                    "NODE DRAG START:",
+                    d.id
+                );
+            }
+        )
+
+        .on(
+            "drag",
+            function(event, d) {
+
+                const dx =
+                    Math.abs(
+                        event.x - d.x
+                    );
+
+                const dy =
+                    Math.abs(
+                        event.y - d.y
+                    );
+
+
+                // Consider it a drag only after
+                // meaningful movement.
+                if (
+                    dx > 3 ||
+                    dy > 3
+                ) {
+                    dragMoved = true;
+                }
+
+
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+        )
+
+        .on(
+            "end",
+            function(event, d) {
+
+                if (
+                    !event.active &&
+                    simulation
+                ) {
+                    simulation
+                        .alphaTarget(0);
+                }
+
+
+                d.fx = null;
+                d.fy = null;
+
+
+                console.log(
+                    "NODE DRAG END:",
+                    d.id
+                );
+
+
+                // Keep suppress flag for one event cycle.
+                if (dragMoved) {
+
+                    setTimeout(
+                        () => {
+                            dragMoved = false;
+                        },
+                        50
+                    );
+                }
+            }
+        );
+
+
+node.call(
+    dragBehavior
+);
+    // ------------------------------------------------------------
+    // START POSITIONS
+    // ------------------------------------------------------------
+
+    nodes.forEach(
+        (d, i) => {
+
             const angle =
-                (index / Math.max(nodes.length, 1)) *
+                (
+                    i /
+                    Math.max(
+                        nodes.length,
+                        1
+                    )
+                ) *
                 Math.PI *
                 2;
 
-            const ring =
-                0.65 +
-                (index % 4) * 0.15;
+            const radius =
+                Math.min(
+                    width,
+                    height
+                ) * 0.16;
 
-            node.x =
-                centerX +
+            d.x =
+                width / 2 +
                 Math.cos(angle) *
-                radius *
-                ring;
+                radius;
 
-            node.y =
-                centerY +
+            d.y =
+                height / 2 +
                 Math.sin(angle) *
-                radius *
-                ring;
-        });
+                radius;
+        }
+    );
+
+    simulation
+        .alpha(1)
+        .restart();
+
+    // ------------------------------------------------------------
+    // HIDE LOADING
+    // ------------------------------------------------------------
+
+    const loading =
+        document.getElementById(
+            "graphLoading"
+        );
+
+    if (loading) {
+        loading.style.display =
+            "none";
+    }
+
+    console.log(
+        "GRAPH RENDER COMPLETE:",
+        nodes.length,
+        "nodes /",
+        links.length,
+        "relationships"
+    );
+}
+
+    /* ============================================================
+       INITIAL POSITIONS
+       ============================================================ */
+
+    function spreadInitialPositions(
+        nodes
+    ) {
+
+        const centerX =
+            width / 2;
+
+        const centerY =
+            height / 2;
+
+
+        /*
+         * Small radius.
+         *
+         * This avoids the huge separated
+         * starting ring from the old version.
+         */
+
+        const radius =
+            Math.min(
+                width,
+                height
+            ) * 0.12;
+
+
+        nodes.forEach(
+            (node, index) => {
+
+                const angle =
+                    (
+                        index /
+                        Math.max(
+                            nodes.length,
+                            1
+                        )
+                    ) *
+                    Math.PI *
+                    2;
+
+
+                const ring =
+                    0.75 +
+                    (
+                        index % 4
+                    ) * 0.08;
+
+
+                node.x =
+                    centerX +
+                    Math.cos(angle) *
+                    radius *
+                    ring;
+
+
+                node.y =
+                    centerY +
+                    Math.sin(angle) *
+                    radius *
+                    ring;
+
+
+                node.vx = 0;
+                node.vy = 0;
+            }
+        );
+
 
         if (simulation) {
-            simulation.alpha(0.9).restart();
+
+            simulation
+                .alpha(1)
+                .restart();
         }
     }
 
-    /*
-     * ------------------------------------------------------------
-     * UPDATE POSITIONS
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       UPDATE POSITIONS
+       ============================================================ */
 
     function updatePositions(
         link,
         linkLabel,
         node
     ) {
+
         link
-            .attr("x1", (d) => d.source.x)
-            .attr("y1", (d) => d.source.y)
-            .attr("x2", (d) => d.target.x)
-            .attr("y2", (d) => d.target.y);
+            .attr(
+                "x1",
+                (d) => d.source.x
+            )
+            .attr(
+                "y1",
+                (d) => d.source.y
+            )
+            .attr(
+                "x2",
+                (d) => d.target.x
+            )
+            .attr(
+                "y2",
+                (d) => d.target.y
+            );
+
 
         linkLabel
             .attr(
                 "x",
                 (d) =>
-                    (d.source.x + d.target.x) / 2
+                    (
+                        d.source.x +
+                        d.target.x
+                    ) / 2
             )
             .attr(
                 "y",
                 (d) =>
-                    (d.source.y + d.target.y) / 2 - 4
+                    (
+                        d.source.y +
+                        d.target.y
+                    ) / 2 - 5
             );
+
 
         node.attr(
             "transform",
@@ -1441,44 +2502,61 @@
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * DRAG
-     * ------------------------------------------------------------
-     */
 
-    function dragStarted(event, d) {
-        if (!event.active && simulation) {
-            simulation.alphaTarget(0.25).restart();
+    /* ============================================================
+       DRAG
+       ============================================================ */
+
+    function dragStarted(
+        event,
+        d
+    ) {
+
+        if (
+            !event.active &&
+            simulation
+        ) {
+            simulation
+                .alphaTarget(0.25)
+                .restart();
         }
 
         d.fx = d.x;
         d.fy = d.y;
     }
 
-    function dragged(event, d) {
+
+    function dragged(
+        event,
+        d
+    ) {
+
         d.fx = event.x;
         d.fy = event.y;
     }
 
-    function dragEnded(event, d) {
-        if (!event.active && simulation) {
-            simulation.alphaTarget(0);
-        }
 
-        /*
-         * Release the node so it remains flexible.
-         */
+    function dragEnded(
+        event,
+        d
+    ) {
+
+        if (
+            !event.active &&
+            simulation
+        ) {
+            simulation
+                .alphaTarget(0);
+        }
 
         d.fx = null;
         d.fy = null;
     }
 
-    /*
-     * ------------------------------------------------------------
-     * HIGHLIGHT NODE
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       HIGHLIGHT
+       ============================================================ */
 
     function highlightNode(
         selectedNode,
@@ -1486,33 +2564,54 @@
         link,
         linkLabel
     ) {
-        const selectedId = String(
-            selectedNode.id
+
+        const selectedId =
+            String(
+                selectedNode.id
+            );
+
+
+        const connectedIds =
+            new Set([
+                selectedId
+            ]);
+
+
+        currentLinks.forEach(
+            (relationship) => {
+
+                const sourceId =
+                    getEndpointId(
+                        relationship.source
+                    );
+
+                const targetId =
+                    getEndpointId(
+                        relationship.target
+                    );
+
+
+                if (
+                    sourceId ===
+                    selectedId
+                ) {
+                    connectedIds.add(
+                        targetId
+                    );
+                }
+
+
+                if (
+                    targetId ===
+                    selectedId
+                ) {
+                    connectedIds.add(
+                        sourceId
+                    );
+                }
+            }
         );
 
-        const connectedIds = new Set([
-            selectedId
-        ]);
-
-        currentLinks.forEach((relationship) => {
-            const sourceId = String(
-                relationship.source.id ??
-                relationship.source
-            );
-
-            const targetId = String(
-                relationship.target.id ??
-                relationship.target
-            );
-
-            if (sourceId === selectedId) {
-                connectedIds.add(targetId);
-            }
-
-            if (targetId === selectedId) {
-                connectedIds.add(sourceId);
-            }
-        });
 
         node
             .transition()
@@ -1520,10 +2619,13 @@
             .style(
                 "opacity",
                 (d) =>
-                    connectedIds.has(String(d.id))
+                    connectedIds.has(
+                        String(d.id)
+                    )
                         ? 1
                         : 0.16
             );
+
 
         link
             .transition()
@@ -1531,19 +2633,23 @@
             .attr(
                 "stroke",
                 (d) => {
-                    const sourceId = String(
-                        d.source.id ??
-                        d.source
-                    );
 
-                    const targetId = String(
-                        d.target.id ??
-                        d.target
-                    );
+                    const sourceId =
+                        getEndpointId(
+                            d.source
+                        );
+
+                    const targetId =
+                        getEndpointId(
+                            d.target
+                        );
+
 
                     return (
-                        sourceId === selectedId ||
-                        targetId === selectedId
+                        sourceId ===
+                            selectedId ||
+                        targetId ===
+                            selectedId
                     )
                         ? "#38bdf8"
                         : "#33445f";
@@ -1552,19 +2658,23 @@
             .attr(
                 "stroke-width",
                 (d) => {
-                    const sourceId = String(
-                        d.source.id ??
-                        d.source
-                    );
 
-                    const targetId = String(
-                        d.target.id ??
-                        d.target
-                    );
+                    const sourceId =
+                        getEndpointId(
+                            d.source
+                        );
+
+                    const targetId =
+                        getEndpointId(
+                            d.target
+                        );
+
 
                     return (
-                        sourceId === selectedId ||
-                        targetId === selectedId
+                        sourceId ===
+                            selectedId ||
+                        targetId ===
+                            selectedId
                     )
                         ? 2.4
                         : 1;
@@ -1573,24 +2683,29 @@
             .attr(
                 "stroke-opacity",
                 (d) => {
-                    const sourceId = String(
-                        d.source.id ??
-                        d.source
-                    );
 
-                    const targetId = String(
-                        d.target.id ??
-                        d.target
-                    );
+                    const sourceId =
+                        getEndpointId(
+                            d.source
+                        );
+
+                    const targetId =
+                        getEndpointId(
+                            d.target
+                        );
+
 
                     return (
-                        sourceId === selectedId ||
-                        targetId === selectedId
+                        sourceId ===
+                            selectedId ||
+                        targetId ===
+                            selectedId
                     )
                         ? 1
                         : 0.18;
                 }
             );
+
 
         linkLabel
             .transition()
@@ -1598,19 +2713,23 @@
             .style(
                 "opacity",
                 (d) => {
-                    const sourceId = String(
-                        d.source.id ??
-                        d.source
-                    );
 
-                    const targetId = String(
-                        d.target.id ??
-                        d.target
-                    );
+                    const sourceId =
+                        getEndpointId(
+                            d.source
+                        );
+
+                    const targetId =
+                        getEndpointId(
+                            d.target
+                        );
+
 
                     return (
-                        sourceId === selectedId ||
-                        targetId === selectedId
+                        sourceId ===
+                            selectedId ||
+                        targetId ===
+                            selectedId
                     )
                         ? 1
                         : 0.1;
@@ -1618,269 +2737,645 @@
             );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * CLEAR HIGHLIGHT
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       CLEAR HIGHLIGHT
+       ============================================================ */
 
     function clearHighlight(
         node,
         link,
         linkLabel
     ) {
+
         node
             .transition()
             .duration(180)
-            .style("opacity", 1);
+            .style(
+                "opacity",
+                1
+            );
+
 
         link
             .transition()
             .duration(180)
-            .attr("stroke", "#33445f")
-            .attr("stroke-width", 1.25)
-            .attr("stroke-opacity", 0.72);
+            .attr(
+                "stroke",
+                "#33445f"
+            )
+            .attr(
+                "stroke-width",
+                1.25
+            )
+            .attr(
+                "stroke-opacity",
+                0.72
+            );
+
 
         linkLabel
             .transition()
             .duration(180)
-            .style("opacity", 1);
+            .style(
+                "opacity",
+                1
+            );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * MESSAGE
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       MESSAGE
+       ============================================================ */
 
     function showGraphMessage(
         title,
         message
     ) {
-        const container = getGraphContainer();
+
+        const container =
+            getGraphContainer();
+
 
         if (!container) {
             return;
         }
+
 
         container
             .querySelectorAll(
                 ".fg-graph-message"
             )
-            .forEach((element) => {
-                element.remove();
-            });
+            .forEach(
+                (element) =>
+                    element.remove()
+            );
 
-        const box = document.createElement("div");
 
-        box.className = "fg-graph-message";
+        const box =
+            document.createElement(
+                "div"
+            );
+
+
+        box.className =
+            "fg-graph-message";
+
+
+        box.style.cssText = `
+            position:absolute;
+            inset:0;
+            z-index:20;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            background:#030916;
+            color:#eef4ff;
+            padding:40px;
+            box-sizing:border-box;
+        `;
+
 
         box.innerHTML = `
             <div style="
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-                justify-content:center;
-                height:100%;
-                min-height:500px;
-                text-align:center;
-                padding:40px;
-                box-sizing:border-box;
+                width:12px;
+                height:12px;
+                border-radius:50%;
+                background:#22d3ee;
+                box-shadow:
+                    0 0 18px
+                    rgba(34,211,238,.65);
+                margin-bottom:18px;
+            "></div>
+
+            <div style="
+                font-size:18px;
+                font-weight:700;
+                margin-bottom:8px;
             ">
-                <div style="
-                    width:12px;
-                    height:12px;
-                    border-radius:50%;
-                    background:#22d3ee;
-                    box-shadow:0 0 18px rgba(34,211,238,.65);
-                    margin-bottom:18px;
-                "></div>
+                ${escapeHTML(title)}
+            </div>
 
-                <div style="
-                    color:#eef4ff;
-                    font-size:18px;
-                    font-weight:700;
-                    margin-bottom:8px;
-                ">
-                    ${escapeHTML(title)}
-                </div>
-
-                <div style="
-                    color:#8492a8;
-                    font-size:13px;
-                    max-width:520px;
-                    line-height:1.6;
-                ">
-                    ${escapeHTML(message)}
-                </div>
+            <div style="
+                color:#8492a8;
+                font-size:13px;
+                max-width:520px;
+                line-height:1.6;
+            ">
+                ${escapeHTML(message)}
             </div>
         `;
 
-        container.appendChild(box);
+
+        container.appendChild(
+            box
+        );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * ESCAPE HTML
-     * ------------------------------------------------------------
-     */
+   window.showNodeDetails = function showNodeDetails(node) {
+
+    if (!node) {
+        return;
+    }
+
+    const properties =
+        node.properties || {};
+
+    const type =
+        String(
+            node.graphType ||
+            node.type ||
+            "Unknown"
+        );
+
+    const label =
+        String(
+            node.graphLabel ||
+            node.label ||
+            node.id ||
+            "Unknown"
+        );
+
+    const container =
+        getGraphContainer();
+
+    if (!container) {
+        return;
+    }
+
+    let panel =
+        container.querySelector(
+            ".kg-node-details"
+        );
+
+    if (!panel) {
+
+        panel =
+            document.createElement(
+                "div"
+            );
+
+        panel.className =
+            "kg-node-details";
+
+        panel.style.cssText = `
+            position:absolute;
+            top:18px;
+            right:18px;
+            width:320px;
+            max-width:calc(100% - 36px);
+            max-height:calc(100% - 36px);
+            overflow:auto;
+            z-index:50;
+            box-sizing:border-box;
+            padding:20px;
+            border:1px solid rgba(56,189,248,.28);
+            border-radius:14px;
+            background:rgba(3,9,22,.96);
+            backdrop-filter:blur(14px);
+            box-shadow:
+                0 18px 50px rgba(0,0,0,.45),
+                0 0 25px rgba(34,211,238,.08);
+            color:#eef4ff;
+            font-family:inherit;
+        `;
+
+        container.appendChild(
+            panel
+        );
+    }
+
+    const normalizedType =
+        type
+            .replace(/_/g, " ")
+            .trim();
+
+    let rows = "";
+
+    Object.entries(
+        properties
+    ).forEach(
+        ([key, value]) => {
+
+            let displayValue =
+                value;
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                displayValue = "—";
+            }
+
+            if (
+                typeof value === "object"
+            ) {
+                try {
+                    displayValue =
+                        JSON.stringify(
+                            value,
+                            null,
+                            2
+                        );
+                } catch {
+                    displayValue =
+                        String(value);
+                }
+            }
+
+            rows += `
+                <div style="
+                    display:grid;
+                    grid-template-columns:110px 1fr;
+                    gap:10px;
+                    padding:9px 0;
+                    border-bottom:
+                        1px solid
+                        rgba(100,116,139,.15);
+                ">
+
+                    <div style="
+                        color:#71819a;
+                        font-size:11px;
+                        font-weight:700;
+                        text-transform:uppercase;
+                        letter-spacing:.05em;
+                        overflow-wrap:anywhere;
+                    ">
+                        ${escapeHTML(key)}
+                    </div>
+
+                    <div style="
+                        color:#dce7f7;
+                        font-size:12px;
+                        line-height:1.5;
+                        overflow-wrap:anywhere;
+                        white-space:pre-wrap;
+                    ">
+                        ${escapeHTML(
+                            String(displayValue)
+                        )}
+                    </div>
+
+                </div>
+            `;
+        }
+    );
+
+    if (!rows) {
+
+        rows = `
+            <div style="
+                color:#71819a;
+                font-size:12px;
+                padding:12px 0;
+            ">
+                No additional properties available.
+            </div>
+        `;
+    }
+
+    let typeClass =
+        normalizedType
+            .toLowerCase();
+
+    let accent =
+        "#22d3ee";
+
+    if (
+        typeClass.includes("fraud") ||
+        typeClass.includes("alert")
+    ) {
+        accent =
+            "#ef4444";
+    } else if (
+        typeClass.includes("account")
+    ) {
+        accent =
+            "#818cf8";
+    } else if (
+        typeClass.includes("merchant")
+    ) {
+        accent =
+            "#a78bfa";
+    } else if (
+        typeClass.includes("card")
+    ) {
+        accent =
+            "#f59e0b";
+    } else if (
+        typeClass.includes("location")
+    ) {
+        accent =
+            "#22c55e";
+    }
+
+    panel.innerHTML = `
+
+        <div style="
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            gap:14px;
+            margin-bottom:16px;
+        ">
+
+            <div style="
+                min-width:0;
+            ">
+
+                <div style="
+                    color:${accent};
+                    font-size:10px;
+                    font-weight:800;
+                    text-transform:uppercase;
+                    letter-spacing:.14em;
+                    margin-bottom:7px;
+                ">
+                    ${escapeHTML(
+                        normalizedType
+                    )}
+                </div>
+
+                <div style="
+                    color:#f5f8ff;
+                    font-size:17px;
+                    font-weight:750;
+                    line-height:1.3;
+                    overflow-wrap:anywhere;
+                ">
+                    ${escapeHTML(label)}
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="kg-details-close"
+                aria-label="Close"
+                style="
+                    flex:0 0 auto;
+                    width:30px;
+                    height:30px;
+                    border:0;
+                    border-radius:8px;
+                    background:
+                        rgba(100,116,139,.14);
+                    color:#94a3b8;
+                    cursor:pointer;
+                    font-size:18px;
+                    line-height:30px;
+                "
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div style="
+            height:2px;
+            margin-bottom:4px;
+            background:${accent};
+            opacity:.7;
+            border-radius:4px;
+        "></div>
+
+        ${rows}
+    `;
+
+    panel
+        .querySelector(
+            ".kg-details-close"
+        )
+        ?.addEventListener(
+            "click",
+            (event) => {
+
+                event.stopPropagation();
+
+                panel.remove();
+            }
+        );
+}
+
+    /* ============================================================
+       ESCAPE HTML
+       ============================================================ */
 
     function escapeHTML(value) {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * SEARCH EVENTS
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       SEARCH
+       ============================================================ */
 
     function setupSearch() {
-        const searchInput = getSearchInput();
 
-        if (!searchInput) {
+        const input =
+            getSearchInput();
+
+
+        if (!input) {
             return;
         }
 
-        searchInput.addEventListener(
+
+        input.addEventListener(
             "input",
             () => {
+
                 currentSearch =
-                    searchInput.value || "";
+                    input.value || "";
 
                 refreshGraphView();
             }
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * TYPE FILTER
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       TYPE FILTER
+       ============================================================ */
 
     function setupTypeFilter() {
-        const select = getTypeSelect();
+
+        const select =
+            getTypeSelect();
+
 
         if (!select) {
             return;
         }
 
+
         select.addEventListener(
             "change",
             () => {
+
                 currentType =
-                    select.value || "all";
+                    select.value ||
+                    "all";
 
                 refreshGraphView();
             }
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * REFRESH BUTTON
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       REFRESH BUTTON
+       ============================================================ */
 
     function setupRefreshButton() {
-        const button = getRefreshButton();
+
+        const button =
+            getRefreshButton();
+
 
         if (!button) {
             return;
         }
 
+
         button.addEventListener(
             "click",
             async (event) => {
+
                 event.preventDefault();
 
-                button.disabled = true;
+                button.disabled =
+                    true;
 
                 try {
+
                     await loadAndRender();
+
                 } finally {
-                    button.disabled = false;
+
+                    button.disabled =
+                        false;
                 }
             }
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * RESET BUTTON
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       RESET BUTTON
+       ============================================================ */
 
     function setupResetButton() {
-        const button = getResetButton();
+
+        const button =
+            getResetButton();
+
 
         if (!button) {
             return;
         }
 
+
         button.addEventListener(
             "click",
             (event) => {
+
                 event.preventDefault();
 
                 currentSearch = "";
                 currentType = "all";
 
-                const search = getSearchInput();
+
+                const search =
+                    getSearchInput();
 
                 if (search) {
                     search.value = "";
                 }
 
-                const type = getTypeSelect();
 
-                if (type) {
-                    type.value = "all";
+                const select =
+                    getTypeSelect();
+
+                if (select) {
+                    select.value = "all";
                 }
 
-                renderGraph(
-                    getGraphContainer()
-                );
+
+                refreshGraphView();
             }
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * RENDER FILTERED GRAPH
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       REFRESH GRAPH VIEW
+       ============================================================ */
 
     function refreshGraphView() {
-        const container = getGraphContainer();
+
+        const container =
+            getGraphContainer();
+
 
         if (!container) {
-            console.warn(
-                "Knowledge Graph container not found."
-            );
-
             return;
         }
 
-        renderGraph(container);
+
+        renderGraph(
+            container
+        );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * LEGEND
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       LEGEND
+       ============================================================ */
 
     function createLegend(container) {
+
         /*
-         * Do not create a second legend if HTML already has one.
+         * HTML already contains the legend.
+         * Do not create another one.
          */
+
+        if (
+            container.parentElement &&
+            container.parentElement
+                .querySelector(
+                    ".kg-legend"
+                )
+        ) {
+            return;
+        }
+
 
         if (
             container.querySelector(
@@ -1890,20 +3385,48 @@
             return;
         }
 
-        const legend = document.createElement("div");
+
+        const legend =
+            document.createElement(
+                "div"
+            );
+
 
         legend.className =
             "fg-graph-legend";
 
+
         const items = [
-            ["Transaction", "#22d3ee"],
-            ["Account", "#818cf8"],
-            ["Merchant", "#a78bfa"],
-            ["Device", "#22c55e"],
-            ["Card", "#f59e0b"],
-            ["Fraud Alert", "#ef4444"],
-            ["User", "#38bdf8"]
+            [
+                "Transaction",
+                "#22d3ee"
+            ],
+            [
+                "Account",
+                "#818cf8"
+            ],
+            [
+                "Merchant",
+                "#a78bfa"
+            ],
+            [
+                "Device",
+                "#22c55e"
+            ],
+            [
+                "Card",
+                "#f59e0b"
+            ],
+            [
+                "Fraud Alert",
+                "#ef4444"
+            ],
+            [
+                "User",
+                "#38bdf8"
+            ]
         ];
+
 
         legend.innerHTML = `
             <div style="
@@ -1912,152 +3435,191 @@
                 gap:18px;
                 flex-wrap:wrap;
                 padding:12px 18px;
-                background:rgba(3,9,22,.88);
-                border-top:1px solid rgba(39,57,84,.75);
+                background:#030916;
+                border-top:
+                    1px solid
+                    rgba(39,57,84,.75);
                 color:#8290a6;
                 font-size:11px;
-                letter-spacing:.02em;
             ">
+
                 <span style="
                     color:#6f7f98;
                     font-size:10px;
                     font-weight:700;
                     text-transform:uppercase;
                     letter-spacing:.12em;
-                    margin-right:4px;
                 ">
                     Entity Types
                 </span>
 
-                ${items.map(([name, color]) => `
-                    <span style="
-                        display:inline-flex;
-                        align-items:center;
-                        gap:7px;
-                        white-space:nowrap;
-                    ">
-                        <span style="
-                            width:8px;
-                            height:8px;
-                            border-radius:50%;
-                            background:${color};
-                            box-shadow:0 0 8px ${color};
-                        "></span>
-                        ${escapeHTML(name)}
-                    </span>
-                `).join("")}
+                ${items
+                    .map(
+                        ([name, color]) => `
+                            <span style="
+                                display:inline-flex;
+                                align-items:center;
+                                gap:7px;
+                            ">
+                                <span style="
+                                    width:8px;
+                                    height:8px;
+                                    border-radius:50%;
+                                    background:${color};
+                                    box-shadow:
+                                        0 0 8px ${color};
+                                "></span>
+
+                                ${escapeHTML(name)}
+                            </span>
+                        `
+                    )
+                    .join("")}
+
             </div>
         `;
 
-        container.appendChild(legend);
+
+        container.appendChild(
+            legend
+        );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * RESPONSIVE
-     * ------------------------------------------------------------
-     */
 
-    let resizeTimer = null;
+    /* ============================================================
+       RESIZE
+       ============================================================ */
 
     function setupResize() {
+
         window.addEventListener(
             "resize",
             () => {
-                clearTimeout(resizeTimer);
 
-                resizeTimer = setTimeout(() => {
-                    const container =
-                        getGraphContainer();
+                clearTimeout(
+                    resizeTimer
+                );
 
-                    if (!container || !svg) {
-                        return;
-                    }
 
-                    calculateGraphSize(
-                        container
-                    );
+                resizeTimer =
+                    setTimeout(
+                        () => {
 
-                    svg
-                        .attr(
-                            "height",
-                            height
-                        )
-                        .attr(
-                            "viewBox",
-                            `0 0 ${width} ${height}`
-                        );
+                            const container =
+                                getGraphContainer();
 
-                    svg
-                        .select(
-                            ".fg-graph-background"
-                        )
-                        .attr(
-                            "width",
-                            width
-                        )
-                        .attr(
-                            "height",
-                            height
-                        );
 
-                    svg
-                        .select(
-                            ".fg-graph-grid"
-                        )
-                        .attr(
-                            "width",
-                            width
-                        )
-                        .attr(
-                            "height",
-                            height
-                        );
+                            if (
+                                !container ||
+                                !svg
+                            ) {
+                                return;
+                            }
 
-                    if (simulation) {
-                        simulation
-                            .force(
-                                "center",
-                                window.d3.forceCenter(
-                                    width / 2,
-                                    height / 2
+
+                            calculateGraphSize(
+                                container
+                            );
+
+
+                            svg
+                                .attr(
+                                    "height",
+                                    height
                                 )
-                            )
-                            .force(
-                                "x",
-                                window.d3
-                                    .forceX(
-                                        width / 2
+                                .attr(
+                                    "viewBox",
+                                    `0 0 ${width} ${height}`
+                                );
+
+
+                            svg
+                                .select(
+                                    ".fg-graph-background"
+                                )
+                                .attr(
+                                    "width",
+                                    width
+                                )
+                                .attr(
+                                    "height",
+                                    height
+                                );
+
+
+                            svg
+                                .select(
+                                    ".fg-graph-grid"
+                                )
+                                .attr(
+                                    "width",
+                                    width
+                                )
+                                .attr(
+                                    "height",
+                                    height
+                                );
+
+
+                            if (
+                                simulation
+                            ) {
+
+                                simulation
+                                    .force(
+                                        "center",
+                                        window.d3
+                                            .forceCenter(
+                                                width / 2,
+                                                height / 2
+                                            )
                                     )
-                                    .strength(0.045)
-                            )
-                            .force(
-                                "y",
-                                window.d3
-                                    .forceY(
-                                        height / 2
+                                    .force(
+                                        "x",
+                                        window.d3
+                                            .forceX(
+                                                width / 2
+                                            )
+                                            .strength(
+                                                0.035
+                                            )
                                     )
-                                    .strength(0.045)
-                            )
-                            .alpha(0.5)
-                            .restart();
-                    }
-                }, 180);
+                                    .force(
+                                        "y",
+                                        window.d3
+                                            .forceY(
+                                                height / 2
+                                            )
+                                            .strength(
+                                                0.035
+                                            )
+                                    )
+                                    .alpha(
+                                        0.35
+                                    )
+                                    .restart();
+                            }
+
+                        },
+                        180
+                    );
             }
         );
     }
 
-    /*
-     * ------------------------------------------------------------
-     * LOAD + RENDER
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       LOAD + RENDER
+       ============================================================ */
 
     async function loadAndRender() {
+
         const container =
             getGraphContainer();
 
+
         if (!container) {
+
             console.error(
                 "KNOWLEDGE GRAPH: Graph container not found."
             );
@@ -2065,35 +3627,49 @@
             return;
         }
 
-        /*
-         * Remove old loading UI.
-         */
 
         removeInitializingOverlay();
 
-        /*
-         * Make sure graph host does not collapse.
-         */
 
         container.classList.add(
             "fg-graph-host"
         );
 
-        /*
-         * Fetch actual Neo4j data.
-         */
 
         const data =
             await fetchGraph();
+        console.log("========== GRAPH DEBUG ==========");
+console.log("RAW DATA:", data);
+console.log("TOTAL NODES:", data?.nodes?.length);
+console.log("TOTAL RELATIONSHIPS:", data?.relationships?.length);
 
-        /*
-         * If no data, show clean message.
-         */
+console.table(
+    (data?.nodes || []).map(n => ({
+        id: n.id,
+        type: n.type,
+        label: n.label,
+        transaction_id: n.properties?.transaction_id
+    }))
+);
+
+console.log("TRANSACTIONS:",
+    (data?.nodes || []).filter(n =>
+        String(
+            n.type ||
+            n.label ||
+            n.labels?.[0] ||
+            ""
+        ).toLowerCase().includes("transaction")
+    )
+);
+
+console.log("==============================");
 
         if (
             !data.nodes ||
             data.nodes.length === 0
         ) {
+
             showGraphMessage(
                 "No Knowledge Graph data",
                 "Neo4j returned no nodes."
@@ -2102,98 +3678,136 @@
             return;
         }
 
-        /*
-         * Render.
-         */
-
-        prepareData(data);
-
-        renderGraph(container);
-
-        createLegend(container);
 
         /*
-         * Remove loading UI one more time because
-         * some dashboard templates recreate it.
+         * IMPORTANT FIX:
+         *
+         * Previously prepareData(data) was called
+         * but its returned data was discarded.
+         *
+         * Now currentData receives the prepared data.
          */
+
+        currentData = prepareData(data);
+
+
+        console.log(
+            `KNOWLEDGE GRAPH: Prepared ${currentData.nodes.length} nodes and ${currentData.relationships.length} relationships`
+        );
+
+
+        renderGraph(
+            container
+        );
+
+
+        createLegend(
+            container
+        );
+
 
         removeInitializingOverlay();
     }
 
-    /*
-     * ------------------------------------------------------------
-     * INITIALIZE
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       INITIALIZE
+       ============================================================ */
 
     async function initializeKnowledgeGraph() {
+
         console.log(
             "KNOWLEDGE GRAPH: Initializing..."
         );
 
+
         removeInitializingOverlay();
 
+
         try {
+
             await loadD3();
 
             removeInitializingOverlay();
 
+
             setupSearch();
+
             setupTypeFilter();
+
             setupRefreshButton();
+
             setupResetButton();
+
             setupResize();
+
 
             await loadAndRender();
 
+
             removeInitializingOverlay();
+
 
             console.log(
                 "KNOWLEDGE GRAPH: Ready."
             );
+
         } catch (error) {
+
             console.error(
                 "KNOWLEDGE GRAPH INITIALIZATION ERROR:",
                 error
             );
 
+
             showGraphMessage(
                 "Knowledge Graph failed to initialize",
                 error.message ||
-                    "Please check the browser console."
+                "Please check the browser console."
             );
         }
     }
 
-    /*
-     * ------------------------------------------------------------
-     * PUBLIC API
-     * ------------------------------------------------------------
-     */
+
+    /* ============================================================
+       PUBLIC API
+       ============================================================ */
 
     window.FinGuardKnowledgeGraph = {
-        reload: loadAndRender,
 
-        reset: resetGraphView,
+        reload:
+            loadAndRender,
 
-        refresh: refreshGraphView,
+        reset:
+            resetGraphView,
 
-        getData: () => currentData
+        refresh:
+            refreshGraphView,
+
+        getData:
+            () => currentData
     };
 
-    /*
-     * ------------------------------------------------------------
-     * START
-     * ------------------------------------------------------------
-     */
 
-    if (document.readyState === "loading") {
+    /* ============================================================
+       START
+       ============================================================ */
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
         document.addEventListener(
             "DOMContentLoaded",
             initializeKnowledgeGraph,
-            { once: true }
+            {
+                once: true
+            }
         );
+
     } else {
+
         initializeKnowledgeGraph();
     }
 

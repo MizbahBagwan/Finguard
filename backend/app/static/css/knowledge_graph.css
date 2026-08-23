@@ -1,1572 +1,1802 @@
-/* =========================================================
-   FINGUARD AI
-   PREMIUM KNOWLEDGE GRAPH
-   Dashboard Theme Matched
-========================================================= */
+/* ============================================================
+   FINGUARD AI — KNOWLEDGE GRAPH
+   CLEAN PREMIUM FINTECH UI
+   ============================================================ */
 
-:root {
-    --kg-bg: #020617;
-    --kg-surface: #0b1120;
-    --kg-surface-2: #0f172a;
 
-    --kg-primary: #2563eb;
-    --kg-cyan: #00d4ff;
+/* ============================================================
+   GLOBAL
+   ============================================================ */
 
-    --kg-success: #22c55e;
-    --kg-warning: #f59e0b;
-    --kg-danger: #ef4444;
-
-    --kg-text: #f8fafc;
-    --kg-text2: #94a3b8;
-
-    --kg-border: rgba(0, 212, 255, 0.18);
-
-    --kg-radius: 24px;
+.kg-page,
+.kg-page * {
+    box-sizing: border-box;
 }
-
-
-/* =========================================================
-   PAGE
-========================================================= */
 
 .kg-page {
-    position: relative;
     width: 100%;
-    min-height: 100%;
-    color: var(--kg-text);
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #172033;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+.kg-page button,
+.kg-page input,
+.kg-page select {
+    font-family: inherit;
 }
 
 
-/* Background glow */
-
-.kg-page::before {
-    content: "";
-    position: fixed;
-
-    width: 500px;
-    height: 500px;
-
-    left: 10%;
-    top: 10%;
-
-    background: rgba(37, 99, 235, 0.10);
-
-    filter: blur(120px);
-
-    pointer-events: none;
-
-    z-index: -1;
-}
-
-.kg-page::after {
-    content: "";
-
-    position: fixed;
-
-    width: 450px;
-    height: 450px;
-
-    right: 5%;
-    bottom: 5%;
-
-    background: rgba(0, 212, 255, 0.08);
-
-    filter: blur(120px);
-
-    pointer-events: none;
-
-    z-index: -1;
-}
-
-
-/* =========================================================
+/* ============================================================
    HERO
-========================================================= */
+   EXACT SOLID NAVY
+   ============================================================ */
 
 .kg-hero {
-
     position: relative;
+    min-height: 330px;
 
     display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+    align-items: center;
+    gap: 30px;
 
-    grid-template-columns: 1.5fr 1fr;
+    padding: 42px 48px;
 
-    min-height: 300px;
+    background: #071a33 !important;
+    background-image: none !important;
 
-    margin-bottom: 24px;
+    border: 1px solid #071a33;
+    border-radius: 24px;
 
     overflow: hidden;
 
-    border-radius: 26px;
-
-    background:
-        radial-gradient(
-            circle at 80% 50%,
-            rgba(0, 212, 255, 0.12),
-            transparent 35%
-        ),
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, 0.94),
-            rgba(2, 8, 23, 0.98)
-        );
-
-    border: 1px solid rgba(0, 212, 255, 0.22);
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.30),
-        inset 0 1px rgba(255, 255, 255, 0.04);
-
+    box-shadow: 0 10px 28px rgba(5, 20, 45, 0.15);
 }
 
 
-/* grid */
+/* Absolutely NO overlay / gradient */
 
-.kg-hero::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(0, 212, 255, 0.035) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0, 212, 255, 0.035) 1px,
-            transparent 1px
-        );
-
-    background-size: 45px 45px;
-
-    mask-image:
-        linear-gradient(
-            to right,
-            transparent,
-            black,
-            transparent
-        );
-
-    pointer-events: none;
+.kg-hero::before,
+.kg-hero::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    background-image: none !important;
 }
 
+
+/* ============================================================
+   HERO CONTENT
+   ============================================================ */
 
 .kg-hero-content {
-
     position: relative;
-
     z-index: 2;
-
-    padding: 42px;
+    max-width: 760px;
 }
-
 
 .kg-eyebrow {
-
-    display: flex;
-
+    display: inline-flex;
     align-items: center;
+    gap: 9px;
 
-    gap: 10px;
-
-    color: var(--kg-cyan);
+    margin-bottom: 14px;
 
     font-size: 11px;
-
     font-weight: 800;
+    letter-spacing: 1.5px;
 
-    letter-spacing: 1.6px;
-
-    margin-bottom: 18px;
+    color: #ffffff;
 }
 
-
 .kg-live-dot {
-
     width: 8px;
     height: 8px;
 
     border-radius: 50%;
 
-    background: var(--kg-success);
+    background: #ffffff;
 
-    box-shadow:
-        0 0 0 4px rgba(34, 197, 94, 0.10),
-        0 0 15px rgba(34, 197, 94, 0.8);
-
-    animation: kgPulse 1.5s infinite;
+    box-shadow: none;
 }
-
-
-@keyframes kgPulse {
-
-    50% {
-        transform: scale(1.35);
-        opacity: 0.65;
-    }
-
-}
-
 
 .kg-hero h1 {
+    margin: 0;
 
-    font-size: clamp(36px, 4vw, 52px);
+    font-size: clamp(38px, 4vw, 58px);
+    line-height: 1.05;
 
-    font-weight: 850;
+    font-weight: 800;
+    letter-spacing: -1.8px;
 
-    line-height: 1.1;
-
-    margin-bottom: 18px;
-
-    letter-spacing: -1.5px;
+    color: #ffffff;
 }
-
 
 .kg-hero h1 span {
-
-    background:
-        linear-gradient(
-            90deg,
-            #4f8cff,
-            #00d4ff
-        );
-
-    -webkit-background-clip: text;
-
-    -webkit-text-fill-color: transparent;
-
-    filter:
-        drop-shadow(
-            0 0 15px rgba(0, 212, 255, 0.30)
-        );
+    color: #ffffff;
 }
-
 
 .kg-hero p {
+    max-width: 680px;
 
-    max-width: 650px;
-
-    color: var(--kg-text2);
+    margin: 18px 0 22px;
 
     font-size: 15px;
+    line-height: 1.75;
 
-    line-height: 1.8;
-
-    margin-bottom: 22px;
+    color: #d7e2ef;
 }
 
+
+/* ============================================================
+   NETWORK STATUS
+   ============================================================ */
 
 .kg-network-status {
-
     display: inline-flex;
-
     align-items: center;
-
+    flex-wrap: wrap;
     gap: 10px;
 
-    padding: 10px 16px;
+    padding: 11px 16px;
 
-    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
 
-    background: rgba(34, 197, 94, 0.06);
+    background: rgba(255, 255, 255, 0.06);
 
-    border: 1px solid rgba(34, 197, 94, 0.18);
+    font-size: 11px;
+    letter-spacing: 0.4px;
 
-    color: var(--kg-text2);
-
-    font-size: 12px;
+    color: #ffffff;
 }
 
+.kg-network-status .status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow: none;
+}
 
 .kg-network-status strong {
+    color: #ffffff;
+    font-weight: 800;
+}
 
-    color: var(--kg-success);
+.kg-network-status > span:last-child {
+    color: #c7d6e8;
 }
 
 
-.status-dot {
+/* ============================================================
+   HERO VISUAL
+   ============================================================ */
 
+.kg-hero-visual {
+    position: relative;
+
+    width: 280px;
+    height: 230px;
+
+    margin: 0 auto;
+}
+
+.kg-orbit {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    border-radius: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.orbit-one {
+    width: 190px;
+    height: 190px;
+}
+
+.orbit-two {
+    width: 130px;
+    height: 130px;
+}
+
+
+/* ============================================================
+   CORE
+   ============================================================ */
+
+.kg-core {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 86px;
+    height: 86px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: translate(-50%, -50%);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.kg-core i {
+    position: relative;
+    z-index: 2;
+
+    font-size: 29px;
+
+    color: #ffffff;
+}
+
+.kg-core-ring {
+    position: absolute;
+
+    inset: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    border-radius: 50%;
+}
+
+
+/* ============================================================
+   GRAPH NODES
+   ============================================================ */
+
+.kg-node {
+    position: absolute;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.08);
+}
+
+.node-one {
+    top: 22px;
+    left: 48%;
+}
+
+.node-two {
+    right: 20px;
+    top: 48%;
+}
+
+.node-three {
+    bottom: 22px;
+    left: 44%;
+}
+
+.node-four {
+    left: 18px;
+    top: 45%;
+}
+
+
+/* ============================================================
+   CONTROL BAR
+   ============================================================ */
+
+.kg-controls {
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) 230px auto;
+    align-items: end;
+    gap: 18px;
+
+    margin-top: 22px;
+    padding: 20px 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e9f0;
+    border-radius: 18px;
+
+    box-shadow: 0 6px 20px rgba(20, 35, 60, 0.06);
+}
+
+
+/* ============================================================
+   CONTROL LABELS
+   ============================================================ */
+
+.kg-search-wrapper label,
+.kg-filter-wrapper label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+
+    color: #718096;
+}
+
+.kg-search-wrapper label i,
+.kg-filter-wrapper label i {
+    color: #234d7d;
+}
+
+
+/* ============================================================
+   SEARCH BOX
+   ============================================================ */
+
+.kg-search-box {
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 0 14px;
+
+    background: #f8fafc;
+
+    border: 1px solid #dfe5ed;
+    border-radius: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.kg-search-box:focus-within {
+    background: #ffffff;
+
+    border-color: #315f91;
+
+    box-shadow: 0 0 0 3px rgba(49, 95, 145, 0.09);
+}
+
+.kg-search-box > i {
+    color: #7b8798;
+    font-size: 14px;
+}
+
+.kg-search-box input {
+    min-width: 0;
+    flex: 1;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    font-size: 13px;
+    color: #172033;
+}
+
+.kg-search-box input::placeholder {
+    color: #9aa6b5;
+}
+
+.kg-search-box kbd {
+    padding: 4px 7px;
+
+    border: 1px solid #d9e0e8;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    color: #7b8798;
+}
+
+
+/* ============================================================
+   NODE TYPE SELECT
+   ============================================================ */
+
+.kg-filter-wrapper select {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 13px;
+
+    appearance: none;
+
+    background: #f8fafc;
+
+    border: 1px solid #dfe5ed;
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 13px;
+    color: #253247;
+
+    cursor: pointer;
+}
+
+.kg-filter-wrapper select:focus {
+    background: #ffffff;
+
+    border-color: #315f91;
+
+    box-shadow: 0 0 0 3px rgba(49, 95, 145, 0.09);
+}
+
+
+/* ============================================================
+   REFRESH BUTTON
+   ============================================================ */
+
+.kg-refresh-btn {
+    height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 0 20px;
+
+    border: 1px solid #071a33;
+    border-radius: 12px;
+
+    background: #071a33;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.kg-refresh-btn:hover {
+    background: #0d2a4d;
+
+    box-shadow: 0 7px 18px rgba(7, 26, 51, 0.20);
+
+    transform: translateY(-1px);
+}
+
+.kg-refresh-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   GRAPH CARD
+   ============================================================ */
+
+.kg-graph-card {
+    margin-top: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e3e8ef;
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 8px 24px rgba(20, 35, 60, 0.06);
+}
+
+
+/* ============================================================
+   GRAPH CARD HEADER
+   ============================================================ */
+
+.kg-card-header {
+    min-height: 92px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 22px 26px;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+.kg-section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+
+    color: #6f7d90;
+}
+
+.kg-section-label > span {
     width: 7px;
     height: 7px;
 
     border-radius: 50%;
 
-    background: var(--kg-success);
-
-    box-shadow:
-        0 0 10px var(--kg-success);
+    background: #071a33;
 }
-
-
-/* =========================================================
-   HERO VISUAL
-========================================================= */
-
-.kg-hero-visual {
-
-    position: relative;
-
-    min-height: 300px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-
-.kg-core {
-
-    position: relative;
-
-    width: 110px;
-    height: 110px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0, 212, 255, 0.25),
-            rgba(37, 99, 235, 0.08) 50%,
-            transparent 70%
-        );
-
-    border: 1px solid rgba(0, 212, 255, 0.45);
-
-    box-shadow:
-        0 0 50px rgba(0, 212, 255, 0.25);
-}
-
-
-.kg-core i {
-
-    position: relative;
-
-    z-index: 3;
-
-    font-size: 38px;
-
-    color: var(--kg-cyan);
-
-    filter:
-        drop-shadow(
-            0 0 15px var(--kg-cyan)
-        );
-}
-
-
-.kg-core-ring {
-
-    position: absolute;
-
-    inset: -15px;
-
-    border-radius: 50%;
-
-    border: 1px dashed rgba(0, 212, 255, 0.40);
-
-    animation: kgRotate 12s linear infinite;
-}
-
-
-@keyframes kgRotate {
-
-    to {
-        transform: rotate(360deg);
-    }
-
-}
-
-
-.kg-orbit {
-
-    position: absolute;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(0, 212, 255, 0.18);
-}
-
-
-.orbit-one {
-
-    width: 220px;
-    height: 100px;
-
-    transform: rotate(25deg);
-}
-
-
-.orbit-two {
-
-    width: 270px;
-    height: 130px;
-
-    transform: rotate(-30deg);
-
-    border-color: rgba(37, 99, 235, 0.20);
-}
-
-
-.kg-node {
-
-    position: absolute;
-
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-
-    background: var(--kg-cyan);
-
-    box-shadow:
-        0 0 15px var(--kg-cyan);
-
-    animation: kgFloat 3s ease-in-out infinite;
-}
-
-
-.node-one {
-    top: 20%;
-    right: 24%;
-}
-
-.node-two {
-    top: 67%;
-    right: 18%;
-    animation-delay: .8s;
-}
-
-.node-three {
-    top: 25%;
-    left: 22%;
-    animation-delay: 1.3s;
-}
-
-.node-four {
-    bottom: 17%;
-    left: 30%;
-    animation-delay: 1.8s;
-}
-
-
-@keyframes kgFloat {
-
-    50% {
-        transform: translateY(-10px);
-    }
-
-}
-
-
-/* =========================================================
-   CONTROL BAR
-========================================================= */
-
-.kg-controls {
-
-    display: grid;
-
-    grid-template-columns: 1fr 230px auto;
-
-    gap: 18px;
-
-    padding: 20px;
-
-    margin-bottom: 24px;
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, 0.90),
-            rgba(2, 8, 23, 0.96)
-        );
-
-    border: 1px solid rgba(255, 255, 255, 0.07);
-
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.20);
-}
-
-
-.kg-search-wrapper,
-.kg-filter-wrapper {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 8px;
-}
-
-
-.kg-search-wrapper label,
-.kg-filter-wrapper label {
-
-    color: var(--kg-text2);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.2px;
-}
-
-
-.kg-search-wrapper label i,
-.kg-filter-wrapper label i {
-
-    color: var(--kg-cyan);
-
-    margin-right: 5px;
-}
-
-
-.kg-search-box {
-
-    height: 48px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 0 15px;
-
-    border-radius: 14px;
-
-    background: #070f1f;
-
-    border: 1px solid rgba(0, 212, 255, 0.12);
-
-    transition: .3s;
-}
-
-
-.kg-search-box:focus-within {
-
-    border-color: rgba(0, 212, 255, 0.55);
-
-    box-shadow:
-        0 0 25px rgba(0, 212, 255, 0.08);
-}
-
-
-.kg-search-box > i {
-
-    color: var(--kg-cyan);
-}
-
-
-.kg-search-box input {
-
-    flex: 1;
-
-    min-width: 0;
-
-    border: 0;
-
-    outline: 0;
-
-    background: transparent;
-
-    color: white;
-
-    font-size: 13px;
-}
-
-
-.kg-search-box input::placeholder {
-
-    color: #64748b;
-}
-
-
-.kg-search-box kbd {
-
-    padding: 5px 8px;
-
-    border-radius: 6px;
-
-    color: #64748b;
-
-    background: #111827;
-
-    border: 1px solid rgba(255, 255, 255, 0.06);
-
-    font-size: 9px;
-}
-
-
-.kg-filter-wrapper select {
-
-    height: 48px;
-
-    padding: 0 14px;
-
-    border-radius: 14px;
-
-    outline: none;
-
-    background: #070f1f;
-
-    color: white;
-
-    border: 1px solid rgba(0, 212, 255, 0.12);
-
-    cursor: pointer;
-}
-
-
-.kg-refresh-btn {
-
-    align-self: end;
-
-    height: 48px;
-
-    padding: 0 20px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-
-    border: 0;
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #00d4ff
-        );
-
-    color: white;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 8px 25px rgba(0, 212, 255, 0.20);
-
-    transition: .3s;
-}
-
-
-.kg-refresh-btn:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 12px 35px rgba(0, 212, 255, 0.35);
-}
-
-
-.kg-refresh-btn.loading i {
-
-    animation: kgSpin .8s linear infinite;
-}
-
-
-@keyframes kgSpin {
-
-    to {
-        transform: rotate(360deg);
-    }
-
-}
-
-
-/* =========================================================
-   GRAPH CARD
-========================================================= */
-
-.kg-graph-card {
-
-    position: relative;
-
-    overflow: hidden;
-
-    border-radius: 26px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15, 23, 42, 0.92),
-            rgba(2, 8, 23, 0.98)
-        );
-
-    border: 1px solid rgba(0, 212, 255, 0.18);
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.30);
-
-}
-
-
-.kg-card-header {
-
-    padding: 26px 28px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 20px;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.06);
-}
-
-
-.kg-section-label {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    color: var(--kg-cyan);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.4px;
-
-    margin-bottom: 8px;
-}
-
-
-.kg-section-label span {
-
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: var(--kg-cyan);
-
-    box-shadow:
-        0 0 10px var(--kg-cyan);
-}
-
 
 .kg-card-header h2 {
+    margin: 0;
 
-    font-size: 22px;
+    font-size: 21px;
+    font-weight: 800;
 
-    margin-bottom: 6px;
+    color: #172033;
 }
-
 
 .kg-card-header p {
-
-    color: var(--kg-text2);
+    margin: 6px 0 0;
 
     font-size: 12px;
+
+    color: #7b8798;
 }
 
 
+/* ============================================================
+   LIVE NETWORK STATUS
+   ============================================================ */
+
 .kg-live-status {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
     padding: 10px 14px;
 
-    border-radius: 14px;
+    background: #f7fafc;
 
-    background: rgba(34, 197, 94, 0.05);
-
-    border: 1px solid rgba(34, 197, 94, 0.16);
+    border: 1px solid #e5eaf0;
+    border-radius: 11px;
 }
 
-
 .kg-live-status > span {
-
     width: 8px;
     height: 8px;
 
     border-radius: 50%;
 
-    background: var(--kg-success);
+    background: #23a56a;
 
-    box-shadow:
-        0 0 12px var(--kg-success);
+    box-shadow: 0 0 0 4px rgba(35, 165, 106, 0.10);
 }
-
 
 .kg-live-status strong {
-
     display: block;
 
-    color: var(--kg-success);
-
     font-size: 10px;
-}
+    font-weight: 800;
+    letter-spacing: 0.6px;
 
+    color: #263449;
+}
 
 .kg-live-status small {
+    display: block;
 
-    color: #64748b;
+    margin-top: 3px;
 
-    font-size: 9px;
+    font-size: 10px;
+
+    color: #8a95a4;
 }
 
 
-/* =========================================================
-   GRAPH
-========================================================= */
+/* ============================================================
+   GRAPH CANVAS AREA
+   ============================================================ */
 
 .knowledge-graph {
-
     position: relative;
 
     width: 100%;
-
-    height: 580px;
+    height: 560px;
 
     overflow: hidden;
 
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0, 212, 255, 0.06),
-            transparent 35%
-        ),
-        #020817;
+    background: #f9fbfd;
+
+    border-bottom: 1px solid #edf0f4;
 }
-
-
-.knowledge-graph::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(0, 212, 255, 0.035) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0, 212, 255, 0.035) 1px,
-            transparent 1px
-        );
-
-    background-size: 40px 40px;
-
-    mask-image:
-        radial-gradient(
-            circle at center,
-            black,
-            transparent 80%
-        );
-
-    pointer-events: none;
-}
-
 
 #graphCanvas {
-
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-
-    height: 100%;
-
     display: block;
 
-    cursor: grab;
+    width: 100%;
+    height: 100%;
 }
 
 
-#graphCanvas:active {
-
-    cursor: grabbing;
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
+/* ============================================================
+   GRAPH LOADING
+   ============================================================ */
 
 .kg-loading {
-
     position: absolute;
 
-    left: 50%;
     top: 50%;
-
-    transform: translate(-50%, -50%);
+    left: 50%;
 
     z-index: 10;
 
     display: flex;
-
     align-items: center;
-
     flex-direction: column;
 
-    gap: 10px;
+    transform: translate(-50%, -50%);
 
     text-align: center;
 }
 
-
-.kg-loading strong {
-
-    font-size: 14px;
-}
-
-
-.kg-loading small {
-
-    color: #64748b;
-
-    font-size: 11px;
-}
-
-
 .kg-loading-animation {
-
     display: flex;
+    gap: 6px;
 
-    gap: 7px;
-
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
-
 
 .kg-loading-animation span {
-
     width: 8px;
     height: 8px;
 
     border-radius: 50%;
 
-    background: var(--kg-cyan);
+    background: #071a33;
 
-    box-shadow:
-        0 0 15px var(--kg-cyan);
-
-    animation:
-        kgLoading 1s infinite;
+    animation: kgPulse 1.2s infinite ease-in-out;
 }
-
 
 .kg-loading-animation span:nth-child(2) {
-
-    animation-delay: .15s;
+    animation-delay: 0.15s;
 }
-
 
 .kg-loading-animation span:nth-child(3) {
-
-    animation-delay: .30s;
+    animation-delay: 0.3s;
 }
 
+.kg-loading strong {
+    font-size: 14px;
+    color: #27354a;
+}
 
-@keyframes kgLoading {
+.kg-loading small {
+    margin-top: 5px;
 
-    50% {
-        transform: translateY(-9px);
-        opacity: .4;
+    font-size: 11px;
+
+    color: #8a96a5;
+}
+
+@keyframes kgPulse {
+
+    0%,
+    80%,
+    100% {
+        opacity: 0.35;
+        transform: scale(0.8);
     }
 
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 
-/* =========================================================
-   EMPTY
-========================================================= */
+/* ============================================================
+   EMPTY GRAPH
+   ============================================================ */
 
 .kg-empty {
-
     position: absolute;
 
-    left: 50%;
     top: 50%;
+    left: 50%;
 
     transform: translate(-50%, -50%);
 
     display: flex;
-
-    flex-direction: column;
-
     align-items: center;
-
-    gap: 8px;
-
-    color: #64748b;
+    flex-direction: column;
 
     text-align: center;
 }
 
+.kg-empty > i {
+    margin-bottom: 14px;
 
-.kg-empty i {
+    font-size: 36px;
 
-    color: var(--kg-cyan);
-
-    font-size: 35px;
-
-    margin-bottom: 5px;
+    color: #a5afbd;
 }
-
 
 .kg-empty strong {
+    font-size: 15px;
 
-    color: white;
+    color: #344256;
+}
+
+.kg-empty span {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: #8b96a5;
 }
 
 
-/* =========================================================
+/* ============================================================
    LEGEND
-========================================================= */
+   ============================================================ */
 
 .kg-legend {
-
     display: flex;
-
     align-items: center;
+    gap: 22px;
 
-    gap: 25px;
+    padding: 16px 24px;
 
-    padding: 18px 25px;
-
-    border-top:
-        1px solid rgba(255, 255, 255, 0.06);
+    background: #ffffff;
 }
-
 
 .kg-legend-title {
-
-    color: #64748b;
-
-    font-size: 10px;
-
+    font-size: 9px;
     font-weight: 800;
+    letter-spacing: 1.2px;
 
-    letter-spacing: 1px;
+    color: #7b8798;
 }
-
 
 .kg-legend-items {
-
     display: flex;
-
+    align-items: center;
     flex-wrap: wrap;
+    gap: 16px;
+}
 
-    gap: 18px;
+.kg-legend-items span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 11px;
+    color: #657286;
+}
+
+.kg-dot {
+    width: 8px;
+    height: 8px;
+
+    display: inline-block;
+
+    border-radius: 50%;
 }
 
 
-.kg-legend-items span {
+/* Entity colors */
+
+.kg-dot.transaction {
+    background: #3478c7;
+}
+
+.kg-dot.account {
+    background: #7b61c9;
+}
+
+.kg-dot.merchant {
+    background: #e09a36;
+}
+
+.kg-dot.device {
+    background: #2ca77b;
+}
+
+.kg-dot.card {
+    background: #4e8bc9;
+}
+
+.kg-dot.fraud {
+    background: #d9534f;
+}
+
+
+/* ============================================================
+   NODE DETAILS PANEL
+   ============================================================ */
+
+.kg-details {
+    position: fixed;
+
+    top: 50%;
+    right: 28px;
+
+    z-index: 100;
+
+    width: 360px;
+    max-width: calc(100vw - 40px);
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    transform: translateY(-50%);
+
+    background: #ffffff;
+
+    border: 1px solid #e0e6ee;
+    border-radius: 20px;
+
+    box-shadow: 0 18px 55px rgba(12, 28, 52, 0.18);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease,
+        transform 0.25s ease;
+}
+
+.kg-details.active,
+.kg-details.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ============================================================
+   DETAILS HEADER
+   ============================================================ */
+
+.kg-details-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 20px;
+
+    background: #071a33;
+
+    border-radius: 19px 19px 0 0;
+}
+
+.kg-details-header > div > span {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
+
+    color: #a9c3df;
+}
+
+.kg-details-header h3 {
+    margin: 6px 0 0;
+
+    font-size: 18px;
+
+    color: #ffffff;
+}
+
+.kg-close {
+    width: 34px;
+    height: 34px;
 
     display: flex;
-
     align-items: center;
+    justify-content: center;
 
-    gap: 7px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 9px;
 
-    color: #94a3b8;
+    background: rgba(255,255,255,0.07);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.kg-close:hover {
+    background: rgba(255,255,255,0.14);
+}
+
+
+/* ============================================================
+   DETAILS CONTENT
+   ============================================================ */
+
+.kg-details-content {
+    padding: 20px;
+}
+
+.kg-empty-details {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    padding: 35px 15px;
+
+    text-align: center;
+}
+
+.kg-empty-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    border-radius: 15px;
+
+    background: #f1f5f9;
+
+    color: #071a33;
+
+    font-size: 21px;
+}
+
+.kg-empty-details strong {
+    font-size: 15px;
+
+    color: #263449;
+}
+
+.kg-empty-details p {
+    max-width: 240px;
+
+    margin: 7px 0 0;
+
+    font-size: 12px;
+    line-height: 1.6;
+
+    color: #8994a3;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.kg-footer {
+    min-height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-top: 22px;
+    padding: 14px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e3e8ef;
+    border-radius: 15px;
+
+    box-shadow: 0 5px 18px rgba(20, 35, 60, 0.04);
 
     font-size: 11px;
 }
 
+.kg-footer > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-.kg-dot {
-
+.kg-footer-dot {
     width: 8px;
     height: 8px;
 
     border-radius: 50%;
 
-    display: inline-block;
+    background: #25a56f;
 
-    box-shadow:
-        0 0 8px currentColor;
+    box-shadow: 0 0 0 4px rgba(37, 165, 111, 0.10);
 }
-
-
-.kg-dot.transaction {
-    background: #38bdf8;
-}
-
-.kg-dot.account {
-    background: #818cf8;
-}
-
-.kg-dot.merchant {
-    background: #a78bfa;
-}
-
-.kg-dot.device {
-    background: #22c55e;
-}
-
-.kg-dot.card {
-    background: #f59e0b;
-}
-
-.kg-dot.fraud {
-    background: #ef4444;
-}
-
-
-/* =========================================================
-   DETAILS PANEL
-========================================================= */
-
-.kg-details {
-
-    position: fixed;
-
-    top: 0;
-    right: 0;
-
-    width: 380px;
-
-    max-width: 90vw;
-
-    height: 100vh;
-
-    z-index: 999;
-
-    transform: translateX(105%);
-
-    transition: .4s ease;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0b1120,
-            #020617
-        );
-
-    border-left:
-        1px solid rgba(0, 212, 255, 0.20);
-
-    box-shadow:
-        -20px 0 60px rgba(0, 0, 0, 0.45);
-}
-
-
-.kg-details.open {
-
-    transform: translateX(0);
-}
-
-
-.kg-details-header {
-
-    display: flex;
-
-    align-items: flex-start;
-
-    justify-content: space-between;
-
-    padding: 25px;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.07);
-}
-
-
-.kg-details-header > div > span {
-
-    color: var(--kg-cyan);
-
-    font-size: 9px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.3px;
-}
-
-
-.kg-details-header h3 {
-
-    margin-top: 7px;
-
-    font-size: 21px;
-}
-
-
-.kg-close {
-
-    width: 38px;
-    height: 38px;
-
-    border-radius: 12px;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    background: rgba(255, 255, 255, 0.04);
-
-    color: white;
-
-    cursor: pointer;
-
-    transition: .25s;
-}
-
-
-.kg-close:hover {
-
-    background: rgba(239, 68, 68, 0.12);
-
-    color: #ef4444;
-}
-
-
-.kg-details-content {
-
-    padding: 25px;
-
-    height: calc(100vh - 100px);
-
-    overflow-y: auto;
-}
-
-
-.kg-empty-details {
-
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-}
-
-
-.kg-empty-icon {
-
-    width: 70px;
-    height: 70px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 20px;
-
-    background: rgba(0, 212, 255, 0.06);
-
-    border: 1px solid rgba(0, 212, 255, 0.15);
-
-    color: var(--kg-cyan);
-
-    font-size: 25px;
-
-    margin-bottom: 18px;
-}
-
-
-.kg-empty-details strong {
-
-    font-size: 17px;
-
-    margin-bottom: 8px;
-}
-
-
-.kg-empty-details p {
-
-    max-width: 250px;
-
-    color: #64748b;
-
-    font-size: 12px;
-
-    line-height: 1.6;
-}
-
-
-/* Detail data */
-
-.kg-detail-type {
-
-    display: inline-flex;
-
-    padding: 6px 10px;
-
-    border-radius: 8px;
-
-    color: var(--kg-cyan);
-
-    background: rgba(0, 212, 255, 0.08);
-
-    border: 1px solid rgba(0, 212, 255, 0.15);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    margin-bottom: 12px;
-}
-
-
-.kg-detail-title {
-
-    font-size: 22px;
-
-    margin-bottom: 20px;
-
-    word-break: break-word;
-}
-
-
-.kg-detail-grid {
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 10px;
-}
-
-
-.kg-detail-item {
-
-    padding: 13px;
-
-    border-radius: 12px;
-
-    background: rgba(255, 255, 255, 0.035);
-
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-
-.kg-detail-item span {
-
-    display: block;
-
-    color: #64748b;
-
-    font-size: 9px;
-
-    text-transform: uppercase;
-
-    margin-bottom: 5px;
-}
-
-
-.kg-detail-item strong {
-
-    display: block;
-
-    color: white;
-
-    font-size: 12px;
-
-    word-break: break-word;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.kg-footer {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-top: 18px;
-
-    padding: 14px 18px;
-
-    border-radius: 15px;
-
-    background: rgba(15, 23, 42, 0.65);
-
-    border: 1px solid rgba(255, 255, 255, 0.05);
-
-    color: #64748b;
-
-    font-size: 10px;
-}
-
-
-.kg-footer > div {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-}
-
 
 .kg-footer strong {
+    color: #263449;
+}
 
-    color: #94a3b8;
+.kg-footer > span {
+    color: #8a95a4;
 }
 
 
-.kg-footer-dot {
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
 
+.kg-details::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
+}
 
-    border-radius: 50%;
+.kg-details::-webkit-scrollbar-track {
+    background: transparent;
+}
 
-    background: var(--kg-success);
-
-    box-shadow:
-        0 0 10px var(--kg-success);
+.kg-details::-webkit-scrollbar-thumb {
+    background: #cbd3dd;
+    border-radius: 10px;
 }
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* ============================================================
+   HOVER / INTERACTION
+   ============================================================ */
+
+.kg-graph-card,
+.kg-controls,
+.kg-footer {
+    transition:
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.kg-controls:hover,
+.kg-graph-card:hover {
+    border-color: #d7dee8;
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
 
 @media (max-width: 1100px) {
 
     .kg-hero {
-
         grid-template-columns: 1fr;
+        min-height: auto;
 
+        padding: 36px;
     }
 
     .kg-hero-visual {
-
-        display: none;
-
+        height: 210px;
     }
 
     .kg-controls {
-
-        grid-template-columns: 1fr 200px;
-
+        grid-template-columns: 1fr 1fr;
     }
 
     .kg-refresh-btn {
-
         grid-column: 1 / -1;
-
     }
-
 }
 
 
-@media (max-width: 768px) {
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
 
-    .kg-controls {
+@media (max-width: 700px) {
 
-        grid-template-columns: 1fr;
-
+    .kg-page {
+        padding: 14px;
     }
 
-    .kg-refresh-btn {
-
-        grid-column: auto;
-
-    }
-
-    .kg-card-header {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-    }
-
-    .knowledge-graph {
-
-        height: 500px;
-
-    }
-
-    .kg-legend {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-    }
-
-    .kg-footer {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-    }
-
-}
-
-
-@media (max-width: 500px) {
-
-    .kg-hero-content {
-
+    .kg-hero {
         padding: 28px 22px;
 
+        border-radius: 18px;
     }
 
     .kg-hero h1 {
-
-        font-size: 36px;
-
+        font-size: 38px;
     }
 
-    .kg-network-status {
-
-        flex-wrap: wrap;
-
+    .kg-hero p {
+        font-size: 13px;
     }
 
-    .kg-detail-grid {
+    .kg-hero-visual {
+        width: 220px;
+        height: 190px;
+    }
 
+    .orbit-one {
+        width: 160px;
+        height: 160px;
+    }
+
+    .orbit-two {
+        width: 110px;
+        height: 110px;
+    }
+
+    .kg-controls {
         grid-template-columns: 1fr;
 
+        padding: 16px;
     }
 
+    .kg-refresh-btn {
+        grid-column: auto;
+        width: 100%;
+    }
+
+    .kg-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 18px;
+    }
+
+    .kg-live-status {
+        width: 100%;
+    }
+
+    .knowledge-graph {
+        height: 430px;
+    }
+
+    .kg-legend {
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 15px 18px;
+        gap: 12px;
+    }
+
+    .kg-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .kg-details {
+        top: auto;
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+
+        width: auto;
+        max-width: none;
+        max-height: 75vh;
+
+        transform: translateY(20px);
+    }
+
+    .kg-details.active,
+    .kg-details.show {
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+   EXTRA CLEANUP
+   ============================================================ */
+
+/* Prevent unwanted gradients from old styles */
+
+.kg-page .kg-hero,
+.kg-page .kg-controls,
+.kg-page .kg-graph-card,
+.kg-page .kg-footer {
+    background-image: none;
+}
+
+/* Keep hero one exact color */
+
+.kg-page .kg-hero {
+    background-color: #071a33 !important;
+}
+
+/* Clean focus */
+
+.kg-page button:focus-visible,
+.kg-page input:focus-visible,
+.kg-page select:focus-visible {
+    outline: 2px solid rgba(49, 95, 145, 0.35);
+    outline-offset: 2px;
+}
+/* ============================================================
+   KNOWLEDGE GRAPH HERO — PREMIUM RIGHT VISUAL
+   ============================================================ */
+
+.kg-page .kg-hero-visual {
+    width: 320px;
+    height: 250px;
+    position: relative;
+    margin: 0 auto;
+}
+
+
+/* ------------------------------------------------------------
+   SOFT CENTRAL GLOW
+   ------------------------------------------------------------ */
+
+.kg-page .kg-hero-visual::before {
+    content: "";
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    filter: blur(2px);
+}
+
+
+/* ------------------------------------------------------------
+   ORBIT RINGS
+   ------------------------------------------------------------ */
+
+.kg-page .kg-hero-visual .kg-orbit {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    background: transparent;
+}
+
+.kg-page .kg-hero-visual .orbit-one {
+    width: 205px;
+    height: 205px;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(-18deg);
+}
+
+.kg-page .kg-hero-visual .orbit-two {
+    width: 145px;
+    height: 145px;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(35deg);
+}
+
+
+/* ------------------------------------------------------------
+   CENTRAL AI NETWORK LOGO
+   ------------------------------------------------------------ */
+
+.kg-page .kg-hero-visual .kg-core {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 94px;
+    height: 94px;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.09);
+
+    border: 1px solid rgba(255, 255, 255, 0.28);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.20),
+        inset 0 0 25px rgba(255, 255, 255, 0.04);
+}
+
+
+/* Inner circle */
+
+.kg-page .kg-hero-visual .kg-core-ring {
+    position: absolute;
+
+    inset: 8px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+
+/* Main icon */
+
+.kg-page .kg-hero-visual .kg-core i {
+    position: relative;
+    z-index: 3;
+
+    font-size: 31px;
+
+    color: #ffffff;
+
+    filter: drop-shadow(
+        0 3px 8px rgba(0, 0, 0, 0.20)
+    );
+}
+
+
+/* ------------------------------------------------------------
+   NETWORK NODES
+   ------------------------------------------------------------ */
+
+.kg-page .kg-hero-visual .kg-node {
+    position: absolute;
+
+    width: 13px;
+    height: 13px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    border: 2px solid rgba(7, 26, 51, 0.85);
+
+    box-shadow:
+        0 0 0 5px rgba(255, 255, 255, 0.08),
+        0 0 16px rgba(255, 255, 255, 0.15);
+
+    z-index: 5;
+}
+
+
+/* Node positions */
+
+.kg-page .kg-hero-visual .node-one {
+    top: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.kg-page .kg-hero-visual .node-two {
+    top: 50%;
+    right: 20px;
+
+    transform: translateY(-50%);
+}
+
+.kg-page .kg-hero-visual .node-three {
+    bottom: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.kg-page .kg-hero-visual .node-four {
+    top: 50%;
+    left: 20px;
+
+    transform: translateY(-50%);
+}
+
+
+/* ------------------------------------------------------------
+   SMALL DATA POINTS
+   ------------------------------------------------------------ */
+
+.kg-page .kg-hero-visual::after {
+    content: "";
+    position: absolute;
+
+    width: 6px;
+    height: 6px;
+
+    top: 42px;
+    right: 72px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.65);
+
+    box-shadow:
+        -115px 150px 0 rgba(255, 255, 255, 0.40),
+        105px 115px 0 rgba(255, 255, 255, 0.35),
+        -105px 35px 0 rgba(255, 255, 255, 0.30);
+}
+
+
+/* ------------------------------------------------------------
+   SUBTLE ROTATION
+   ------------------------------------------------------------ */
+
+@keyframes kgOrbitOne {
+
+    from {
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+}
+
+@keyframes kgOrbitTwo {
+
+    from {
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+
+    to {
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+}
+
+.kg-page .kg-hero-visual .orbit-one {
+    animation: kgOrbitOne 24s linear infinite;
+}
+
+.kg-page .kg-hero-visual .orbit-two {
+    animation: kgOrbitTwo 18s linear infinite;
+}
+
+
+/* ------------------------------------------------------------
+   NODE PULSE
+   ------------------------------------------------------------ */
+
+@keyframes kgNodePulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 5px rgba(255, 255, 255, 0.08),
+            0 0 12px rgba(255, 255, 255, 0.10);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 7px rgba(255, 255, 255, 0.11),
+            0 0 20px rgba(255, 255, 255, 0.20);
+    }
+}
+
+.kg-page .kg-hero-visual .kg-node {
+    animation: kgNodePulse 2.8s ease-in-out infinite;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    .kg-page .kg-hero-visual {
+        width: 260px;
+        height: 210px;
+    }
+
+    .kg-page .kg-hero-visual .orbit-one {
+        width: 175px;
+        height: 175px;
+    }
+
+    .kg-page .kg-hero-visual .orbit-two {
+        width: 125px;
+        height: 125px;
+    }
+
+    .kg-page .kg-hero-visual .kg-core {
+        width: 82px;
+        height: 82px;
+    }
+}
+/* =========================================================
+   FIN GUARD AI - KNOWLEDGE GRAPH
+   Clean Navy & White Theme
+   ========================================================= */
+
+.knowledge-page,
+.knowledge-page * {
+    font-family: "Times New Roman", Times, serif !important;
+    box-sizing: border-box;
+}
+
+/* =========================
+   PAGE
+   ========================= */
+
+.knowledge-page {
+    min-height: 100vh;
+    background: #f5f8fc;
+    color: #071426;
+}
+
+/* =========================
+   MAIN TITLE
+   ========================= */
+
+.knowledge-page h1,
+.knowledge-page h2,
+.knowledge-page h3,
+.knowledge-page h4 {
+    color: #071426 !important;
+    -webkit-text-fill-color: #071426 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================
+   KNOWLEDGE GRAPH TITLE
+   ========================= */
+
+.knowledge-title,
+.knowledge-page .page-title,
+.knowledge-page .section-title {
+    color: #071426 !important;
+    -webkit-text-fill-color: #071426 !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================
+   SUBTITLE / DESCRIPTION
+   ========================= */
+
+.knowledge-page p,
+.knowledge-page .page-subtitle {
+    color: #526174 !important;
+    -webkit-text-fill-color: #526174 !important;
+}
+
+/* =========================
+   GRAPH CARD
+   ========================= */
+
+.knowledge-card,
+.graph-card,
+.knowledge-graph-card {
+    background: #ffffff !important;
+    border: 1px solid #dbe4ef !important;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 25px rgba(7, 20, 38, 0.08) !important;
+}
+
+/* =========================
+   GRAPH HEADER
+   ========================= */
+
+.knowledge-card h3,
+.graph-card h3,
+.knowledge-graph-card h3 {
+    color: #071426 !important;
+    -webkit-text-fill-color: #071426 !important;
+    background: transparent !important;
+}
+
+/* =========================
+   GRAPH AREA
+   ========================= */
+
+.graph-container,
+.knowledge-graph-container {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+.knowledge-page button {
+    font-family: "Times New Roman", Times, serif !important;
+    background: #071426 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+}
+
+.knowledge-page button:hover {
+    background: #0b2a4a !important;
+}
+
+/* =========================
+   INPUTS
+   ========================= */
+
+.knowledge-page input,
+.knowledge-page select {
+    background: #ffffff !important;
+    color: #071426 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* =========================
+   ICONS
+   ========================= */
+
+.knowledge-page i,
+.knowledge-page svg {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================
+   FORCE TEXT VISIBILITY
+   ========================= */
+
+.knowledge-page .knowledge-text,
+.knowledge-page .graph-title,
+.knowledge-page .node-title {
+    color: #071426 !important;
+    -webkit-text-fill-color: #071426 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================
+   LINKS
+   ========================= */
+
+.knowledge-page a {
+    color: #0b3a68 !important;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+
+    .knowledge-page {
+        padding: 15px;
+    }
+
+    .knowledge-card,
+    .graph-card,
+    .knowledge-graph-card {
+        border-radius: 14px !important;
+    }
+
+}
+/* =========================================================
+   KNOWLEDGE GRAPH - HEADING VISIBILITY FIX
+   ========================================================= */
+
+.kg-page .kg-hero h1 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.kg-page .kg-hero h1 span {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Hero paragraph */
+.kg-page .kg-hero p {
+    color: #dbe7f5 !important;
+    -webkit-text-fill-color: #dbe7f5 !important;
+}
+
+/* Hero eyebrow */
+.kg-page .kg-eyebrow {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+/* Knowledge Graph layout fix */
+.kg-graph-card {
+    overflow: hidden;
+}
+
+.knowledge-graph {
+    position: relative;
+    width: 100%;
+    height: 540px !important;
+    min-height: 540px !important;
+    overflow: hidden;
+    background: #020817;
+}
+
+#graphCanvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.kg-loading,
+.kg-empty {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#graph {
+    position: relative;
+}
+
+#graph svg {
+    position: relative;
+    z-index: 1;
+    display: block;
+}
+
+#graph .kg-node {
+    pointer-events: all;
+    cursor: pointer;
+}
+
+#graph .kg-node circle {
+    pointer-events: all;
+    cursor: pointer;
+}
+
+#graph .kg-node text {
+    pointer-events: none;
+}
+
+#graph .kg-node:hover circle {
+    stroke: #ffffff;
+    stroke-width: 2.5px;
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(34,211,238,.65)
+        );
 }

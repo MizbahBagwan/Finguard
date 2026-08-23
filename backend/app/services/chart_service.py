@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.models.transaction import TransactionDB
+from backend.app.models.transaction import TransactionDB
 
 
 def get_chart_data(db: Session):

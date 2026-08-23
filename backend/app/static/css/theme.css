@@ -1,0 +1,358 @@
+/* =========================================================
+   FINGUARD AI — GLOBAL CONSISTENT THEME
+   Same theme for Landing / Login / Register / Dashboard
+   ========================================================= */
+
+:root {
+    /* MAIN BRAND COLOR — HAR PAGE PAR YAHI BLUE */
+    --fg-navy: #071a33;
+    --fg-navy-light: #0b2a52;
+    --fg-blue: #123b6d;
+
+    /* WHITE */
+    --fg-white: #ffffff;
+    --fg-bg: #f5f8fc;
+    --fg-border: #dce4ee;
+
+    /* TEXT */
+    --fg-text: #071a33;
+    --fg-text-light: #64748b;
+    --fg-muted: #8290a3;
+
+    /* STATUS */
+    --fg-green: #16a34a;
+    --fg-red: #dc2626;
+    --fg-orange: #ea8a00;
+
+    /* SHAPE */
+    --fg-radius: 14px;
+    --fg-radius-small: 9px;
+
+    /* SHADOW */
+    --fg-shadow: 0 8px 25px rgba(7, 26, 51, 0.10);
+}
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+html,
+body,
+* {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: var(--fg-text);
+    background: var(--fg-bg);
+}
+
+
+/* =========================================================
+   ALL HEADINGS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--fg-navy);
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+    color: var(--fg-navy);
+}
+
+a:hover {
+    color: var(--fg-blue);
+}
+
+
+/* =========================================================
+   MAIN BUTTONS
+   ========================================================= */
+
+button,
+.btn,
+.primary-btn,
+.login-btn,
+.hero-primary-btn,
+.nav-start,
+.cta-primary {
+    background: var(--fg-navy) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--fg-navy) !important;
+    border-radius: var(--fg-radius-small);
+    font-family: "Times New Roman", Times, serif !important;
+    transition: 0.25s ease;
+}
+
+button:hover,
+.btn:hover,
+.primary-btn:hover,
+.login-btn:hover,
+.hero-primary-btn:hover,
+.nav-start:hover,
+.cta-primary:hover {
+    background: var(--fg-navy-light) !important;
+    border-color: var(--fg-navy-light) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   SECONDARY BUTTONS
+   ========================================================= */
+
+.secondary-btn,
+.hero-secondary-btn,
+.cta-secondary {
+    background: #ffffff !important;
+    color: var(--fg-navy) !important;
+    border: 1px solid var(--fg-navy) !important;
+    border-radius: var(--fg-radius-small);
+}
+
+.secondary-btn:hover,
+.hero-secondary-btn:hover,
+.cta-secondary:hover {
+    background: var(--fg-navy) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+input,
+textarea,
+select {
+    font-family: "Times New Roman", Times, serif !important;
+    color: var(--fg-text);
+    border-color: var(--fg-border);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--fg-navy) !important;
+    box-shadow: 0 0 0 3px rgba(7, 26, 51, 0.10);
+}
+
+
+/* =========================================================
+   ICONS
+   ========================================================= */
+
+.fa-solid,
+.fa-regular,
+.fa-brands,
+.fas,
+.far,
+.fab {
+    font-family: "Font Awesome 6 Free",
+                 "Font Awesome 6 Brands" !important;
+}
+
+.fa-solid,
+.fas {
+    font-weight: 900;
+}
+
+.fa-regular,
+.far {
+    font-weight: 400;
+}
+
+.fa-brands,
+.fab {
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar,
+.landing-navbar,
+.top-navbar,
+.main-navbar {
+    border-bottom-color: var(--fg-border) !important;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo,
+.landing-logo-icon,
+.brand-icon,
+.logo-icon {
+    background: var(--fg-navy) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card,
+.feature-card,
+.login-card,
+.dashboard-card,
+.stat-card,
+.kpi-card,
+.panel,
+.analytics-card {
+    border-color: var(--fg-border);
+}
+
+
+/* =========================================================
+   BLUE TEXT
+   ========================================================= */
+
+.blue-text,
+.primary-text,
+.brand-text {
+    color: var(--fg-navy) !important;
+}
+
+
+/* =========================================================
+   BLUE BACKGROUND
+   ========================================================= */
+
+.blue-bg,
+.primary-bg,
+.brand-bg {
+    background: var(--fg-navy) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   ACTIVE ELEMENTS
+   ========================================================= */
+
+.active,
+.active-link,
+.nav-link.active,
+.sidebar-link.active {
+    color: #ffffff !important;
+    background: var(--fg-navy) !important;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.badge,
+.status-badge,
+.section-badge {
+    border-color: var(--fg-navy);
+}
+
+
+/* =========================================================
+   CHECK / SAFE ICONS
+   ========================================================= */
+
+.check-icon {
+    background: var(--fg-navy) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eef2f7;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--fg-navy);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--fg-navy-light);
+}
+
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+    background: var(--fg-navy);
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   REMOVE RANDOM BLUE SHADES
+   ========================================================= */
+
+[style*="#2563eb"],
+[style*="#3b82f6"],
+[style*="#1d4ed8"],
+[style*="#0ea5e9"],
+[style*="#0284c7"] {
+    color: var(--fg-navy) !important;
+}
+
+
+/* =========================================================
+   GLOBAL CONSISTENCY
+   ========================================================= */
+
+.page-title,
+.section-title,
+.card-title,
+.panel-title {
+    color: var(--fg-navy) !important;
+}
+
+hr {
+    border-color: var(--fg-border);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    button,
+    .btn,
+    .primary-btn {
+        border-radius: 9px;
+    }
+
+}

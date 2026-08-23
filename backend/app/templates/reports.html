@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Reports | FinGuard AI{% endblock %}
+{% block title %}Reports & Analytics | FinGuard AI{% endblock %}
 
 {% block page_title %}
 Reports & Analytics
 {% endblock %}
 
 {% block page_subtitle %}
-Generate, monitor and analyze your financial fraud detection reports
+Financial intelligence, fraud analytics and AI-powered security reports
 {% endblock %}
 
 {% block extra_css %}
@@ -18,207 +18,269 @@ Generate, monitor and analyze your financial fraud detection reports
 {% block content %}
 
 <div class="reports-page">
-
+<!-- FinGuard AI Global Theme -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/theme.css') }}"
+>
     <!-- =====================================================
-         REPORTS HEADER
+         TOP INTRO
     ====================================================== -->
-    <div class="reports-header">
 
-        <div class="reports-header-left">
+    <section class="reports-intro">
 
-            <div class="reports-icon">
-                <i class="fas fa-file-chart-column"></i>
+        <div class="intro-content">
+
+            <div class="intro-label">
+                <span class="intro-dot"></span>
+                FINANCIAL INTELLIGENCE CENTER
             </div>
 
-            <div>
-                <h1>Reports & Analytics</h1>
-                <p>
-                    Comprehensive insights into transactions,
-                    fraud detection and financial risk.
-                </p>
+            <h1>
+                Reports &
+                <span>Analytics</span>
+            </h1>
+
+            <p>
+                Transform your transaction data into actionable
+                financial intelligence with AI-powered fraud
+                detection and risk analytics.
+            </p>
+
+            <div class="intro-meta">
+
+                <div>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    AI Protected
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-chart-line"></i>
+                    Real-Time Analytics
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-lock"></i>
+                    Secure Data
+                </div>
+
             </div>
 
         </div>
 
-        <div class="reports-header-actions">
 
-            <button class="report-btn secondary"
-                    onclick="window.location.reload()">
-                <i class="fas fa-sync-alt"></i>
+        <div class="intro-actions">
+
+            <button
+                class="report-action secondary"
+                onclick="window.location.reload()">
+
+                <i class="fa-solid fa-rotate"></i>
+
                 Refresh
+
             </button>
 
-            <button class="report-btn primary"
-                    onclick="generateReport()">
-                <i class="fas fa-file-export"></i>
+            <button
+                class="report-action primary"
+                onclick="generateReport()">
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
                 Generate Report
+
             </button>
 
         </div>
 
-    </div>
+    </section>
 
 
     <!-- =====================================================
-         HERO SECTION
+         SECURITY STATUS
     ====================================================== -->
-    <section class="reports-hero">
 
-        <div class="reports-hero-content">
+    <section class="security-banner">
 
-            <div class="hero-badge">
-                <i class="fas fa-shield-halved"></i>
-                AI-Powered Financial Intelligence
+        <div class="security-banner-icon">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+        <div class="security-banner-content">
+
+            <span>
+                FINGUARD AI SECURITY ENGINE
+            </span>
+
+            <strong>
+                Financial monitoring is active
+            </strong>
+
+            <p>
+                AI continuously analyzes transaction activity,
+                fraud patterns and financial risk.
+            </p>
+
+        </div>
+
+        <div class="security-live">
+
+            <span></span>
+
+            SYSTEM ACTIVE
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         KPI STATISTICS
+    ====================================================== -->
+
+    <section class="reports-kpi-grid">
+
+
+        <!-- TRANSACTIONS -->
+
+        <div class="kpi-card">
+
+            <div class="kpi-top">
+
+                <div class="kpi-icon blue">
+
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                </div>
+
+                <span class="kpi-label">
+                    TOTAL TRANSACTIONS
+                </span>
+
             </div>
 
             <h2>
-                Monitor Your
-                <span>Financial Security</span>
+                {{ total_transactions | default(0) }}
             </h2>
 
-            <p>
-                Get a complete overview of transaction activity,
-                fraud risks and AI-powered detection insights
-                from one centralized reporting system.
-            </p>
+            <div class="kpi-footer">
 
-            <div class="hero-actions">
-
-                <button class="hero-btn primary"
-                        onclick="generateReport()">
-                    <i class="fas fa-chart-line"></i>
-                    Generate New Report
-                </button>
-
-                <button class="hero-btn outline"
-                        onclick="scrollToReports()">
-                    <i class="fas fa-eye"></i>
-                    View Reports
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="reports-hero-visual">
-
-            <div class="hero-shield">
-                <i class="fas fa-shield-halved"></i>
-            </div>
-
-            <div class="floating-card card-one">
-                <i class="fas fa-circle-check"></i>
-                <div>
-                    <strong>System Secure</strong>
-                    <span>AI Monitoring Active</span>
-                </div>
-            </div>
-
-            <div class="floating-card card-two">
-                <i class="fas fa-brain"></i>
-                <div>
-                    <strong>AI Analysis</strong>
-                    <span>Real-Time Detection</span>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         STATISTICS
-    ====================================================== -->
-    <section class="report-stats">
-
-        <!-- Total Transactions -->
-        <div class="report-stat-card">
-
-            <div class="stat-icon blue">
-                <i class="fas fa-arrow-right-arrow-left"></i>
-            </div>
-
-            <div class="stat-content">
-                <span>Total Transactions</span>
-                <h3 id="totalTransactions">
-                    {{ total_transactions | default(0) }}
-                </h3>
-
-                <small class="positive">
-                    <i class="fas fa-chart-line"></i>
+                <span class="kpi-positive">
+                    <i class="fa-solid fa-chart-line"></i>
                     Overall activity
-                </small>
+                </span>
+
+                <i class="fa-solid fa-arrow-up-right"></i>
+
             </div>
 
         </div>
 
 
-        <!-- Fraud Detected -->
-        <div class="report-stat-card">
+        <!-- FRAUD -->
 
-            <div class="stat-icon red">
-                <i class="fas fa-triangle-exclamation"></i>
+        <div class="kpi-card danger-card">
+
+            <div class="kpi-top">
+
+                <div class="kpi-icon red">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                </div>
+
+                <span class="kpi-label">
+                    FRAUD DETECTED
+                </span>
+
             </div>
 
-            <div class="stat-content">
-                <span>Fraud Detected</span>
+            <h2>
+                {{ fraud_detected | default(0) }}
+            </h2>
 
-                <h3 id="fraudDetected">
-                    {{ fraud_detected | default(0) }}
-                </h3>
+            <div class="kpi-footer">
 
-                <small class="danger">
-                    <i class="fas fa-arrow-up"></i>
+                <span class="kpi-danger">
+                    <i class="fa-solid fa-shield-virus"></i>
                     Threat detection
-                </small>
+                </span>
+
+                <i class="fa-solid fa-arrow-up-right"></i>
+
             </div>
 
         </div>
 
 
-        <!-- High Risk -->
-        <div class="report-stat-card">
+        <!-- HIGH RISK -->
 
-            <div class="stat-icon orange">
-                <i class="fas fa-shield-virus"></i>
+        <div class="kpi-card warning-card">
+
+            <div class="kpi-top">
+
+                <div class="kpi-icon orange">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                </div>
+
+                <span class="kpi-label">
+                    HIGH RISK
+                </span>
+
             </div>
 
-            <div class="stat-content">
+            <h2>
+                {{ high_risk | default(0) }}
+            </h2>
 
-                <span>High Risk</span>
+            <div class="kpi-footer">
 
-                <h3 id="highRisk">
-                    {{ high_risk | default(0) }}
-                </h3>
-
-                <small class="warning">
-                    <i class="fas fa-bolt"></i>
+                <span class="kpi-warning">
+                    <i class="fa-solid fa-circle-exclamation"></i>
                     Requires attention
-                </small>
+                </span>
+
+                <i class="fa-solid fa-arrow-up-right"></i>
 
             </div>
 
         </div>
 
 
-        <!-- Detection Accuracy -->
-        <div class="report-stat-card">
+        <!-- ACCURACY -->
 
-            <div class="stat-icon green">
-                <i class="fas fa-bullseye"></i>
+        <div class="kpi-card success-card">
+
+            <div class="kpi-top">
+
+                <div class="kpi-icon green">
+
+                    <i class="fa-solid fa-bullseye"></i>
+
+                </div>
+
+                <span class="kpi-label">
+                    DETECTION ACCURACY
+                </span>
+
             </div>
 
-            <div class="stat-content">
+            <h2 id="detectionAccuracy">
+                Loading...
+            </h2>
 
-                <span>Detection Accuracy</span>
+            <div class="kpi-footer">
 
-               <h3 id="detectionAccuracy">Loading...</h3>
+                <span class="kpi-success">
+                    <i class="fa-solid fa-circle-check"></i>
+                    AI model performance
+                </span>
 
-                <small class="positive">
-                    <i class="fas fa-check-circle"></i>
-                    Model performance
-                </small>
+                <i class="fa-solid fa-arrow-up-right"></i>
 
             </div>
 
@@ -228,36 +290,41 @@ Generate, monitor and analyze your financial fraud detection reports
 
 
     <!-- =====================================================
-         MAIN REPORT GRID
+         MAIN CONTENT GRID
     ====================================================== -->
-    <section class="reports-grid"
-             id="reportsSection">
+
+    <section class="reports-main-grid">
 
 
         <!-- =================================================
-             GENERATE REPORT CARD
+             GENERATE REPORT
         ================================================== -->
-        <div class="report-card generate-card">
 
-            <div class="report-card-header">
+        <div class="modern-card generate-report-card">
+
+            <div class="modern-card-header">
 
                 <div>
-                    <span class="section-label">
+
+                    <span class="card-eyebrow">
                         REPORT CENTER
                     </span>
 
-                    <h3>
+                    <h2>
                         Generate Financial Report
-                    </h3>
+                    </h2>
 
                     <p>
-                        Create a detailed report based on
-                        your selected transaction data.
+                        Configure your report and generate
+                        detailed financial intelligence.
                     </p>
+
                 </div>
 
-                <div class="card-header-icon">
-                    <i class="fas fa-file-circle-plus"></i>
+                <div class="header-icon">
+
+                    <i class="fa-solid fa-file-circle-plus"></i>
+
                 </div>
 
             </div>
@@ -265,15 +332,19 @@ Generate, monitor and analyze your financial fraud detection reports
 
             <div class="report-form">
 
-                <div class="form-group">
 
-                    <label for="reportType">
+                <!-- REPORT TYPE -->
+
+                <div class="form-field">
+
+                    <label>
+                        <i class="fa-solid fa-file-lines"></i>
                         Report Type
                     </label>
 
-                    <div class="select-wrapper">
+                    <div class="modern-input">
 
-                        <i class="fas fa-file-lines"></i>
+                        <i class="fa-solid fa-chart-column"></i>
 
                         <select id="reportType">
 
@@ -295,45 +366,51 @@ Generate, monitor and analyze your financial fraud detection reports
 
                         </select>
 
-                        <i class="fas fa-chevron-down arrow"></i>
+                        <i class="fa-solid fa-chevron-down"></i>
 
                     </div>
 
                 </div>
 
 
-                <div class="form-row">
+                <!-- DATE -->
 
-                    <div class="form-group">
+                <div class="date-grid">
 
-                        <label for="startDate">
+                    <div class="form-field">
+
+                        <label>
+                            <i class="fa-regular fa-calendar"></i>
                             Start Date
                         </label>
 
-                        <div class="input-wrapper">
+                        <div class="modern-input">
 
-                            <i class="fas fa-calendar"></i>
+                            <i class="fa-solid fa-calendar-days"></i>
 
-                            <input type="date"
-                                   id="startDate">
+                            <input
+                                type="date"
+                                id="startDate">
 
                         </div>
 
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-field">
 
-                        <label for="endDate">
+                        <label>
+                            <i class="fa-regular fa-calendar"></i>
                             End Date
                         </label>
 
-                        <div class="input-wrapper">
+                        <div class="modern-input">
 
-                            <i class="fas fa-calendar"></i>
+                            <i class="fa-solid fa-calendar-days"></i>
 
-                            <input type="date"
-                                   id="endDate">
+                            <input
+                                type="date"
+                                id="endDate">
 
                         </div>
 
@@ -342,61 +419,87 @@ Generate, monitor and analyze your financial fraud detection reports
                 </div>
 
 
+                <!-- OPTIONS -->
+
                 <div class="report-options">
 
-                    <label class="custom-checkbox">
+                    <label class="option-card">
 
-                        <input type="checkbox"
-                               id="includeAI"
-                               checked>
+                        <input
+                            type="checkbox"
+                            id="includeAI"
+                            checked>
 
-                        <span class="checkmark"></span>
+                        <span class="custom-check">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
 
-                        <div>
+                        <span class="option-icon blue">
+                            <i class="fa-solid fa-brain"></i>
+                        </span>
+
+                        <span class="option-content">
+
                             <strong>
-                                Include AI Insights
+                                AI Insights
                             </strong>
 
                             <small>
-                                Add AI-generated risk analysis
+                                Include AI fraud analysis
                                 and recommendations.
                             </small>
-                        </div>
+
+                        </span>
 
                     </label>
 
 
-                    <label class="custom-checkbox">
+                    <label class="option-card">
 
-                        <input type="checkbox"
-                               id="includeCharts"
-                               checked>
+                        <input
+                            type="checkbox"
+                            id="includeCharts"
+                            checked>
 
-                        <span class="checkmark"></span>
+                        <span class="custom-check">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
 
-                        <div>
+                        <span class="option-icon purple">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </span>
+
+                        <span class="option-content">
+
                             <strong>
-                                Include Analytics
+                                Analytics
                             </strong>
 
                             <small>
-                                Add charts and risk distribution.
+                                Include charts and
+                                risk distribution.
                             </small>
-                        </div>
+
+                        </span>
 
                     </label>
 
                 </div>
 
 
-                <button class="generate-main-btn"
-                        onclick="generateReport()">
+                <button
+                    class="generate-report-button"
+                    onclick="generateReport()">
 
-                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>
 
-                    Generate Report
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-                    <i class="fas fa-arrow-right"></i>
+                        Generate Report
+
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
 
                 </button>
 
@@ -406,47 +509,51 @@ Generate, monitor and analyze your financial fraud detection reports
 
 
         <!-- =================================================
-             RISK OVERVIEW CARD
+             RISK ANALYTICS
         ================================================== -->
-        <div class="report-card risk-card">
 
-            <div class="report-card-header">
+        <div class="modern-card risk-analytics-card">
+
+            <div class="modern-card-header">
 
                 <div>
 
-                    <span class="section-label">
-                        RISK OVERVIEW
+                    <span class="card-eyebrow">
+                        RISK INTELLIGENCE
                     </span>
 
-                    <h3>
+                    <h2>
                         Transaction Risk
-                    </h3>
+                    </h2>
 
                     <p>
-                        Current risk distribution
+                        Current financial risk distribution
                     </p>
 
                 </div>
 
-                <div class="card-header-icon">
-                    <i class="fas fa-chart-pie"></i>
+                <div class="header-icon">
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
                 </div>
 
             </div>
 
 
-            <div class="risk-overview">
+            <div class="risk-content">
 
-                <div class="risk-circle">
 
-                    <div class="risk-circle-inner">
+                <div class="risk-meter">
+
+                    <div class="risk-meter-inner">
 
                         <strong id="riskPercentage">
                             {{ average_risk | default(0) }}%
                         </strong>
 
                         <span>
-                            Avg. Risk
+                            Average Risk
                         </span>
 
                     </div>
@@ -454,13 +561,14 @@ Generate, monitor and analyze your financial fraud detection reports
                 </div>
 
 
-                <div class="risk-list">
+                <div class="risk-breakdown">
 
-                    <div class="risk-item">
 
-                        <div class="risk-label">
+                    <div class="risk-row">
 
-                            <span class="risk-dot safe"></span>
+                        <div>
+
+                            <span class="risk-color safe"></span>
 
                             <span>
                                 Safe
@@ -475,11 +583,11 @@ Generate, monitor and analyze your financial fraud detection reports
                     </div>
 
 
-                    <div class="risk-item">
+                    <div class="risk-row">
 
-                        <div class="risk-label">
+                        <div>
 
-                            <span class="risk-dot medium"></span>
+                            <span class="risk-color medium"></span>
 
                             <span>
                                 Medium
@@ -494,11 +602,11 @@ Generate, monitor and analyze your financial fraud detection reports
                     </div>
 
 
-                    <div class="risk-item">
+                    <div class="risk-row">
 
-                        <div class="risk-label">
+                        <div>
 
-                            <span class="risk-dot high"></span>
+                            <span class="risk-color high"></span>
 
                             <span>
                                 High
@@ -512,6 +620,7 @@ Generate, monitor and analyze your financial fraud detection reports
 
                     </div>
 
+
                 </div>
 
             </div>
@@ -520,32 +629,33 @@ Generate, monitor and analyze your financial fraud detection reports
 
 
         <!-- =================================================
-             AI INSIGHTS
+             AI INTELLIGENCE
         ================================================== -->
-        <div class="report-card ai-insights-card">
 
-            <div class="report-card-header">
+        <div class="modern-card ai-intelligence-card">
+
+            <div class="modern-card-header">
 
                 <div>
 
-                    <span class="section-label">
+                    <span class="card-eyebrow">
                         ARTIFICIAL INTELLIGENCE
                     </span>
 
-                    <h3>
-                        AI Security Insights
-                    </h3>
+                    <h2>
+                        AI Security Intelligence
+                    </h2>
 
                     <p>
-                        Intelligent analysis of your
-                        financial activity.
+                        Intelligent protection across your
+                        financial ecosystem.
                     </p>
 
                 </div>
 
-                <div class="ai-status">
+                <div class="ai-active">
 
-                    <span class="status-pulse"></span>
+                    <span></span>
 
                     AI ACTIVE
 
@@ -554,12 +664,13 @@ Generate, monitor and analyze your financial fraud detection reports
             </div>
 
 
-            <div class="insights-grid">
+            <div class="ai-feature-grid">
 
-                <div class="insight-item">
 
-                    <div class="insight-icon blue">
-                        <i class="fas fa-brain"></i>
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon blue">
+                        <i class="fa-solid fa-brain"></i>
                     </div>
 
                     <div>
@@ -569,8 +680,8 @@ Generate, monitor and analyze your financial fraud detection reports
                         </strong>
 
                         <p>
-                            AI continuously analyzes
-                            transaction patterns.
+                            AI analyzes transaction
+                            behavior and patterns.
                         </p>
 
                     </div>
@@ -578,10 +689,10 @@ Generate, monitor and analyze your financial fraud detection reports
                 </div>
 
 
-                <div class="insight-item">
+                <div class="ai-feature">
 
-                    <div class="insight-icon red">
-                        <i class="fas fa-shield-virus"></i>
+                    <div class="ai-feature-icon red">
+                        <i class="fa-solid fa-shield-virus"></i>
                     </div>
 
                     <div>
@@ -592,7 +703,7 @@ Generate, monitor and analyze your financial fraud detection reports
 
                         <p>
                             Suspicious activity is
-                            automatically identified.
+                            identified automatically.
                         </p>
 
                     </div>
@@ -600,21 +711,21 @@ Generate, monitor and analyze your financial fraud detection reports
                 </div>
 
 
-                <div class="insight-item">
+                <div class="ai-feature">
 
-                    <div class="insight-icon orange">
-                        <i class="fas fa-magnifying-glass-chart"></i>
+                    <div class="ai-feature-icon orange">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
                     </div>
 
                     <div>
 
                         <strong>
-                            Risk Analysis
+                            Risk Intelligence
                         </strong>
 
                         <p>
-                            Risk levels are calculated
-                            using transaction behavior.
+                            Transaction behavior is
+                            continuously evaluated.
                         </p>
 
                     </div>
@@ -622,21 +733,21 @@ Generate, monitor and analyze your financial fraud detection reports
                 </div>
 
 
-                <div class="insight-item">
+                <div class="ai-feature">
 
-                    <div class="insight-icon green">
-                        <i class="fas fa-lock"></i>
+                    <div class="ai-feature-icon green">
+                        <i class="fa-solid fa-lock"></i>
                     </div>
 
                     <div>
 
                         <strong>
-                            Financial Security
+                            Financial Protection
                         </strong>
 
                         <p>
-                            Protect accounts with
-                            continuous monitoring.
+                            Continuous monitoring protects
+                            your financial ecosystem.
                         </p>
 
                     </div>
@@ -647,84 +758,80 @@ Generate, monitor and analyze your financial fraud detection reports
 
         </div>
 
-
-        <!-- =================================================
-             RECENT REPORTS
-        ================================================== -->
-        <!-- =========================================================
-     REPORT HISTORY
-========================================================= -->
-
-<div class="report-card recent-reports-card">
-
-    <div class="report-card-header">
-
-        <div>
-
-            <span class="section-label">
-                REPORT HISTORY
-            </span>
-
-            <h3>
-                Recent Reports
-            </h3>
-
-            <p>
-                Previously generated reports
-            </p>
-
-        </div>
-
-        <button
-            type="button"
-            class="view-all-btn"
-            onclick="viewAllReports()"
-        >
-            View All
-            <i class="fas fa-arrow-right"></i>
-        </button>
-
-    </div>
+    </section>
 
 
     <!-- =====================================================
-         REPORT TABLE
+         REPORT HISTORY
     ====================================================== -->
 
-    <div class="reports-table-wrapper">
+    <section class="modern-card report-history-card">
 
-        <table class="reports-table">
+        <div class="modern-card-header">
 
-            <thead>
+            <div>
 
-                <tr>
+                <span class="card-eyebrow">
+                    REPORT HISTORY
+                </span>
 
-                    <th>
-                        Report
-                    </th>
+                <h2>
+                    Recent Reports
+                </h2>
 
-                    <th>
-                        Type
-                    </th>
+                <p>
+                    Previously generated financial reports
+                </p>
 
-                    <th>
-                        Generated
-                    </th>
+            </div>
 
-                    <th>
-                        Status
-                    </th>
+            <button
+                class="view-all-button"
+                onclick="viewAllReports()">
 
-                    <th>
-                        Action
-                    </th>
+                View All
 
-                </tr>
+                <i class="fa-solid fa-arrow-right"></i>
 
-            </thead>
+            </button>
+
+        </div>
 
 
-            <tbody id="reportsTableBody">
+        <div class="reports-table-container">
+
+            <table class="modern-reports-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            REPORT
+                        </th>
+
+                        <th>
+                            TYPE
+                        </th>
+
+                        <th>
+                            GENERATED
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            ACTION
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
 
                 {% if reports %}
 
@@ -732,16 +839,14 @@ Generate, monitor and analyze your financial fraud detection reports
 
                     <tr>
 
-                        <!-- =================================
-                             REPORT NAME
-                        ================================== -->
-
                         <td>
 
                             <div class="report-name">
 
-                                <div class="table-icon">
-                                    <i class="fas fa-file-pdf"></i>
+                                <div class="report-file-icon">
+
+                                    <i class="fa-solid fa-file-pdf"></i>
+
                                 </div>
 
                                 <div>
@@ -761,31 +866,27 @@ Generate, monitor and analyze your financial fraud detection reports
                         </td>
 
 
-                        <!-- =================================
-                             REPORT TYPE
-                        ================================== -->
-
                         <td>
-                            {{ report.type | default('Comprehensive') }}
+
+                            <span class="type-text">
+                                {{ report.type | default('Comprehensive') }}
+                            </span>
+
                         </td>
 
 
-                        <!-- =================================
-                             CREATED DATE
-                        ================================== -->
-
                         <td>
-                            {{ report.created_at | default('Recently') }}
+
+                            <span class="date-text">
+                                {{ report.created_at | default('Recently') }}
+                            </span>
+
                         </td>
 
 
-                        <!-- =================================
-                             STATUS
-                        ================================== -->
-
                         <td>
 
-                            <span class="status-badge completed">
+                            <span class="completed-status">
 
                                 <span></span>
 
@@ -796,54 +897,32 @@ Generate, monitor and analyze your financial fraud detection reports
                         </td>
 
 
-                        <!-- =================================
-                             ACTIONS
-                        ================================== -->
-
                         <td>
 
-                            <div class="table-actions">
-
-                                <!-- VIEW -->
+                            <div class="report-actions">
 
                                 <button
-                                    type="button"
-                                    class="view-report-btn"
-                                    data-report-id="{{ report.id }}"
                                     onclick="viewReport('{{ report.id }}')"
-                                    title="View Report"
-                                >
+                                    title="View">
 
-                                    <i class="fas fa-eye"></i>
+                                    <i class="fa-solid fa-eye"></i>
 
                                 </button>
 
-
-                                <!-- DOWNLOAD -->
-
                                 <button
-                                    type="button"
-                                    class="download-report-btn"
-                                    data-report-id="{{ report.id }}"
                                     onclick="downloadReport('{{ report.id }}')"
-                                    title="Download Report"
-                                >
+                                    title="Download">
 
-                                    <i class="fas fa-download"></i>
+                                    <i class="fa-solid fa-download"></i>
 
                                 </button>
 
-
-                                <!-- DELETE -->
-
                                 <button
-                                    type="button"
-                                    class="delete-report-btn"
+                                    class="delete-action"
                                     data-report-id="{{ report.id }}"
-                                    title="Delete Report"
-                                >
+                                    title="Delete">
 
-                                    <i class="fas fa-trash"></i>
+                                    <i class="fa-solid fa-trash"></i>
 
                                 </button>
 
@@ -855,45 +934,35 @@ Generate, monitor and analyze your financial fraud detection reports
 
                     {% endfor %}
 
-
                 {% else %}
 
-                    <!-- =================================
-                         EMPTY STATE
-                    ================================== -->
-
-                    <tr class="empty-row">
+                    <tr>
 
                         <td colspan="5">
 
-                            <div class="empty-state">
+                            <div class="reports-empty">
 
-                                <div class="empty-icon">
+                                <div class="empty-report-icon">
 
-                                    <i class="fas fa-file-circle-xmark"></i>
+                                    <i class="fa-solid fa-file-circle-xmark"></i>
 
                                 </div>
 
-
-                                <strong>
+                                <h3>
                                     No Reports Available
-                                </strong>
-
+                                </h3>
 
                                 <p>
                                     Generate your first financial
                                     security report to see it here.
                                 </p>
 
-
                                 <button
-                                    type="button"
-                                    onclick="generateReport()"
-                                >
+                                    onclick="generateReport()">
 
-                                    <i class="fas fa-plus"></i>
+                                    <i class="fa-solid fa-plus"></i>
 
-                                    Generate Report
+                                    Generate First Report
 
                                 </button>
 
@@ -905,52 +974,62 @@ Generate, monitor and analyze your financial fraud detection reports
 
                 {% endif %}
 
-            </tbody>
+                </tbody>
 
-        </table>
+            </table>
 
-    </div>
+        </div>
 
-</div>
+    </section>
+
 
     <!-- =====================================================
-         SECURITY FOOTER
+         BOTTOM SECURITY PANEL
     ====================================================== -->
-    <div class="reports-security-footer">
 
-        <div class="security-footer-icon">
-            <i class="fas fa-shield-halved"></i>
+    <section class="reports-bottom-security">
+
+        <div class="bottom-security-icon">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
         </div>
 
         <div>
 
+            <span>
+                FINGUARD AI SECURITY
+            </span>
+
             <strong>
-                FinGuard AI Security Engine
+                Your financial intelligence is protected
             </strong>
 
-            <span>
-                Your financial data is continuously monitored
-                using AI-powered fraud detection.
-            </span>
+            <p>
+                AI-powered monitoring continuously analyzes
+                transaction activity and detects potential
+                financial threats.
+            </p>
 
         </div>
 
-        <div class="security-status">
+        <div class="bottom-security-status">
 
-            <span class="status-pulse"></span>
+            <span></span>
 
             SYSTEM SECURE
 
         </div>
 
-    </div>
+    </section>
 
 </div>
 
 
 <!-- =====================================================
-     REPORT JAVASCRIPT
+     JAVASCRIPT
 ====================================================== -->
+
 <script>
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -980,9 +1059,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         startDate.value =
-            previousDate
-                .toISOString()
-                .split("T")[0];
+            previousDate.toISOString().split("T")[0];
 
     }
 
@@ -992,7 +1069,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function scrollToReports() {
 
     const section =
-        document.getElementById("reportsSection");
+        document.querySelector(".report-history-card");
 
     if (section) {
 
@@ -1008,7 +1085,7 @@ function scrollToReports() {
 async function generateReport() {
 
     const button =
-        document.querySelector(".generate-main-btn");
+        document.querySelector(".generate-report-button");
 
     if (!button) return;
 
@@ -1018,8 +1095,10 @@ async function generateReport() {
     button.disabled = true;
 
     button.innerHTML = `
-        <i class="fas fa-spinner fa-spin"></i>
-        Generating Report...
+        <span>
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Generating Report...
+        </span>
     `;
 
     try {
@@ -1100,7 +1179,9 @@ async function generateReport() {
             );
 
             setTimeout(() => {
+
                 window.location.reload();
+
             }, 1000);
 
         }
@@ -1166,9 +1247,7 @@ function viewAllReports() {
 function showReportMessage(message, type) {
 
     const existing =
-        document.querySelector(
-            ".report-toast"
-        );
+        document.querySelector(".report-toast");
 
     if (existing) {
         existing.remove();
@@ -1184,13 +1263,15 @@ function showReportMessage(message, type) {
 
     toast.innerHTML = `
 
-        <i class="fas ${
+        <i class="fa-solid ${
             type === "success"
-                ? "fa-circle-check"
-                : "fa-circle-exclamation"
+            ? "fa-circle-check"
+            : "fa-circle-exclamation"
         }"></i>
 
-        <span>${message}</span>
+        <span>
+            ${message}
+        </span>
 
     `;
 
@@ -1200,21 +1281,19 @@ function showReportMessage(message, type) {
 
     setTimeout(() => {
 
-        toast.classList.add(
-            "show"
-        );
+        toast.classList.add("show");
 
     }, 50);
 
 
     setTimeout(() => {
 
-        toast.classList.remove(
-            "show"
-        );
+        toast.classList.remove("show");
 
         setTimeout(() => {
+
             toast.remove();
+
         }, 300);
 
     }, 3500);
@@ -1222,6 +1301,8 @@ function showReportMessage(message, type) {
 }
 
 </script>
+
+
 <script src="{{ url_for('static', path='js/reports.js') }}"></script>
 
 {% endblock %}

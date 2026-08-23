@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Text
-from app.database.connection import Base
+from backend.app.database.connection import Base
 
 
 class InvestigationDB(Base):

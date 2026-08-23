@@ -1,136 +1,162 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard | FinGuard AI{% endblock %}
+{% block title %}Dashboard - FinGuard AI{% endblock %}
 
-{% block page_title %}
-AI Fraud Detection Dashboard
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/dashboard.css') }}">
+<!-- FinGuard AI Global Theme -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/theme.css') }}"
+>
 {% endblock %}
 
-{% block page_subtitle %}
-Real-Time Financial Fraud Monitoring System
-{% endblock %}
 
 {% block content %}
-
 <!-- ==========================================
 HERO SECTION
 ========================================== -->
 
-<!-- ================= PREMIUM HERO ================= -->
+<!-- =========================================================
+     CLEAN PREMIUM HERO SECTION
+========================================================= -->
 
-<div class="hero-left">
+<section class="dashboard-hero">
 
-    <div class="hero-header">
+    <!-- LEFT CONTENT -->
+    <div class="hero-content">
 
-        <span class="hero-tag">
-            <i class="fa-solid fa-shield-halved"></i>
-            AI Powered Financial Security
-        </span>
+        <div class="hero-top">
 
-        <div class="hero-live">
-            <span class="live-dot"></span>
-            AI ONLINE
+            <span class="hero-tag">
+                <i class="fa-solid fa-shield-halved"></i>
+                AI Powered Financial Security
+            </span>
+
+            <span class="hero-online">
+                <span class="hero-online-dot"></span>
+                AI ONLINE
+            </span>
+
+        </div>
+
+
+        <h1 class="hero-main-title">
+            AI Fraud Detection
+            <span>Control Center</span>
+        </h1>
+
+
+        <p class="hero-description">
+            Monitor financial transactions in real time, detect suspicious
+            activities, analyze fraud using artificial intelligence, and
+            protect every transaction through intelligent risk assessment.
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a href="/transactions" class="hero-primary-btn">
+                <i class="fa-solid fa-credit-card"></i>
+                View Transactions
+            </a>
+
+
+            <button
+                id="runAIAnalysis"
+                class="hero-secondary-btn">
+
+                <i class="fa-solid fa-brain"></i>
+                Run AI Analysis
+
+            </button>
+
         </div>
 
     </div>
 
-    <h1 class="hero-title">
-        AI Fraud Detection
-        <span>Control Center</span>
-    </h1>
 
-    <p class="hero-description">
-        Monitor financial transactions in real time, detect suspicious
-        activities, analyze fraud using artificial intelligence, and
-        protect every transaction through intelligent risk assessment.
-    </p>
+    <!-- RIGHT AI STATUS -->
+    <div class="hero-status-card">
 
-    <div class="hero-buttons">
+        <div class="hero-status-header">
 
-        <a href="/transactions" class="primary-btn">
-            <i class="fa-solid fa-credit-card"></i>
-            View Transactions
-        </a>
+            <div class="hero-engine">
 
-        <button
-            id="runAIAnalysis"
-            class="secondary-btn">
-
-            <i class="fa-solid fa-brain"></i>
-            Run AI Analysis
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ================= AI STATUS ================= -->
-
-<div class="hero-right">
-
-    <div class="status-card">
-
-        <div class="status-top">
-
-            <div class="status-left">
-
-                <span class="status-dot"></span>
+                <div class="hero-engine-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
 
                 <div>
-                    <strong>AI Engine Online</strong>
-                    <small>Real-Time Monitoring</small>
+                    <strong>
+                        AI Engine Online
+                    </strong>
+
+                    <small>
+                        Real-Time Monitoring
+                    </small>
                 </div>
 
             </div>
 
-            <span class="status-badge">
+
+            <span class="hero-live-badge">
                 LIVE
             </span>
 
         </div>
 
 
-        <div class="status-body">
+        <div class="hero-status-divider"></div>
 
-            <div class="status-item">
 
+        <!-- ACCURACY -->
+        <div class="hero-status-item">
+
+            <div>
                 <span>Detection Accuracy</span>
-
-                <strong id="aiAccuracy">
-                    99.82%
-                </strong>
-
             </div>
 
+            <strong id="aiAccuracy">
+                99.82%
+            </strong>
 
-            <div class="status-item">
+        </div>
 
+
+        <!-- LAST UPDATED -->
+        <div class="hero-status-item">
+
+            <div>
                 <span>Last Updated</span>
-
-                <strong id="currentTime">
-                    Loading...
-                </strong>
-
             </div>
 
+            <strong id="currentTime">
+                Loading...
+            </strong>
 
-            <div class="status-item">
+        </div>
 
+
+        <!-- SYSTEM STATUS -->
+        <div class="hero-status-item">
+
+            <div>
                 <span>System Status</span>
-
-                <strong class="online">
-                    Operational
-                </strong>
-
             </div>
+
+            <strong class="hero-operational">
+                <span class="status-check">
+                    ●
+                </span>
+                Operational
+            </strong>
 
         </div>
 
     </div>
 
-</div>
+</section>
 
 <!-- =====================================================
      POTENTIAL FRAUD DETECTION
@@ -861,6 +887,7 @@ FOOTER
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/dashboard.js"></script>
+
 
 {% endblock %}
 

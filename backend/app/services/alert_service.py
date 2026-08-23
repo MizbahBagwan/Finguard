@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.alert import Alert
+from backend.app.models.alert import Alert
 
 
 def create_alert(

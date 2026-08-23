@@ -5,7 +5,7 @@ import os
 import shutil
 import uuid
 
-from app.services.ocr_service import (
+from backend.app.services.ocr_service import (
     extract_text,
     analyze_text
 )

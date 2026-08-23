@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from datetime import datetime
 
-from app.database.connection import Base
+from backend.app.database.connection import Base
 
 
 class TransactionHistory(Base):

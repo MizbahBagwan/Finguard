@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from app.models.financial import FinancialTransactionDB
+from backend.app.models.financial import FinancialTransactionDB
 
 
 def get_financial_summary(db: Session):

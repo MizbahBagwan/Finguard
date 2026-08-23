@@ -12,6 +12,12 @@ Transactions | FinGuard AI
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<!-- FinGuard AI Global Theme -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/theme.css') }}"
+>
+
 {% endblock %}
 
 
@@ -28,41 +34,65 @@ HEADER
      SAME THEME AS DASHBOARD
 ========================================= -->
 
-<div class="transaction-hero">
-    <div class="hero-left">
+<!-- =========================================================
+     PREMIUM TRANSACTION HERO
+========================================================= -->
 
-        <span class="hero-tag">
+<section class="transaction-hero-new">
+
+    <!-- LEFT CONTENT -->
+    <div class="transaction-hero-content">
+
+        <div class="transaction-badge">
+            <span class="badge-dot"></span>
             <i class="fa-solid fa-shield-halved"></i>
-            AI Protection Active
-        </span>
+            AI PROTECTION ACTIVE
+        </div>
 
         <h1>
-            Transaction
-            <span>Dashboard</span>
+            Monitor Your
+            <span>Transactions</span>
         </h1>
 
         <p>
-            Monitor every financial transaction in real-time
-            using FinGuard AI Fraud Detection Engine.
+            Track, analyze and protect every financial transaction
+            with FinGuard AI's real-time fraud detection engine.
         </p>
 
-        <div class="hero-buttons">
+        <div class="transaction-hero-actions">
 
             <a href="/add-transaction"
-               class="primary-btn">
+               class="transaction-primary-action">
 
-                <i class="fa-solid fa-plus"></i>
-                Add Transaction
+                <span class="action-icon">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+
+                <span>
+                    <strong>Add Transaction</strong>
+                    <small>Record a new transaction</small>
+                </span>
+
+                <i class="fa-solid fa-arrow-right action-arrow"></i>
 
             </a>
 
+
             <button
                 type="button"
-                class="secondary-btn"
-                id="openTransactionFilter">
+                id="openTransactionFilter"
+                class="transaction-secondary-action">
 
-                <i class="fa-solid fa-filter"></i>
-                Apply Filter
+                <span class="action-icon">
+                    <i class="fa-solid fa-filter"></i>
+                </span>
+
+                <span>
+                    <strong>Filter Transactions</strong>
+                    <small>Find specific activity</small>
+                </span>
+
+                <i class="fa-solid fa-chevron-right action-arrow"></i>
 
             </button>
 
@@ -71,54 +101,79 @@ HEADER
     </div>
 
 
-    <div class="hero-right">
+    <!-- RIGHT AI PANEL -->
+    <div class="transaction-ai-panel">
 
-        <div class="status-card">
+        <div class="ai-panel-header">
 
-            <div class="status-top">
+            <div class="ai-status">
+
+                <span class="ai-online-dot"></span>
 
                 <div>
-                    <span class="status-dot"></span>
-                    AI Engine Online
+                    <strong>AI Engine</strong>
+                    <small>Online & Monitoring</small>
                 </div>
 
-                <span class="ai-live-badge">
-                    LIVE
+            </div>
+
+            <span class="ai-live">
+                LIVE
+            </span>
+
+        </div>
+
+
+        <div class="ai-main-status">
+
+            <div class="ai-main-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div class="ai-main-content">
+
+                <span class="ai-label">
+                    FRAUD PROTECTION
                 </span>
 
-            </div>
+                <h3>
+                    Detection Active
+                </h3>
 
-
-            <div class="transaction-ai-status">
-
-                <div class="ai-shield">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-
-                <div>
-
-                    <strong>
-                        Fraud Detection Active
-                    </strong>
-
-                    <span>
-                        Real-time transaction monitoring
-                    </span>
-
-                </div>
+                <p>
+                    Transactions are being monitored
+                    in real-time.
+                </p>
 
             </div>
 
+        </div>
 
-            <div class="status-footer">
+
+        <div class="ai-metrics">
+
+            <div class="ai-metric">
+
+                <span class="metric-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </span>
 
                 <div>
-                    <span>AI Monitoring</span>
+                    <small>Monitoring</small>
                     <strong>ACTIVE</strong>
                 </div>
 
+            </div>
+
+
+            <div class="ai-metric">
+
+                <span class="metric-icon blue">
+                    <i class="fa-solid fa-lock"></i>
+                </span>
+
                 <div>
-                    <span>Protection</span>
+                    <small>Protection</small>
                     <strong>ENABLED</strong>
                 </div>
 
@@ -128,8 +183,7 @@ HEADER
 
     </div>
 
-</div>
-
+</section>
 
 
 <!-- =========================================

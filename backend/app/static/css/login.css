@@ -1,917 +1,1102 @@
-/* ==========================================
-   FinGuard AI Login Page
-   Part 2A - Base Layout & Background
-========================================== */
+/* =========================================================
+   FINGUARD AI — LOGIN PAGE
+   PREMIUM WHITE + NAVY
+   TIMES NEW ROMAN
+========================================================= */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-:root{
-
-    --bg:#07111f;
-    --bg2:#0d1b2a;
-
-    --card:rgba(17,25,40,.75);
-
-    --primary:#2563eb;
-    --secondary:#06b6d4;
-    --purple:#7c3aed;
-
-    --white:#ffffff;
-
-    --text:#e5e7eb;
-
-    --muted:#94a3b8;
-
-    --border:rgba(255,255,255,.08);
-
-    --shadow:0 25px 60px rgba(0,0,0,.35);
-
+html {
+    scroll-behavior: smooth;
 }
 
-body{
+body,
+button,
+input,
+label,
+a,
+h1,
+h2,
+h3,
+p,
+span,
+div {
+    font-family: "Times New Roman", Times, serif !important;
+}
 
-    font-family:'Inter',sans-serif;
-
-    background:linear-gradient(135deg,#081221,#0c1d34,#081221);
-
-    color:var(--white);
-
-    overflow:hidden;
-
-    min-height:100vh;
-
+body {
+    min-height: 100vh;
+    background: #f5f7fb;
+    color: #0b1f3a;
+    overflow-x: hidden;
 }
 
 
-/* Background */
+/* =========================================================
+   BACKGROUND
+========================================================= */
 
-.background{
-
-    position:fixed;
-
-    inset:0;
-
-    overflow:hidden;
-
-    z-index:-1;
-
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f7f9fc 55%,
+            #eef3f9 100%
+        );
 }
 
-.gradient{
-
-    position:absolute;
-
-    border-radius:50%;
-
-    filter:blur(90px);
-
-    opacity:.45;
-
-    animation:float 12s ease-in-out infinite;
-
+.gradient {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
 }
 
-.gradient.one{
-
-    width:320px;
-
-    height:320px;
-
-    background:#2563eb;
-
-    left:-80px;
-
-    top:-80px;
-
+.gradient.one {
+    width: 420px;
+    height: 420px;
+    top: -180px;
+    left: -150px;
+    background: rgba(37, 99, 235, 0.08);
 }
 
-.gradient.two{
-
-    width:380px;
-
-    height:380px;
-
-    background:#06b6d4;
-
-    right:-120px;
-
-    top:120px;
-
+.gradient.two {
+    width: 360px;
+    height: 360px;
+    right: -140px;
+    bottom: -130px;
+    background: rgba(11, 31, 58, 0.08);
 }
 
-.gradient.three{
-
-    width:300px;
-
-    height:300px;
-
-    background:#7c3aed;
-
-    bottom:-100px;
-
-    left:35%;
-
-}
-
-@keyframes float{
-
-    0%{
-
-        transform:translateY(0) scale(1);
-
-    }
-
-    50%{
-
-        transform:translateY(-30px) scale(1.08);
-
-    }
-
-    100%{
-
-        transform:translateY(0);
-
-    }
-
+.gradient.three {
+    width: 250px;
+    height: 250px;
+    top: 40%;
+    left: 45%;
+    background: rgba(59, 130, 246, 0.035);
 }
 
 
-/* Main Layout */
+/* =========================================================
+   PAGE CONTAINER
+========================================================= */
 
-.page-container{
+.page-container {
+    width: 100%;
+    min-height: 100vh;
 
-    width:100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(430px, 520px);
 
-    min-height:100vh;
+    align-items: center;
 
-    display:grid;
-
-    grid-template-columns:1fr 520px;
-
-    align-items:center;
-
-    padding:60px;
-
-    gap:60px;
-
+    padding: 45px 7%;
+    gap: 80px;
 }
 
 
-/* Left Panel */
+/* =========================================================
+   LEFT PANEL
+========================================================= */
 
-.left-panel{
-
-    max-width:650px;
-
-}
-
-.brand{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:18px;
-
-    margin-bottom:35px;
-
-}
-
-.logo{
-
-    width:78px;
-
-    height:78px;
-
-    border-radius:22px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
-
-    box-shadow:0 0 40px rgba(37,99,235,.45);
-
-    font-size:34px;
-
-}
-
-.brand h1{
-
-    font-size:44px;
-
-    font-weight:800;
-
-    letter-spacing:.5px;
-
-}
-
-.brand span{
-
-    color:var(--secondary);
-
-}
-
-.left-panel h2{
-
-    font-size:40px;
-
-    line-height:1.25;
-
-    margin-bottom:20px;
-
-}
-
-.left-panel p{
-
-    font-size:18px;
-
-    color:var(--muted);
-
-    line-height:1.8;
-
-    margin-bottom:40px;
-
+.left-panel {
+    max-width: 680px;
+    padding: 30px 0;
 }
 
 
-/* Feature List */
+/* =========================================================
+   BRAND
+========================================================= */
 
-.feature-list{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:18px;
-
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
 }
 
-.feature{
+.logo {
+    width: 62px;
+    height: 62px;
 
-    display:flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    align-items:center;
+    background: #0b1f3a;
+    color: #ffffff;
 
-    gap:16px;
+    border-radius: 17px;
 
-    padding:18px 22px;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.06);
-
-    backdrop-filter:blur(15px);
-
-    transition:.35s;
-
-}
-
-.feature:hover{
-
-    transform:translateX(10px);
-
-    background:rgba(37,99,235,.12);
-
-    border-color:rgba(37,99,235,.4);
-
-}
-
-.feature i{
-
-    color:#10b981;
-
-    font-size:20px;
-
-}
-
-.feature span{
-
-    font-size:17px;
-
-    font-weight:600;
-
-}
-
-
-/* Login Panel */
-
-.login-panel{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-
-/* Glass Card */
-
-.login-card{
-
-    width:100%;
-
-    max-width:470px;
-
-    padding:45px;
-
-    border-radius:28px;
-
-    background:rgba(17,25,40,.72);
-
-    backdrop-filter:blur(22px);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    box-shadow:var(--shadow);
-
-}
-/* ==========================================
-   FinGuard AI Login Page
-   Part 2B - Form, Buttons & Effects
-========================================== */
-
-/* Card Header */
-
-.card-top{
-    text-align:center;
-    margin-bottom:35px;
-}
-
-.card-top h2{
-    font-size:32px;
-    font-weight:800;
-    color:var(--white);
-    margin-bottom:10px;
-}
-
-.card-top p{
-    color:var(--muted);
-    font-size:15px;
-    line-height:1.6;
-}
-
-
-/* Input Group */
-
-.input-group{
-    margin-bottom:22px;
-}
-
-.input-group label{
-    display:block;
-    margin-bottom:10px;
-    font-size:14px;
-    font-weight:600;
-    color:var(--text);
-}
-
-.input-box{
-    position:relative;
-    display:flex;
-    align-items:center;
-}
-
-.input-box i:first-child{
-    position:absolute;
-    left:18px;
-    color:var(--muted);
-    font-size:16px;
-}
-
-.input-box input{
-    width:100%;
-    height:58px;
-    padding:0 50px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.05);
-    color:var(--white);
-    font-size:15px;
-    outline:none;
-    transition:.35s;
-}
-
-.input-box input::placeholder{
-    color:#7b8798;
-}
-
-.input-box input:focus{
-    border-color:var(--secondary);
-    box-shadow:0 0 20px rgba(6,182,212,.25);
-    background:rgba(255,255,255,.08);
-}
-
-#togglePassword{
-    position:absolute;
-    right:18px;
-    cursor:pointer;
-    color:var(--muted);
-    transition:.3s;
-}
-
-#togglePassword:hover{
-    color:var(--secondary);
-}
-
-
-/* Remember Me */
-
-.options{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:10px 0 28px;
-    font-size:14px;
-}
-
-.options label{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--muted);
-    cursor:pointer;
-}
-
-.options input[type="checkbox"]{
-    width:16px;
-    height:16px;
-    accent-color:var(--primary);
-}
-
-.options a{
-    color:var(--secondary);
-    text-decoration:none;
-    transition:.3s;
-}
-
-.options a:hover{
-    color:#67e8f9;
-}
-
-
-/* Login Button */
-
-.login-btn{
-    width:100%;
-    height:58px;
-    border:none;
-    border-radius:15px;
-    background:linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary)
-    );
-    color:white;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.35s;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-}
-
-.login-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 18px 35px rgba(37,99,235,.35);
-}
-
-
-/* Divider */
-
-.divider{
-    position:relative;
-    text-align:center;
-    margin:30px 0;
-}
-
-.divider::before{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:0;
-    width:100%;
-    height:1px;
-    background:rgba(255,255,255,.08);
-}
-
-.divider span{
-    position:relative;
-    background:rgba(17,25,40,.95);
-    padding:0 18px;
-    color:var(--muted);
-    font-size:13px;
-}
-
-
-/* Google Button */
-
-.google-btn{
-    width:100%;
-    height:56px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.05);
-    color:var(--white);
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-    transition:.35s;
-}
-
-.google-btn i{
-    color:#EA4335;
-    font-size:20px;
-}
-
-.google-btn:hover{
-    background:rgba(255,255,255,.08);
-    border-color:var(--secondary);
-}
-
-
-/* Register */
-
-.register-link{
-    margin-top:28px;
-    text-align:center;
-    color:var(--muted);
-    font-size:15px;
-}
-
-.register-link a{
-    color:var(--secondary);
-    text-decoration:none;
-    font-weight:700;
-    margin-left:5px;
-}
-
-.register-link a:hover{
-    color:#67e8f9;
-}
-
-
-/* Smooth Animation */
-
-.login-card{
-    animation:fadeUp .8s ease;
-}
-
-@keyframes fadeUp{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(40px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-/* ==========================================
-   FinGuard AI Login Page
-   Part 2C - Responsive & Premium Effects
-========================================== */
-
-/* Button Active Effect */
-
-.login-btn:active,
-.google-btn:active{
-    transform:scale(0.98);
-}
-
-/* Input Hover */
-
-.input-box:hover input{
-    border-color:rgba(37,99,235,.4);
-}
-
-/* Logo Animation */
-
-.logo{
-    animation:logoFloat 4s ease-in-out infinite;
-}
-
-@keyframes logoFloat{
-
-    0%{
-        transform:translateY(0px);
-    }
-
-    50%{
-        transform:translateY(-8px);
-    }
-
-    100%{
-        transform:translateY(0px);
-    }
-
-}
-
-/* Card Hover */
-
-.login-card:hover{
-
-    transform:translateY(-6px);
-
-    transition:.4s;
+    font-size: 27px;
 
     box-shadow:
-        0 30px 60px rgba(0,0,0,.45),
-        0 0 40px rgba(37,99,235,.15);
+        0 12px 28px rgba(11, 31, 58, 0.18);
+
+    border: 1px solid #18375d;
+}
+
+.brand h1 {
+    font-size: 35px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: #0b1f3a;
+}
+
+.brand h1 span {
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.left-panel h2 {
+    max-width: 650px;
+
+    font-size: clamp(38px, 4vw, 60px);
+    line-height: 1.08;
+
+    font-weight: 900;
+    letter-spacing: -1.5px;
+
+    color: #0b1f3a;
+
+    margin-bottom: 24px;
+}
+
+.left-panel > p {
+    max-width: 600px;
+
+    font-size: 18px;
+    line-height: 1.75;
+
+    font-weight: 500;
+
+    color: #52637a;
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================================================
+   FEATURE LIST
+========================================================= */
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #243b57;
+}
+
+.feature i {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eaf2ff;
+    color: #2563eb;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   RIGHT LOGIN PANEL
+========================================================= */
+
+.login-panel {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card {
+    width: 100%;
+
+    padding: 42px 40px;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e7ef;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 55px rgba(11, 31, 58, 0.10);
+
+    position: relative;
+}
+
+
+/* subtle top line */
+
+.login-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 40px;
+    right: 40px;
+
+    height: 3px;
+
+    background: #0b1f3a;
+
+    border-radius: 0 0 10px 10px;
+}
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.card-top {
+    margin-bottom: 30px;
+}
+
+.card-top h2 {
+    margin: 0 0 8px;
+
+    font-size: 32px;
+    line-height: 1.2;
+
+    font-weight: 900;
+
+    color: #0b1f3a;
+}
+
+.card-top p {
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: #718096;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.input-group {
+    margin-bottom: 21px;
+}
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    color: #263b55;
+}
+
+
+/* =========================================================
+   INPUT BOX
+========================================================= */
+
+.input-box {
+    width: 100%;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #d7e0ea;
+
+    border-radius: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.input-box > i {
+    width: 18px;
+
+    color: #6b7d93;
+
+    font-size: 15px;
+
+    flex-shrink: 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #0b1f3a;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.input-box input::placeholder {
+    color: #9aa8b8;
+    font-weight: 500;
+}
+
+.input-box:focus-within {
+    border-color: #2563eb;
+
+    background: #fbfdff;
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.09);
+}
+
+.input-box:focus-within > i {
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+#togglePassword {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    color: #7b899b;
+
+    border-radius: 8px;
+
+    flex-shrink: 0;
+
+    transition: 0.2s ease;
+}
+
+#togglePassword:hover {
+    background: #f1f5f9;
+    color: #0b1f3a;
+}
+
+#togglePassword i {
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin: 5px 0 25px;
+
+    font-size: 13px;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #52637a;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.options input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+
+    accent-color: #0b1f3a;
+
+    cursor: pointer;
+}
+
+.options a {
+    color: #2563eb;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+.options a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-btn {
+    width: 100%;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #0b1f3a;
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 22px rgba(11, 31, 58, 0.17);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.login-btn i {
+    font-size: 15px;
+}
+
+.login-btn:hover {
+    background: #142d4c;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 28px rgba(11, 31, 58, 0.22);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.divider {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin: 25px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+
+    height: 1px;
+
+    flex: 1;
+
+    background: #e3e9f1;
+}
+
+.divider span {
+    font-size: 12px;
+    font-weight: 800;
+
+    color: #94a1b1;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   GOOGLE BUTTON
+========================================================= */
+
+.google-btn {
+    width: 100%;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    background: #ffffff;
+
+    border: 1px solid #d7e0ea;
+
+    border-radius: 12px;
+
+    color: #263b55;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.google-btn i {
+    color: #4285f4;
+
+    font-size: 16px;
+}
+
+.google-btn:hover {
+    background: #f8fafc;
+
+    border-color: #bfcbd9;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+.register-link {
+    margin-top: 25px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    color: #718096;
+
+    font-weight: 500;
+}
+
+.register-link a {
+    margin-left: 4px;
+
+    color: #2563eb;
+
+    text-decoration: none;
+
+    font-weight: 800;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   RESPONSIVE — 1100px
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .page-container {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(390px, 460px);
+
+        gap: 45px;
+
+        padding: 40px 5%;
+    }
+
+    .left-panel h2 {
+        font-size: 45px;
+    }
 
 }
 
-/* Custom Scrollbar */
 
-::-webkit-scrollbar{
-    width:10px;
-}
+/* =========================================================
+   RESPONSIVE — 850px
+========================================================= */
 
-::-webkit-scrollbar-track{
-    background:#081221;
-}
+@media (max-width: 850px) {
 
-::-webkit-scrollbar-thumb{
-    background:#2563eb;
-    border-radius:20px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-    background:#3b82f6;
-}
-
-/* Selection */
-
-::selection{
-    background:#2563eb;
-    color:#fff;
-}
-
-/* Focus Ring */
-
-button:focus,
-input:focus{
-    outline:none;
-}
-
-/* Small Laptop */
-
-@media (max-width:1200px){
-
-    .page-container{
-
-        grid-template-columns:1fr 460px;
-
-        gap:40px;
-
-        padding:40px;
-
+    body {
+        overflow-y: auto;
     }
 
-    .brand h1{
+    .page-container {
+        min-height: 100vh;
 
-        font-size:38px;
+        grid-template-columns: 1fr;
 
+        gap: 20px;
+
+        padding: 35px 25px;
     }
 
-    .left-panel h2{
+    .left-panel {
+        max-width: 700px;
+        margin: 0 auto;
 
-        font-size:34px;
-
+        text-align: center;
     }
 
-}
+    .brand {
+        justify-content: center;
 
-/* Tablet */
-
-@media (max-width:992px){
-
-    body{
-
-        overflow:auto;
-
+        margin-bottom: 30px;
     }
 
-    .page-container{
-
-        grid-template-columns:1fr;
-
-        padding:40px 25px;
-
-        gap:50px;
-
+    .left-panel h2 {
+        font-size: 42px;
     }
 
-    .left-panel{
-
-        text-align:center;
-
-        max-width:100%;
-
+    .left-panel > p {
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .brand{
+    .feature-list {
+        width: fit-content;
+        margin: 0 auto;
 
-        justify-content:center;
-
+        text-align: left;
     }
 
-    .feature-list{
+    .login-panel {
+        max-width: 520px;
+        margin: 0 auto;
 
-        max-width:550px;
-
-        margin:auto;
-
-    }
-
-    .login-panel{
-
-        width:100%;
-
+        width: 100%;
     }
 
 }
 
-/* Mobile */
 
-@media (max-width:768px){
+/* =========================================================
+   RESPONSIVE — 550px
+========================================================= */
 
-    .left-panel{
+@media (max-width: 550px) {
 
-        display:none;
-
+    .page-container {
+        padding: 25px 15px 35px;
     }
 
-    .page-container{
-
-        display:flex;
-
-        justify-content:center;
-
-        align-items:center;
-
-        min-height:100vh;
-
-        padding:20px;
-
+    .left-panel {
+        padding: 10px 0;
     }
 
-    .login-card{
-
-        padding:30px;
-
-        border-radius:22px;
-
+    .brand {
+        gap: 12px;
     }
 
-    .card-top h2{
+    .logo {
+        width: 52px;
+        height: 52px;
 
-        font-size:28px;
+        border-radius: 14px;
 
+        font-size: 22px;
     }
 
-}
-
-/* Small Mobile */
-
-@media (max-width:480px){
-
-    .login-card{
-
-        padding:24px;
-
+    .brand h1 {
+        font-size: 29px;
     }
 
-    .input-box input{
-
-        height:54px;
-
-        font-size:14px;
-
+    .left-panel h2 {
+        font-size: 34px;
+        letter-spacing: -0.8px;
     }
 
-    .login-btn,
-    .google-btn{
-
-        height:54px;
-
-        font-size:15px;
-
+    .left-panel > p {
+        font-size: 16px;
+        line-height: 1.65;
     }
 
-    .card-top h2{
+    .feature {
+        font-size: 14px;
+    }
 
-        font-size:24px;
+    .login-card {
+        padding: 35px 24px;
 
+        border-radius: 20px;
+    }
+
+    .login-card::before {
+        left: 25px;
+        right: 25px;
+    }
+
+    .card-top h2 {
+        font-size: 28px;
+    }
+
+    .options {
+        align-items: flex-start;
     }
 
 }
 
-/* Premium Glow */
 
-.login-card::before{
+/* =========================================================
+   RESPONSIVE — 380px
+========================================================= */
 
-    content:"";
+@media (max-width: 380px) {
 
-    position:absolute;
-
-    inset:-2px;
-
-    border-radius:30px;
-
-    padding:2px;
-
-    background:linear-gradient(
-        135deg,
-        rgba(37,99,235,.4),
-        rgba(6,182,212,.25),
-        rgba(124,58,237,.35)
-    );
-
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-
-    -webkit-mask-composite:xor;
-
-            mask-composite:exclude;
-
-    pointer-events:none;
-
-}
-
-.login-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-}
-
-/* Shine Animation */
-
-.login-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    top:-120%;
-
-    left:-40%;
-
-    width:60%;
-
-    height:250%;
-
-    transform:rotate(25deg);
-
-    background:linear-gradient(
-
-        transparent,
-
-        rgba(255,255,255,.08),
-
-        transparent
-
-    );
-
-    animation:shine 7s linear infinite;
-
-}
-
-@keyframes shine{
-
-    100%{
-
-        left:150%;
-
+    .page-container {
+        padding: 20px 12px;
     }
 
+    .left-panel h2 {
+        font-size: 30px;
+    }
+
+    .login-card {
+        padding: 30px 18px;
+    }
+
+    .card-top h2 {
+        font-size: 26px;
+    }
+
+    .options {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+}
+
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection {
+    background: #dbeafe;
+    color: #0b1f3a;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button,
+a,
+input {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   FONT AWESOME FALLBACK FIX
+========================================================= */
+
+.fa,
+.fas,
+.far,
+.fal,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-light,
+.fa-brands {
+    font-family:
+        "Font Awesome 6 Free",
+        "Font Awesome 6 Brands" !important;
+}
+
+.fas,
+.fa-solid {
+    font-weight: 900 !important;
+}
+
+.fab,
+.fa-brands {
+    font-weight: 400 !important;
+}
+/* =========================================================
+   FINGUARD AI — FINAL COMMON THEME OVERRIDE
+   ========================================================= */
+
+:root {
+    --finguard-navy: #071a33;
+    --finguard-navy-2: #0b2a52;
+    --finguard-white: #ffffff;
+    --finguard-bg: #f5f8fc;
+    --finguard-border: #dce4ee;
+}
+
+
+/* ---------- GLOBAL FONT ---------- */
+
+html,
+body,
+body * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+
+/* ---------- MAIN TEXT ---------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #071a33 !important;
+}
+
+
+/* ---------- MAIN NAVY ---------- */
+
+.landing-navbar,
+.navbar,
+.top-navbar,
+.main-navbar {
+    background: #ffffff !important;
+}
+
+
+/* ---------- NAVY BUTTONS ---------- */
+
+button,
+.login-btn,
+.hero-primary-btn,
+.nav-start,
+.cta-primary,
+.primary-btn,
+.primary-button,
+.btn-primary {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    border-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- BUTTON HOVER ---------- */
+
+button:hover,
+.login-btn:hover,
+.hero-primary-btn:hover,
+.nav-start:hover,
+.cta-primary:hover,
+.primary-btn:hover,
+.primary-button:hover,
+.btn-primary:hover {
+    background: #0b2a52 !important;
+    background-color: #0b2a52 !important;
+    border-color: #0b2a52 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- SECONDARY BUTTON ---------- */
+
+.hero-secondary-btn,
+.cta-secondary,
+.secondary-btn,
+.secondary-button {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #071a33 !important;
+    border: 1px solid #071a33 !important;
+}
+
+
+/* ---------- LOGO / ICON BOX ---------- */
+
+.logo,
+.logo-icon,
+.landing-logo-icon,
+.brand-icon,
+.mini-shield {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- GENERAL CARDS ---------- */
+
+.card,
+.login-card,
+.feature-card,
+.dashboard-card,
+.stat-card,
+.kpi-card,
+.panel,
+.analytics-card {
+    background: #ffffff !important;
+    border-color: #dce4ee !important;
+}
+
+
+/* ---------- INPUTS ---------- */
+
+input,
+textarea,
+select {
+    background: #ffffff !important;
+    color: #071a33 !important;
+    border-color: #dce4ee !important;
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #071a33 !important;
+    box-shadow: 0 0 0 3px rgba(7, 26, 51, 0.10) !important;
+}
+
+
+/* ---------- LINKS ---------- */
+
+a {
+    color: #071a33 !important;
+}
+
+
+/* ---------- BLUE TEXT ---------- */
+
+.blue-text,
+.primary-text,
+.brand-text {
+    color: #071a33 !important;
+}
+
+
+/* ---------- ACTIVE ---------- */
+
+.active,
+.active-link,
+.nav-link.active,
+.sidebar-link.active {
+    background: #071a33 !important;
+    background-color: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- ICONS ---------- */
+
+.fa,
+.fas,
+.far,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
+    /* DO NOT change Font Awesome font */
+}
+
+
+/* ---------- CHECK ICON ---------- */
+
+.check-icon {
+    background: #071a33 !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------- WHITE TEXT ON NAVY ---------- */
+
+.nav-start,
+.login-btn,
+.hero-primary-btn,
+.cta-primary {
+    color: #ffffff !important;
+}
+
+
+/* ---------- BORDER ---------- */
+
+hr {
+    border-color: #dce4ee !important;
+}
+
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar-thumb {
+    background: #071a33 !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #eef2f7 !important;
+}
+
+
+/* ---------- TEXT SELECTION ---------- */
+
+::selection {
+    background: #071a33 !important;
+    color: #ffffff !important;
 }

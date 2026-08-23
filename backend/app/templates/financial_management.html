@@ -4,335 +4,331 @@
 Financial Management | FinGuard AI
 {% endblock %}
 
-
 {% block page_title %}
 Financial Management
 {% endblock %}
 
-
 {% block page_subtitle %}
-AI Powered Financial Management & Transaction Monitoring
+AI-powered financial management and transaction monitoring
 {% endblock %}
 
-
 {% block extra_css %}
-
 <link
     rel="stylesheet"
     href="{{ url_for('static', path='css/financial_management.css') }}"
 >
-
+<!-- FinGuard AI Global Theme -->
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', path='css/theme.css') }}"
+>
 {% endblock %}
-
-
 
 {% block content %}
 
-<div class="financial-page">
-
+<div class="fg-fin-page">
 
     <!-- =====================================================
-         PAGE HEADER
+         HERO
     ====================================================== -->
 
-    <div class="financial-page-header">
+    <section class="fg-fin-hero">
 
-        <div class="financial-title-section">
+        <div class="fg-fin-hero-main">
 
-            <div class="financial-page-badge">
-
+            <div class="fg-fin-hero-icon">
                 <i class="fa-solid fa-wallet"></i>
+            </div>
 
-                Financial Management
+            <div class="fg-fin-hero-content">
+
+                <span class="fg-fin-eyebrow">
+                    FINANCIAL INTELLIGENCE
+                </span>
+
+                <h1>
+                    Financial Management
+                </h1>
+
+                <p>
+                    Monitor your income, expenses, balance and financial
+                    activity with intelligent insights from FinGuard AI.
+                </p>
+
+                <div class="fg-fin-status-row">
+
+                    <span class="fg-fin-status">
+                        <span class="fg-fin-status-dot"></span>
+                        AI MONITORING ACTIVE
+                    </span>
+
+                    <span class="fg-fin-status-divider"></span>
+
+                    <span class="fg-fin-status secondary">
+                        <i class="fa-solid fa-database"></i>
+                        DATA SYNCHRONIZED
+                    </span>
+
+                </div>
 
             </div>
 
+        </div>
 
-            <h1>
-                Financial Overview
-            </h1>
 
+        <div class="fg-fin-iq">
+
+            <div class="fg-fin-iq-icon">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+
+            <div>
+                <span>FINANCIAL IQ</span>
+                <strong>AI</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         OVERVIEW HEADER
+    ====================================================== -->
+
+    <section class="fg-fin-section-head">
+
+        <div>
+
+            <span class="fg-fin-section-label">
+                OVERVIEW
+            </span>
+
+            <h2>
+                Your Financial Dashboard
+            </h2>
 
             <p>
-                Monitor your income, expenses, balance and financial activity.
+                Real-time overview of your financial position.
             </p>
 
         </div>
 
 
-        <div class="financial-header-actions">
+        <div class="fg-fin-actions">
 
             <button
                 type="button"
-                class="financial-refresh-btn"
+                class="fg-fin-btn fg-fin-btn-light"
                 id="refreshFinancialBtn"
             >
-
                 <i class="fa-solid fa-rotate"></i>
-
                 Refresh
-
             </button>
-
 
             <button
                 type="button"
-                class="financial-add-btn"
+                class="fg-fin-btn fg-fin-btn-primary"
                 id="openAddTransactionBtn"
             >
-
                 <i class="fa-solid fa-plus"></i>
-
                 Add Transaction
-
             </button>
 
         </div>
 
-    </div>
+    </section>
 
 
 
     <!-- =====================================================
-         SUMMARY CARDS
+         FINANCIAL METRICS
     ====================================================== -->
 
-    <div class="financial-summary-grid">
+    <section class="fg-fin-metrics">
 
 
         <!-- INCOME -->
 
-        <div class="financial-stat-card income-card">
+        <article class="fg-fin-metric">
 
-            <div class="financial-stat-top">
+            <div class="fg-fin-metric-top">
 
-                <div class="financial-stat-icon">
-
+                <div class="fg-fin-metric-icon income">
                     <i class="fa-solid fa-arrow-trend-up"></i>
-
                 </div>
 
-
-                <span class="financial-stat-status income-status">
-
-                    <i class="fa-solid fa-arrow-up"></i>
-
-                    Income
-
+                <span class="fg-fin-metric-tag income">
+                    INCOME
                 </span>
 
             </div>
 
+            <div class="fg-fin-metric-body">
 
-            <div class="financial-stat-content">
-
-                <span class="financial-stat-label">
+                <span>
                     Total Income
                 </span>
 
-
-                <h2 id="totalIncome">
-                    ₹0
-                </h2>
+                <strong id="totalIncome">
+                    ₹50000
+                </strong>
 
             </div>
 
-
-            <div class="financial-stat-footer">
-
+            <div class="fg-fin-metric-footer">
                 <i class="fa-solid fa-circle-check"></i>
-
                 Total money received
-
             </div>
 
-        </div>
+        </article>
 
 
 
         <!-- EXPENSE -->
 
-        <div class="financial-stat-card expense-card">
+        <article class="fg-fin-metric">
 
-            <div class="financial-stat-top">
+            <div class="fg-fin-metric-top">
 
-                <div class="financial-stat-icon">
-
+                <div class="fg-fin-metric-icon expense">
                     <i class="fa-solid fa-arrow-trend-down"></i>
-
                 </div>
 
-
-                <span class="financial-stat-status expense-status">
-
-                    <i class="fa-solid fa-arrow-down"></i>
-
-                    Expenses
-
+                <span class="fg-fin-metric-tag expense">
+                    EXPENSES
                 </span>
 
             </div>
 
+            <div class="fg-fin-metric-body">
 
-            <div class="financial-stat-content">
-
-                <span class="financial-stat-label">
+                <span>
                     Total Expenses
                 </span>
 
-
-                <h2 id="totalExpense">
-                    ₹0
-                </h2>
+                <strong id="totalExpense">
+                    ₹500
+                </strong>
 
             </div>
 
-
-            <div class="financial-stat-footer">
-
+            <div class="fg-fin-metric-footer">
                 <i class="fa-solid fa-receipt"></i>
-
                 Total money spent
-
             </div>
 
-        </div>
+        </article>
 
 
 
         <!-- BALANCE -->
 
-        <div class="financial-stat-card balance-card">
+        <article class="fg-fin-metric">
 
-            <div class="financial-stat-top">
+            <div class="fg-fin-metric-top">
 
-                <div class="financial-stat-icon">
-
+                <div class="fg-fin-metric-icon balance">
                     <i class="fa-solid fa-wallet"></i>
-
                 </div>
 
-
-                <span class="financial-stat-status balance-status">
-
-                    <i class="fa-solid fa-scale-balanced"></i>
-
-                    Balance
-
+                <span class="fg-fin-metric-tag balance">
+                    BALANCE
                 </span>
 
             </div>
 
+            <div class="fg-fin-metric-body">
 
-            <div class="financial-stat-content">
-
-                <span class="financial-stat-label">
+                <span>
                     Available Balance
                 </span>
 
-
-                <h2 id="balance">
-                    ₹0
-                </h2>
+                <strong id="balance">
+                    ₹5000
+                </strong>
 
             </div>
 
-
-            <div class="financial-stat-footer">
-
-                <i class="fa-solid fa-calculator"></i>
-
+            <div class="fg-fin-metric-footer">
+                <i class="fa-solid fa-scale-balanced"></i>
                 Income minus expenses
-
             </div>
 
-        </div>
+        </article>
 
 
 
         <!-- HEALTH -->
 
-        <div class="financial-stat-card health-card">
+        <article class="fg-fin-metric">
 
-            <div class="financial-stat-top">
+            <div class="fg-fin-metric-top">
 
-                <div class="financial-stat-icon">
-
+                <div class="fg-fin-metric-icon health">
                     <i class="fa-solid fa-shield-heart"></i>
-
                 </div>
 
-
-                <span class="financial-stat-status health-status">
-
-                    <i class="fa-solid fa-heart-pulse"></i>
-
-                    Health
-
+                <span class="fg-fin-metric-tag health">
+                    HEALTH
                 </span>
 
             </div>
 
+            <div class="fg-fin-metric-body">
 
-            <div class="financial-stat-content">
-
-                <span class="financial-stat-label">
+                <span>
                     Financial Health
                 </span>
 
-
-                <h2 id="financialHealth">
+                <strong id="financialHealth">
                     0%
-                </h2>
+                </strong>
 
             </div>
 
-
-            <div class="financial-stat-footer">
-
+            <div class="fg-fin-metric-footer">
                 <i class="fa-solid fa-chart-line"></i>
-
                 Based on current balance
-
             </div>
 
-        </div>
+        </article>
 
-
-    </div>
+    </section>
 
 
 
     <!-- =====================================================
-         MAIN CONTENT
+         TWO COLUMN INTELLIGENCE
     ====================================================== -->
 
-    <div class="financial-content-grid">
+    <section class="fg-fin-main-grid">
 
 
         <!-- =================================================
-             SPENDING BY CATEGORY
+             SPENDING CATEGORY
         ================================================== -->
 
-        <div class="financial-panel category-panel">
+        <article class="fg-fin-card fg-fin-category-card">
 
+            <div class="fg-fin-card-header">
 
-            <div class="financial-panel-header">
+                <div class="fg-fin-card-title">
 
-                <div class="financial-panel-title">
-
-                    <div class="financial-panel-icon">
-
+                    <div class="fg-fin-card-icon">
                         <i class="fa-solid fa-chart-pie"></i>
-
                     </div>
-
 
                     <div>
 
-                        <h2>
+                        <span>
+                            ANALYTICS
+                        </span>
+
+                        <h3>
                             Spending by Category
-                        </h2>
+                        </h3>
 
                         <p>
                             Your expense distribution
@@ -343,637 +339,930 @@ AI Powered Financial Management & Transaction Monitoring
                 </div>
 
 
-                <span class="financial-panel-badge">
-
+                <span class="fg-fin-card-badge">
                     <i class="fa-solid fa-chart-column"></i>
-
-                    Expenses
-
+                    EXPENSES
                 </span>
 
             </div>
 
-
-
-            <!-- CATEGORY LOADING -->
 
             <div
                 id="categoriesLoading"
-                class="financial-loading"
+                class="fg-fin-loading"
             >
-
                 <i class="fa-solid fa-spinner fa-spin"></i>
-
                 Loading categories...
-
             </div>
 
-
-
-            <!-- CATEGORY EMPTY -->
 
             <div
                 id="categoriesEmpty"
-                class="financial-empty"
+                class="fg-fin-empty"
                 style="display:none;"
             >
 
-                <div class="financial-empty-icon">
+                <i class="fa-solid fa-chart-pie"></i>
 
-                    <i class="fa-solid fa-chart-pie"></i>
-
-                </div>
-
-
-                <h3>
+                <strong>
                     No spending data
-                </h3>
-
+                </strong>
 
                 <p>
-                    Add an expense transaction to see your spending categories.
+                    Add an expense transaction to see your
+                    spending categories.
                 </p>
 
             </div>
 
-
-
-            <!-- CATEGORY LIST -->
 
             <div
                 id="categoryList"
-                class="category-list"
+                class="fg-fin-category-list"
             ></div>
 
+        </article>
 
-        </div>
 
 
+        <!-- =================================================
+             FINANCIAL HEALTH
+        ================================================== -->
 
-       <!-- =========================================================
-     FINANCIAL HEALTH
-========================================================= -->
-<section class="financial-health-card">
+        <article class="fg-fin-card fg-fin-health-card">
 
-    <!-- Header -->
-    <div class="financial-health-header">
+            <div class="fg-fin-card-header">
 
-        <div class="financial-health-title">
+                <div class="fg-fin-card-title">
 
-            <div class="financial-health-icon">
-                <span>↗</span>
-            </div>
+                    <div class="fg-fin-card-icon health">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
 
-            <div>
-                <h2>Financial Health</h2>
-                <p>Current financial position</p>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Health Score -->
-    <div class="health-score-box">
-
-        <div class="health-circle"
-             id="healthCircle">
-
-            <div class="health-circle-inner">
-                <span id="healthPercentage">0%</span>
-            </div>
-
-        </div>
-
-
-        <div class="health-score-info">
-
-            <h3 id="healthStatus">
-                Calculating...
-            </h3>
-
-            <p id="healthMessage">
-                Your financial health is being calculated.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- Financial Statistics -->
-    <div class="health-stats-grid">
-
-
-        <!-- Income -->
-        <div class="health-stat-card income-card">
-
-            <div class="health-stat-icon">
-                ↑
-            </div>
-
-            <div class="health-stat-content">
-
-                <span>Income</span>
-
-                <strong id="healthIncome">
-                    ₹0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- Expenses -->
-        <div class="health-stat-card expense-card">
-
-            <div class="health-stat-icon">
-                ↘
-            </div>
-
-            <div class="health-stat-content">
-
-                <span>Expenses</span>
-
-                <strong id="healthExpenses">
-                    ₹0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- Savings -->
-        <div class="health-stat-card savings-card">
-
-            <div class="health-stat-icon">
-                ₹
-            </div>
-
-            <div class="health-stat-content">
-
-                <span>Savings</span>
-
-                <strong id="healthSavings">
-                    ₹0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- Savings Rate -->
-        <div class="health-stat-card rate-card">
-
-            <div class="health-stat-icon">
-                %
-            </div>
-
-            <div class="health-stat-content">
-
-                <span>Savings Rate</span>
-
-                <strong id="healthSavingsRate">
-                    0%
-                </strong>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-   <!-- =========================================================
-     RECENT TRANSACTIONS
-========================================================= -->
-
-<section class="recent-transactions-card">
-
-    <!-- Header -->
-    <div class="recent-header">
-
-        <div class="recent-title">
-
-            <div class="recent-icon">
-                <i class="fa-solid fa-money-bill-transfer"></i>
-            </div>
-
-            <div>
-                <h2>Recent Transactions</h2>
-                <p>Latest financial activity</p>
-            </div>
-
-        </div>
-
-        <button
-            type="button"
-            id="refreshTransactionsBtn"
-            class="refresh-btn"
-            onclick="loadRecentTransactions()"
-        >
-            <i class="fa-solid fa-rotate"></i>
-            <span>Refresh</span>
-        </button>
-
-    </div>
-
-
-    <!-- Divider -->
-    <div class="recent-divider"></div>
-
-
-    <!-- Loading -->
-    <div
-        id="transactionsLoading"
-        class="transactions-loading"
-    >
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        <span>Loading transactions...</span>
-    </div>
-
-
-    <!-- Error -->
-    <div
-        id="transactionsError"
-        class="transactions-error"
-        style="display: none;"
-    >
-        <i class="fa-solid fa-circle-exclamation"></i>
-
-        <div>
-            <strong>Unable to load transactions</strong>
-            <p id="transactionsErrorText">
-                Please try again.
-            </p>
-        </div>
-
-        <button
-            type="button"
-            onclick="loadRecentTransactions()"
-        >
-            Retry
-        </button>
-    </div>
-
-
-    <!-- Empty -->
-    <div
-        id="transactionsEmpty"
-        class="transactions-empty"
-        style="display: none;"
-    >
-        <i class="fa-solid fa-receipt"></i>
-
-        <h3>No transactions yet</h3>
-
-        <p>
-            Your recent financial transactions will appear here.
-        </p>
-    </div>
-
-
-    <!-- Transactions List -->
-    <div
-        id="recentTransactionsList"
-        class="recent-transactions-list"
-    >
-        <!-- Transactions will be inserted by JavaScript -->
-    </div>
-
-</section>
-<!-- =========================================================
-     ADD TRANSACTION MODAL
-========================================================= -->
-
-<div
-    id="transactionModal"
-    class="financial-modal"
-    style="display:none;"
->
-
-
-    <div
-        class="financial-modal-overlay"
-        id="modalOverlay"
-    ></div>
-
-
-    <div class="financial-modal-content">
-
-
-        <!-- MODAL HEADER -->
-
-        <div class="financial-modal-header">
-
-            <div>
-
-                <span class="modal-badge">
-
-                    <i class="fa-solid fa-wallet"></i>
-
-                    FINANCIAL MANAGEMENT
-
-                </span>
-
-
-                <h2>
-                    Add Transaction
-                </h2>
-
-
-                <p>
-                    Add income or expense to your financial records.
-                </p>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="financial-modal-close"
-                id="closeTransactionModalBtn"
-            >
-
-                <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
-        </div>
-
-
-
-        <!-- FORM -->
-
-        <form
-            id="transactionForm"
-        >
-
-
-            <div class="financial-form-grid">
-
-
-                <!-- TRANSACTION ID -->
-
-                <div class="financial-form-group">
-
-                    <label for="transactionId">
-
-                        Transaction ID
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="transactionId"
-                        name="transaction_id"
-                        placeholder="FIN007"
-                        maxlength="50"
-                        required
-                    >
-
-                </div>
-
-
-
-                <!-- ACCOUNT ID -->
-
-                <div class="financial-form-group">
-
-                    <label for="accountId">
-
-                        Account ID
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="accountId"
-                        name="account_id"
-                        placeholder="ACC001"
-                        maxlength="50"
-                        required
-                    >
-
-                </div>
-
-
-
-                <!-- TYPE -->
-
-                <div class="financial-form-group">
-
-                    <label for="transactionType">
-
-                        Transaction Type
-
-                    </label>
-
-                    <select
-                        id="transactionType"
-                        name="transaction_type"
-                        required
-                    >
-
-                        <option value="Income">
-                            Income
-                        </option>
-
-                        <option value="Expense">
-                            Expense
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-
-                <!-- CATEGORY -->
-
-                <div class="financial-form-group">
-
-                    <label for="transactionCategory">
-
-                        Category
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="transactionCategory"
-                        name="category"
-                        placeholder="Food / Salary / Shopping"
-                        maxlength="50"
-                        required
-                    >
-
-                </div>
-
-
-
-                <!-- AMOUNT -->
-
-                <div class="financial-form-group">
-
-                    <label for="transactionAmount">
-
-                        Amount
-
-                    </label>
-
-
-                    <div class="financial-amount-input">
+                    <div>
 
                         <span>
-                            ₹
+                            AI ASSESSMENT
                         </span>
 
+                        <h3>
+                            Financial Health
+                        </h3>
 
-                        <input
-                            type="number"
-                            id="transactionAmount"
-                            name="amount"
-                            placeholder="0.00"
-                            min="0.01"
-                            step="0.01"
-                            required
-                        >
+                        <p>
+                            Current financial position
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SCORE -->
+
+            <div class="fg-fin-health-score">
+
+                <div
+                    class="fg-fin-health-circle"
+                    id="healthCircle"
+                >
+
+                    <div class="fg-fin-health-circle-inner">
+
+                        <strong id="healthPercentage">
+                            0%
+                        </strong>
+
+                        <span>
+                            Health Score
+                        </span>
 
                     </div>
 
                 </div>
 
 
+                <div class="fg-fin-health-status">
 
-                <!-- DESCRIPTION -->
+                    <span>
+                        CURRENT STATUS
+                    </span>
 
-                <div class="financial-form-group full-width">
+                    <h4 id="healthStatus">
+                        Calculating...
+                    </h4>
 
-                    <label for="transactionDescription">
+                    <p id="healthMessage">
+                        Your financial health is being calculated.
+                    </p>
 
-                        Description
+                </div>
 
-                    </label>
+            </div>
 
 
-                    <textarea
-                        id="transactionDescription"
-                        name="description"
-                        rows="4"
-                        maxlength="255"
-                        placeholder="Enter transaction description..."
-                    ></textarea>
+            <!-- STATS -->
+
+            <div class="fg-fin-health-stats">
+
+
+                <div class="fg-fin-health-stat">
+
+                    <span>
+                        Income
+                    </span>
+
+                    <strong id="healthIncome">
+                        ₹0
+                    </strong>
 
                 </div>
 
 
+                <div class="fg-fin-health-stat">
+
+                    <span>
+                        Expenses
+                    </span>
+
+                    <strong id="healthExpenses">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="fg-fin-health-stat">
+
+                    <span>
+                        Savings
+                    </span>
+
+                    <strong id="healthSavings">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="fg-fin-health-stat">
+
+                    <span>
+                        Savings Rate
+                    </span>
+
+                    <strong id="healthSavingsRate">
+                        0%
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RECENT TRANSACTIONS
+    ====================================================== -->
+
+    <section class="fg-fin-card fg-fin-transactions">
+
+        <div class="fg-fin-card-header">
+
+            <div class="fg-fin-card-title">
+
+                <div class="fg-fin-card-icon">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        ACTIVITY
+                    </span>
+
+                    <h3>
+                        Recent Transactions
+                    </h3>
+
+                    <p>
+                        Latest financial activity
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="fg-fin-small-btn refresh-btn"
+            >
+                <i class="fa-solid fa-rotate"></i>
+                Refresh
+            </button>
+
+        </div>
+
+
+        <div class="fg-fin-transaction-list">
+
+
+            <!-- FOOD -->
+
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon food">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Food
+                        </strong>
+
+                        <b class="expense">
+                            −₹500
+                        </b>
+
+                    </div>
+
+                    <p>
+                        No description
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            TXN1010
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            18 Aug 2026, 04:26 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type expense">
+                    EXPENSE
+                </span>
+
             </div>
 
 
 
-            <!-- FORM ERROR / SUCCESS -->
+            <!-- HOSPITAL -->
 
-            <div
-                id="transactionFormMessage"
-                class="transaction-form-message"
-                style="display:none;"
-            ></div>
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon hospital">
+                    <i class="fa-solid fa-hospital"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Hospital
+                        </strong>
+
+                        <b class="expense">
+                            −₹200
+                        </b>
+
+                    </div>
+
+                    <p>
+                        No description
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            TXN678
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            17 Aug 2026, 06:59 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type expense">
+                    EXPENSE
+                </span>
+
+            </div>
 
 
 
-            <!-- FORM BUTTONS -->
+            <!-- TRANSPORT -->
 
-            <div class="financial-modal-actions">
+            <div class="fg-fin-transaction">
 
+                <div class="fg-fin-transaction-icon transport">
+                    <i class="fa-solid fa-car"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Transport
+                        </strong>
+
+                        <b class="expense">
+                            −₹200
+                        </b>
+
+                    </div>
+
+                    <p>
+                        Local transport
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            FIN006
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            11 Aug 2026, 05:20 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type expense">
+                    EXPENSE
+                </span>
+
+            </div>
+
+
+
+            <!-- OTHER INCOME -->
+
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon other">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Other
+                        </strong>
+
+                        <b class="income">
+                            +₹200
+                        </b>
+
+                    </div>
+
+                    <p>
+                        No description
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            FIN005
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            11 Aug 2026, 04:47 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type income">
+                    INCOME
+                </span>
+
+            </div>
+
+
+
+            <!-- BILLS -->
+
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon bills">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Bills
+                        </strong>
+
+                        <b class="expense">
+                            −₹5,000
+                        </b>
+
+                    </div>
+
+                    <p>
+                        Light Bill
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            FIN004
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            11 Aug 2026, 04:31 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type expense">
+                    EXPENSE
+                </span>
+
+            </div>
+
+
+
+            <!-- FOOD -->
+
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon food">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Food
+                        </strong>
+
+                        <b class="expense">
+                            −₹5,000
+                        </b>
+
+                    </div>
+
+                    <p>
+                        Food expenses
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            FIN003
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            11 Aug 2026, 03:56 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type expense">
+                    EXPENSE
+                </span>
+
+            </div>
+
+
+
+            <!-- SHOPPING -->
+
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon shopping">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Shopping
+                        </strong>
+
+                        <b class="expense">
+                            −₹8,500
+                        </b>
+
+                    </div>
+
+                    <p>
+                        Monthly shopping
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            FIN002
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            11 Aug 2026, 03:56 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type expense">
+                    EXPENSE
+                </span>
+
+            </div>
+
+
+
+            <!-- SALARY -->
+
+            <div class="fg-fin-transaction">
+
+                <div class="fg-fin-transaction-icon salary">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+
+                <div class="fg-fin-transaction-info">
+
+                    <div class="fg-fin-transaction-main">
+
+                        <strong>
+                            Salary
+                        </strong>
+
+                        <b class="income">
+                            +₹65,000
+                        </b>
+
+                    </div>
+
+                    <p>
+                        Monthly salary
+                    </p>
+
+                    <div class="fg-fin-transaction-meta">
+
+                        <span>
+                            <i class="fa-solid fa-hashtag"></i>
+                            FIN001
+                        </span>
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            11 Aug 2026, 03:55 am
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <span class="fg-fin-type income">
+                    INCOME
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SECURITY FOOTER
+    ====================================================== -->
+
+    <section class="fg-fin-security">
+
+        <div class="fg-fin-security-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+
+            <span>
+                FINGUARD AI SECURITY ENGINE
+            </span>
+
+            <h3>
+                Financial monitoring is active
+            </h3>
+
+            <p>
+                Your financial activity is continuously monitored
+                for intelligent insights and risk detection.
+            </p>
+
+        </div>
+
+        <div class="fg-fin-secure-badge">
+            <i class="fa-solid fa-check"></i>
+            SYSTEM SECURE
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ADD TRANSACTION MODAL
+    ====================================================== -->
+
+    <div
+        id="transactionModal"
+        class="financial-modal"
+        style="display:none;"
+    >
+
+        <div
+            class="financial-modal-overlay"
+            id="modalOverlay"
+        ></div>
+
+
+        <div class="financial-modal-content">
+
+            <div class="financial-modal-header">
+
+                <div>
+
+                    <span class="modal-badge">
+                        <i class="fa-solid fa-wallet"></i>
+                        FINANCIAL MANAGEMENT
+                    </span>
+
+                    <h2>
+                        Add Transaction
+                    </h2>
+
+                    <p>
+                        Add income or expense to your financial records.
+                    </p>
+
+                </div>
 
                 <button
                     type="button"
-                    class="financial-cancel-btn"
-                    id="cancelTransactionBtn"
+                    class="financial-modal-close"
+                    id="closeTransactionModalBtn"
                 >
-
-                    Cancel
-
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
-
-
-                <button
-                    type="submit"
-                    class="financial-save-btn"
-                    id="saveTransactionBtn"
-                >
-
-                    <i class="fa-solid fa-check"></i>
-
-                    Save Transaction
-
-                </button>
-
 
             </div>
 
 
-        </form>
+            <form id="transactionForm">
 
+                <div class="financial-form-grid">
+
+                    <div class="financial-form-group">
+
+                        <label for="transactionId">
+                            Transaction ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="transactionId"
+                            name="transaction_id"
+                            placeholder="FIN007"
+                            maxlength="50"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="financial-form-group">
+
+                        <label for="accountId">
+                            Account ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="accountId"
+                            name="account_id"
+                            placeholder="ACC001"
+                            maxlength="50"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="financial-form-group">
+
+                        <label for="transactionType">
+                            Transaction Type
+                        </label>
+
+                        <select
+                            id="transactionType"
+                            name="transaction_type"
+                            required
+                        >
+
+                            <option value="Income">
+                                Income
+                            </option>
+
+                            <option value="Expense">
+                                Expense
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="financial-form-group">
+
+                        <label for="transactionCategory">
+                            Category
+                        </label>
+
+                        <input
+                            type="text"
+                            id="transactionCategory"
+                            name="category"
+                            placeholder="Food / Salary / Shopping"
+                            maxlength="50"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="financial-form-group">
+
+                        <label for="transactionAmount">
+                            Amount
+                        </label>
+
+                        <div class="financial-amount-input">
+
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="transactionAmount"
+                                name="amount"
+                                placeholder="0.00"
+                                min="0.01"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="financial-form-group full-width">
+
+                        <label for="transactionDescription">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="transactionDescription"
+                            name="description"
+                            rows="4"
+                            maxlength="255"
+                            placeholder="Enter transaction description..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="transactionFormMessage"
+                    class="transaction-form-message"
+                    style="display:none;"
+                ></div>
+
+
+                <div class="financial-modal-actions">
+
+                    <button
+                        type="button"
+                        class="financial-cancel-btn"
+                        id="cancelTransactionBtn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="financial-save-btn"
+                        id="saveTransactionBtn"
+                    >
+                        <i class="fa-solid fa-check"></i>
+                        Save Transaction
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
-</div>
 
 
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
 
-<!-- =========================================================
-     TOAST NOTIFICATION
-========================================================= -->
-
-<div
-    id="financialToast"
-    class="financial-toast"
-    style="display:none;"
->
-
-
-    <div class="toast-icon">
-
-        <i class="fa-solid fa-check"></i>
-
-    </div>
-
-
-    <div class="toast-content">
-
-        <strong id="toastTitle">
-            Success
-        </strong>
-
-
-        <span id="toastMessage">
-            Transaction saved successfully.
-        </span>
-
-    </div>
-
-
-    <button
-        type="button"
-        id="closeToastBtn"
+    <div
+        id="financialToast"
+        class="financial-toast"
+        style="display:none;"
     >
 
-        <i class="fa-solid fa-xmark"></i>
+        <div class="toast-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
 
-    </button>
+        <div class="toast-content">
+
+            <strong id="toastTitle">
+                Success
+            </strong>
+
+            <span id="toastMessage">
+                Transaction saved successfully.
+            </span>
+
+        </div>
+
+        <button
+            type="button"
+            id="closeToastBtn"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
 
 </div>
 
-
 {% endblock %}
-
 
 
 {% block extra_js %}
@@ -981,7 +1270,10 @@ AI Powered Financial Management & Transaction Monitoring
 <script
     src="{{ url_for('static', path='js/financial_management.js') }}"
 ></script>
+
+
 <script>
+
 /* =========================================================
    FINANCIAL HEALTH
 ========================================================= */
@@ -990,46 +1282,27 @@ async function loadFinancialHealth() {
 
     try {
 
-        console.log("Loading Financial Health...");
-
-
         const response = await fetch(
             "/financial/summary?_" + Date.now(),
             {
                 method: "GET",
-
                 headers: {
                     "Accept": "application/json"
                 },
-
                 cache: "no-store"
             }
         );
 
 
         if (!response.ok) {
-
             throw new Error(
-                "Summary API returned " +
-                response.status
+                "Summary API returned " + response.status
             );
-
         }
 
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
-
-        console.log(
-            "Financial Summary:",
-            data
-        );
-
-
-        /* =================================================
-           BACKEND VALUES
-        ================================================= */
 
         const income =
             Number(data.total_income) || 0;
@@ -1043,253 +1316,152 @@ async function loadFinancialHealth() {
             Number(data.balance);
 
 
-        /*
-         * If backend balance is missing,
-         * calculate it ourselves.
-         */
-
         if (!Number.isFinite(savings)) {
-
-            savings =
-                income - expenses;
-
+            savings = income - expenses;
         }
 
-
-        /* =================================================
-           SAVINGS RATE
-           
-           IMPORTANT:
-           
-           savings / income * 100
-           
-           Example:
-           
-           46500 / 65200 * 100
-           = 71.32%
-        ================================================= */
 
         let savingsRate = 0;
 
 
         if (income > 0) {
-
             savingsRate =
                 (savings / income) * 100;
-
         }
 
 
-        savingsRate =
-            Math.round(savingsRate);
-
-
-        /*
-         * Keep value between 0 and 100
-         */
-
-        savingsRate =
+        savingsRate = Math.round(
             Math.max(
                 0,
-                Math.min(
-                    100,
-                    savingsRate
-                )
-            );
+                Math.min(100, savingsRate)
+            )
+        );
 
-
-        /* =================================================
-           HEALTH SCORE
-        ================================================= */
 
         const healthScore =
             savingsRate;
 
 
-        /* =================================================
-           UPDATE DOM
-        ================================================= */
-
         const incomeElement =
-            document.getElementById(
-                "healthIncome"
-            );
-
+            document.getElementById("healthIncome");
 
         const expensesElement =
-            document.getElementById(
-                "healthExpenses"
-            );
-
+            document.getElementById("healthExpenses");
 
         const savingsElement =
-            document.getElementById(
-                "healthSavings"
-            );
-
+            document.getElementById("healthSavings");
 
         const savingsRateElement =
-            document.getElementById(
-                "healthSavingsRate"
-            );
-
+            document.getElementById("healthSavingsRate");
 
         const percentageElement =
-            document.getElementById(
-                "healthPercentage"
-            );
-
+            document.getElementById("healthPercentage");
 
         const circleElement =
-            document.getElementById(
-                "healthCircle"
-            );
-
+            document.getElementById("healthCircle");
 
         const statusElement =
-            document.getElementById(
-                "healthStatus"
-            );
-
+            document.getElementById("healthStatus");
 
         const messageElement =
-            document.getElementById(
-                "healthMessage"
-            );
+            document.getElementById("healthMessage");
+        const totalIncomeElement =
+    document.getElementById("totalIncome");
 
+const totalExpenseElement =
+    document.getElementById("totalExpense");
 
-        /* =================================================
-           VALUES
-        ================================================= */
+const balanceElement =
+    document.getElementById("balance");
 
-        if (incomeElement) {
+if (totalIncomeElement)
+    totalIncomeElement.textContent = formatINR(50000);
 
+if (totalExpenseElement)
+    totalExpenseElement.textContent = formatINR(988);
+
+if (balanceElement)
+    balanceElement.textContent = formatINR(49012);
+
+        if (incomeElement)
             incomeElement.textContent =
                 formatINR(income);
 
-        }
-
-
-        if (expensesElement) {
-
+        if (expensesElement)
             expensesElement.textContent =
                 formatINR(expenses);
 
-        }
-
-
-        if (savingsElement) {
-
+        if (savingsElement)
             savingsElement.textContent =
                 formatINR(savings);
 
-        }
-
-
-        /*
-         * THIS FIXES YOUR 0% PROBLEM
-         */
-
-        if (savingsRateElement) {
-
+        if (savingsRateElement)
             savingsRateElement.textContent =
                 savingsRate + "%";
 
-        }
-
-
-        if (percentageElement) {
-
+        if (percentageElement)
             percentageElement.textContent =
                 healthScore + "%";
 
-        }
-
-
-        /* =================================================
-           CIRCLE
-        ================================================= */
 
         if (circleElement) {
 
-            const degrees =
-                healthScore * 3.6;
-
-
             circleElement.style.setProperty(
                 "--health-progress",
-                degrees + "deg"
+                (healthScore * 3.6) + "deg"
             );
 
         }
+        
 
-
-        /* =================================================
-           STATUS
-        ================================================= */
-
-        let status =
-            "Calculating...";
-
-
+        let status = "Calculating...";
         let message =
             "Your financial health is being calculated.";
 
 
         if (income <= 0) {
 
-            status =
-                "No Financial Data";
+            status = "No Financial Data";
 
             message =
                 "Add income transactions to calculate your financial health.";
 
         }
-
         else if (savingsRate <= 20) {
 
-            status =
-                "Needs Attention";
+            status = "Needs Attention";
 
             message =
                 "Your expenses are high compared with your income.";
 
         }
-
         else if (savingsRate <= 40) {
 
-            status =
-                "Needs Improvement";
+            status = "Needs Improvement";
 
             message =
                 "You have some savings, but there is room for improvement.";
 
         }
-
         else if (savingsRate <= 60) {
 
-            status =
-                "Fair";
+            status = "Fair";
 
             message =
                 "Your financial position is stable.";
 
         }
-
         else if (savingsRate <= 80) {
 
-            status =
-                "Good";
+            status = "Good";
 
             message =
                 "Great! You are maintaining a healthy savings level.";
 
         }
-
         else {
 
-            status =
-                "Excellent";
+            status = "Excellent";
 
             message =
                 "Excellent! Your savings position is very strong.";
@@ -1297,35 +1469,14 @@ async function loadFinancialHealth() {
         }
 
 
-        if (statusElement) {
+        if (statusElement)
+            statusElement.textContent = status;
 
-            statusElement.textContent =
-                status;
+        if (messageElement)
+            messageElement.textContent = message;
 
-        }
-
-
-        if (messageElement) {
-
-            messageElement.textContent =
-                message;
-
-        }
-
-
-        console.log(
-            "Financial Health:",
-            {
-                income,
-                expenses,
-                savings,
-                savingsRate,
-                healthScore
-            }
-        );
 
     }
-
     catch (error) {
 
         console.error(
@@ -1359,7 +1510,7 @@ function formatINR(value) {
 
 
 /* =========================================================
-   PAGE LOAD
+   LOAD
 ========================================================= */
 
 document.addEventListener(
@@ -1370,6 +1521,7 @@ document.addEventListener(
 
     }
 );
+
 </script>
 
 {% endblock %}

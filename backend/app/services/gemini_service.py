@@ -4,15 +4,19 @@ import re
 
 import google.generativeai as genai
 from dotenv import load_dotenv
-
-from app.config import GEMINI_MODEL
+from pathlib import Path
+from backend.app.config import GEMINI_MODEL
 
 
 # ============================================================
 # ENVIRONMENT
 # ============================================================
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parents[2]
+ENV_FILE = BASE_DIR / ".env"
+
+load_dotenv(ENV_FILE)
+#load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 

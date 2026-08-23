@@ -1,7 +1,7 @@
-from app.services.gemini_service import analyze_transaction
+from backend.app.services.gemini_service import analyze_transaction
 from pathlib import Path
 from datetime import datetime
-from app.services.gemini_service import analyze_transaction
+#from app.services.gemini_service import analyze_transaction
 
 from fastapi import FastAPI, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 
 from httpcore import request
 from fastapi.staticfiles import StaticFiles
-from app.models.reports import ReportDB
+from backend.app.models.reports import ReportDB
 from starlette.middleware.sessions import SessionMiddleware
 
 from sqlalchemy.orm import Session
@@ -18,18 +18,18 @@ from pydantic import BaseModel
 
 from dotenv import load_dotenv
 import google.generativeai as genai
-from app.routers import settings
+from backend.app.routers import settings
 from datetime import datetime
 from sqlalchemy import or_
-from app.services.log_services import create_transaction_log
-from app.database.graph import get_session
-from app.services.graph_service import create_transaction_graph
+from backend.app.services.log_services import create_transaction_log
+from backend.app.database.graph import get_session
+from backend.app.services.graph_service import create_transaction_graph
 
 
-from app.models.audit_log import AuditLog
-from app.services.audit_service import create_audit_log
-from app.models.transaction_history import TransactionHistory
-from app.services.history_service import create_history
+from backend.app.models.audit_log import AuditLog
+from backend.app.services.audit_service import create_audit_log
+from backend.app.models.transaction_history import TransactionHistory
+from backend.app.services.history_service import create_history
 
 
 from pathlib import Path
@@ -38,58 +38,58 @@ from datetime import datetime
 from fastapi import FastAPI, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
-from app.routers.financial import router as financial_router
+from backend.app.routers.financial import router as financial_router
 
-from app.database.connection import (
+from backend.app.database.connection import (
     Base,
     engine,
     get_db,
     SessionLocal
 )
-from app.routers import model_performance
+from backend.app.routers import model_performance
 
-from app.models.transaction import TransactionDB
-from app.models.transaction_log import TransactionLog
-from app.models.audit_log import AuditLog
-from app.models.transaction_history import TransactionHistory
+from backend.app.models.transaction import TransactionDB
+from backend.app.models.transaction_log import TransactionLog
+from backend.app.models.audit_log import AuditLog
+from backend.app.models.transaction_history import TransactionHistory
 
 # Models
-from app.models.user import User
-from app.models.investigation_db import InvestigationDB
+from backend.app.models.user import User
+from backend.app.models.investigation_db import InvestigationDB
 
 
 # Routers
-from app.routers.dashboard import router as dashboard_router
-from app.routers.chart import router as chart_router
-from app.routers import ocr
-from app.routers.reports import router as reports_router
-from app.routers import chart
+from backend.app.routers.dashboard import router as dashboard_router
+from backend.app.routers.chart import router as chart_router
+from backend.app.routers import ocr
+from backend.app.routers.reports import router as reports_router
+from backend.app.routers import chart
 
 
 # Services
-from app.services.security import (
+from backend.app.services.security import (
     hash_password,
     verify_password
 )
 
 
-from app.services.ml_service import predict_transaction
+from backend.app.services.ml_service import predict_transaction
 
-from app.services.report_service import (
+from backend.app.services.report_service import (
     generate_investigation_report
 )
 
-from app.services.graph_service import (
+from backend.app.services.graph_service import (
     analyze_transaction_graph
 )
 
 from pydantic import BaseModel
-from app.services.ai_service import model
+from backend.app.services.ai_service import model
 
 
-from app.fraud_engine import create_ai_report
+from backend.app.fraud_engine import create_ai_report
 from pydantic import BaseModel
-from app.services.graph_service import analyze_transaction_graph
+from backend.app.services.graph_service import analyze_transaction_graph
 
 load_dotenv()
 
@@ -101,33 +101,33 @@ load_dotenv()
 # ==========================
 # Services
 # ==========================
-from app.services.security import (
+from backend.app.services.security import (
     hash_password,
     verify_password
 )
 
 
 
-from app.services.ml_service import predict_transaction
+from backend.app.services.ml_service import predict_transaction
 
-from app.services.report_service import (
+from backend.app.services.report_service import (
     generate_investigation_report
 )
 
-from app.services.graph_service import (
+from backend.app.services.graph_service import (
     analyze_transaction_graph
 )
 
-from app.fraud_engine import create_ai_report
+from backend.app.fraud_engine import create_ai_report
 from fastapi import Form
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 import google.generativeai as genai
 import os
 
-from app.models.transaction import TransactionDB
-from app.services.alert_service import create_alert
-from app.routers.dashboard import router as dashboard_router
+from backend.app.models.transaction import TransactionDB
+from backend.app.services.alert_service import create_alert
+from backend.app.routers.dashboard import router as dashboard_router
 
 
 
@@ -335,12 +335,11 @@ class Transaction(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
-        "login.html",
+        "landing.html",
         {
             "request": request
         }
     )
-
 
 # =====================================================
 # LOGIN PAGE
@@ -635,13 +634,14 @@ async def add_transaction(
     transaction_type: str = Form(...),
     merchant_category: str = Form(...),
 
-    hour: int = Form(...),
+    #hour: int = Form(...),
     location_risk: int = Form(...),
 
-    device_trusted: str = Form(...),
-    failed_attempts: int = Form(...),
+    device_trusted: str = Form("false"),
+    failed_attempts: int = Form(0),
 
-    is_international: str = Form(...),
+   
+    is_international: str = Form("false"),
 
     notes: str = Form(""),
 
@@ -654,18 +654,12 @@ async def add_transaction(
         # ==============================
         # Convert Form Values For ML
         # ==============================
+        transaction_datetime = datetime.fromisoformat(time)
+        hour = transaction_datetime.hour
+        is_international = 1 if is_international.lower() == "true" else 0
+        device_trusted = 1 if device_trusted.lower() == "true" else 0
 
-        if is_international.lower() == "yes":
-            is_international = 1
-        else:
-            is_international = 0
-
-
-        if device_trusted.lower() == "trusted":
-            device_trusted = 1
-        else:
-            device_trusted = 0
-
+        
 
 
         # ==============================
@@ -1524,30 +1518,71 @@ async def run_ai_analysis(
         # SAVE REPORT
         # ==========================
 
-        ai_report = ReportDB(
+                # ==========================
+        # SAVE / UPDATE REPORT
+        # ==========================
 
-            transaction_id=str(transaction_id),
+        report_id = f"RPT-{transaction.transaction_id}"
 
-            # KEEP ML RESULT
-            prediction=ml_prediction,
-
-            fraud_probability=ml_fraud_probability,
-
-            risk_level=ml_risk_level,
-
-            risk_score=ml_risk_score,
-
-            # GEMINI ONLY EXPLAINS
-            reason=transaction.notes,
-
-            recommendation=transaction.recommendation
+        existing_report = (
+            db.query(ReportDB)
+            .filter(ReportDB.report_id == report_id)
+            .first()
         )
 
-        db.add(ai_report)
+        if existing_report:
+            # Existing report ko update karo
+            existing_report.name = "AI Transaction Investigation"
+            existing_report.title = f"AI Analysis - {transaction.transaction_id}"
+            existing_report.report_type = "fraud_investigation"
+            existing_report.status = "Completed"
+            existing_report.total_transactions = 1
+            existing_report.fraud_detected = (
+                1 if ml_prediction == "Fraud" else 0
+            )
+            existing_report.high_risk = (
+                1 if ml_risk_level == "High" else 0
+            )
+            existing_report.medium_risk = (
+                1 if ml_risk_level == "Medium" else 0
+            )
+            existing_report.safe_transactions = (
+                1 if ml_risk_level == "Low" else 0
+            )
+            existing_report.average_risk = float(ml_risk_score)
+            existing_report.include_ai = True
+            existing_report.include_charts = False
+            existing_report.ai_summary = transaction.notes
+
+            print("REPORT UPDATED:", report_id)
+
+        else:
+            # First run: new report create karo
+            ai_report = ReportDB(
+                report_id=report_id,
+                name="AI Transaction Investigation",
+                title=f"AI Analysis - {transaction.transaction_id}",
+                report_type="fraud_investigation",
+                status="Completed",
+                total_transactions=1,
+                fraud_detected=1 if ml_prediction == "Fraud" else 0,
+                high_risk=1 if ml_risk_level == "High" else 0,
+                medium_risk=1 if ml_risk_level == "Medium" else 0,
+                safe_transactions=1 if ml_risk_level == "Low" else 0,
+                average_risk=float(ml_risk_score),
+                include_ai=True,
+                include_charts=False,
+                ai_summary=transaction.notes
+            )
+
+            db.add(ai_report)
+
+            print("REPORT CREATED:", report_id)
 
         db.flush()
-
         db.commit()
+
+        db.refresh(transaction)
 
         db.refresh(transaction)
 
@@ -2054,8 +2089,8 @@ async def debug_routes():
 
     print("==============================")
 
-from app.models.transaction import TransactionDB
-from app.database.connection import SessionLocal
+from backend.app.models.transaction import TransactionDB
+from backend.app.database.connection import SessionLocal
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -2439,3 +2474,15 @@ async def get_model_performance():
         "f1_score": metadata.get("f1_score", 0),
         "roc_auc": metadata.get("roc_auc", 0)
     }
+
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+async def landing_page(request: Request):
+    return templates.TemplateResponse(
+        "landing.html",
+        {
+            "request": request
+        }
+    )

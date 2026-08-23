@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
 
-from app.models.transaction import TransactionDB
+from backend.app.models.transaction import TransactionDB
 
 
 

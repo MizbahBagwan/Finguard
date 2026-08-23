@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
 from pydantic import BaseModel
 
-from app.database.connection import get_db
-from app.models.financial import FinancialTransactionDB
+from backend.app.database.connection import get_db
+from backend.app.models.financial import FinancialTransactionDB
 
 
 # ============================================================
