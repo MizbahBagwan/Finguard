@@ -1343,45 +1343,44 @@ async def transaction_detail(
             status_code=404
         )
 
-    print("========== PAGE DATA ==========")
-    print("TRANSACTION ID:", transaction.transaction_id)
-    print("DB NOTES:", transaction.notes)
-    print("DB RECOMMENDATION:", transaction.recommendation)
-    print("================================")
+    shap_reasons = []
 
-    return templates.TemplateResponse(
-        "transaction_detail.html",
-        {
-            "request": request,
-            "transaction": transaction
-        }
-    )
+    try:
+        ml_result = predict_transaction({
+            "transaction_id": transaction.transaction_id,
+            "account_id": transaction.account_id,
+            "amount": transaction.amount,
+            "merchant": transaction.merchant,
+            "merchant_category": transaction.merchant_category,
+            "location": transaction.location,
+            "time": transaction.time,
+            "card_type": transaction.card_type,
+            "transaction_type": transaction.transaction_type,
+            "hour": transaction.hour,
+            "device_trusted": transaction.device_trusted,
+            "failed_attempts": transaction.failed_attempts,
+            "location_risk": transaction.location_risk,
+            "is_international": transaction.is_international
+        })
 
-
-    if transaction is None:
-        return HTMLResponse(
-            "Transaction not found",
-            status_code=404
+        shap_reasons = (
+            ml_result.get("shap_reasons")
+            or ml_result.get("explanations")
+            or []
         )
 
-
-    print("========== PAGE DATA ==========")
-    print("TRANSACTION ID:", transaction.id)
-    print("DB NOTES:", transaction.notes)
-    print("DB RECOMMENDATION:", transaction.recommendation)
-    print("================================")
-
+    except Exception as e:
+        print("SHAP DETAIL ERROR:", str(e))
+        shap_reasons = []
 
     return templates.TemplateResponse(
         "transaction_detail.html",
         {
             "request": request,
-            "transaction": transaction
+            "transaction": transaction,
+            "shap_reasons": shap_reasons
         }
     )
-
-
-
 # =====================================================
 # RUN AI ANALYSIS
 # =====================================================
@@ -1434,10 +1433,38 @@ async def run_ai_analysis(
         print("Risk Level:", ml_risk_level)
 
         # ==========================
+# GET SHAP EXPLANATIONS
+# ==========================
+
+        ml_result = predict_transaction({
+        "transaction_id": transaction.transaction_id,
+        "account_id": transaction.account_id,
+        "amount": transaction.amount,
+        "merchant": transaction.merchant,
+        "merchant_category": transaction.merchant_category,
+        "location": transaction.location,
+        "time": transaction.time,
+        "card_type": transaction.card_type,
+        "transaction_type": transaction.transaction_type,
+        "hour": transaction.hour,
+        "device_trusted": transaction.device_trusted,
+        "failed_attempts": transaction.failed_attempts,
+        "location_risk": transaction.location_risk,
+        "is_international": transaction.is_international
+        })
+
+        shap_reasons = ml_result.get("shap_reasons", [])
+
+        print("========== SHAP REASONS ==========")
+        print(shap_reasons)
+        print("===================================")
+
+        # ==========================
         # DATA FOR GEMINI
         # ==========================
 
         ai_input = {
+            "shap_reasons": getattr(transaction, "shap_reasons", None),
 
             "transaction_id": transaction.transaction_id,
             "account_id": transaction.account_id,
@@ -1483,6 +1510,34 @@ async def run_ai_analysis(
 
             "risk_level": ml_risk_level
         }
+        # =====================================================
+# GET SHAP EXPLANATION
+# =====================================================
+
+        shap_result = predict_transaction({
+        "transaction_id": transaction.transaction_id,
+        "account_id": transaction.account_id,
+        "amount": transaction.amount,
+        "merchant": transaction.merchant,
+        "merchant_category": transaction.merchant_category,
+        "location": transaction.location,
+        "time": transaction.time,
+        "card_type": transaction.card_type,
+        "transaction_type": transaction.transaction_type,
+        "hour": transaction.hour,
+        "device_trusted": transaction.device_trusted,
+        "failed_attempts": transaction.failed_attempts,
+        "location_risk": transaction.location_risk,
+        "is_international": transaction.is_international
+        })
+
+        shap_reasons = shap_result.get(
+        "shap_reasons",
+         []
+        )
+
+        print("========== SHAP FOR INVESTIGATION ==========")
+        print("SHAP REASONS:", shap_reasons)
 
         # ==========================
         # GEMINI AI EXPLANATION
@@ -1502,10 +1557,17 @@ async def run_ai_analysis(
             "Review the transaction manually."
         )
 
-        transaction.notes = result.get(
+        gemini_reason = result.get(
             "reason",
             "No detailed explanation was provided."
         )
+
+        transaction.notes = gemini_reason
+
+        transaction.recommendation = result.get(
+            "recommendation",
+            "Review the transaction manually."
+)
 
         print("========== NOTES DEBUG ==========")
         print("AI REASON:", transaction.notes)
