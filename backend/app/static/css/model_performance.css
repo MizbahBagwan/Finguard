@@ -1521,3 +1521,134 @@ a,
 .model-performance-page .mp-active-model strong {
     color: #ffffff !important;
 }
+/* MODEL PERFORMANCE HERO - DARK NAVY */
+
+.mp-hero {
+    background: #0b1f3a !important;
+    color: #ffffff !important;
+}
+
+/* All text inside hero white */
+.mp-hero h1,
+.mp-hero h2,
+.mp-hero h3,
+.mp-hero strong,
+.mp-hero p,
+.mp-hero span {
+    color: #ffffff !important;
+}
+
+/* Keep icon and active dot visible */
+.mp-live-dot,
+.mp-status.active > span {
+    background: #ffffff !important;
+}
+/* =========================================
+   SIDEBAR - DARK NAVY
+   TEXT WHITE + ICON BACKGROUND WHITE
+   ICON COLOR BLUE
+========================================= */
+
+.sidebar {
+    background: #0b1f3a !important;
+}
+
+/* Sidebar text white */
+.sidebar a,
+.sidebar span,
+.sidebar h1,
+.sidebar h2,
+.sidebar h3,
+.sidebar h4,
+.sidebar p,
+.sidebar strong {
+    color: #ffffff !important;
+}
+
+/* Icon box white */
+.sidebar .nav-icon,
+.sidebar .menu-icon,
+.sidebar .sidebar-icon,
+.sidebar a i {
+    color: #2563eb !important;
+}
+
+/* If your icons have a separate container */
+.sidebar .nav-icon,
+.sidebar .menu-icon,
+.sidebar .sidebar-icon {
+    background: #ffffff !important;
+    border-radius: 12px;
+}
+
+/* Active menu item */
+.sidebar .active,
+.sidebar a.active,
+.sidebar .nav-item.active {
+    background: rgba(37, 99, 235, 0.20) !important;
+    border: 1px solid rgba(96, 165, 250, 0.35) !important;
+    color: #ffffff !important;
+}
+
+/* Keep active icon background white and symbol blue */
+.sidebar .active .nav-icon,
+.sidebar a.active .nav-icon,
+.sidebar .nav-item.active .nav-icon {
+    background: #ffffff !important;
+}
+
+.sidebar .active i,
+.sidebar a.active i,
+.sidebar .nav-item.active i {
+    color: #2563eb !important;
+}
+.mp-hero {
+    background: #071a33 !important;
+}
+
+.mp-active-model {
+    background: #071a33 !important;
+    border-color: #1e3a5f !important;
+}
+/* ACTIVE MODEL CARD - WHITE BACKGROUND */
+
+.mp-active-model {
+    background: #ffffff !important;
+    border: none !important;
+}
+
+/* ACTIVE MODEL text */
+.mp-active-model span {
+    color: #64748b !important;
+}
+
+/* RandomForestClassifier */
+.mp-active-model h3 {
+    color: #071a33 !important;
+}
+
+/* Version and Status values */
+.mp-active-model strong {
+    color: #071a33 !important;
+}
+
+/* Online text */
+.mp-active-model .model-online {
+    color: #16a34a !important;
+}
+
+/* Online icon */
+.mp-active-model .model-online i {
+    color: #16a34a !important;
+}
+
+/* Divider */
+.mp-active-model .mp-model-divider {
+    background: #e2e8f0 !important;
+}
+
+/* Shield icon box */
+.mp-active-model .mp-model-icon {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+}

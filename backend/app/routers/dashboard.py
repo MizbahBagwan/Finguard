@@ -431,3 +431,24 @@ def potential_fraud_detection(
 ):
 
     return dashboard_service.get_potential_fraud_detection(db)
+
+@router.post("/financial/transactions")
+def create_transaction(transaction: TransactionCreate, db: Session = Depends(get_db)):
+
+    new_transaction = FinancialTransaction(
+        transaction_id=transaction.transaction_id,
+        account_id=transaction.account_id,
+        transaction_type=transaction.transaction_type,
+        category=transaction.category,
+        amount=transaction.amount,
+        description=transaction.description
+    )
+
+    db.add(new_transaction)
+    db.commit()
+    db.refresh(new_transaction)
+
+    return {
+        "success": True,
+        "message": "Transaction saved successfully"
+    }

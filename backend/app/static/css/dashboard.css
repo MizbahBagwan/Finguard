@@ -12764,3 +12764,276 @@ hr {
         0 18px 45px rgba(0, 10, 25, 0.28),
         inset 0 1px 0 rgba(255,255,255,0.035) !important;
 }
+/* =========================================================
+   HERO STATUS CARD - WHITE BACKGROUND
+========================================================= */
+
+.dashboard-hero .hero-status-card {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10) !important;
+
+    color: #111827;
+}
+
+/* Header text */
+.dashboard-hero .hero-status-card strong,
+.dashboard-hero .hero-status-card span,
+.dashboard-hero .hero-status-card small {
+    color: #111827;
+}
+
+/* AI Engine Online */
+.dashboard-hero .hero-engine strong {
+    color: #111827 !important;
+}
+
+.dashboard-hero .hero-engine small {
+    color: #64748b !important;
+}
+
+/* LIVE badge */
+.dashboard-hero .hero-live-badge {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    border: 1px solid #dbeafe;
+}
+
+/* Divider */
+.dashboard-hero .hero-status-divider {
+    background: #e5e7eb !important;
+}
+
+/* Status labels */
+.dashboard-hero .hero-status-item span {
+    color: #64748b !important;
+}
+
+/* Values */
+.dashboard-hero .hero-status-item strong {
+    color: #111827 !important;
+}
+
+/* Operational */
+.dashboard-hero .hero-operational {
+    color: #16a34a !important;
+}
+
+/* Green status dot */
+.dashboard-hero .status-check {
+    color: #22c55e !important;
+}
+/* =========================================================
+   HERO MAIN CONTENT - BIGGER TYPOGRAPHY
+========================================================= */
+
+.dashboard-hero .hero-main-title {
+    font-size: 58px !important;
+    line-height: 1.08 !important;
+    font-weight: 800 !important;
+    letter-spacing: -1.8px;
+}
+
+.dashboard-hero .hero-main-title span {
+    font-size: inherit !important;
+}
+
+.dashboard-hero .hero-description {
+    font-size: 18px !important;
+    line-height: 1.75 !important;
+    max-width: 680px;
+}
+
+/* Buttons */
+.dashboard-hero .hero-primary-btn,
+.dashboard-hero .hero-secondary-btn {
+    font-size: 16px !important;
+    padding: 14px 22px !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .dashboard-hero .hero-main-title {
+        font-size: 40px !important;
+        letter-spacing: -1px;
+    }
+
+    .dashboard-hero .hero-description {
+        font-size: 16px !important;
+    }
+}
+/* View Transactions - White Button */
+.dashboard-hero .hero-primary-btn {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
+}
+
+.dashboard-hero .hero-primary-btn i {
+    color: #2563eb !important;
+}
+
+.dashboard-hero .hero-primary-btn:hover {
+    background: #f8fafc !important;
+    color: #111827 !important;
+}
+/* =========================================================
+   COMPACT HERO - SAME DESIGN, SMALLER SIZE
+========================================================= */
+
+.dashboard-hero .hero-main-title {
+    font-size: 46px !important;
+    line-height: 1.12 !important;
+    letter-spacing: -1.2px !important;
+    font-weight: 800 !important;
+    margin-bottom: 20px !important;
+}
+
+.dashboard-hero .hero-description {
+    font-size: 16px !important;
+    line-height: 1.65 !important;
+    max-width: 650px !important;
+    margin-bottom: 28px !important;
+}
+
+.dashboard-hero .hero-primary-btn,
+.dashboard-hero .hero-secondary-btn {
+    font-size: 15px !important;
+    padding: 13px 20px !important;
+}
+
+/* Keep the right card compact */
+.dashboard-hero .hero-status-card {
+    transform: scale(0.96);
+    transform-origin: center right;
+}
+
+/* Keep hero proportions */
+.dashboard-hero {
+    min-height: 500px !important;
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-hero .hero-main-title {
+        font-size: 36px !important;
+    }
+
+    .dashboard-hero .hero-description {
+        font-size: 15px !important;
+    }
+
+    .dashboard-hero .hero-status-card {
+        transform: none;
+    }
+}
+/* =========================================================
+   SMALL & COMPACT HERO
+========================================================= */
+
+.dashboard-hero {
+    min-height: 420px !important;
+    padding: 42px 36px !important;
+}
+
+/* Main heading */
+.dashboard-hero .hero-main-title {
+    font-size: 38px !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.8px !important;
+    margin-bottom: 16px !important;
+}
+
+/* Description */
+.dashboard-hero .hero-description {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    max-width: 580px !important;
+    margin-bottom: 22px !important;
+}
+
+/* Buttons */
+.dashboard-hero .hero-primary-btn,
+.dashboard-hero .hero-secondary-btn {
+    font-size: 14px !important;
+    padding: 11px 17px !important;
+}
+
+/* Right white card */
+.dashboard-hero .hero-status-card {
+    transform: scale(0.88);
+    transform-origin: center right;
+}
+
+/* Top badge */
+.dashboard-hero .hero-tag {
+    font-size: 11px !important;
+}
+
+/* AI Online */
+.dashboard-hero .hero-online {
+    font-size: 11px !important;
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-hero {
+        min-height: auto !important;
+        padding: 30px 22px !important;
+    }
+
+    .dashboard-hero .hero-main-title {
+        font-size: 32px !important;
+    }
+
+    .dashboard-hero .hero-description {
+        font-size: 14px !important;
+    }
+
+    .dashboard-hero .hero-status-card {
+        transform: none;
+    }
+}
+.hero-section {
+    margin-bottom: 20px; /* pehle agar 80px/100px hai to kam karo */
+}
+
+.potential-fraud-section {
+    margin-top: 0;
+    padding-top: 30px;
+}
+/* =========================================================
+   HERO → POTENTIAL FRAUD GAP FIX
+   ========================================================= */
+
+/* Hero ki bottom spacing reduce */
+.dashboard-hero {
+    margin-bottom: 18px !important;
+}
+
+/* Potential Fraud section ko upar lao */
+.potential-fraud-card {
+    margin-top: 0 !important;
+}
+
+/* Agar parent section se extra spacing aa rahi ho */
+.potential-fraud-card.glass-card {
+    margin-top: 0 !important;
+}
+
+/* Potential Fraud ke andar unnecessary top padding reduce */
+.potential-fraud-card {
+    padding-top: 22px !important;
+}
+/* Hero aur Potential Fraud ke beech thoda kam gap */
+.dashboard-hero {
+    margin-bottom: 12px !important;
+}
+
+.potential-fraud-card {
+    margin-top: 0 !important;
+}
