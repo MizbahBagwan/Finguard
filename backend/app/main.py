@@ -105,6 +105,7 @@ from backend.app.services.security import (
     hash_password,
     verify_password
 )
+import os
 
 
 
@@ -163,7 +164,7 @@ app.add_middleware(
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key="finguard_secret_key_123"
+    secret_key=os.getenv("SESSION_SECRET", "dev-secret")
 )
 
 
