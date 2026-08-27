@@ -20,3 +20,4 @@ aiofiles==24.1.0
 google-generativeai
 itsdangerous
 shap
+httpcore==1.0.9
