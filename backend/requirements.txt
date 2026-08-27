@@ -19,3 +19,4 @@ python-jose[cryptography]==3.5.0
 aiofiles==24.1.0
 google-generativeai
 itsdangerous
+shap
